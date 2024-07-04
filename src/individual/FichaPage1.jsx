@@ -1,20 +1,46 @@
+import {useState} from "react";
 
 export default function FichaPage1() {
+
+    const [afinidade, setAfinidade] = useState(0);
+
+    const [nome, setNome] = useState('');
+    const [titulo, setTitulo] = useState('');
+    const [profissao, setProfissao] = useState('');
+    const [idade, setIdade] = useState(0);
+    const [altura, setAltura] = useState(0);
+    const [peso, setPeso] = useState(0);
+
+    const handleChange = (setter) => (event) => {
+        if (setter === setAfinidade) {
+            return setter(parseInt(event.target.value));
+        }
+        setter(event.target.value);
+    };
+
+    const seletorAfinidadeStyle = {
+        color: afinidade === 0 ? "#6c757d" : "white",
+    };
 
     return (
         <>
             <div className={"fichaComum"}>
-                <h1><span className={"fichaComum title"}>Individual.</span></h1>
                 <h2 className={"fichaComum title-2"}>pessoal.</h2>
                 <div>
-                    <input type={"text"} placeholder="nome"/>
-                    <input type={"text"} placeholder="título"/>
-                    <input type={"text"} placeholder={"profissão"}/>
+                    <input type={"text"} value={nome} onChange={handleChange(setNome)}
+                           placeholder="nome"/>
+                    <input type={"text"} value={titulo} onChange={handleChange(setTitulo)}
+                           placeholder="título"/>
+                    <input type={"text"} value={profissao} onChange={handleChange(setProfissao)}
+                           placeholder={"profissão"}/>
                 </div>
                 <div>
-                    <input type={"number"} min={0} placeholder="idade"/>
-                    <input type={"number"} min={0} step={0.01} placeholder={"altura"}/>
-                    <input type={"number"} min={0} step={0.1} placeholder={"peso"}/>
+                    <input type={"number"} value={idade || ''} onChange={handleChange(setIdade)} min={0}
+                           placeholder="idade"/>
+                    <input type={"number"} value={altura || ''} onChange={handleChange(setAltura)} min={0} step={0.01}
+                           placeholder="altura"/>
+                    <input type={"number"} value={peso || ''} onChange={handleChange(setPeso)} min={0} step={0.1}
+                           placeholder="peso"/>
                 </div>
                 <h2 className={"fichaComum title-2"}>forma.</h2>
                 <div>
@@ -73,14 +99,15 @@ export default function FichaPage1() {
                     <div>
                         <h2 className={"fichaComum title-2"}>afinidade.</h2>
                         <div className={"custom-select-father"}>
-                            <div className={"custom-select"}>
-                                <select className={"drop-arrow"}>
-                                    <option selected>afinidade</option>
-                                    <option value="fogo">pyro</option>
-                                    <option value="agua">aqua</option>
-                                    <option value="terra">geo</option>
-                                </select>
-                            </div>
+                            <select className="form-select custom-select"
+                                    style={seletorAfinidadeStyle}
+                                    onChange={handleChange(setAfinidade)}
+                                    value={afinidade}>
+                                <option value={0}>afinidade</option>
+                                <option value={1}>pyro</option>
+                                <option value={2}>aqua</option>
+                                <option value={3}>geo</option>
+                            </select>
                         </div>
                     </div>
                 </div>
@@ -89,3 +116,4 @@ export default function FichaPage1() {
     )
 
 }
+
