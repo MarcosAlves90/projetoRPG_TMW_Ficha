@@ -13,6 +13,12 @@ input[type=number] {
 }
 
 #root {
+  --gray-background: #171717;
+  --gray-border: #2b2b2b 2px solid;
+  --green-background: #061700;
+  --green-border: #48ff00 2px solid;
+  --green-text: #2da200;
+  --common-transion: border 0.3s ease-in-out, color 0.3s ease-in-out, background 0.3s ease-in-out;
   max-width: 1280px;
   margin: 0 auto;
   padding: 2rem;
@@ -35,9 +41,9 @@ body {
 .fichaComum .custom-select:hover,
 .fichaComum .textarea-ficha:focus,
 .header .button-header.active:hover {
-  background-color: #061700;
-  border: #48ff00 2px solid;
-  color: #2da200;
+  background-color: var(--green-background);
+  border: var(--green-border);
+  color: var(--green-text);
 }
 
 .header {
@@ -52,9 +58,9 @@ body {
 
   .button-header {
     border-radius: 100px;
-    transition: border 0.3s ease-in-out, color 0.3s ease-in-out, background 0.3s ease-in-out;
+    transition: var(--common-transion);
     min-width: 110px;
-    border: #2b2b2b 2px solid;
+    border: var(--gray-border);
   }
 
   .button-header:hover {
@@ -83,9 +89,9 @@ body {
   .textarea-ficha {
     min-width: 380px;
     color: white;
-    border: #2b2b2b 2px solid;
-    background-color: #171717;
-    transition: border 0.3s ease-in-out, color 0.3s ease-in-out, background 0.3s ease-in-out;
+    border: var(--gray-border);
+    background-color: var(--gray-background);
+    transition: var(--common-transion);
   }
 
   .textarea-ficha:focus {
@@ -124,18 +130,18 @@ body {
   }
 
   .custom-select:hover select {
-    background-color: #061700;
+    background-color: var(--green-background);
   }
 
   input, .custom-select {
-    background-color: #171717;
+    background-color: var(--gray-background);
     outline: none;
     padding: 12px;
-    border: #2b2b2b 2px solid;
+    border: var(--gray-border);
     text-align: center;
     border-radius: 30px;
     font-size: medium;
-    transition: border 0.3s ease-in-out, color 0.3s ease-in-out, background 0.3s ease-in-out;
+    transition: var(--common-transion);
   }
 
   input {
