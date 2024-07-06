@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react';
-import Title from './individual/title.jsx';
+import Header from './individual/Header.jsx';
 import FichaPage1 from './individual/FichaPage1.jsx';
 import FichaPage2 from './individual/FichaPage2.jsx';
+import FichaPage3 from "./individual/FichaPage3.jsx";
 import './App.css';
 
 function App() {
@@ -41,16 +42,22 @@ function App() {
                     </div>
                 )}
             </div>
-            <Title titulo={currentPage === 1 ? "Individual." : "Características."}
-                   onNext={goToNextPage}
-                   onBack={goToPreviousPage}
-                   showBackButton={currentPage > 1}
-                   showNextButton={currentPage < 2}
+            <Header titulo={EscolherTitulo(currentPage)}
+                    onNext={goToNextPage}
+                    onBack={goToPreviousPage}
+                    showBackButton={currentPage > 1}
+                    showNextButton={currentPage < 3}
             />
             {currentPage === 1 && <FichaPage1 />}
             {currentPage === 2 && <FichaPage2 />}
+            {currentPage === 3 && <FichaPage3 />}
         </>
     );
+}
+
+function EscolherTitulo(pagina) {
+    const titles = ["Individual.", "Características.", "Status"];
+    return titles[pagina - 1]
 }
 
 export default App;
