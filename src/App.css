@@ -13,20 +13,27 @@ input[type=number] {
 }
 
 #root {
-  --yellow-des: #ffff00;
-  --red-for: #c00000;
-  --blue-int: #0070c0;
-  --purple-pre: #51154a;
-  --green-vig: #00b050;
+  --yellow-des: #ffff00; /* Amarelo mais escuro */
+  --red-for: #c00000; /* Vermelho mais escuro */
+  --blue-int: #0070c0; /* Azul mais escuro */
+  --purple-pre: #502ba8; /* Roxo mais escuro */
+  --green-vig: #00b050; /* Verde mais escuro */
 
-  --gray-placeholder: #606060;
-  --gray-background: #171717;
-  --gray-border-color : #2b2b2b;
-  --gray-border: #2b2b2b 2px solid;
-  --green-background: #061700;
-  --green-border: #48ff00 2px solid;
-  --green-text: #2da200;
+  --gray-placeholder: #454545;
+  --gray-background: #121212;
+  --dark-gray-background: #0a0a0a;
+  --gray-border-color : #333333;
+  --gray-border: #333333 2px solid;
+
+  --red-background: #3e0202;
+  --red-text: #ff0000;
+  --red-border: #8b0000 2px solid;
+
+  --green-background: #001300;
+  --green-border: #006400 2px solid;
+  --green-text: #339c33;
   --common-transion: border 0.3s ease-in-out, color 0.3s ease-in-out, background 0.3s ease-in-out;
+
   max-width: 1280px;
   margin: 0 auto;
   padding: 3rem 2rem 2rem 2rem;
@@ -48,7 +55,8 @@ body {
 .fichaComum input:focus,
 .fichaComum .custom-select:hover,
 .fichaComum .textarea-ficha:focus,
-.header .button-header.active:hover {
+.header .button-header.active:hover,
+.fichaComum .button-lock:hover {
   background-color: var(--green-background);
   border: var(--green-border);
   color: var(--green-text);
@@ -80,6 +88,15 @@ body {
 }
 
 .fichaComum {
+
+  .button-lock {
+    border-radius: 100px;
+    transition: var(--common-transion);
+    min-width: 110px;
+    border: var(--gray-border);
+    margin: 2rem;
+    background-color: var(--gray-background);
+  }
 
   input::placeholder, .textarea-ficha::placeholder {
     color: var(--gray-placeholder);
@@ -161,6 +178,11 @@ body {
     margin: 0;
     box-shadow: none;
     color: white;
+    border-left: none;
+  }
+
+  .input-wmargin:disabled {
+    background-color: var(--gray-background);
   }
 
   .min {
@@ -186,8 +208,12 @@ body {
   .input-group-text-center {
     min-width: 7.5rem;
     background-color: var(--gray-border-color);
+    border: var(--gray-border);
+    border-right: none;
+    border-left: none;
     color: white;
     font-size: small;
+    transition: var(--common-transion);
   }
 
   .input-group-text-left {
@@ -196,7 +222,9 @@ body {
   }
 
   .input-group-text-left.defined {
+    transition: var(--common-transion);
     min-width: 8.75rem;
+
   }
 
   .status-esquerdo, .status-direito {

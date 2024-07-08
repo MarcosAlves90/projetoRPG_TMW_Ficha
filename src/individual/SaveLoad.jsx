@@ -7,12 +7,30 @@ export const saveItem = (key, value) => {
     localStorage.setItem(key, compressed);
 };
 
+export const deleteItem = (key) => {
+    localStorage.removeItem(key);
+};
+
 export const getItem = (key, defaultValue) => {
     const compressed = localStorage.getItem(key);
     if (compressed) {
-        const decompressed = LZString.decompressFromUTF16(compressed);
-        // Tenta converter o valor de volta para número, se falhar, retorna o valor padrão
-        return isNaN(parseInt(decompressed)) ? decompressed : Number(decompressed);
+        return decompressValue(compressed);
     }
     return defaultValue;
 };
+
+export const handleChange = (setter) => (event) => {
+    const value = event.target.value;
+    if (event.target.type === 'number') {
+        setter(value === '' ? '' : parseFloat(value));
+    } else {
+        setter(value);
+    }
+};
+
+function decompressValue(compressed) {
+    const decompressed = LZString.decompressFromUTF16(compressed);
+    if (decompressed === true) return true;
+    if (decompressed === false) return false;
+    return isNaN(parseFloat(decompressed)) ? decompressed : Number(decompressed);
+}
