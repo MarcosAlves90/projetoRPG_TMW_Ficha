@@ -16,6 +16,7 @@
   "dependencies": {
     "@types/jquery.total-storage": "^1.1.36",
     "bootstrap": "^5.3.3",
+    "bootstrap-icons": "^1.11.3",
     "bootstrap-select": "^1.13.18",
     "gh-pages": "^6.1.1",
     "jquery": "^3.7.1",
@@ -23,7 +24,8 @@
     "prop-types": "^15.8.1",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
-    "react-router-dom": "^6.24.1"
+    "react-router-dom": "^6.24.1",
+    "react-textarea-autosize": "^8.5.3"
   },
   "devDependencies": {
     "@types/react": "^18.3.3",

@@ -1,5 +1,6 @@
 import {useState, useEffect} from "react";
 import {getItem, saveItem, handleChange, deleteItem} from "./SaveLoad.jsx";
+import TextareaAutosize from 'react-textarea-autosize';
 
 export default function FichaPage2() {
 
@@ -31,68 +32,78 @@ export default function FichaPage2() {
 
     return (
         <>
-            <div className={"fichaComum"}>
+            <div className={"fichaComum page-2"}>
                 <section className={"section-ideais"}>
-                    <h2 className={"fichaComum title-2"}>ideais.</h2>
+                    <div className={"title-2-container"}>
+                        <h2 className={"fichaComum title-2"}>ideais.</h2>
+                    </div>
                     <div className={"textarea-container"}>
-                        <textarea className="form-control textarea-ficha"
+                        <TextareaAutosize  className="form-control textarea-ficha"
                                   id="exampleFormControlTextarea1"
                                   value={ideais}
                                   onChange={handleChange(setIdeais)}
-                                  rows="4"
+                                  minRows="4"
                                   placeholder={"- Escreva um ou mais ideais."}>
 
-                        </textarea>
+                        </TextareaAutosize>
                     </div>
                 </section>
                 <section className={"section-tracos"}>
-                    <div className={"textarea-meio"}>
-                        <div>
-                            <h2 className={"fichaComum title-2"}>traços negativos.</h2>
+                    <div className={"textarea-meio-container"}>
+                        <div className={"textarea-meio"}>
+                        <div className={"title-2-container"}>
+                                <h2 className={"fichaComum title-2"}>traços negativos.</h2>
+                            </div>
                             <div className={"textarea-container"}>
-                            <textarea className="form-control textarea-ficha" 
+                            <TextareaAutosize className="form-control textarea-ficha"
                                       id="exampleFormControlTextarea1"
                                       value={tracosNegativos}
                                       onChange={handleChange(setTracosNegativos)}
-                                      rows="4" 
+                                      minRows="4"
                                       placeholder={"- Escreva um ou mais traços negativos.\n" +
-                                "- Os traços podem ser físicos ou mentais."}></textarea>
+                                          "- Os traços podem ser físicos ou mentais."}></TextareaAutosize>
                             </div>
                         </div>
-                        <div>
-                            <h2 className={"fichaComum title-2"}>traços positivos.</h2>
+                        <div className={"textarea-meio"}>
+                            <div className={"title-2-container"}>
+                                <h2 className={"fichaComum title-2"}>traços positivos.</h2>
+                            </div>
                             <div className={"textarea-container"}>
-                            <textarea className="form-control textarea-ficha"
+                            <TextareaAutosize className="form-control textarea-ficha"
                                       id="exampleFormControlTextarea1"
                                       value={tracosPositivos}
                                       onChange={handleChange(setTracosPositivos)}
-                                      rows="4" 
+                                      minRows="4"
                                       placeholder={"- Escreva um ou mais traços positivos.\n" +
-                                "- Os traços podem ser físicos ou mentais."}></textarea>
+                                          "- Os traços podem ser físicos ou mentais."}></TextareaAutosize>
                             </div>
                         </div>
                     </div>
                 </section>
                 <section className={"section-origem"}>
-                    <h2 className={"fichaComum title-2"}>origem.</h2>
+                    <div className={"title-2-container"}>
+                        <h2 className={"fichaComum title-2"}>origem.</h2>
+                    </div>
                     <div className={"textarea-container"}>
-                        <textarea className="form-control textarea-ficha"
+                        <TextareaAutosize className="form-control textarea-ficha"
                                   id="exampleFormControlTextarea1"
                                   value={origem}
                                   onChange={handleChange(setOrigem)}
-                                  rows="7"
-                                  placeholder={"Escreva a sua origem."}></textarea>
+                                  minRows="7"
+                                  placeholder={"Escreva a sua origem."}></TextareaAutosize>
                     </div>
                 </section>
                 <section className={"section-origem-forma"}>
-                    <h2 className={"fichaComum title-2"}>origem da forma.</h2>
+                    <div className={"title-2-container"}>
+                        <h2 className={"fichaComum title-2"}>origem da forma.</h2>
+                    </div>
                     <div className={"textarea-container"}>
-                        <textarea className="form-control textarea-ficha"
+                        <TextareaAutosize className="form-control textarea-ficha"
                                   id="exampleFormControlTextarea1"
                                   value={origemForma}
                                     onChange={handleChange(setOrigemForma)}
-                                  rows="7"
-                                  placeholder={"Escreva a origem da sua forma."}></textarea>
+                                  minRows="7"
+                                  placeholder={"Escreva a origem da sua forma."}></TextareaAutosize>
                     </div>
                 </section>
             </div>

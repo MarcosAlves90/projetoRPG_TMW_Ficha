@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types';
 import {useEffect, useState} from "react";
 import {deleteItem, getItem, handleChange, saveItem} from "./SaveLoad.jsx";
+import 'bootstrap-icons/font/bootstrap-icons.css';
 
 const lockedInputStyle = () => ({
 
@@ -12,7 +13,7 @@ const lockedInputStyle = () => ({
 
 export default function FichaPage3() {
 
-    const [isLocked, setIsLocked] = useState(getItem('isLocked', false))
+    const [isLocked, setIsLocked] = useState(getItem('isLocked', false) === 'true')
 
     useEffect(() => {
         if (isLocked) {
@@ -25,16 +26,21 @@ export default function FichaPage3() {
     return (
         <>
             <div className={"fichaComum"}>
-                <button type="button"
-                        className="button-lock"
-                        onClick={() => setIsLocked(!isLocked)}
-                        style={isLocked ? lockedInputStyle() : {}}>
-                    {isLocked ? "Desbloquear entradas" : "Bloquear entradas"}
-                </button>
+                <div className={"title-2-container"}>
+                    <button type="button"
+                            className="button-lock"
+                            onClick={() => setIsLocked(!isLocked)}
+                            style={isLocked ? lockedInputStyle() : {}}>
+                        {isLocked ? "Desbloquear entradas " : "Bloquear entradas "}
+                        <i className={isLocked ? "bi bi-unlock-fill" : "bi bi-lock-fill"}></i>
+                    </button>
+                </div>
                 <section className={"section-atributos"}>
-                    <h2 className={"fichaComum title-2"}>atributos.</h2>
+                <div className={"title-2-container"}>
+                        <h2 className={"fichaComum title-2"}>atributos.</h2>
+                    </div>
                     <div className={"status-meio justify-center min"}>
-                        <Atributos isLocked={isLocked} atributo={"DESTREZA"} atr={"DES"}/>
+                    <Atributos isLocked={isLocked} atributo={"DESTREZA"} atr={"DES"}/>
                         <Atributos isLocked={isLocked} atributo={"FORÇA"} atr={"FOR"}/>
                         <Atributos isLocked={isLocked} atributo={"INTELIGÊNCIA"} atr={"INT"}/>
                         <Atributos isLocked={isLocked} atributo={"PRESENÇA"} atr={"PRE"}/>
@@ -45,9 +51,11 @@ export default function FichaPage3() {
                     </div>
                 </section>
                 <section className={"section-pericias"}>
-                    <h2 className={"fichaComum title-2"}>perícias.</h2>
+                    <div className={"title-2-container"}>
+                        <h2 className={"fichaComum title-2"}>perícias.</h2>
+                    </div>
                     <div className={"status-meio justify-center"}>
-                        <Pericia isLocked={isLocked} pericia={"Acrobacia"} atr={"DES"}/>
+                    <Pericia isLocked={isLocked} pericia={"Acrobacia"} atr={"DES"}/>
                         <Pericia isLocked={isLocked} pericia={"Artes"} atr={"PRE"}/>
                         <Pericia isLocked={isLocked} pericia={"Atletismo"} atr={"FOR"}/>
                         <Pericia isLocked={isLocked} pericia={"Ciências"} atr={"INT"}/>
@@ -157,9 +165,13 @@ function Atributos(props) {
     return (
         <div className={"input-group mb-3"}>
 
-            <span className={`input-group-text-left defined ${props.isLocked ? "locked" : ""}`}
-                  style={{backgroundColor: cores[props.atr].background,
-                color: cores[props.atr].color, border: `${cores[props.atr].background} 2px solid`}}>{props.atributo}</span>
+            <div className={"text-div"}>
+                <span className={`input-group-text-left defined ${props.isLocked ? "locked" : ""}`}
+                      style={{
+                          backgroundColor: cores[props.atr].background,
+                          color: cores[props.atr].color, border: `${cores[props.atr].background} 2px solid`
+                      }}>{props.atributo}</span>
+            </div>
             <input type={"number"}
                    step={1}
                    min={0}

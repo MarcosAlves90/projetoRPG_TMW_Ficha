@@ -79,7 +79,9 @@ export default function FichaPage1() {
         <>
             <div className={"fichaComum"}>
                 <section className={"section-pessoal"}>
-                    <h2 className={"fichaComum title-2"}>pessoal.</h2>
+                    <div className={"title-2-container"}>
+                        <h2 className={"fichaComum title-2"}>pessoal.</h2>
+                    </div>
                     <div>
                         <input type={"text"} value={nome} onChange={handleChange(setNome)}
                                placeholder="nome"/>
@@ -109,7 +111,9 @@ export default function FichaPage1() {
                     </div>
                 </section>
                 <section className={"section-forma"}>
-                    <h2 className={"fichaComum title-2"}>forma.</h2>
+                    <div className={"title-2-container"}>
+                        <h2 className={"fichaComum title-2"}>forma.</h2>
+                    </div>
                     <div className={"status-meio justify-center"}>
                         <div>
                             <input className={"status-esquerdo"}
@@ -139,9 +143,11 @@ export default function FichaPage1() {
                     </div>
                 </section>
                 <section className={"section-recursos"}>
-                    <div className={"status-meio"}>
+                    <div className={"status-meio justify-center"}>
                         <div>
-                            <h2 className={"fichaComum title-2"}>vida.</h2>
+                            <div className={"title-2-container"}>
+                                <h2 className={"fichaComum title-2"}>vida.</h2>
+                            </div>
                             <div>
                                 <input className={"status-esquerdo"}
                                        type={"number"}
@@ -158,7 +164,9 @@ export default function FichaPage1() {
                             </div>
                         </div>
                         <div>
-                            <h2 className={"fichaComum title-2"}>estresse.</h2>
+                            <div className={"title-2-container"}>
+                                <h2 className={"fichaComum title-2"}>estresse.</h2>
+                            </div>
                             <div>
                                 <input className={"status-esquerdo"}
                                        type={"number"}
@@ -175,9 +183,11 @@ export default function FichaPage1() {
                             </div>
                         </div>
                     </div>
-                    <div className={"status-meio"}>
+                    <div className={"status-meio justify-center"}>
                         <div>
-                            <h2 className={"fichaComum title-2"}>energia.</h2>
+                            <div className={"title-2-container"}>
+                                <h2 className={"fichaComum title-2"}>energia.</h2>
+                            </div>
                             <div>
                                 <input className={"status-esquerdo"}
                                        type={"number"}
@@ -194,7 +204,9 @@ export default function FichaPage1() {
                             </div>
                         </div>
                         <div>
-                            <h2 className={"fichaComum title-2"}>sanidade.</h2>
+                            <div className={"title-2-container"}>
+                                <h2 className={"fichaComum title-2"}>sanidade.</h2>
+                            </div>
                             <div>
                                 <input className={"status-esquerdo"}
                                        type={"number"}
@@ -215,7 +227,9 @@ export default function FichaPage1() {
                 <section className={"section-ajustes"}>
                     <div className={"status-meio justify-center"}>
                         <div>
-                            <h2 className={"fichaComum title-2"}>defesa.</h2>
+                            <div className={"title-2-container"}>
+                                <h2 className={"fichaComum title-2"}>defesa.</h2>
+                            </div>
                             <div>
                                 <input className={"status-esquerdo"}
                                        type={"number"}
@@ -226,7 +240,9 @@ export default function FichaPage1() {
                             </div>
                         </div>
                         <div>
-                            <h2 className={"fichaComum title-2"}>nível.</h2>
+                            <div className={"title-2-container"}>
+                                <h2 className={"fichaComum title-2"}>nível.</h2>
+                            </div>
                             <div>
                                 <input className={"status-meio-dr"}
                                        type={"number"}
@@ -237,7 +253,9 @@ export default function FichaPage1() {
                             </div>
                         </div>
                         <div>
-                            <h2 className={"fichaComum title-2"}>afinidade.</h2>
+                            <div className={"title-2-container"}>
+                                <h2 className={"fichaComum title-2"}>afinidade.</h2>
+                            </div>
                             <div className={"custom-select-father direito"}>
                                 <select className="form-select custom-select status-direito"
                                         style={seletorAfinidadeStyle}

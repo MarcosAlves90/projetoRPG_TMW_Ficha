@@ -1,4 +1,10 @@
-@import url('https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@400..700&family=Roboto+Slab:wght@100..900&display=swap');
+@font-face {
+  font-family: 'Cascadia MonoF';
+    src: url('./assets/fonts/CascadiaMono.ttf') format('woff');
+    src: url('./assets/fonts/CascadiaMono.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
 
 /* Para o Chrome, Safari, Edge, Opera */
 input::-webkit-outer-spin-button,
@@ -34,14 +40,15 @@ input[type=number] {
   --green-text: #339c33;
   --common-transion: border 0.3s ease-in-out, color 0.3s ease-in-out, background 0.3s ease-in-out;
 
-  max-width: 1280px;
+  width: 100%;
+  height: 100%;
   margin: 0 auto;
   padding: 3rem 2rem 2rem 2rem;
   text-align: center;
 }
 
 * {
-  font-family: "Roboto Slab", sans-serif;
+  font-family: "Cascadia Mono", sans-serif;
 }
 
 body {
@@ -63,10 +70,16 @@ body {
 }
 
 .header {
+    width: 100%;
     display: flex;
     justify-content: space-between;
     align-items: center;
     margin-bottom: 3em;
+
+  .infos {
+    width: 70%;
+    margin: 0 auto;
+  }
 
   .title-container {
     width: 100%;
@@ -87,7 +100,29 @@ body {
 
 }
 
+.fichaComum.page-2 {
+  width: 50%;
+}
+
+.title-h1 {
+  font-size: 2.4vw;
+}
+
+.fichaComum.title-2,
+.title-h1 {
+  border: none;
+  box-shadow: none;
+  backdrop-filter: none;
+  padding: 0;
+  background: transparent none;
+  color: #2b2b2b;
+  transition: color 0.3s ease-in-out;
+}
+
 .fichaComum {
+  margin: auto; /* Isso ajuda na centralização horizontal se o display flex do pai não for suficiente */
+  width: 70%; /* Largura definida anteriormente */
+  max-width: 100%; /* Você pode ajustar isso conforme necessário */
 
   .button-lock {
     border-radius: 100px;
@@ -102,17 +137,24 @@ body {
     color: var(--gray-placeholder);
   }
 
-  .textarea-meio {
+  .textarea-meio-container {
     display: flex;
     justify-content: space-around;
   }
 
+  .textarea-meio {
+    width: 50%;
+  }
+
   .textarea-container {
     margin: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 
   .textarea-ficha {
-    min-width: 380px;
+    resize: none;
     color: white;
     border: var(--gray-border);
     background-color: var(--gray-background);
@@ -124,7 +166,7 @@ body {
     outline: none;
   }
 
-  .title, .title-2 {
+  .title-2 {
     border: none;
     box-shadow: none;
     backdrop-filter: none;
@@ -132,6 +174,12 @@ body {
     background: transparent none;
     color: #2b2b2b;
     transition: color 0.3s ease-in-out;
+  }
+
+  .title-2-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
 
   .title-2 {
@@ -174,10 +222,13 @@ body {
   }
 
   .input-wmargin {
-    min-width: 4.375rem;
     margin: 0;
     box-shadow: none;
     color: white;
+    border-left: none;
+  }
+
+  .input-wmargin:focus {
     border-left: none;
   }
 
@@ -192,7 +243,6 @@ body {
   }
 
   .input-group {
-    min-width: 17rem;
     padding: 0;
     margin: 12px;
   }
@@ -206,13 +256,14 @@ body {
   }
 
   .input-group-text-center {
-    min-width: 7.5rem;
+    min-width: 50%;
+    max-width: 50%;
     background-color: var(--gray-border-color);
     border: var(--gray-border);
     border-right: none;
     border-left: none;
     color: white;
-    font-size: small;
+    font-size: 80%;
     transition: var(--common-transion);
   }
 
@@ -223,8 +274,13 @@ body {
 
   .input-group-text-left.defined {
     transition: var(--common-transion);
-    min-width: 8.75rem;
+    width: 100%;
+    height: 100%;
+    font-size: 0.8vw;
+  }
 
+  .text-div {
+    width: 60%;
   }
 
   .status-esquerdo, .status-direito {
