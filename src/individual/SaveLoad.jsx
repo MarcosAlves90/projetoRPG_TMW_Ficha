@@ -34,3 +34,42 @@ function decompressValue(compressed) {
     if (decompressed === false) return false;
     return isNaN(parseFloat(decompressed)) ? decompressed : Number(decompressed);
 }
+
+// -------------------------------------- Importar e Exportar
+
+// Função para salvar o localStorage em um arquivo
+export function salvarLocalStorageComoArquivo() {
+    const dados = {};
+    for (let i = 0; i < localStorage.length; i++) {
+        const chave = localStorage.key(i);
+        dados[chave] = localStorage.getItem(chave);
+    }
+    const blob = new Blob([JSON.stringify(dados)], {type: 'application/json'});
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = 'fichasDadosTMW.tmw';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+}
+
+// Função para carregar um arquivo e substituir o localStorage
+export function carregarArquivoParaLocalStorage(event) {
+    const { files } = event.target;
+    if (!files.length) return;
+
+    const reader = new FileReader();
+    reader.onload = ({ target }) => {
+        try {
+            const data = JSON.parse(target.result);
+            Object.entries(data).forEach(([key, value]) => localStorage.setItem(key, value));
+            console.log('Dados importados com sucesso!');
+            location.reload();
+        } catch (error) {
+            console.error('Erro ao processar o arquivo:', error);
+        }
+    };
+    reader.onerror = (error) => console.error('Erro ao ler o arquivo:', error);
+    reader.readAsText(files[0]);
+}

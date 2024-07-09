@@ -54,45 +54,7 @@ export default function FichaPage3() {
                     <div className={"title-2-container"}>
                         <h2 className={"fichaComum title-2"}>perícias.</h2>
                     </div>
-                    <div className={"status-meio justify-center"}>
-                    <Pericia isLocked={isLocked} pericia={"Acrobacia"} atr={"DES"}/>
-                        <Pericia isLocked={isLocked} pericia={"Artes"} atr={"PRE"}/>
-                        <Pericia isLocked={isLocked} pericia={"Atletismo"} atr={"FOR"}/>
-                        <Pericia isLocked={isLocked} pericia={"Ciências"} atr={"INT"}/>
-                        <Pericia isLocked={isLocked} pericia={"Enganação"} atr={"PRE"}/>
-                    </div>
-                    <div className={"status-meio justify-center"}>
-                        <Pericia isLocked={isLocked} pericia={"Foco"} atr={"PRE"}/>
-                        <Pericia isLocked={isLocked} pericia={"Fortitude"} atr={"VIG"}/>
-                        <Pericia isLocked={isLocked} pericia={"Furtividade"} atr={"DES"}/>
-                        <Pericia isLocked={isLocked} pericia={"História"} atr={"INT"}/>
-                        <Pericia isLocked={isLocked} pericia={"Iniciativa"} atr={"DES"}/>
-                    </div>
-                    <div className={"status-meio justify-center"}>
-                        <Pericia isLocked={isLocked} pericia={"Intimidação"} atr={"PRE"}/>
-                        <Pericia isLocked={isLocked} pericia={"Intuição"} atr={"INT"}/>
-                        <Pericia isLocked={isLocked} pericia={"Investigação"} atr={"INT"}/>
-                        <Pericia isLocked={isLocked} pericia={"Luta"} atr={"FOR"}/>
-                        <Pericia isLocked={isLocked} pericia={"Magia Arcana"} atr={"INT"}/>
-                    </div>
-                    <div className={"status-meio justify-center"}>
-                        <Pericia isLocked={isLocked} pericia={"Medicina"} atr={"INT"}/>
-                        <Pericia isLocked={isLocked} pericia={"Percepção"} atr={"PRE"}/>
-                        <Pericia isLocked={isLocked} pericia={"Persuasão"} atr={"PRE"}/>
-                        <Pericia isLocked={isLocked} pericia={"Precisão"} atr={"DES"}/>
-                        <Pericia isLocked={isLocked} pericia={"Prestidigitação"} atr={"DES"}/>
-                    </div>
-                    <div className={"status-meio justify-center"}>
-                        <Pericia isLocked={isLocked} pericia={"Profissão"} atr={"INT"}/>
-                        <Pericia isLocked={isLocked} pericia={"Reflexos"} atr={"DES"}/>
-                        <Pericia isLocked={isLocked} pericia={"Religião"} atr={"PRE"}/>
-                        <Pericia isLocked={isLocked} pericia={"Sobrevivência"} atr={"INT"}/>
-                        <Pericia isLocked={isLocked} pericia={"Tática"} atr={"INT"}/>
-                    </div>
-                    <div className={"status-meio justify-center min"}>
-                        <Pericia isLocked={isLocked} pericia={"Tecnologia"} atr={"INT"}/>
-                        <Pericia isLocked={isLocked} pericia={"Vontade"} atr={"PRE"}/>
-                    </div>
+                    <PericiasSection isLocked={isLocked}/>
                 </section>
             </div>
         </>
@@ -107,16 +69,70 @@ let cores = {
     "VIG" : {"background" : "var(--green-vig)", "color" : "white"},
 }
 
+function PericiasSection({ isLocked }) {
+    const pericias = [
+        { pericia: "Acrobacia", atr: "DES" },
+        { pericia: "Artes", atr: "PRE" },
+        { pericia: "Atletismo", atr: "FOR" },
+        { pericia: "Ciências", atr: "INT" },
+        { pericia: "Enganação", atr: "PRE" },
+        { pericia: "Foco", atr: "PRE" },
+        { pericia: "Fortitude", atr: "VIG" },
+        { pericia: "Furtividade", atr: "DES" },
+        { pericia: "História", atr: "INT" },
+        { pericia: "Iniciativa", atr: "DES" },
+        { pericia: "Intimidação", atr: "PRE" },
+        { pericia: "Intuição", atr: "INT" },
+        { pericia: "Investigação", atr: "INT" },
+        { pericia: "Luta", atr: "FOR" },
+        { pericia: "Magia Arcana", atr: "INT" },
+        { pericia: "Medicina", atr: "INT" },
+        { pericia: "Percepção", atr: "PRE" },
+        { pericia: "Persuasão", atr: "PRE" },
+        { pericia: "Pilotagem", atr: "DES" },
+        { pericia: "Precisão", atr: "DES" },
+        { pericia: "Prestidigitação", atr: "DES" },
+        { pericia: "Profissão", atr: "INT" },
+        { pericia: "Reflexos", atr: "DES" },
+        { pericia: "Religião", atr: "PRE" },
+        { pericia: "Sobrevivência", atr: "INT" },
+        { pericia: "Tática", atr: "INT" },
+        { pericia: "Tecnologia", atr: "INT" },
+        { pericia: "Vontade", atr: "PRE" },
+    ];
+
+    function groupPericias(pericias, groupSize) {
+        const grouped = [];
+        for (let i = 0; i < pericias.length; i += groupSize) {
+            grouped.push(pericias.slice(i, i + groupSize));
+        }
+        return grouped;
+    }
+
+    return (
+        <>
+            {groupPericias(pericias, 4).map((group, index) => (
+                <div className={"status-meio justify-center"} key={index}>
+                    {group.map(({ pericia, atr }) => (
+                        <Pericia isLocked={isLocked} pericia={pericia} atr={atr} key={pericia} />
+                    ))}
+                </div>
+            ))}
+        </>
+    );
+}
+
+PericiasSection.propTypes = {
+    isLocked: PropTypes.bool.isRequired,
+}
+
 function Pericia(props) {
 
     const [value, setValue] = useState(getItem(`pericia-${props.pericia}`, ''));
 
     useEffect(() => {
-        if (value === '') {
-            deleteItem(`pericia-${props.pericia}`);
-        } else {
-            saveItem(`pericia-${props.pericia}`, parseInt(value, 10));
-        }
+        const action = value === '' ? deleteItem : saveItem;
+        action(`pericia-${props.pericia}`, value === '' ? undefined : parseInt(value, 10));
     }, [value, props.pericia]);
 
     return (
@@ -155,11 +171,8 @@ function Atributos(props) {
     const [value, setValue] = useState(getItem(`atributo-${props.atr}`, ''));
 
     useEffect(() => {
-        if (value === '') {
-            deleteItem(`atributo-${props.atr}`);
-        } else {
-            saveItem(`atributo-${props.atr}`, parseInt(value, 10));
-        }
+        const action = value === '' ? deleteItem : saveItem;
+        action(`atributo-${props.atr}`, parseInt(value, 10) || undefined);
     }, [value, props.atr]);
 
     return (

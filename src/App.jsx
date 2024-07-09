@@ -4,6 +4,8 @@ import FichaPage1 from './individual/FichaPage1.jsx';
 import FichaPage2 from './individual/FichaPage2.jsx';
 import FichaPage3 from "./individual/FichaPage3.jsx";
 import './App.css';
+import 'bootstrap-icons/font/bootstrap-icons.css';
+import {carregarArquivoParaLocalStorage, salvarLocalStorageComoArquivo} from "./individual/SaveLoad.jsx";
 
 function App() {
     const [isLoading, setIsLoading] = useState(true);
@@ -60,6 +62,9 @@ function App() {
         return () => clearTimeout(timer);
     }, []);
 
+    const simularCliqueNoInput = () => {
+        document.getElementById('formFile').click();}
+
     return (
         <>
             <div>
@@ -75,9 +80,24 @@ function App() {
                     showBackButton={currentPage > 1}
                     showNextButton={currentPage < 3}
             />
-            {currentPage === 1 && <FichaPage1 />}
-            {currentPage === 2 && <FichaPage2 />}
-            {currentPage === 3 && <FichaPage3 />}
+            {currentPage === 1 && <FichaPage1/>}
+            {currentPage === 2 && <FichaPage2/>}
+            {currentPage === 3 && <FichaPage3/>}
+
+            <div className="viewport">
+                <div className="mb-3 sticky">
+                    <input className="form-control dark" type="file" id="formFile"
+                           onChange={carregarArquivoParaLocalStorage} style={{display: 'none'}}/>
+                    <button className="button-header active file"
+                            onClick={() => document.getElementById('formFile').click()}>
+                        <label htmlFor="formFile" style={{width: "100%"}} className="file-selector">Carregar</label>
+                    </button>
+                </div>
+                <div className="icon-save center"></div>
+                <div className="icon-save right">
+                    <button className="button-header active" onClick={salvarLocalStorageComoArquivo}>Salvar</button>
+                </div>
+            </div>
         </>
     );
 }

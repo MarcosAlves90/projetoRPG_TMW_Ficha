@@ -43,7 +43,7 @@ input[type=number] {
   width: 100%;
   height: 100%;
   margin: 0 auto;
-  padding: 3rem 2rem 2rem 2rem;
+  padding: 3rem 2rem 0rem 2rem;
   text-align: center;
 }
 
@@ -55,6 +55,34 @@ body {
 
 }
 
+.viewport {
+  bottom: 1vw;
+  position: sticky;
+  font-size: 1vw;
+  z-index: 1;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.icon-save {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  left: 2vw;
+  color: white;
+}
+
+.icon-save.right {
+  left: auto;
+  right: 2vw;
+}
+
+.icon-save:hover::before {
+  color: var(--green-text);
+}
+
 .card {
   padding: 2em;
 }
@@ -62,11 +90,79 @@ body {
 .fichaComum input:focus,
 .fichaComum .custom-select:hover,
 .fichaComum .textarea-ficha:focus,
-.header .button-header.active:hover,
-.fichaComum .button-lock:hover {
-  background-color: var(--green-background);
+.button-header.active:hover,
+.fichaComum .button-lock:hover
+/*.form-control.dark:hover,*/
+/*.form-control.dark:hover::file-selector-button*/ {
+  background-color: var(--green-background) !important;
   border: var(--green-border);
   color: var(--green-text);
+  cursor: pointer;
+}
+
+.button-header {
+  border-radius: 100px;
+  transition: var(--common-transion);
+  min-width: 110px;
+  border: var(--gray-border);
+  margin: 0 2rem;
+  box-shadow: none;
+  outline: none;
+}
+
+.button-header.active.file {
+  display: flex;
+}
+
+.file-selector {
+  cursor: pointer;
+}
+
+
+.mb-3.sticky {
+  margin: 0 !important;
+}
+
+/*.form-control.dark {*/
+/*  border-radius: 100px;*/
+/*}*/
+
+/*.form-control.dark::-webkit-file-upload-button {*/
+/*  opacity:0*/
+/*}*/
+
+/*.form-control.dark,*/
+/*.form-control.dark::file-selector-button {*/
+/*  padding: 0.6em 1.2em;*/
+/*  transition: var(--common-transion);*/
+/*  border: var(--gray-border);*/
+/*  background-color: var(--gray-background);*/
+/*  color: white;*/
+/*  box-shadow: none;*/
+/*  outline: none;*/
+/*}*/
+
+/*.form-control.dark::file-selector-button {*/
+/*  border: none;*/
+/*  border-right: var(--gray-border);*/
+/*}*/
+
+/*.form-control.dark:hover::file-selector-button {*/
+/*  border: none;*/
+/*  border-right: var(--green-border);*/
+/*}*/
+
+.button-header.salvar {
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: white;
+  border-radius: 5px;
+  cursor: pointer;
+  font-family: sans-serif;
+}
+
+.button-header:hover {
+  border: var(--gray-border);
 }
 
 .header {
@@ -81,21 +177,13 @@ body {
     margin: 0 auto;
   }
 
+  .button-header {
+    margin-left: 0.625vw;
+    margin-right: 0.625vw;
+  }
+
   .title-container {
     width: 100%;
-  }
-
-  .button-header {
-    border-radius: 100px;
-    transition: var(--common-transion);
-    min-width: 110px;
-    border: var(--gray-border);
-    margin-left: 2rem;
-    margin-right: 2rem;
-  }
-
-  .button-header:hover {
-    outline: none;
   }
 
 }
@@ -123,6 +211,17 @@ body {
   margin: auto; /* Isso ajuda na centralização horizontal se o display flex do pai não for suficiente */
   width: 70%; /* Largura definida anteriormente */
   max-width: 100%; /* Você pode ajustar isso conforme necessário */
+
+  input, .custom-select {
+    background-color: var(--gray-background);
+    outline: none;
+    padding: 12px;
+    border: var(--gray-border);
+    text-align: center;
+    border-radius: 30px;
+    font-size: medium;
+    transition: var(--common-transion);
+  }
 
   .button-lock {
     border-radius: 100px;
@@ -206,17 +305,6 @@ body {
     background-color: var(--green-background);
   }
 
-  input, .custom-select {
-    background-color: var(--gray-background);
-    outline: none;
-    padding: 12px;
-    border: var(--gray-border);
-    text-align: center;
-    border-radius: 30px;
-    font-size: medium;
-    transition: var(--common-transion);
-  }
-
   input {
     margin: 12px;
   }
@@ -244,7 +332,7 @@ body {
 
   .input-group {
     padding: 0;
-    margin: 12px;
+    margin: 0.625vw;
   }
 
   .input-group-text-center, .input-group-text-left {
