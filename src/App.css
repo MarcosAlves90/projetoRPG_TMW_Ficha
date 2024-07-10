@@ -1,5 +1,5 @@
 @font-face {
-  font-family: 'Cascadia MonoF';
+  font-family: 'Cascadia Mono';
     src: url('./assets/fonts/CascadiaMono.ttf') format('woff');
     src: url('./assets/fonts/CascadiaMono.ttf') format('truetype');
   font-weight: normal;
@@ -19,11 +19,16 @@ input[type=number] {
 }
 
 #root {
-  --yellow-des: #ffff00; /* Amarelo mais escuro */
-  --red-for: #c00000; /* Vermelho mais escuro */
-  --blue-int: #0070c0; /* Azul mais escuro */
-  --purple-pre: #502ba8; /* Roxo mais escuro */
-  --green-vig: #00b050; /* Verde mais escuro */
+  --yellow-des: #ffff00;
+  --red-for: #c00000;
+  --blue-int: #0070c0;
+  --purple-pre: #502ba8;
+  --green-vig: #00b050;
+
+  --color-life: #F39F5A;
+  --color-energy: #AE445A;
+  --color-per: #662549;
+  --color-cromo: #451952;
 
   --gray-placeholder: #454545;
   --gray-background: #121212;
@@ -31,24 +36,22 @@ input[type=number] {
   --gray-border-color : #333333;
   --gray-border: #333333 2px solid;
 
-  --red-background: #3e0202;
-  --red-text: #ff0000;
-  --red-border: #8b0000 2px solid;
-
   --green-background: #001300;
   --green-border: #006400 2px solid;
   --green-text: #339c33;
+
   --common-transion: border 0.3s ease-in-out, color 0.3s ease-in-out, background 0.3s ease-in-out;
+  --common-font-family: "Cascadia Mono";
 
   width: 100%;
   height: 100%;
   margin: 0 auto;
-  padding: 3rem 2rem 0rem 2rem;
+  padding: 3rem 2rem 0 2rem;
   text-align: center;
 }
 
 * {
-  font-family: "Cascadia Mono", sans-serif;
+  font-family: var(--common-font-family), sans-serif;
 }
 
 body {
@@ -208,9 +211,9 @@ body {
 }
 
 .fichaComum {
-  margin: auto; /* Isso ajuda na centralização horizontal se o display flex do pai não for suficiente */
-  width: 70%; /* Largura definida anteriormente */
-  max-width: 100%; /* Você pode ajustar isso conforme necessário */
+  margin: auto;
+  width: 70%;
+  max-width: 100%;
 
   input, .custom-select {
     background-color: var(--gray-background);
@@ -309,6 +312,10 @@ body {
     margin: 12px;
   }
 
+  input:focus {
+    cursor: text;
+  }
+
   .input-wmargin {
     margin: 0;
     box-shadow: none;
@@ -318,6 +325,7 @@ body {
 
   .input-wmargin:focus {
     border-left: none;
+    cursor: text;
   }
 
   .input-wmargin:disabled {
@@ -351,11 +359,12 @@ body {
     border-right: none;
     border-left: none;
     color: white;
-    font-size: 80%;
+    font-size: 0.7vw;
     transition: var(--common-transion);
   }
 
   .input-group-text-left {
+    font-size: 1vw;
     min-width: 2rem;
     border-radius: 100px 0 0 100px;
   }

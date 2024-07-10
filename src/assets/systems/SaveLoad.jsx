@@ -1,7 +1,6 @@
 import LZString from "lz-string";
 
 export const saveItem = (key, value) => {
-    // Converte o valor para string antes da compressão
     const valueAsString = value.toString();
     const compressed = LZString.compressToUTF16(valueAsString);
     localStorage.setItem(key, compressed);
@@ -35,10 +34,10 @@ function decompressValue(compressed) {
     return isNaN(parseFloat(decompressed)) ? decompressed : Number(decompressed);
 }
 
-// -------------------------------------- Importar e Exportar
+// ----- Importar e Exportar -----
 
 // Função para salvar o localStorage em um arquivo
-export function salvarLocalStorageComoArquivo() {
+export function saveLocalStorageFile() {
     const dados = {};
     for (let i = 0; i < localStorage.length; i++) {
         const chave = localStorage.key(i);
@@ -48,20 +47,21 @@ export function salvarLocalStorageComoArquivo() {
     const url = URL.createObjectURL(blob);
     const link = document.createElement('a');
     link.href = url;
-    link.download = 'fichasDadosTMW.tmw';
+    link.download = `TMW - ${getItem('nome', '') !== '' ? getItem('nome', '') : 'Ficha'}.json`;
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
 }
 
 // Função para carregar um arquivo e substituir o localStorage
-export function carregarArquivoParaLocalStorage(event) {
+export function loadLocalStorageFile(event) {
     const { files } = event.target;
     if (!files.length) return;
 
     const reader = new FileReader();
     reader.onload = ({ target }) => {
         try {
+            localStorage.clear();
             const data = JSON.parse(target.result);
             Object.entries(data).forEach(([key, value]) => localStorage.setItem(key, value));
             console.log('Dados importados com sucesso!');

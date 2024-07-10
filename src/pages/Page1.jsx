@@ -1,14 +1,14 @@
 import {useEffect, useState} from "react";
-import {getItem, saveItem, handleChange, deleteItem} from "./SaveLoad.jsx";
+import {getItem, saveItem, handleChange, deleteItem} from "../assets/systems/SaveLoad.jsx";
 
-export default function FichaPage1() {
+export default function Page1() {
 
-    const [afinidade, setAfinidade] = useState(getItem('afinidade', ''));
+    const [affinity, setAffinity] = useState(getItem('afinidade', ''));
     const [forma, setForma] = useState(getItem('forma', ''));
 
-    const [nome, setNome] = useState(getItem('nome', ''));
-    const [titulo, setTitulo] = useState(getItem('titulo', ''));
-    const [profissao, setProfissao] = useState(getItem('profissao', ''));
+    const [name, setName] = useState(getItem('nome', ''));
+    const [title, setTitle] = useState(getItem('titulo', ''));
+    const [career, setCareer] = useState(getItem('profissao', ''));
     const [idade, setIdade] = useState(getItem('idade', ''));
     const [altura, setAltura] = useState(getItem('altura', ''));
     const [peso, setPeso] = useState(getItem('peso', ''));
@@ -18,23 +18,19 @@ export default function FichaPage1() {
 
     const [vida, setVida] = useState(getItem('vida', ''));
     const [vidaGasta, setVidaGasta] = useState(getItem('vidaGasta', ''));
-    const [estresse, setEstresse] = useState(getItem('estresse', ''));
     const [estresseGasto, setEstresseGasto] = useState(getItem('estresseGasto', ''));
-    const [energia, setEnergia] = useState(getItem('energia', ''));
     const [energiaGasta, setEnergiaGasta] = useState(getItem('energiaGasta', ''));
-    const [sanidade, setSanidade] = useState(getItem('sanidade', ''));
     const [sanidadeGasta, setSanidadeGasta] = useState(getItem('sanidadeGasta', ''));
 
-    const [defesa, setDefesa] = useState(getItem('defesa', ''));
-    const [nivel, setNivel] = useState(getItem('nivel', ''));
+    const [level, setLevel] = useState(getItem('nivel', ''));
 
     useEffect(() => {
 
         const stateMap = {
-            'nome': nome,
-            'titulo': titulo,
+            'nome': name,
+            'titulo': title,
             'idade': idade,
-            'profissao': profissao,
+            'profissao': career,
             'altura': altura,
             'peso': peso,
             'nomeF': nomeF,
@@ -42,15 +38,11 @@ export default function FichaPage1() {
             'forma': forma,
             'vida': vida,
             'vidaGasta': vidaGasta,
-            'estresse': estresse,
             'estresseGasto': estresseGasto,
-            'energia': energia,
             'energiaGasta': energiaGasta,
-            'sanidade': sanidade,
             'sanidadeGasta': sanidadeGasta,
-            'defesa': defesa,
-            'afinidade': afinidade,
-            'nivel': nivel
+            'afinidade': affinity,
+            'nivel': level
         }
 
         Object.keys(stateMap).forEach((key) => {
@@ -61,19 +53,47 @@ export default function FichaPage1() {
             }
         });
 
-    }, [nome, titulo, idade, profissao, altura,
+    }, [name, title, idade, career, altura,
         peso, nomeF, tipoF, forma, vida, vidaGasta,
-        estresse, estresseGasto, energia, energiaGasta,
-        sanidade, sanidadeGasta, defesa, afinidade,
-        nivel]);
-
+        estresseGasto, energiaGasta,
+        sanidadeGasta, affinity, level]);
 
     const getSelectorStyle = (value) => ({
         color: value === '' ? "var(--gray-placeholder)" : "white",
     });
 
-    const seletorAfinidadeStyle = getSelectorStyle(afinidade);
+    const seletorAfinidadeStyle = getSelectorStyle(affinity);
     const seletorFormaStyle = getSelectorStyle(forma);
+
+    function localEnergy() {
+        const pre = getItem('atributo-PRE', 0);
+        const bioEnergy = getItem('biotipo-Energia', 0);
+
+        if (bioEnergy === 1) {
+            return (2 + pre) * level;
+        } else if (bioEnergy === 2) {
+            return (3 + pre) * level;
+        } else if (bioEnergy === 3) {
+            return (4 + pre)* level;
+        } else {
+            return 0;
+        }
+    }
+
+    function localLife() {
+        const vig = getItem('atributo-VIG', 0);
+        const bioLife = getItem('biotipo-Vida', 0);
+
+        if (bioLife === 1) {
+            return (12 + vig) + ((level-1)*(2+vig));
+        } else if (bioLife === 2) {
+            return (16 + vig) + ((level-1)*(3+vig));
+        } else if (bioLife === 3) {
+            return (20 + vig) + ((level-1)*(4+vig));
+        } else {
+            return 0;
+        }
+    }
 
     return (
         <>
@@ -83,11 +103,11 @@ export default function FichaPage1() {
                         <h2 className={"fichaComum title-2"}>pessoal.</h2>
                     </div>
                     <div>
-                        <input type={"text"} value={nome} onChange={handleChange(setNome)}
+                        <input type={"text"} value={name} onChange={handleChange(setName)}
                                placeholder="nome"/>
-                        <input type={"text"} value={titulo} onChange={handleChange(setTitulo)}
+                        <input type={"text"} value={title} onChange={handleChange(setTitle)}
                                placeholder="título"/>
-                        <input type={"text"} value={profissao} onChange={handleChange(setProfissao)}
+                        <input type={"text"} value={career} onChange={handleChange(setCareer)}
                                placeholder={"profissão"}/>
                     </div>
                     <div>
@@ -151,10 +171,10 @@ export default function FichaPage1() {
                             <div>
                                 <input className={"status-esquerdo"}
                                        type={"number"}
-                                       value={vida}
-                                       onChange={handleChange(setVida)}
+                                       value={localLife()}
                                        min={0}
-                                       placeholder={"pontos de vida"}/>
+                                       placeholder={"pontos de vida"}
+                                       disabled={true}/>
                                 <input className={"status-direito"}
                                        type={"number"}
                                        value={vidaGasta}
@@ -170,10 +190,10 @@ export default function FichaPage1() {
                             <div>
                                 <input className={"status-esquerdo"}
                                        type={"number"}
-                                       value={estresse}
-                                       onChange={handleChange(setEstresse)}
+                                       value={((getItem(`pericia-${'Foco'}`)/2)*10) || 0}
                                        min={0}
-                                       placeholder={"pontos de estresse"}/>
+                                       placeholder={"pontos de estresse"}
+                                       disabled={true}/>
                                 <input className={"status-direito"}
                                        type={"number"}
                                        value={estresseGasto}
@@ -191,10 +211,10 @@ export default function FichaPage1() {
                             <div>
                                 <input className={"status-esquerdo"}
                                        type={"number"}
-                                       value={energia}
-                                       onChange={handleChange(setEnergia)}
+                                       value={localEnergy()}
                                        min={0}
-                                       placeholder={"pontos de energia"}/>
+                                       placeholder={"pontos de energia"}
+                                       disabled={true}/>
                                 <input className={"status-direito"}
                                        type={"number"}
                                        value={energiaGasta}
@@ -210,10 +230,10 @@ export default function FichaPage1() {
                             <div>
                                 <input className={"status-esquerdo"}
                                        type={"number"}
-                                       value={sanidade}
-                                       onChange={handleChange(setSanidade)}
+                                       value={((getItem(`pericia-${'Foco'}`)/2)*10) || 0}
                                        min={0}
-                                       placeholder={"pontos de sanidade"}/>
+                                       placeholder={"pontos de sanidade"}
+                                       disabled={true}/>
                                 <input className={"status-direito"}
                                        type={"number"}
                                        value={sanidadeGasta}
@@ -233,10 +253,10 @@ export default function FichaPage1() {
                             <div>
                                 <input className={"status-esquerdo"}
                                        type={"number"}
-                                       value={defesa}
-                                       onChange={handleChange(setDefesa)}
+                                       value={10 + getItem(`atributo-${'DES'}`, 0)}
                                        min={0}
-                                       placeholder={"pontos de defesa"}/>
+                                       placeholder={"pontos de defesa"}
+                                       disabled={true}/>
                             </div>
                         </div>
                         <div>
@@ -246,8 +266,8 @@ export default function FichaPage1() {
                             <div>
                                 <input className={"status-meio-dr"}
                                        type={"number"}
-                                       value={nivel}
-                                       onChange={handleChange(setNivel)}
+                                       value={level}
+                                       onChange={handleChange(setLevel)}
                                        min={0}
                                        placeholder={"nível atual"}/>
                             </div>
@@ -259,8 +279,8 @@ export default function FichaPage1() {
                             <div className={"custom-select-father direito"}>
                                 <select className="form-select custom-select status-direito"
                                         style={seletorAfinidadeStyle}
-                                        onChange={handleChange(setAfinidade)}
-                                        value={afinidade}>
+                                        onChange={handleChange(setAffinity)}
+                                        value={affinity}>
                                     <option value=''>afinidade</option>
                                     <option value={1}>pyro</option>
                                     <option value={2}>aqua</option>

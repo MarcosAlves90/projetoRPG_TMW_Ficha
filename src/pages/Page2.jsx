@@ -1,8 +1,8 @@
 import {useState, useEffect} from "react";
-import {getItem, saveItem, handleChange, deleteItem} from "./SaveLoad.jsx";
+import {getItem, saveItem, handleChange, deleteItem} from "../assets/systems/SaveLoad.jsx";
 import TextareaAutosize from 'react-textarea-autosize';
 
-export default function FichaPage2() {
+export default function Page2() {
 
     const [ideais, setIdeais] = useState(getItem('ideais', ''));
     const [tracosNegativos, setTracosNegativos] = useState(getItem('tracosNegativos', ''));
@@ -43,9 +43,7 @@ export default function FichaPage2() {
                                   value={ideais}
                                   onChange={handleChange(setIdeais)}
                                   minRows="4"
-                                  placeholder={"- Escreva um ou mais ideais."}>
-
-                        </TextareaAutosize>
+                                  placeholder={"- Escreva um ou mais ideais."}></TextareaAutosize>
                     </div>
                 </section>
                 <section className={"section-tracos"}>
