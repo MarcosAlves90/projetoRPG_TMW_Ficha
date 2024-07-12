@@ -35,9 +35,27 @@ function App() {
         }
     }, [currentPage]);
 
-    // Effect for handling keyboard navigation.
     useEffect(() => {
+        /**
+         * Handles key down events for navigation.
+         * This function listens for right and left arrow key presses to navigate between pages.
+         * It checks if the currently focused element is an input, textarea, or select element
+         * to prevent navigation when these elements are focused.
+         *
+         * @param {KeyboardEvent} event - The keyboard event triggered by the user.
+         */
         const handleKeyDown = (event) => {
+            // Obtém o elemento atualmente focado
+            const focusedElement = document.activeElement;
+            // Lista de tags que, se focadas, impedirão a navegação por teclado
+            const focusableTags = ['INPUT', 'TEXTAREA', 'SELECT'];
+
+            // Verifica se o elemento focado é um dos elementos de entrada
+            if (focusableTags.includes(focusedElement.tagName)) {
+                return; // Sai da função se um elemento de entrada estiver focado
+            }
+
+            // Handles navigation based on the key code
             switch (event.keyCode) {
                 case 39: // Right arrow
                     goToNextPage();
@@ -50,12 +68,15 @@ function App() {
             }
         };
 
+        // Adds the event listener for keydown events
         window.addEventListener('keydown', handleKeyDown);
 
+        // Cleanup function to remove the event listener
         return () => {
             window.removeEventListener('keydown', handleKeyDown);
         };
-    }, [goToNextPage, goToPreviousPage]);
+
+    }, [goToNextPage, goToPreviousPage]); // Dependencies for the useEffect hook
 
     // Effect for simulating a loading animation.
     useEffect(() => {

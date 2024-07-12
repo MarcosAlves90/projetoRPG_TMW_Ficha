@@ -16,7 +16,6 @@ export default function Page1() {
     const [nomeF, setNomeF] = useState(getItem('nomeF', ''));
     const [tipoF, setTipoF] = useState(getItem('tipoF', ''));
 
-    const [vida, setVida] = useState(getItem('vida', ''));
     const [vidaGasta, setVidaGasta] = useState(getItem('vidaGasta', ''));
     const [estresseGasto, setEstresseGasto] = useState(getItem('estresseGasto', ''));
     const [energiaGasta, setEnergiaGasta] = useState(getItem('energiaGasta', ''));
@@ -36,7 +35,6 @@ export default function Page1() {
             'nomeF': nomeF,
             'tipoF': tipoF,
             'forma': forma,
-            'vida': vida,
             'vidaGasta': vidaGasta,
             'estresseGasto': estresseGasto,
             'energiaGasta': energiaGasta,
@@ -54,7 +52,7 @@ export default function Page1() {
         });
 
     }, [name, title, idade, career, altura,
-        peso, nomeF, tipoF, forma, vida, vidaGasta,
+        peso, nomeF, tipoF, forma, vidaGasta,
         estresseGasto, energiaGasta,
         sanidadeGasta, affinity, level]);
 

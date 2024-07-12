@@ -2,7 +2,7 @@ import PropTypes from "prop-types";
 import {useEffect, useState} from "react";
 import {deleteItem, getItem, handleChange, saveItem} from "./SaveLoad.jsx";
 import {atrColors, bioColors} from "../styles/CommonStyles.jsx";
-import {perArray} from "./FichaPage3Arrays.js";
+import {perArray} from "./FichaPage3Arrays.jsx";
 
 export function PericiasSection({ isLocked }) {
 
@@ -37,7 +37,7 @@ function Pericia(props) {
 
     useEffect(() => {
         const action = value === '' ? deleteItem : saveItem;
-        action(`pericia-${props.pericia}`, value === '' ? undefined : parseInt(value, 10));
+        action(`pericia-${props.pericia}`, value === '' ? 0 : parseInt(value, 10));
     }, [value, props.pericia]);
 
     return (
@@ -53,8 +53,7 @@ function Pericia(props) {
                    min={0}
                    className="form-control input-wmargin"
                    placeholder="0"
-                   value={value >= getItem('nivel', 1) ?
-                       getItem('nivel', 1) : value}
+                   value={value}
                    onChange={handleChange(setValue)}
                    onKeyDownCapture={handleKeyPress}
                    id={`label-${props.pericia}`}
@@ -77,7 +76,7 @@ export function Atributos(props) {
 
     useEffect(() => {
         const action = value === '' ? deleteItem : saveItem;
-        action(`atributo-${props.atr}`, parseInt(value, 10) || undefined);
+        action(`atributo-${props.atr}`, parseInt(value, 10) || 0);
     }, [value, props.atr]);
 
     return (
@@ -95,7 +94,7 @@ export function Atributos(props) {
                    min={0}
                    className="form-control input-wmargin"
                    placeholder="0"
-                   value={value >= atributesCap() ? atributesCap() : value}
+                   value={value}
                    onChange={handleChange(setValue)}
                    onKeyDownCapture={handleKeyPress}
                    style={props.isLocked ? {borderColor: atrColors[props.atr].background} : {}}
@@ -113,15 +112,15 @@ Atributos.propTypes = {
     isLocked: PropTypes.bool.isRequired,
 };
 
-function atributesCap() {
-    if (getItem('nivel', 1) < 4) {
-        return 3;
-    } else if (getItem('nivel', 1) < 10) {
-        return 4;
-    } else {
-        return 5;
-    }
-}
+// function atributesCap() {
+//     if (getItem('nivel', 1) < 4) {
+//         return 3;
+//     } else if (getItem('nivel', 1) < 10) {
+//         return 4;
+//     } else {
+//         return 5;
+//     }
+// }
 
 export function Biotipos(props) {
 
@@ -129,7 +128,7 @@ export function Biotipos(props) {
 
     useEffect(() => {
         const action = value === '' ? deleteItem : saveItem;
-        action(`biotipo-${props.biotipo}`, parseInt(value, 10) || undefined);
+        action(`biotipo-${props.biotipo}`, parseInt(value, 10) || 0);
     }, [value, props.biotipo]);
 
     return (
@@ -147,7 +146,7 @@ export function Biotipos(props) {
                    min={0}
                    className="form-control input-wmargin"
                    placeholder="0"
-                   value={value >= 3 ? 3 : value}
+                   value={value}
                    onChange={handleChange(setValue)}
                    onKeyDownCapture={handleKeyPress}
                    style={props.isLocked ? {borderColor: bioColors[props.biotipo].background} : {}}
@@ -164,6 +163,16 @@ Biotipos.propTypes = {
     isLocked: PropTypes.bool.isRequired,
 };
 
+/**
+ * Handles key press events on input fields to restrict input to numeric values and control commands.
+ *
+ * This function is designed to be attached to the `onKeyDownCapture` event of input elements. It allows
+ * numeric inputs, backspace, delete, arrow keys, and tab for navigation. Additionally, it permits the use
+ * of 'Control + A' and 'Control + C' for select all and copy operations, respectively. Any other key press
+ * is prevented from affecting the input field, ensuring that only numeric values can be entered.
+ *
+ * @param {Object} event - The event object provided by the onKeyDownCapture event.
+ */
 function handleKeyPress(event) {
     // Verifica se a tecla pressionada é Control+A, Control+C ou Control+V
     if (event.ctrlKey && (event.key === 'a' || event.key === 'c')) {

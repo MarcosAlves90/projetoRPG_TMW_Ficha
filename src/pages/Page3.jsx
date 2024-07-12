@@ -3,7 +3,7 @@ import {deleteItem, getItem, saveItem} from "../assets/systems/SaveLoad.jsx";
 import {lockedInputStyle} from "../assets/styles/CommonStyles.jsx";
 import 'bootstrap-icons/font/bootstrap-icons.css';
 import {Atributos, Biotipos, PericiasSection} from "../assets/systems/FichaPage3System.jsx";
-import {atrMap, bioMap, perArray} from "../assets/systems/FichaPage3Arrays.js";
+import {atrMap, bioMap, perArray} from "../assets/systems/FichaPage3Arrays.jsx";
 
 export default function Page3() {
     const [isLocked, setIsLocked] = useState(getItem('isLocked', false) === 'true');
@@ -33,12 +33,11 @@ export default function Page3() {
         const pPoints = getTotalPoints(perArray, 'pericia');
         setPerPoints(pPoints);
         saveItem('pericia-Points', pPoints);
-    }, [atrMap, bioMap, getTotalPoints]);
+    }, [getTotalPoints]);
 
     useEffect(() => {
         updatePoints();
     });
-
 
     // Save the isLocked state to localStorage
     useEffect(() => {
