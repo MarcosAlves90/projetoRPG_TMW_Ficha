@@ -89,8 +89,9 @@ export function loadLocalStorageFile(event) {
     const reader = new FileReader();
     reader.onload = ({ target }) => {
         try {
-            localStorage.clear();
             const data = JSON.parse(target.result);
+            if (!data) new Error('O arquivo não é uma ficha válida.');
+            localStorage.clear();
             Object.entries(data).forEach(([key, value]) => localStorage.setItem(key, value));
             console.log('Dados importados com sucesso!');
             location.reload();

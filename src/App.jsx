@@ -11,11 +11,14 @@ import Header from './assets/components/Header.jsx';
 import Page1 from './pages/Page1.jsx';
 import Page2 from './pages/Page2.jsx';
 import Page3 from "./pages/Page3.jsx";
+import Page4 from "./pages/Page4.jsx";
 import './App.css';
 import 'bootstrap-icons/font/bootstrap-icons.css';
 import {loadLocalStorageFile, saveLocalStorageFile} from "./assets/systems/SaveLoad.jsx";
 
 function App() {
+
+    const pages = 4;
 
     // State hooks for managing loading state and current page.
     const [isLoading, setIsLoading] = useState(true);
@@ -23,7 +26,7 @@ function App() {
 
     // Callback for navigating to the next page.
     const goToNextPage = useCallback(() => {
-        if (currentPage < 3) {
+        if (currentPage < pages) {
             setCurrentPage((prevPage) => prevPage + 1);
         }
     }, [currentPage]);
@@ -106,14 +109,18 @@ function App() {
                     onNext={goToNextPage}
                     onBack={goToPreviousPage}
                     showBackButton={currentPage > 1}
-                    showNextButton={currentPage < 3}
+                    showNextButton={currentPage < pages}
             />
             {currentPage === 1 && <Page1/>}
             {currentPage === 2 && <Page2/>}
             {currentPage === 3 && <Page3/>}
+            {currentPage === 4 && <Page4/>}
 
             <div className="viewport">
                 <div className="mb-3 sticky">
+                    <div className="icon-save right">
+                        <button className="button-header active clear" onClick={() => {localStorage.clear(); location.reload()}}>Limpar</button>
+                    </div>
                     <input className="form-control dark" type="file" id="formFile"
                            onChange={loadLocalStorageFile} style={{display: 'none'}}/>
                     <button className="button-header active file"
@@ -122,7 +129,7 @@ function App() {
                     </button>
                 </div>
                 <div className="icon-save center"></div>
-                <div className="icon-save right">
+                <div className="mb-3 sticky">
                     <button className="button-header active" onClick={saveLocalStorageFile}>Salvar</button>
                 </div>
             </div>
@@ -137,7 +144,10 @@ function App() {
  * @returns {string} The chosen title for the current page.
  */
 function ChoseTitle(page) {
-    const titles = ["console.log(individual)", "console.log(características)", "console.log(status)"];
+    const titles = ["console.log(individual)",
+        "console.log(características)",
+        "console.log(status)",
+        "console.log(energia)"];
     return titles[page - 1]
 }
 

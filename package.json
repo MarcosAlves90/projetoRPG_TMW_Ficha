@@ -17,7 +17,6 @@
     "@types/jquery.total-storage": "^1.1.36",
     "bootstrap": "^5.3.3",
     "bootstrap-icons": "^1.11.3",
-    "bootstrap-select": "^1.13.18",
     "gh-pages": "^6.1.1",
     "jquery": "^3.7.1",
     "lz-string": "^1.5.0",

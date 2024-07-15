@@ -78,6 +78,23 @@ export default function Page1() {
         }
     }
 
+    /**
+     * Calculates the total life points based on character's vigor and biotype.
+     *
+     * This function computes the character's total life points using their vigor (`vig`)
+     * attribute and their life biotype (`bioLife`). The total life points are calculated
+     * differently depending on the biotype, with each biotype having a base life points
+     * value that is further modified by the character's level and vigor.
+     *
+     * - Biotype 1: Base of 12 life points, plus an additional (2 + vigor) for each level above 1.
+     * - Biotype 2: Base of 16 life points, plus an additional (3 + vigor) for each level above 1.
+     * - Biotype 3: Base of 20 life points, plus an additional (4 + vigor) for each level above 1.
+     *
+     * If the character's biotype does not match any of the specified cases, the function
+     * returns 0, indicating no life points are calculated.
+     *
+     * @returns {number} The total calculated life points for the character.
+     */
     function localLife() {
         const vig = getItem('atributo-VIG', 0);
         const bioLife = getItem('biotipo-Vida', 0);
@@ -178,7 +195,7 @@ export default function Page1() {
                                        value={vidaGasta}
                                        onChange={handleChange(setVidaGasta)}
                                        min={0}
-                                       placeholder={"vida gasta"}/>
+                                       placeholder={"vida atual"}/>
                             </div>
                         </div>
                         <div>
@@ -197,7 +214,7 @@ export default function Page1() {
                                        value={estresseGasto}
                                        onChange={handleChange(setEstresseGasto)}
                                        min={0}
-                                       placeholder={"estresse gasto"}/>
+                                       placeholder={"estresse atual"}/>
                             </div>
                         </div>
                     </div>
@@ -218,7 +235,7 @@ export default function Page1() {
                                        value={energiaGasta}
                                        onChange={handleChange(setEnergiaGasta)}
                                        min={0}
-                                       placeholder={"energia gasta"}/>
+                                       placeholder={"energia atual"}/>
                             </div>
                         </div>
                         <div>
@@ -237,7 +254,7 @@ export default function Page1() {
                                        value={sanidadeGasta}
                                        onChange={handleChange(setSanidadeGasta)}
                                        min={0}
-                                       placeholder={"sanidade gasta"}/>
+                                       placeholder={"sanidade atual"}/>
                             </div>
                         </div>
                     </div>
@@ -280,9 +297,15 @@ export default function Page1() {
                                         onChange={handleChange(setAffinity)}
                                         value={affinity}>
                                     <option value=''>afinidade</option>
-                                    <option value={1}>pyro</option>
-                                    <option value={2}>aqua</option>
+                                    <option value={1}>aqua</option>
+                                    <option value={2}>axis</option>
                                     <option value={3}>geo</option>
+                                    <option value={4}>khaos</option>
+                                    <option value={5}>lumen</option>
+                                    <option value={6}>pyro</option>
+                                    <option value={7}>volt</option>
+                                    <option value={8}>zephyr</option>
+                                    <option value={9}>tenebris</option>
                                 </select>
                             </div>
                         </div>

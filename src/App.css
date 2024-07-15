@@ -40,6 +40,10 @@ input[type=number] {
   --green-border: #006400 2px solid;
   --green-text: #339c33;
 
+  --red-background: #1c0000;
+    --red-border: #800000 2px solid;
+    --red-text: #ff3333;
+
   --common-transion: border 0.3s ease-in-out, color 0.3s ease-in-out, background 0.3s ease-in-out;
   --common-font-family: "Cascadia Mono";
 
@@ -66,7 +70,8 @@ body {
   width: 100%;
   display: flex;
   justify-content: space-between;
-  align-items: center;
+  align-items: end;
+  height: fit-content;
 }
 
 .icon-save {
@@ -75,6 +80,7 @@ body {
   align-items: center;
   left: 2vw;
   color: white;
+  height: 100%;
 }
 
 .icon-save.right {
@@ -94,7 +100,8 @@ body {
 .fichaComum .custom-select:hover,
 .fichaComum .textarea-ficha:focus,
 .button-header.active:hover,
-.fichaComum .button-lock:hover
+.fichaComum .button-lock:hover,
+.button-header.active.clear:hover
 /*.form-control.dark:hover,*/
 /*.form-control.dark:hover::file-selector-button*/ {
   background-color: var(--green-background) !important;
@@ -115,6 +122,15 @@ body {
 
 .button-header.active.file {
   display: flex;
+}
+
+.button-header.active.clear {
+  background-color: var(--red-background);
+  border: var(--red-border);
+  color: var(--red-text);
+  margin-bottom: 1rem;
+  width: 100%;
+  justify-content: center;
 }
 
 .file-selector {
@@ -266,6 +282,7 @@ body {
   .textarea-ficha:focus {
     box-shadow: none;
     outline: none;
+    cursor: text;
   }
 
   .title-2 {
