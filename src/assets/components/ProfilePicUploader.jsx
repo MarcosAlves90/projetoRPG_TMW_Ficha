@@ -58,7 +58,7 @@ export default function ProfilePicUploader() {
         <div className="profile-pic-image">
             <label htmlFor="file-upload" className="custom-file-upload">
                 <img
-                    src={profilePic || 'src/assets/images/rg_placeholder.png'}
+                    src={profilePic || './images/rgPlaceholder.png'}
                     alt="Profile"
                     className="profile-pic"
                     style={{ width: '150px', height: '150px', cursor: 'pointer' }}

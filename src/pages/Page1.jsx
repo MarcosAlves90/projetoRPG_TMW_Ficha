@@ -132,7 +132,7 @@ export default function Page1() {
                                 <div className={"identity-container-rg-text"}>
                                     <p>NOME: {name}</p>
                                     <p>DATA NASCIMENTO: XX/XX/{2052 - age}</p>
-                                    <p>ORGÃO EXPEDIDOR: SSP-SEV</p>
+                                    <p>ÓRGÃO EXPEDIDOR: SSP-SEV</p>
                                 </div>
                             </div>
                             <div className={"identity-container-outside-text"}>
