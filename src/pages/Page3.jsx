@@ -2,8 +2,8 @@ import {useCallback, useEffect, useState} from "react";
 import {deleteItem, getItem, saveItem} from "../assets/systems/SaveLoad.jsx";
 import {lockedInputStyle} from "../assets/styles/CommonStyles.jsx";
 import 'bootstrap-icons/font/bootstrap-icons.css';
-import {Atributos, Biotipos, PericiasSection} from "../assets/systems/FichaPage3System.jsx";
-import {atrMap, bioMap, perArray} from "../assets/systems/FichaPage3Arrays.jsx";
+import {Atributos, Biotipos, PericiasSection} from "../assets/systems/FichaPage3/FichaPage3System.jsx";
+import {atrMap, bioMap, perArray} from "../assets/systems/FichaPage3/FichaPage3Arrays.jsx";
 
 export default function Page3() {
     const [isLocked, setIsLocked] = useState(getItem('isLocked', false) === 'true');

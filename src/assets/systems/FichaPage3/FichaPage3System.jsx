@@ -1,7 +1,7 @@
 import PropTypes from "prop-types";
 import {useEffect, useState} from "react";
-import {deleteItem, getItem, handleChange, saveItem} from "./SaveLoad.jsx";
-import {atrColors, bioColors} from "../styles/CommonStyles.jsx";
+import {deleteItem, getItem, handleChange, saveItem} from "../SaveLoad.jsx";
+import {atrColors, bioColors} from "../../styles/CommonStyles.jsx";
 import {perArray} from "./FichaPage3Arrays.jsx";
 
 export function PericiasSection({ isLocked }) {

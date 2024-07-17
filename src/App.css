@@ -40,9 +40,12 @@ input[type=number] {
   --green-border: #006400 2px solid;
   --green-text: #339c33;
 
+  --identity-inside-background: #f9f3cd;
+  --identity-outside-background: #467d51;
+
   --red-background: #1c0000;
-    --red-border: #800000 2px solid;
-    --red-text: #ff3333;
+  --red-border: #800000 2px solid;
+  --red-text: #ff3333;
 
   --common-transion: border 0.3s ease-in-out, color 0.3s ease-in-out, background 0.3s ease-in-out;
   --common-font-family: "Cascadia Mono";
@@ -60,6 +63,64 @@ input[type=number] {
 
 body {
 
+}
+
+.identity-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 1vw;
+}
+
+.identity-container-outside {
+  padding-left: 1vw;
+  padding-right: 1vw;
+  background-color: var(--identity-outside-background);
+  /*transition: transform 0.3s ease-in-out;*/
+}
+
+.profile-pic {
+  transition: opacity 0.2s ease-in-out;
+}
+
+.profile-pic:hover {
+  opacity: 80%;
+}
+
+/*.identity-container-outside:hover {*/
+/*  transform: rotate(-4deg);*/
+/*}*/
+
+.identity-container-outside-text-p {
+  color: var(--identity-inside-background);
+  margin: 0;
+}
+
+.identity-container-rg {
+  min-width: 25.6vw;
+  padding: 0 1vw 1vw 1vw;
+  display: flex;
+  justify-content: left;
+  align-items: start;
+  background-color: var(--identity-inside-background);
+  width: fit-content;
+}
+
+.identity-container-rg.center {
+  width: 100%;
+  display: block;
+  justify-content: center;
+  align-items: center;
+  padding: 0.5vw 0 1vw;
+}
+
+.identity-container-rg.center p {
+  margin: 0.1vw;
+}
+
+.identity-container-rg-text {
+  margin-left: 1vw;
+  text-align: left;
 }
 
 .viewport {

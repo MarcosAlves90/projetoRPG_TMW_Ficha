@@ -1,5 +1,6 @@
 import {useEffect, useState} from "react";
 import {getItem, saveItem, handleChange, deleteItem} from "../assets/systems/SaveLoad.jsx";
+import ProfilePicUploader from "../assets/components/ProfilePicUploader.jsx";
 
 export default function Page1() {
 
@@ -9,7 +10,7 @@ export default function Page1() {
     const [name, setName] = useState(getItem('nome', ''));
     const [title, setTitle] = useState(getItem('titulo', ''));
     const [career, setCareer] = useState(getItem('profissao', ''));
-    const [idade, setIdade] = useState(getItem('idade', ''));
+    const [age, setAge] = useState(getItem('idade', ''));
     const [altura, setAltura] = useState(getItem('altura', ''));
     const [peso, setPeso] = useState(getItem('peso', ''));
 
@@ -28,7 +29,7 @@ export default function Page1() {
         const stateMap = {
             'nome': name,
             'titulo': title,
-            'idade': idade,
+            'idade': age,
             'profissao': career,
             'altura': altura,
             'peso': peso,
@@ -51,7 +52,7 @@ export default function Page1() {
             }
         });
 
-    }, [name, title, idade, career, altura,
+    }, [name, title, age, career, altura,
         peso, nomeF, tipoF, forma, vidaGasta,
         estresseGasto, energiaGasta,
         sanidadeGasta, affinity, level]);
@@ -113,12 +114,41 @@ export default function Page1() {
     return (
         <>
             <div className={"fichaComum"}>
+                <section className={"section-identity"}>
+                    <div className={"identity-container"}>
+                        <div className={"identity-container-outside"}>
+                            <div className={"identity-container-outside-text"}>
+                                <p className={"identity-container-outside-text-p"}>
+                                    REPÚBLICA FEDERATIVA DO BRASIL
+                                </p>
+                            </div>
+                            <div className={"identity-container-rg center"}>
+                                <p>REGIÃO DE AGAMEMNON</p>
+                                <p>SECRETARIA DE SEGURANÇA PÚBLICA</p>
+                                <p>INSTITUTO DE IDENTIFICAÇÃO</p>
+                            </div>
+                            <div className={"identity-container-rg"}>
+                                <ProfilePicUploader/>
+                                <div className={"identity-container-rg-text"}>
+                                    <p>NOME: {name}</p>
+                                    <p>DATA NASCIMENTO: XX/XX/{2052 - age}</p>
+                                    <p>ORGÃO EXPEDIDOR: SSP-SEV</p>
+                                </div>
+                            </div>
+                            <div className={"identity-container-outside-text"}>
+                                <p className={"identity-container-outside-text-p"}>
+                                    CARTEIRA DE IDENTIDADE
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
                 <section className={"section-pessoal"}>
                     <div className={"title-2-container"}>
                         <h2 className={"fichaComum title-2"}>pessoal.</h2>
                     </div>
                     <div>
-                        <input type={"text"} value={name} onChange={handleChange(setName)}
+                    <input type={"text"} value={name} onChange={handleChange(setName)}
                                placeholder="nome"/>
                         <input type={"text"} value={title} onChange={handleChange(setTitle)}
                                placeholder="título"/>
@@ -127,8 +157,8 @@ export default function Page1() {
                     </div>
                     <div>
                         <input type={"number"}
-                               value={idade}
-                               onChange={handleChange(setIdade)}
+                               value={age}
+                               onChange={handleChange(setAge)}
                                min={0}
                                placeholder="idade"/>
                         <input type={"number"}
