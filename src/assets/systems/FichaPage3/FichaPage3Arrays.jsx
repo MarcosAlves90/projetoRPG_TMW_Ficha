@@ -61,3 +61,13 @@ export const bioMap = ['Vida', 'Energia', 'Pericias', 'Cromos'];
  */
 // eslint-disable-next-line react-hooks/exhaustive-deps
 export const atrMap = ['DES', 'FOR', 'INT', 'PRE', 'VIG'];
+
+export const arcArray = [
+    { art: "Destruição" },
+    { art: "Levitação" },
+    { art: "Liberação" },
+    { art: "Manipulação" },
+    { art: "Imaginação" },
+    { art: "Modificação" },
+    { art: "Criação" },
+];

@@ -113,54 +113,57 @@ export default function Page1() {
 
     return (
         <>
-            <div className={"fichaComum"}>
+            <main className={"mainCommon"}>
+
                 <section className={"section-identity"}>
-                    <div className={"identity-container"}>
-                        <div className={"identity-container-outside"}>
-                            <div className={"identity-container-outside-text"}>
-                                <p className={"identity-container-outside-text-p"}>
-                                    REPÚBLICA FEDERATIVA DO BRASIL
-                                </p>
-                            </div>
-                            <div className={"identity-container-rg center"}>
-                                <p>REGIÃO DE AGAMEMNON</p>
-                                <p>SECRETARIA DE SEGURANÇA PÚBLICA</p>
-                                <p>INSTITUTO DE IDENTIFICAÇÃO</p>
-                            </div>
-                            <div className={"identity-container-rg"}>
-                                <ProfilePicUploader/>
-                                <div className={"identity-container-rg-text"}>
-                                    <p>NOME: {name}</p>
-                                    <p>DATA NASCIMENTO: XX/XX/{2052 - age}</p>
-                                    <p>ÓRGÃO EXPEDIDOR: SSP-SEV</p>
+                    <article className={"identity-container"}>
+                        <div className={"identity-container-rg outside"}>
+                            <div className={"identity-container-outside"}>
+                                <div className={"identity-container-outside-text"}>
+                                    <p className={"identity-container-outside-text-p"}>
+                                        REPÚBLICA FEDERATIVA DO BRASIL
+                                    </p>
+                                </div>
+                                <div className={"identity-container-rg center"}>
+                                    <p>REGIÃO DE AGAMEMNON</p>
+                                    <p>SECRETARIA DE SEGURANÇA PÚBLICA</p>
+                                    <p>INSTITUTO DE IDENTIFICAÇÃO</p>
+                                </div>
+                                <div className={"identity-container-rg"}>
+                                    <ProfilePicUploader/>
+                                    <div className={"identity-container-rg-text"}>
+                                        <p>NOME: {name}</p>
+                                        <p>DATA NASCIMENTO: {age}</p>
+                                        <p>ÓRGÃO EXPEDIDOR: SSP-SEV</p>
+                                    </div>
+                                </div>
+                                <div className={"identity-container-outside-text"}>
+                                    <p className={"identity-container-outside-text-p"}>
+                                        CARTEIRA DE IDENTIDADE
+                                    </p>
                                 </div>
                             </div>
-                            <div className={"identity-container-outside-text"}>
-                                <p className={"identity-container-outside-text-p"}>
-                                    CARTEIRA DE IDENTIDADE
-                                </p>
-                            </div>
                         </div>
-                    </div>
+                    </article>
                 </section>
+
                 <section className={"section-pessoal"}>
                     <div className={"title-2-container"}>
-                        <h2 className={"fichaComum title-2"}>pessoal.</h2>
+                        <h2 className={"mainCommon title-2"}>pessoal.</h2>
                     </div>
-                    <div>
-                    <input type={"text"} value={name} onChange={handleChange(setName)}
+                    <fieldset>
+                        <input type={"text"} value={name} onChange={handleChange(setName)}
                                placeholder="nome"/>
                         <input type={"text"} value={title} onChange={handleChange(setTitle)}
                                placeholder="título"/>
                         <input type={"text"} value={career} onChange={handleChange(setCareer)}
                                placeholder={"profissão"}/>
-                    </div>
-                    <div>
-                        <input type={"number"}
+                    </fieldset>
+                    <fieldset>
+                        <input type={"text"}
                                value={age}
                                onChange={handleChange(setAge)}
-                               min={0}
-                               placeholder="idade"/>
+                               placeholder="data de nascimento"/>
                         <input type={"number"}
                                value={altura}
                                onChange={handleChange(setAltura)}
@@ -173,13 +176,14 @@ export default function Page1() {
                                min={0}
                                step={0.1}
                                placeholder="peso"/>
-                    </div>
+                    </fieldset>
                 </section>
+
                 <section className={"section-forma"}>
                     <div className={"title-2-container"}>
-                        <h2 className={"fichaComum title-2"}>forma.</h2>
+                        <h2 className={"mainCommon title-2"}>forma.</h2>
                     </div>
-                    <div className={"status-meio justify-center"}>
+                    <fieldset className={"status-meio justify-center"}>
                         <div>
                             <input className={"status-esquerdo"}
                                    type={"text"}
@@ -205,13 +209,14 @@ export default function Page1() {
                                    onChange={handleChange(setTipoF)}
                                    placeholder={"tipo da forma"}/>
                         </div>
-                    </div>
+                    </fieldset>
                 </section>
+
                 <section className={"section-recursos"}>
-                    <div className={"status-meio justify-center"}>
+                    <fieldset className={"status-meio justify-center"}>
                         <div>
                             <div className={"title-2-container"}>
-                                <h2 className={"fichaComum title-2"}>vida.</h2>
+                                <h2 className={"mainCommon title-2"}>vida.</h2>
                             </div>
                             <div>
                                 <input className={"status-esquerdo"}
@@ -230,7 +235,7 @@ export default function Page1() {
                         </div>
                         <div>
                             <div className={"title-2-container"}>
-                                <h2 className={"fichaComum title-2"}>estresse.</h2>
+                                <h2 className={"mainCommon title-2"}>estresse.</h2>
                             </div>
                             <div>
                                 <input className={"status-esquerdo"}
@@ -247,11 +252,11 @@ export default function Page1() {
                                        placeholder={"estresse atual"}/>
                             </div>
                         </div>
-                    </div>
-                    <div className={"status-meio justify-center"}>
+                    </fieldset>
+                    <fieldset className={"status-meio justify-center"}>
                         <div>
                             <div className={"title-2-container"}>
-                                <h2 className={"fichaComum title-2"}>energia.</h2>
+                                <h2 className={"mainCommon title-2"}>energia.</h2>
                             </div>
                             <div>
                                 <input className={"status-esquerdo"}
@@ -270,7 +275,7 @@ export default function Page1() {
                         </div>
                         <div>
                             <div className={"title-2-container"}>
-                                <h2 className={"fichaComum title-2"}>sanidade.</h2>
+                                <h2 className={"mainCommon title-2"}>sanidade.</h2>
                             </div>
                             <div>
                                 <input className={"status-esquerdo"}
@@ -287,13 +292,14 @@ export default function Page1() {
                                        placeholder={"sanidade atual"}/>
                             </div>
                         </div>
-                    </div>
+                    </fieldset>
                 </section>
+
                 <section className={"section-ajustes"}>
-                    <div className={"status-meio justify-center"}>
+                    <fieldset className={"status-meio justify-center"}>
                         <div>
                             <div className={"title-2-container"}>
-                                <h2 className={"fichaComum title-2"}>defesa.</h2>
+                                <h2 className={"mainCommon title-2"}>defesa.</h2>
                             </div>
                             <div>
                                 <input className={"status-esquerdo"}
@@ -306,7 +312,7 @@ export default function Page1() {
                         </div>
                         <div>
                             <div className={"title-2-container"}>
-                                <h2 className={"fichaComum title-2"}>nível.</h2>
+                                <h2 className={"mainCommon title-2"}>nível.</h2>
                             </div>
                             <div>
                                 <input className={"status-meio-dr"}
@@ -319,7 +325,7 @@ export default function Page1() {
                         </div>
                         <div>
                             <div className={"title-2-container"}>
-                                <h2 className={"fichaComum title-2"}>afinidade.</h2>
+                                <h2 className={"mainCommon title-2"}>afinidade.</h2>
                             </div>
                             <div className={"custom-select-father direito"}>
                                 <select className="form-select custom-select status-direito"
@@ -339,9 +345,10 @@ export default function Page1() {
                                 </select>
                             </div>
                         </div>
-                    </div>
+                    </fieldset>
                 </section>
-            </div>
+
+            </main>
         </>
     )
 

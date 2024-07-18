@@ -1,6 +1,8 @@
 import {useState, useEffect} from "react";
 import {getItem, saveItem, handleChange, deleteItem} from "../assets/systems/SaveLoad.jsx";
 import TextareaAutosize from 'react-textarea-autosize';
+import Collapsible from "react-collapsible";
+import 'bootstrap-icons/font/bootstrap-icons.css';
 
 export default function Page2() {
 
@@ -34,91 +36,109 @@ export default function Page2() {
 
     return (
         <>
-            <div className={"fichaComum page-2"}>
+            <div className={"mainCommon page-2"}>
+
+                <section className={"section-origem"}>
+                    <Collapsible trigger={"origem "}
+                                 triggerStyle={{fontSize: "1.5em", color: "rgb(43, 43, 43)"}}
+                                 transitionTime={100}
+                                 transitionCloseTime={100}>
+                        <article className={"textarea-container"}>
+                            <TextareaAutosize className="form-control textarea-ficha"
+                                              id="exampleFormControlTextarea1"
+                                              value={origem}
+                                              onChange={handleChange(setOrigem)}
+                                              minRows="7"
+                                              placeholder={"Escreva a sua origem."}></TextareaAutosize>
+                        </article>
+                    </Collapsible>
+                </section>
+
                 <section className={"section-fisico"}>
-                    <div className={"title-2-container"}>
-                        <h2 className={"fichaComum title-2"}>aparência.</h2>
-                    </div>
-                    <div className={"textarea-container"}>
-                        <TextareaAutosize className="form-control textarea-ficha"
-                                          id="exampleFormControlTextarea1"
-                                          value={fisico}
-                                          onChange={handleChange(setFisico)}
-                                          minRows="4"
-                                          placeholder={"Descreva sua aparência."}></TextareaAutosize>
-                    </div>
+                    <Collapsible trigger={"aparência."}
+                                 triggerStyle={{fontSize: "1.5em", color: "rgb(43, 43, 43)"}}
+                                 transitionTime={100}
+                                 transitionCloseTime={100}>
+                        <div className={"textarea-container"}>
+                            <TextareaAutosize className="form-control textarea-ficha"
+                                              id="exampleFormControlTextarea1"
+                                              value={fisico}
+                                              onChange={handleChange(setFisico)}
+                                              minRows="4"
+                                              placeholder={"Descreva sua aparência."}></TextareaAutosize>
+                        </div>
+                    </Collapsible>
                 </section>
+
                 <section className={"section-ideais"}>
-                    <div className={"title-2-container"}>
-                        <h2 className={"fichaComum title-2"}>ideais.</h2>
-                    </div>
-                    <div className={"textarea-container"}>
-                        <TextareaAutosize className="form-control textarea-ficha"
-                                          id="exampleFormControlTextarea1"
-                                          value={ideais}
-                                          onChange={handleChange(setIdeais)}
-                                          minRows="4"
-                                          placeholder={"- Escreva um ou mais ideais."}></TextareaAutosize>
-                    </div>
+                    <Collapsible trigger={"ideais."}
+                                 triggerStyle={{fontSize: "1.5em", color: "rgb(43, 43, 43)"}}
+                                 transitionTime={100}
+                                 transitionCloseTime={100}>
+                        <div className={"textarea-container"}>
+                            <TextareaAutosize className="form-control textarea-ficha"
+                                              id="exampleFormControlTextarea1"
+                                              value={ideais}
+                                              onChange={handleChange(setIdeais)}
+                                              minRows="4"
+                                              placeholder={"- Escreva um ou mais ideais."}></TextareaAutosize>
+                        </div>
+                    </Collapsible>
                 </section>
+
                 <section className={"section-tracos"}>
                     <div className={"textarea-meio-container"}>
                         <div className={"textarea-meio"}>
-                            <div className={"title-2-container"}>
-                                <h2 className={"fichaComum title-2"}>traços negativos.</h2>
-                            </div>
-                            <div className={"textarea-container"}>
-                                <TextareaAutosize className="form-control textarea-ficha"
-                                                  id="exampleFormControlTextarea1"
-                                                  value={tracosNegativos}
-                                                  onChange={handleChange(setTracosNegativos)}
-                                                  minRows="4"
-                                                  placeholder={"- Escreva um ou mais traços negativos.\n" +
-                                                      "- Os traços podem ser físicos ou mentais."}></TextareaAutosize>
-                            </div>
+                            <Collapsible trigger={"traços negativos."}
+                                         triggerStyle={{fontSize: "1.5em", color: "rgb(43, 43, 43)"}}
+                                         transitionTime={100}
+                                         transitionCloseTime={100}>
+                                <div className={"textarea-container"}>
+                                    <TextareaAutosize className="form-control textarea-ficha"
+                                                      id="exampleFormControlTextarea1"
+                                                      value={tracosNegativos}
+                                                      onChange={handleChange(setTracosNegativos)}
+                                                      minRows="4"
+                                                      placeholder={"- Escreva um ou mais traços negativos.\n" +
+                                                          "- Os traços podem ser físicos ou mentais."}></TextareaAutosize>
+                                </div>
+                            </Collapsible>
                         </div>
                         <div className={"textarea-meio"}>
-                            <div className={"title-2-container"}>
-                                <h2 className={"fichaComum title-2"}>traços positivos.</h2>
-                            </div>
-                            <div className={"textarea-container"}>
-                                <TextareaAutosize className="form-control textarea-ficha"
-                                                  id="exampleFormControlTextarea1"
-                                                  value={tracosPositivos}
-                                                  onChange={handleChange(setTracosPositivos)}
-                                                  minRows="4"
-                                                  placeholder={"- Escreva um ou mais traços positivos.\n" +
-                                                      "- Os traços podem ser físicos ou mentais."}></TextareaAutosize>
-                            </div>
+                            <Collapsible trigger={"traços positivos."}
+                                         triggerStyle={{fontSize: "1.5em", color: "rgb(43, 43, 43)"}}
+                                         transitionTime={100}
+                                         transitionCloseTime={100}>
+                                <div className={"textarea-container"}>
+                                    <TextareaAutosize className="form-control textarea-ficha"
+                                                      id="exampleFormControlTextarea1"
+                                                      value={tracosPositivos}
+                                                      onChange={handleChange(setTracosPositivos)}
+                                                      minRows="4"
+                                                      placeholder={"- Escreva um ou mais traços positivos.\n" +
+                                                          "- Os traços podem ser físicos ou mentais."}></TextareaAutosize>
+                                </div>
+                            </Collapsible>
                         </div>
                     </div>
                 </section>
-                <section className={"section-origem"}>
-                    <div className={"title-2-container"}>
-                        <h2 className={"fichaComum title-2"}>origem.</h2>
-                    </div>
-                    <div className={"textarea-container"}>
-                        <TextareaAutosize className="form-control textarea-ficha"
-                                          id="exampleFormControlTextarea1"
-                                          value={origem}
-                                          onChange={handleChange(setOrigem)}
-                                          minRows="7"
-                                          placeholder={"Escreva a sua origem."}></TextareaAutosize>
-                    </div>
-                </section>
+
                 <section className={"section-origem-forma"}>
-                    <div className={"title-2-container"}>
-                        <h2 className={"fichaComum title-2"}>origem da forma.</h2>
-                    </div>
-                    <div className={"textarea-container"}>
-                        <TextareaAutosize className="form-control textarea-ficha"
-                                          id="exampleFormControlTextarea1"
-                                          value={origemForma}
-                                          onChange={handleChange(setOrigemForma)}
-                                          minRows="7"
-                                          placeholder={"Escreva a origem da sua forma."}></TextareaAutosize>
-                    </div>
+                    <Collapsible trigger={"origem da forma."}
+                                 triggerStyle={{fontSize: "1.5em", color: "rgb(43, 43, 43)"}}
+                                 transitionTime={100}
+                                 transitionCloseTime={100}>
+                        <div className={"textarea-container"}>
+                            <TextareaAutosize className="form-control textarea-ficha"
+                                              id="exampleFormControlTextarea1"
+                                              value={origemForma}
+                                              onChange={handleChange(setOrigemForma)}
+                                              minRows="7"
+                                              placeholder={"Escreva a origem da sua forma."}></TextareaAutosize>
+                        </div>
+                    </Collapsible>
                 </section>
+
             </div>
         </>
     )

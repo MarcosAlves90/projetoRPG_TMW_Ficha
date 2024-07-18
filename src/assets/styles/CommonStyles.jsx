@@ -41,3 +41,13 @@ export const bioColors = {
     "Pericias" : {"background" : "var(--color-per)", "color" : "white"},
     "Cromos" : {"background" : "var(--color-cromo)", "color" : "white"},
 }
+
+export const arcColors = {
+    "Destruição": {"background": "var(--color-destruction)", "color" : "white"},
+    "Levitação": {"background": "var(--color-levitation)", "color" : "black"},
+    "Liberação": {"background": "var(--color-release)", "color" : "white"},
+    "Manipulação": {"background": "var(--color-manipulation)", "color" : "black"},
+    "Imaginação": {"background": "var(--color-imagination)", "color" : "white"},
+    "Modificação": {"background": "var(--color-modification)", "color" : "black"},
+    "Criação": {"background": "var(--color-creation)", "color" : "black"},
+}

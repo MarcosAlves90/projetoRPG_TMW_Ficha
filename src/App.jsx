@@ -20,18 +20,15 @@ function App() {
 
     const pages = 4;
 
-    // State hooks for managing loading state and current page.
     const [isLoading, setIsLoading] = useState(true);
     const [currentPage, setCurrentPage] = useState(1);
 
-    // Callback for navigating to the next page.
     const goToNextPage = useCallback(() => {
         if (currentPage < pages) {
             setCurrentPage((prevPage) => prevPage + 1);
         }
     }, [currentPage]);
 
-    // Callback for navigating to the previous page.
     const goToPreviousPage = useCallback(() => {
         if (currentPage > 1) {
             setCurrentPage((prevPage) => prevPage - 1);
@@ -48,22 +45,18 @@ function App() {
          * @param {KeyboardEvent} event - The keyboard event triggered by the user.
          */
         const handleKeyDown = (event) => {
-            // Obtém o elemento atualmente focado
             const focusedElement = document.activeElement;
-            // Lista de tags que, se focadas, impedirão a navegação por teclado
             const focusableTags = ['INPUT', 'TEXTAREA', 'SELECT'];
 
-            // Verifica se o elemento focado é um dos elementos de entrada
             if (focusableTags.includes(focusedElement.tagName)) {
-                return; // Sai da função se um elemento de entrada estiver focado
+                return;
             }
 
-            // Handles navigation based on the key code
-            switch (event.keyCode) {
-                case 39: // Right arrow
+            switch (event.key) {
+                case 'ArrowRight':
                     goToNextPage();
                     break;
-                case 37: // Left arrow
+                case 'ArrowLeft':
                     goToPreviousPage();
                     break;
                 default:
@@ -71,17 +64,14 @@ function App() {
             }
         };
 
-        // Adds the event listener for keydown events
         window.addEventListener('keydown', handleKeyDown);
 
-        // Cleanup function to remove the event listener
         return () => {
             window.removeEventListener('keydown', handleKeyDown);
         };
 
-    }, [goToNextPage, goToPreviousPage]); // Dependencies for the useEffect hook
+    }, [goToNextPage, goToPreviousPage]);
 
-    // Effect for simulating a loading animation.
     useEffect(() => {
         const htmlElement = document.documentElement;
 
@@ -95,7 +85,6 @@ function App() {
         return () => clearTimeout(timer);
     }, []);
 
-    // Renders the application UI.
     return (
         <>
             <div>
@@ -119,18 +108,36 @@ function App() {
             <div className="viewport">
                 <div className="mb-3 sticky">
                     <div className="icon-save right">
-                        <button className="button-header active clear" onClick={() => {localStorage.clear(); location.reload()}}>Limpar</button>
+                        <button className="button-header active up clear"
+                                onClick={() => {
+                                    localStorage.clear();
+                                    location.reload()
+                                }}>
+                            {"Limpar "}
+                            <i className="bi bi-trash3-fill"></i>
+                        </button>
                     </div>
                     <input className="form-control dark" type="file" id="formFile"
                            onChange={loadLocalStorageFile} style={{display: 'none'}}/>
                     <button className="button-header active file"
                             onClick={() => document.getElementById('formFile').click()}>
-                        <label htmlFor="formFile" style={{width: "100%"}} className="file-selector">Carregar</label>
+                        <label htmlFor="formFile" style={{width: "100%"}} className="file-selector">
+                            {"Carregar "}
+                            <i className="bi bi-box-arrow-up"></i>
+                        </label>
                     </button>
                 </div>
-                <div className="icon-save center"></div>
                 <div className="mb-3 sticky">
-                    <button className="button-header active" onClick={saveLocalStorageFile}>Salvar</button>
+                    <div className={"icon-save right"}>
+                        <button className={"button-header active up"} onClick={() => scrollTo(0, 0)}>
+                            {"Subir "}
+                            <i className="bi bi-caret-up-fill"></i>
+                        </button>
+                    </div>
+                    <button className="button-header active" onClick={saveLocalStorageFile}>
+                        {"Salvar "}
+                        <i className="bi bi-floppy2-fill"></i>
+                    </button>
                 </div>
             </div>
         </>

@@ -1,8 +1,24 @@
-# React + Vite
+# The Mental World Character Sheet Editor
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+![GitHub repo size](https://img.shields.io/github/repo-size/MarcosAlves90/projetoRPG_TMW_Ficha?style=for-the-badge)
+![GitHub language count](https://img.shields.io/github/languages/count/MarcosAlves90/projetoRPG_TMW_Ficha?style=for-the-badge)
+![GitHub forks](https://img.shields.io/github/forks/MarcosAlves90/projetoRPG_TMW_Ficha?style=for-the-badge)
+![Bitbucket open issues](https://img.shields.io/bitbucket/issues/MarcosAlves90/projetoRPG_TMW_Ficha?style=for-the-badge)
+![Bitbucket open pull requests](https://img.shields.io/bitbucket/pr-raw/MarcosAlves90/projetoRPG_TMW_Ficha?style=for-the-badge)
 
-Currently, two official plugins are available:
+<img src="readme_details/tmw_ficha_image_1.png" alt="Página inicial da plataforma">
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+> Uma plataforma de criação, importação e exportação de fichas de RPG em formato JSON.
+
+### Ajustes e melhorias
+
+O projeto ainda está em desenvolvimento e as próximas atualizações serão voltadas nas seguintes tarefas:
+
+- [X] Adicionar seção de artes arcanas na página de _status_
+- [ ] Adicionar seção de subartes arcanas na página de _status_
+- [X] Adicionar página de energia
+- [ ] Adicionar barra de navegação
+- [ ] Adicionar página de _skills_
+- [ ] Adicionar página de inventário
+- [ ] Adicionar página de pets
+- [ ] Adicionar página de anotações

@@ -1,8 +1,35 @@
 import PropTypes from "prop-types";
 import {useEffect, useState} from "react";
 import {deleteItem, getItem, handleChange, saveItem} from "../SaveLoad.jsx";
-import {atrColors, bioColors} from "../../styles/CommonStyles.jsx";
-import {perArray} from "./FichaPage3Arrays.jsx";
+import {arcColors, atrColors, bioColors} from "../../styles/CommonStyles.jsx";
+import {arcArray, perArray} from "./FichaPage3Arrays.jsx";
+
+export function ArtsSection({ isLocked }) {
+
+    function groupArts(arts, groupSize) {
+        const grouped = [];
+        for (let i = 0; i < arts.length; i += groupSize) {
+            grouped.push(arts.slice(i, i + groupSize));
+        }
+        return grouped
+    }
+
+    return (
+        <>
+            {groupArts(arcArray, 4).map((group, index) => (
+                <div className={"status-meio justify-center"} key={index}>
+                    {group.map(({ art }) => (
+                        <ArcaneArts isLocked={isLocked} art={art} key={art} />
+                    ))}
+                </div>
+            ))}
+        </>
+    );
+}
+
+ArtsSection.propTypes = {
+    isLocked: PropTypes.bool.isRequired,
+};
 
 export function PericiasSection({ isLocked }) {
 
@@ -112,16 +139,6 @@ Atributos.propTypes = {
     isLocked: PropTypes.bool.isRequired,
 };
 
-// function atributesCap() {
-//     if (getItem('nivel', 1) < 4) {
-//         return 3;
-//     } else if (getItem('nivel', 1) < 10) {
-//         return 4;
-//     } else {
-//         return 5;
-//     }
-// }
-
 export function Biotipos(props) {
 
     const [value, setValue] = useState(getItem(`biotipo-${props.biotipo}`, ''));
@@ -160,6 +177,45 @@ export function Biotipos(props) {
 
 Biotipos.propTypes = {
     biotipo: PropTypes.string.isRequired,
+    isLocked: PropTypes.bool.isRequired,
+};
+
+export function ArcaneArts(props) {
+    const [value, setValue] = useState(getItem(`art-${props.art}`, ''));
+
+    useEffect(() => {
+        const action = value === '' ? deleteItem : saveItem;
+        action(`art-${props.art}`, parseInt(value, 10) || 0);
+    }, [value, props.art]);
+
+    return (
+        <div className={"input-group mb-3"}>
+
+            <div className={"text-div"}>
+                <span className={`input-group-text-left defined ${props.isLocked ? "locked" : ""}`}
+                      style={{
+                          backgroundColor: arcColors[props.art].background,
+                          color: arcColors[props.art].color, border: `${arcColors[props.art].background} 2px solid`
+                      }}>{props.art}</span>
+            </div>
+            <input type={"number"}
+                   step={1}
+                   min={0}
+                   className="form-control input-wmargin"
+                   placeholder="0"
+                   value={value}
+                   onChange={handleChange(setValue)}
+                   onKeyDownCapture={handleKeyPress}
+                   style={props.isLocked ? {borderColor: arcColors[props.art].background} : {}}
+                   id={`label-${props.art}`}
+                   disabled={props.isLocked}
+            />
+        </div>
+    )
+}
+
+ArcaneArts.propTypes = {
+    art: PropTypes.string.isRequired,
     isLocked: PropTypes.bool.isRequired,
 };
 

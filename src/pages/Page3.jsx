@@ -2,18 +2,26 @@ import {useCallback, useEffect, useState} from "react";
 import {deleteItem, getItem, saveItem} from "../assets/systems/SaveLoad.jsx";
 import {lockedInputStyle} from "../assets/styles/CommonStyles.jsx";
 import 'bootstrap-icons/font/bootstrap-icons.css';
-import {Atributos, Biotipos, PericiasSection} from "../assets/systems/FichaPage3/FichaPage3System.jsx";
-import {atrMap, bioMap, perArray} from "../assets/systems/FichaPage3/FichaPage3Arrays.jsx";
+import {
+    ArtsSection,
+    Atributos,
+    Biotipos,
+    PericiasSection
+} from "../assets/systems/FichaPage3/FichaPage3System.jsx";
+import {arcArray, atrMap, bioMap, perArray} from "../assets/systems/FichaPage3/FichaPage3Arrays.jsx";
 
 export default function Page3() {
     const [isLocked, setIsLocked] = useState(getItem('isLocked', false) === 'true');
     const [bioPoints, setBioPoints] = useState(getItem('biotipo-Points', 0));
     const [atrPoints, setAtrPoints] = useState(getItem('atributo-Points', 0));
     const [perPoints, setPerPoints] = useState(getItem('pericia-Points', 0));
+    const [arcPoints, setArcPoints] = useState(getItem('art-Points', 0));
 
     const getTotalPoints = useCallback((map, prefix) => {
         if (prefix === 'pericia') {
             return map.reduce((total, {pericia}) => total + getItem(`${prefix}-${pericia}`, 0), 0);
+        } else if (prefix === 'art') {
+            return map.reduce((total, {art}) => total + getItem(`${prefix}-${art}`, 0), 0);
         } else {
             return map.reduce((total, key) => total + getItem(`${prefix}-${key}`, 0), 0);
         }
@@ -33,6 +41,11 @@ export default function Page3() {
         const pPoints = getTotalPoints(perArray, 'pericia');
         setPerPoints(pPoints);
         saveItem('pericia-Points', pPoints);
+
+        const arPoints = getTotalPoints(arcArray, 'art');
+        setArcPoints(arPoints);
+        saveItem('art-Points', arPoints);
+
     }, [getTotalPoints]);
 
     useEffect(() => {
@@ -49,7 +62,7 @@ export default function Page3() {
     }, [isLocked]);
 
     return (
-        <div className={"fichaComum"}>
+        <div className={"mainCommon"}>
             <div className={"title-2-container"}>
                 <button type="button"
                         className="button-lock"
@@ -65,9 +78,10 @@ export default function Page3() {
                     <i className={"bi bi-arrow-clockwise"}></i>
                 </button>
             </div>
+
             <section className={"section-biotipo"}>
                 <div className={"title-2-container"}>
-                    <h2 className={"fichaComum title-2"}>biotipo: [{bioPoints}] pontos utilizados.</h2>
+                    <h2 className={"mainCommon title-2"}>biotipo: [{bioPoints}] pontos utilizados.</h2>
                 </div>
                 <div className={"status-meio justify-center min"}>
                     {bioMap.map(biotipo => (
@@ -75,9 +89,10 @@ export default function Page3() {
                     ))}
                 </div>
             </section>
+
             <section className={"section-atributos"}>
                 <div className={"title-2-container"}>
-                    <h2 className={"fichaComum title-2"}>atributos: [{atrPoints}] pontos utilizados.</h2>
+                    <h2 className={"mainCommon title-2"}>atributos: [{atrPoints}] pontos utilizados.</h2>
                 </div>
                 <div className={"status-meio justify-center min"}>
                     {atrMap.map(atr => (
@@ -85,11 +100,19 @@ export default function Page3() {
                     ))}
                 </div>
             </section>
+
             <section className={"section-perArray"}>
                 <div className={"title-2-container"}>
-                    <h2 className={"fichaComum title-2"}>perícias: [{perPoints}] pontos utilizados.</h2>
+                    <h2 className={"mainCommon title-2"}>perícias: [{perPoints}] pontos utilizados.</h2>
                 </div>
                 <PericiasSection isLocked={isLocked} />
+            </section>
+
+            <section className={"section-arts"}>
+                <div className={"title-2-container"}>
+                    <h2 className={"mainCommon title-2"}>artes arcanas: [{arcPoints}] pontos utilizados.</h2>
+                </div>
+                <ArtsSection isLocked={isLocked}/>
             </section>
         </div>
     );
