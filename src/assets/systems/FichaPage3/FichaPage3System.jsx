@@ -2,32 +2,46 @@ import PropTypes from "prop-types";
 import {useEffect, useState} from "react";
 import {deleteItem, getItem, handleChange, saveItem} from "../SaveLoad.jsx";
 import {arcColors, atrColors, bioColors} from "../../styles/CommonStyles.jsx";
-import {arcArray, perArray} from "./FichaPage3Arrays.jsx";
+import {arcArray, perArray, subArcArray} from "./FichaPage3Arrays.jsx";
 
-export function ArtsSection({ isLocked }) {
+export function Biotipos(props) {
 
-    function groupArts(arts, groupSize) {
-        const grouped = [];
-        for (let i = 0; i < arts.length; i += groupSize) {
-            grouped.push(arts.slice(i, i + groupSize));
-        }
-        return grouped
-    }
+    const [value, setValue] = useState(getItem(`biotipo-${props.biotipo}`, ''));
+
+    useEffect(() => {
+        const action = value === '' ? deleteItem : saveItem;
+        action(`biotipo-${props.biotipo}`, parseInt(value, 10) || 0);
+    }, [value, props.biotipo]);
 
     return (
-        <>
-            {groupArts(arcArray, 4).map((group, index) => (
-                <div className={"status-meio justify-center"} key={index}>
-                    {group.map(({ art }) => (
-                        <ArcaneArts isLocked={isLocked} art={art} key={art} />
-                    ))}
-                </div>
-            ))}
-        </>
-    );
+        <div className={"input-group mb-3"}>
+
+            <div className={"text-div"}>
+                <span className={`input-group-text-left defined ${props.isLocked ? "locked" : ""}`}
+                      style={{
+                          backgroundColor: bioColors[props.biotipo].background,
+                          color: bioColors[props.biotipo].color, border: `${bioColors[props.biotipo].background} 2px solid`
+                      }}>{props.biotipo}</span>
+            </div>
+            <input type={"number"}
+                   step={1}
+                   min={0}
+                   className="form-control input-wmargin"
+                   placeholder="0"
+                   value={value}
+                   onChange={handleChange(setValue)}
+                   onKeyDownCapture={handleKeyPress}
+                   style={props.isLocked ? {borderColor: bioColors[props.biotipo].background} : {}}
+                   id={`label-${props.biotipo}`}
+                   disabled={props.isLocked}
+            />
+        </div>
+    )
+
 }
 
-ArtsSection.propTypes = {
+Biotipos.propTypes = {
+    biotipo: PropTypes.string.isRequired,
     isLocked: PropTypes.bool.isRequired,
 };
 
@@ -139,44 +153,30 @@ Atributos.propTypes = {
     isLocked: PropTypes.bool.isRequired,
 };
 
-export function Biotipos(props) {
+export function ArtsSection({ isLocked }) {
 
-    const [value, setValue] = useState(getItem(`biotipo-${props.biotipo}`, ''));
-
-    useEffect(() => {
-        const action = value === '' ? deleteItem : saveItem;
-        action(`biotipo-${props.biotipo}`, parseInt(value, 10) || 0);
-    }, [value, props.biotipo]);
+    function groupArts(arts, groupSize) {
+        const grouped = [];
+        for (let i = 0; i < arts.length; i += groupSize) {
+            grouped.push(arts.slice(i, i + groupSize));
+        }
+        return grouped
+    }
 
     return (
-        <div className={"input-group mb-3"}>
-
-            <div className={"text-div"}>
-                <span className={`input-group-text-left defined ${props.isLocked ? "locked" : ""}`}
-                      style={{
-                          backgroundColor: bioColors[props.biotipo].background,
-                          color: bioColors[props.biotipo].color, border: `${bioColors[props.biotipo].background} 2px solid`
-                      }}>{props.biotipo}</span>
-            </div>
-            <input type={"number"}
-                   step={1}
-                   min={0}
-                   className="form-control input-wmargin"
-                   placeholder="0"
-                   value={value}
-                   onChange={handleChange(setValue)}
-                   onKeyDownCapture={handleKeyPress}
-                   style={props.isLocked ? {borderColor: bioColors[props.biotipo].background} : {}}
-                   id={`label-${props.biotipo}`}
-                   disabled={props.isLocked}
-            />
-        </div>
-    )
-
+        <>
+            {groupArts(arcArray, 4).map((group, index) => (
+                <div className={"status-meio justify-center"} key={index}>
+                    {group.map(({ art }) => (
+                        <ArcaneArts isLocked={isLocked} art={art} key={art} />
+                    ))}
+                </div>
+            ))}
+        </>
+    );
 }
 
-Biotipos.propTypes = {
-    biotipo: PropTypes.string.isRequired,
+ArtsSection.propTypes = {
     isLocked: PropTypes.bool.isRequired,
 };
 
@@ -215,6 +215,71 @@ export function ArcaneArts(props) {
 }
 
 ArcaneArts.propTypes = {
+    art: PropTypes.string.isRequired,
+    isLocked: PropTypes.bool.isRequired,
+};
+
+export function SubArtsSection({ isLocked }) {
+
+    function groupSubArts(arts, groupSize) {
+        const grouped = [];
+        for (let i = 0; i < arts.length; i += groupSize) {
+            grouped.push(arts.slice(i, i + groupSize));
+        }
+        return grouped
+    }
+
+    return (
+        <>
+            {groupSubArts(subArcArray, 4).map((group, index) => (
+                <div className={"status-meio justify-center"} key={index}>
+                    {group.map(({ subArt, art }) => (
+                        <SubArcaneArts isLocked={isLocked} subArt={subArt} key={subArt} art={art} />
+                    ))}
+                </div>
+            ))}
+        </>
+    );
+}
+
+SubArtsSection.propTypes = {
+    isLocked: PropTypes.bool.isRequired,
+};
+
+export function SubArcaneArts(props) {
+    const [value, setValue] = useState(getItem(`subArt-${props.subArt}`, ''));
+
+    useEffect(() => {
+        const action = value === '' ? deleteItem : saveItem;
+        action(`subArt-${props.subArt}`, value === '' ? 0 : parseInt(value, 10));
+    }, [value, props.subArt]);
+
+    return (
+        <div className={"input-group mb-3"}>
+            <span className={"input-group-text-left"}
+                  style={{backgroundColor: arcColors[props.art].background,
+                      color: arcColors[props.art].color}}>{props.art}</span>
+            <span className={"input-group-text-center"}
+                  style={props.isLocked ? {borderColor: `${arcColors[props.art].background}`} : {}}>
+                {props.subArt}</span>
+            <input type={"number"}
+                   step={1}
+                   min={0}
+                   className="form-control input-wmargin"
+                   placeholder="0"
+                   value={value}
+                   onChange={handleChange(setValue)}
+                   onKeyDownCapture={handleKeyPress}
+                   id={`label-${props.subArt}`}
+                   disabled={props.isLocked}
+                   style={props.isLocked ? {borderColor: `${arcColors[props.art].background}`} : {}}
+            />
+        </div>
+    )
+}
+
+SubArcaneArts.propTypes = {
+    subArt: PropTypes.string.isRequired,
     art: PropTypes.string.isRequired,
     isLocked: PropTypes.bool.isRequired,
 };

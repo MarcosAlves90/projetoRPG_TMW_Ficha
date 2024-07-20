@@ -76,6 +76,71 @@ body {
 
 }
 
+.textarea-container-annotation {
+  margin: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.delete-button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 20%;
+
+  button {
+    margin: 0 12px 0 12px;
+  }
+
+  .button-header.active.clear {
+    width: fit-content;
+  }
+
+}
+
+.create-annotation {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  .create-annotation.input {
+    width: 80%;
+
+    .create-annotation-title {
+      width: 100%;
+      font-size: 0.9vw;
+      padding: 0.625vw;
+      margin: 0.625vw;
+    }
+
+  }
+
+  .create-annotation.button {
+    height: 100%;
+    width: 20%;
+
+    .create {
+      font-size: 0.9vw;
+      width: 100%;
+      padding: 0.625vw;
+      margin: 0.625vw;
+    }
+
+  }
+
+}
+
+.messagebox {
+  text-align: left;
+  border-left: var(--green-border);
+  padding: 1vw;
+  color: var(--green-text);
+  background-color: var(--green-background);
+  width: fit-content;
+  margin-bottom: 2rem;
+}
+
 .Collapsible__trigger {
   display: block;
   font-weight: 400;
@@ -185,11 +250,16 @@ body {
   position: fixed;
   font-size: 1vw;
   z-index: 1;
+  pointer-events: none;
   width: 100%;
   display: flex;
   justify-content: space-between;
   align-items: end;
   height: fit-content;
+}
+
+.viewport.up {
+  bottom: 10vw;
 }
 
 .icon-save {
@@ -204,6 +274,46 @@ body {
 .icon-save.right {
   left: auto;
   right: 2vw;
+
+  .navbar {
+    pointer-events: auto;
+    text-align: left;
+    font-size: medium;
+    display: grid;
+    border: var(--gray-border);
+    border-radius: 10px;
+    margin: 2rem;
+    background-color: var(--gray-background);
+    padding: 1vw;
+    transition: all 0.3s ease-in-out;
+
+    .off {
+      opacity: 20%;
+    }
+
+    .off:hover {
+      color: var(--green-text);
+    }
+
+    span {
+      margin-bottom: 0.2vw;
+      cursor: pointer;
+      width: fit-content;
+      transition: all 0.3s ease-in-out;
+    }
+
+    span:hover {
+      opacity: 100%;
+    }
+
+  }
+
+  .navbar:hover {
+    border: var(--green-border);
+    background-color: var(--green-background);
+    opacity: 100%;
+  }
+
 }
 
 .icon-save:hover::before {
@@ -227,6 +337,7 @@ body {
 }
 
 .button-header {
+  pointer-events: auto;
   border-radius: 100px;
   transition: var(--common-transion);
   min-width: 110px;

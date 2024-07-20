@@ -13,7 +13,6 @@ import Page2 from './pages/Page2.jsx';
 import Page3 from "./pages/Page3.jsx";
 import Page4 from "./pages/Page4.jsx";
 import './App.css';
-import 'bootstrap-icons/font/bootstrap-icons.css';
 import {loadLocalStorageFile, saveLocalStorageFile} from "./assets/systems/SaveLoad.jsx";
 
 function App() {
@@ -22,6 +21,10 @@ function App() {
 
     const [isLoading, setIsLoading] = useState(true);
     const [currentPage, setCurrentPage] = useState(1);
+
+    const goToPage = useCallback((page) => {
+        setCurrentPage(page);
+    }, []);
 
     const goToNextPage = useCallback(() => {
         if (currentPage < pages) {
@@ -86,7 +89,7 @@ function App() {
     }, []);
 
     return (
-        <>
+        <main>
             <div>
                 {isLoading && (
                     <div id="loader">
@@ -105,10 +108,27 @@ function App() {
             {currentPage === 3 && <Page3/>}
             {currentPage === 4 && <Page4/>}
 
+            <div className={"viewport up"}>
+                <div className={"mb-3 sticky"}>
+                    <div className={"icon-save right"}>
+                        <div className={"navbar"}>
+                            <span className={currentPage === 1 ? "" : 'off'}
+                                  onClick={() => goToPage(1)}>individual.</span>
+                            <span className={currentPage === 2 ? "" : 'off'}
+                                  onClick={() => goToPage(2)}>características.</span>
+                            <span className={currentPage === 3 ? "" : 'off'}
+                                  onClick={() => goToPage(3)}>status.</span>
+                            <span className={currentPage === 4 ? "" : 'off'}
+                                  onClick={() => goToPage(4)}>anotações.</span>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
             <div className="viewport">
                 <div className="mb-3 sticky">
                     <div className="icon-save right">
-                        <button className="button-header active up clear"
+                    <button className="button-header active up clear"
                                 onClick={() => {
                                     localStorage.clear();
                                     location.reload()
@@ -140,7 +160,7 @@ function App() {
                     </button>
                 </div>
             </div>
-        </>
+        </main>
     );
 }
 
@@ -154,7 +174,7 @@ function ChoseTitle(page) {
     const titles = ["console.log(individual)",
         "console.log(características)",
         "console.log(status)",
-        "console.log(energia)"];
+        "console.log(anotações)"];
     return titles[page - 1]
 }
 
