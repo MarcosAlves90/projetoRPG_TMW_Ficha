@@ -18,7 +18,7 @@ O projeto ainda está em desenvolvimento e as próximas atualizações serão vo
 - [X] Adicionar seção de subartes arcanas na página de _status_
 - [ ] Adicionar página de energia
 - [X] Adicionar barra de navegação
-- [ ] Adicionar página de _skills_
+- [X] Adicionar página de _skills_
 - [ ] Adicionar página de inventário
 - [ ] Adicionar página de pets
 - [X] Adicionar página de anotações

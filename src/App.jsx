@@ -6,18 +6,19 @@
  * to load and save data to local storage.
  */
 
-import {useCallback, useEffect, useState} from 'react';
+import {useCallback, useEffect, useRef, useState} from 'react';
 import Header from './assets/components/Header.jsx';
 import Page1 from './pages/Page1.jsx';
 import Page2 from './pages/Page2.jsx';
 import Page3 from "./pages/Page3.jsx";
 import Page4 from "./pages/Page4.jsx";
+import Page5 from "./pages/Page5.jsx";
 import './App.css';
 import {loadLocalStorageFile, saveLocalStorageFile} from "./assets/systems/SaveLoad.jsx";
 
 function App() {
 
-    const pages = 4;
+    const pages = 5;
 
     const [isLoading, setIsLoading] = useState(true);
     const [currentPage, setCurrentPage] = useState(1);
@@ -88,6 +89,14 @@ function App() {
         return () => clearTimeout(timer);
     }, []);
 
+    const selector = (navTitle) => {
+
+        if (navTitle === currentPage) {
+            return "> "
+        }
+
+    };
+
     return (
         <main>
             <div>
@@ -107,19 +116,22 @@ function App() {
             {currentPage === 2 && <Page2/>}
             {currentPage === 3 && <Page3/>}
             {currentPage === 4 && <Page4/>}
+            {currentPage === 5 && <Page5/>}
 
             <div className={"viewport up"}>
                 <div className={"mb-3 sticky"}>
                     <div className={"icon-save right"}>
                         <div className={"navbar"}>
                             <span className={currentPage === 1 ? "" : 'off'}
-                                  onClick={() => goToPage(1)}>individual.</span>
+                                  onClick={() => goToPage(1)}>{selector(1)}individual.</span>
                             <span className={currentPage === 2 ? "" : 'off'}
-                                  onClick={() => goToPage(2)}>características.</span>
+                                  onClick={() => goToPage(2)}>{selector(2)}características.</span>
                             <span className={currentPage === 3 ? "" : 'off'}
-                                  onClick={() => goToPage(3)}>status.</span>
+                                  onClick={() => goToPage(3)}>{selector(3)}status.</span>
                             <span className={currentPage === 4 ? "" : 'off'}
-                                  onClick={() => goToPage(4)}>anotações.</span>
+                                  onClick={() => goToPage(4)}>{selector(4)}skills.</span>
+                            <span className={currentPage === 5 ? "" : 'off'}
+                                  onClick={() => goToPage(5)}>{selector(5)}anotações.</span>
                         </div>
                     </div>
 
@@ -174,6 +186,7 @@ function ChoseTitle(page) {
     const titles = ["console.log(individual)",
         "console.log(características)",
         "console.log(status)",
+        "console.log(skills)",
         "console.log(anotações)"];
     return titles[page - 1]
 }

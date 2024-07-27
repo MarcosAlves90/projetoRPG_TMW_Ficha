@@ -76,6 +76,55 @@ body {
 
 }
 
+.select-container-skill {
+  display: flex;
+  justify-content: left;
+  align-items: center;
+  margin-bottom: 0.625vw;
+
+  .input-skill {
+    margin: 0;
+    padding: 0.2vw !important;
+    width: 100%;
+  }
+
+  .margin {
+    padding: 0.2vw !important;
+  }
+
+  p {
+    margin-bottom: 0;
+    margin-right: 1vw;
+  }
+
+}
+
+.article-skill-selectors {
+  display: flex;
+
+}
+
+.textarea-container-skill {
+  margin: 0.625vw;
+  width: 60%;
+  display: flex;
+
+  background-color: var(--gray-background);
+  padding: 1vw;
+  border-radius: 0.7vw;
+  border: var(--gray-border);
+  color: var(--gray-placeholder);
+
+  .section-skill-selectors {
+    width: 100%;
+  }
+
+  .section-skill-selectors.right {
+    margin-left: 3vw;
+  }
+
+}
+
 .textarea-container-annotation {
   margin: 12px;
   display: flex;
@@ -104,8 +153,23 @@ body {
   justify-content: center;
   align-items: center;
 
+  .search {
+
+    font-size: 0.9vw;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 45%;
+    margin-left: 3vw;
+
+    .search.skill {
+        width: 100%;
+    }
+
+  }
+
   .create-annotation.input {
-    width: 80%;
+    width: 40%;
 
     .create-annotation-title {
       width: 100%;
@@ -118,7 +182,7 @@ body {
 
   .create-annotation.button {
     height: 100%;
-    width: 20%;
+    min-width: 15%;
 
     .create {
       font-size: 0.9vw;
@@ -152,6 +216,31 @@ body {
   border-bottom: 2px solid var(--gray-border-color);
   color: white;
 }
+
+.Collapsible.note .Collapsible__trigger:before {
+  content: "📋";
+  font-family: "bootstrap-icons", serif !important;
+  position: absolute;
+  left: 10px;
+  top: 10px;
+  display: block;
+}
+.Collapsible.note .Collapsible__trigger.is-open:before {
+  content: "📋";
+}
+
+.Collapsible.skill .Collapsible__trigger:before {
+  content: "⚔️";
+  font-family: "bootstrap-icons", serif !important;
+  position: absolute;
+  left: 10px;
+  top: 10px;
+  display: block;
+}
+.Collapsible.skill .Collapsible__trigger.is-open:before {
+  content: "⚔️";
+}
+
 .Collapsible__trigger:after {
   content: "\F340";
   font-family: "bootstrap-icons", serif !important;
@@ -163,6 +252,7 @@ body {
 .Collapsible__trigger.is-open:after {
   content: "\F341";
 }
+
 .Collapsible__trigger.is-disabled {
   opacity: 0.5;
   background-color: grey;
@@ -439,7 +529,7 @@ body {
     border: var(--gray-border);
     text-align: center;
     border-radius: 30px;
-    font-size: medium;
+    font-size: 0.8vw;
     transition: var(--common-transion);
   }
 
@@ -473,6 +563,7 @@ body {
   }
 
   .textarea-ficha {
+    border-radius: 0.7vw;
     resize: none;
     color: white;
     border: var(--gray-border);
@@ -508,7 +599,6 @@ body {
   }
 
   .custom-select {
-    min-width: 229px;
     cursor: pointer;
     color: white;
   }
