@@ -1,3 +1,5 @@
+import PropTypes from "prop-types";
+
 export default function Header(props) {
     return (
         <>
@@ -21,3 +23,11 @@ export default function Header(props) {
         </>
     );
 }
+
+Header.propTypes = {
+    titulo: PropTypes.string.isRequired,
+    showBackButton: PropTypes.bool,
+    showNextButton: PropTypes.bool,
+    onBack: PropTypes.func,
+    onNext: PropTypes.func
+};

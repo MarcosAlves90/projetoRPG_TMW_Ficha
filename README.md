@@ -14,11 +14,7 @@
 
 O projeto ainda está em desenvolvimento e as próximas atualizações serão voltadas nas seguintes tarefas:
 
-- [X] Adicionar seção de artes arcanas na página de _status_
-- [X] Adicionar seção de subartes arcanas na página de _status_
 - [ ] Adicionar página de energia
-- [X] Adicionar barra de navegação
-- [X] Adicionar página de _skills_
 - [ ] Adicionar página de inventário
 - [ ] Adicionar página de pets
-- [X] Adicionar página de anotações
+- [ ] Tornar compatível com dispositivos móveis

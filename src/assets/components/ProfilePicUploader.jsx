@@ -60,7 +60,7 @@ export default function ProfilePicUploader() {
                 <img
                     src={profilePic || './images/rgPlaceholder.png'}
                     alt="Profile"
-                    className="profile-pic"
+                    className="image-profile"
                     style={{ width: '150px', height: '150px', cursor: 'pointer' }}
                 />
             </label>

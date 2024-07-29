@@ -3,6 +3,7 @@ import TextareaAutosize from "react-textarea-autosize";
 import Collapsible from "react-collapsible";
 
 const CreateSkills = ({ array, handleContentChange, handleDelete }) => {
+
     return array.length > 0 && array.map((skill, index) => (
         <Collapsible
             className={"skill"}
@@ -13,10 +14,10 @@ const CreateSkills = ({ array, handleContentChange, handleDelete }) => {
             transitionCloseTime={100}
             key={skill.id}
         >
-            <article className={"article-skill-selectors"}>
-                <div className={"textarea-container-skill"}>
+            <container className={"container-skill-selectors color-gray-placeholder"}>
+                <article className={"container-textarea-skill-left"}>
                     <section className={"section-skill-selectors"}>
-                        <div className={"select-container-skill"}>
+                        <div className={"container-skill-select"}>
                             <p>Círculo: </p>
                             <select className={"form-select custom-select margin circle-skill"}
                                     onChange={(event) => handleContentChange(event, index)}
@@ -33,7 +34,7 @@ const CreateSkills = ({ array, handleContentChange, handleDelete }) => {
                                 </option>
                             </select>
                         </div>
-                        <div className={"select-container-skill"}>
+                        <div className={"container-skill-select"}>
                             <p>Categoria: </p>
                             <select className={"form-select custom-select margin type-skill"}
                                     onChange={(event) => handleContentChange(event, index)}
@@ -47,7 +48,7 @@ const CreateSkills = ({ array, handleContentChange, handleDelete }) => {
                                 </option>
                             </select>
                         </div>
-                        <div className={"select-container-skill"}>
+                        <div className={"container-skill-select"}>
                             <p>Gasto: </p>
                             <input
                                 type={"text"}
@@ -58,7 +59,7 @@ const CreateSkills = ({ array, handleContentChange, handleDelete }) => {
                                 placeholder={"gasto da skill."}
                             />
                         </div>
-                        <div className={"select-container-skill"}>
+                        <div className={"container-skill-select"}>
                             <p>Arte: </p>
                             <input
                                 type={"text"}
@@ -69,7 +70,7 @@ const CreateSkills = ({ array, handleContentChange, handleDelete }) => {
                                 placeholder={"arte utilizada pela skill."}
                             />
                         </div>
-                        <div className={"select-container-skill"}>
+                        <div className={"container-skill-select last-select"}>
                             <p>Execução: </p>
                             <select className={"form-select custom-select margin execution-skill"}
                                     onChange={(event) => handleContentChange(event, index)}
@@ -97,7 +98,7 @@ const CreateSkills = ({ array, handleContentChange, handleDelete }) => {
                         </div>
                     </section>
                     <section className={"section-skill-selectors right"}>
-                        <div className={"select-container-skill"}>
+                        <div className={"container-skill-select"}>
                             <p>Alcance: </p>
                             <select className={"form-select custom-select margin range-skill"}
                                     onChange={(event) => handleContentChange(event, index)}
@@ -126,7 +127,7 @@ const CreateSkills = ({ array, handleContentChange, handleDelete }) => {
                                 </option>
                             </select>
                         </div>
-                        <div className={"select-container-skill"}>
+                        <div className={"container-skill-select"}>
                             <p>Área: </p>
                             <input
                                 type={"text"}
@@ -137,7 +138,7 @@ const CreateSkills = ({ array, handleContentChange, handleDelete }) => {
                                 placeholder={"área da skill."}
                             />
                         </div>
-                        <div className={"select-container-skill"}>
+                        <div className={"container-skill-select"}>
                             <p>Alvo: </p>
                             <input
                                 type={"text"}
@@ -148,7 +149,7 @@ const CreateSkills = ({ array, handleContentChange, handleDelete }) => {
                                 placeholder={"alvos da skill."}
                             />
                         </div>
-                        <div className={"select-container-skill"}>
+                        <div className={"container-skill-select"}>
                             <p>Duração: </p>
                             <input
                                 type={"text"}
@@ -159,7 +160,7 @@ const CreateSkills = ({ array, handleContentChange, handleDelete }) => {
                                 placeholder={"duração da skill."}
                             />
                         </div>
-                        <div className={"select-container-skill"}>
+                        <div className={"container-skill-select last-select"}>
                             <p>Resistência: </p>
                             <input
                                 type={"text"}
@@ -171,9 +172,22 @@ const CreateSkills = ({ array, handleContentChange, handleDelete }) => {
                             />
                         </div>
                     </section>
-                </div>
-            </article>
-            <div className="textarea-container-annotation">
+                </article>
+                <article className={"container-textarea-skill-right"}>
+                    <div className={"container-skill-select"}>
+                        <p>Nome: </p>
+                        <input
+                            type={"text"}
+                            className={"input-skill skill-title"}
+                            value={skill.title}
+                            id={`skill-title-${skill.id}`}
+                            onChange={(event) => handleContentChange(event, index)}
+                        />
+                    </div>
+
+                </article>
+            </container>
+            <div className="container-textarea-annotation">
                 <TextareaAutosize
                     className="form-control textarea-ficha content-skill"
                     id={`textarea-${skill.id}`}
@@ -234,6 +248,8 @@ export default function Page4() {
                     return {...skill, area: event.target.value};
                 } else if (event.target.classList.contains('spent-skill')) {
                     return {...skill, spent: event.target.value};
+                } else if (event.target.id.includes('skill-title')) {
+                    return {...skill, title: event.target.value};
                 }
             }
             return skill;
@@ -251,6 +267,10 @@ export default function Page4() {
         skill.content.toLowerCase().includes(searchTerm.toLowerCase())
     );
 
+    const clearInput = () => {
+        setCreateSkill("");
+    };
+
     return (
         <>
             <main className="mainCommon">
@@ -259,6 +279,7 @@ export default function Page4() {
                         <input
                             className="create-annotation-title"
                             type="text"
+                            value={createSkill}
                             onChange={(event) => setCreateSkill(event.target.value)}
                             placeholder="Nome da Skill."
                         />
@@ -266,20 +287,25 @@ export default function Page4() {
                     <div className="create-annotation button">
                         <button
                             className="button-header active create"
-                            onClick={() => (createSkill.trim()) ? saveSkills([...skillsArray, {
-                                title: createSkill,
-                                content: '',
-                                circle: 1,
-                                type: 1,
-                                art: '',
-                                execution: 1,
-                                range: 1,
-                                target: '',
-                                duration: '',
-                                resistance: '',
-                                area: '',
-                                spent: '',
-                            }]) : null}
+                            onClick={() => {
+                                if (createSkill.trim()) {
+                                    saveSkills([...skillsArray, {
+                                        title: createSkill,
+                                        content: '',
+                                        circle: 1,
+                                        type: 1,
+                                        art: '',
+                                        execution: 1,
+                                        range: 1,
+                                        target: '',
+                                        duration: '',
+                                        resistance: '',
+                                        area: '',
+                                        spent: '',
+                                    }]);
+                                    clearInput();
+                                }
+                            }}
                         >
                             Criar Skill
                         </button>

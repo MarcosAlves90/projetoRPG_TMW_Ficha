@@ -14,7 +14,7 @@ const CreateAnnotations = ({ array, handleContentChange, handleDelete }) => {
             transitionCloseTime={100}
             key={annotation.id}
         >
-            <div className="textarea-container-annotation">
+            <div className="container-textarea-annotation">
                 <TextareaAutosize
                     className="form-control textarea-ficha"
                     id={`textarea-${annotation.id}`} // Usar ID único aqui também

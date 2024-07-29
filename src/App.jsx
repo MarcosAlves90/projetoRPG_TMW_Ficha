@@ -6,7 +6,7 @@
  * to load and save data to local storage.
  */
 
-import {useCallback, useEffect, useRef, useState} from 'react';
+import {useCallback, useEffect, useState} from 'react';
 import Header from './assets/components/Header.jsx';
 import Page1 from './pages/Page1.jsx';
 import Page2 from './pages/Page2.jsx';

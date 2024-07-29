@@ -116,29 +116,29 @@ export default function Page1() {
             <main className={"mainCommon"}>
 
                 <section className={"section-identity"}>
-                    <article className={"identity-container"}>
-                        <div className={"identity-container-rg outside"}>
-                            <div className={"identity-container-outside"}>
-                                <div className={"identity-container-outside-text"}>
-                                    <p className={"identity-container-outside-text-p"}>
+                    <article className={"container-identity"}>
+                        <div className={"container-identity-inside outside"}>
+                            <div className={"container-identity-outside"}>
+                                <div className={"container-identity-outside-text"}>
+                                    <p className={"container-identity-outside-text-p"}>
                                         REPÚBLICA FEDERATIVA DO BRASIL
                                     </p>
                                 </div>
-                                <div className={"identity-container-rg center"}>
+                                <div className={"container-identity-inside center"}>
                                     <p>REGIÃO DE AGAMEMNON</p>
                                     <p>SECRETARIA DE SEGURANÇA PÚBLICA</p>
                                     <p>INSTITUTO DE IDENTIFICAÇÃO</p>
                                 </div>
-                                <div className={"identity-container-rg"}>
+                                <div className={"container-identity-inside"}>
                                     <ProfilePicUploader/>
-                                    <div className={"identity-container-rg-text"}>
+                                    <div className={"container-identity-inside-text"}>
                                         <p>NOME: {name}</p>
                                         <p>DATA NASCIMENTO: {age}</p>
                                         <p>ÓRGÃO EXPEDIDOR: SSP-SEV</p>
                                     </div>
                                 </div>
-                                <div className={"identity-container-outside-text"}>
-                                    <p className={"identity-container-outside-text-p"}>
+                                <div className={"container-identity-outside-text"}>
+                                    <p className={"container-identity-outside-text-p"}>
                                         CARTEIRA DE IDENTIDADE
                                     </p>
                                 </div>
