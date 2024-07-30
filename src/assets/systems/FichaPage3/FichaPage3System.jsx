@@ -26,7 +26,7 @@ export function Biotipos(props) {
             <input type={"number"}
                    step={1}
                    min={0}
-                   className="form-control input-wmargin"
+                   className="form-control input-status"
                    placeholder="0"
                    value={value}
                    onChange={handleChange(setValue)}
@@ -92,7 +92,7 @@ function Pericia(props) {
             <input type={"number"}
                    step={1}
                    min={0}
-                   className="form-control input-wmargin"
+                   className="form-control input-status"
                    placeholder="0"
                    value={value}
                    onChange={handleChange(setValue)}
@@ -133,7 +133,7 @@ export function Atributos(props) {
             <input type={"number"}
                    step={1}
                    min={0}
-                   className="form-control input-wmargin"
+                   className="form-control input-status"
                    placeholder="0"
                    value={value}
                    onChange={handleChange(setValue)}
@@ -201,7 +201,7 @@ export function ArcaneArts(props) {
             <input type={"number"}
                    step={1}
                    min={0}
-                   className="form-control input-wmargin"
+                   className="form-control input-status"
                    placeholder="0"
                    value={value}
                    onChange={handleChange(setValue)}
@@ -265,7 +265,7 @@ export function SubArcaneArts(props) {
             <input type={"number"}
                    step={1}
                    min={0}
-                   className="form-control input-wmargin"
+                   className="form-control input-status"
                    placeholder="0"
                    value={value}
                    onChange={handleChange(setValue)}

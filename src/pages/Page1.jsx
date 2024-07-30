@@ -185,7 +185,7 @@ export default function Page1() {
                     </div>
                     <fieldset className={"status-meio justify-center"}>
                         <div>
-                            <input className={"status-esquerdo"}
+                            <input className={"input-left"}
                                    type={"text"}
                                    value={nomeF}
                                    onChange={handleChange(setNomeF)}
@@ -203,7 +203,7 @@ export default function Page1() {
                             </select>
                         </div>
                         <div>
-                            <input className={"status-direito"}
+                            <input className={"input-right"}
                                    type={"text"}
                                    value={tipoF}
                                    onChange={handleChange(setTipoF)}
@@ -219,13 +219,13 @@ export default function Page1() {
                                 <h2 className={"mainCommon title-2"}>vida.</h2>
                             </div>
                             <div>
-                                <input className={"status-esquerdo"}
+                                <input className={"input-left"}
                                        type={"number"}
                                        value={localLife()}
                                        min={0}
                                        placeholder={"pontos de vida"}
                                        disabled={true}/>
-                                <input className={"status-direito"}
+                                <input className={"input-right"}
                                        type={"number"}
                                        value={vidaGasta}
                                        onChange={handleChange(setVidaGasta)}
@@ -238,13 +238,13 @@ export default function Page1() {
                                 <h2 className={"mainCommon title-2"}>estresse.</h2>
                             </div>
                             <div>
-                                <input className={"status-esquerdo"}
+                                <input className={"input-left"}
                                        type={"number"}
                                        value={((getItem(`pericia-${'Foco'}`)/2)*10) || 0}
                                        min={0}
                                        placeholder={"pontos de estresse"}
                                        disabled={true}/>
-                                <input className={"status-direito"}
+                                <input className={"input-right"}
                                        type={"number"}
                                        value={estresseGasto}
                                        onChange={handleChange(setEstresseGasto)}
@@ -259,13 +259,13 @@ export default function Page1() {
                                 <h2 className={"mainCommon title-2"}>energia.</h2>
                             </div>
                             <div>
-                                <input className={"status-esquerdo"}
+                                <input className={"input-left"}
                                        type={"number"}
                                        value={localEnergy()}
                                        min={0}
                                        placeholder={"pontos de energia"}
                                        disabled={true}/>
-                                <input className={"status-direito"}
+                                <input className={"input-right"}
                                        type={"number"}
                                        value={energiaGasta}
                                        onChange={handleChange(setEnergiaGasta)}
@@ -278,13 +278,13 @@ export default function Page1() {
                                 <h2 className={"mainCommon title-2"}>sanidade.</h2>
                             </div>
                             <div>
-                                <input className={"status-esquerdo"}
+                                <input className={"input-left"}
                                        type={"number"}
                                        value={((getItem(`pericia-${'Foco'}`)/2)*10) || 0}
                                        min={0}
                                        placeholder={"pontos de sanidade"}
                                        disabled={true}/>
-                                <input className={"status-direito"}
+                                <input className={"input-right"}
                                        type={"number"}
                                        value={sanidadeGasta}
                                        onChange={handleChange(setSanidadeGasta)}
@@ -302,7 +302,7 @@ export default function Page1() {
                                 <h2 className={"mainCommon title-2"}>defesa.</h2>
                             </div>
                             <div>
-                                <input className={"status-esquerdo"}
+                                <input className={"input-left"}
                                        type={"number"}
                                        value={10 + getItem(`atributo-${'DES'}`, 0)}
                                        min={0}
@@ -314,7 +314,7 @@ export default function Page1() {
                             <div className={"title-2-container"}>
                                 <h2 className={"mainCommon title-2"}>nível.</h2>
                             </div>
-                            <div>
+                            <div className={"display-flex-center"}>
                                 <input className={"status-meio-dr"}
                                        type={"number"}
                                        value={level}
@@ -328,7 +328,7 @@ export default function Page1() {
                                 <h2 className={"mainCommon title-2"}>afinidade.</h2>
                             </div>
                             <div className={"custom-select-father direito"}>
-                                <select className="form-select custom-select status-direito"
+                                <select className="form-select custom-select input-right"
                                         style={seletorAfinidadeStyle}
                                         onChange={handleChange(setAffinity)}
                                         value={affinity}>
