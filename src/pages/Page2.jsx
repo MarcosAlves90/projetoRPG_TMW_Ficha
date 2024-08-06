@@ -36,7 +36,7 @@ export default function Page2() {
 
     return (
         <>
-            <div className={"mainCommon page-2"}>
+            <div className={"mainCommon"}>
 
                 <section className={"section-origem"}>
                     <Collapsible trigger={"origem "}
@@ -44,7 +44,7 @@ export default function Page2() {
                                  transitionTime={100}
                                  transitionCloseTime={100}>
                         <article className={"textarea-container"}>
-                            <TextareaAutosize className="form-control textarea-ficha"
+                            <TextareaAutosize className="form-control textarea-sheet"
                                               id="exampleFormControlTextarea1"
                                               value={origem}
                                               onChange={handleChange(setOrigem)}
@@ -60,7 +60,7 @@ export default function Page2() {
                                  transitionTime={100}
                                  transitionCloseTime={100}>
                         <div className={"textarea-container"}>
-                            <TextareaAutosize className="form-control textarea-ficha"
+                            <TextareaAutosize className="form-control textarea-sheet"
                                               id="exampleFormControlTextarea1"
                                               value={fisico}
                                               onChange={handleChange(setFisico)}
@@ -76,7 +76,7 @@ export default function Page2() {
                                  transitionTime={100}
                                  transitionCloseTime={100}>
                         <div className={"textarea-container"}>
-                            <TextareaAutosize className="form-control textarea-ficha"
+                            <TextareaAutosize className="form-control textarea-sheet"
                                               id="exampleFormControlTextarea1"
                                               value={ideais}
                                               onChange={handleChange(setIdeais)}
@@ -87,14 +87,14 @@ export default function Page2() {
                 </section>
 
                 <section className={"section-tracos"}>
-                    <div className={"textarea-meio-container"}>
+                    <div className={"textarea-center-container"}>
                         <div className={"textarea-meio"}>
                             <Collapsible trigger={"traços negativos."}
                                          triggerStyle={{fontSize: "1.5em", color: "rgb(43, 43, 43)"}}
                                          transitionTime={100}
                                          transitionCloseTime={100}>
                                 <div className={"textarea-container"}>
-                                    <TextareaAutosize className="form-control textarea-ficha"
+                                    <TextareaAutosize className="form-control textarea-sheet"
                                                       id="exampleFormControlTextarea1"
                                                       value={tracosNegativos}
                                                       onChange={handleChange(setTracosNegativos)}
@@ -110,7 +110,7 @@ export default function Page2() {
                                          transitionTime={100}
                                          transitionCloseTime={100}>
                                 <div className={"textarea-container"}>
-                                    <TextareaAutosize className="form-control textarea-ficha"
+                                    <TextareaAutosize className="form-control textarea-sheet"
                                                       id="exampleFormControlTextarea1"
                                                       value={tracosPositivos}
                                                       onChange={handleChange(setTracosPositivos)}
@@ -129,7 +129,7 @@ export default function Page2() {
                                  transitionTime={100}
                                  transitionCloseTime={100}>
                         <div className={"textarea-container"}>
-                            <TextareaAutosize className="form-control textarea-ficha"
+                            <TextareaAutosize className="form-control textarea-sheet"
                                               id="exampleFormControlTextarea1"
                                               value={origemForma}
                                               onChange={handleChange(setOrigemForma)}

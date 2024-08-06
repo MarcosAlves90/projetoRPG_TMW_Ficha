@@ -8,13 +8,13 @@
 
 <img src="readme_details/tmw_ficha_image_1.png" alt="Página inicial da plataforma">
 
-> Uma plataforma de criação, importação e exportação de fichas de RPG em formato JSON.
+> A platform for creating, importing and exporting RPG tokens in JSON format.
 
-### Ajustes e melhorias
+### Adjustments and improvements
 
-O projeto ainda está em desenvolvimento e as próximas atualizações serão voltadas nas seguintes tarefas:
+The project is still under development and the next updates will focus on the following tasks:
 
-- [ ] Adicionar página de energia
-- [ ] Adicionar página de inventário
-- [ ] Adicionar página de pets
-- [ ] Tornar compatível com dispositivos móveis
+- [ ] Add energy page
+- [ ] Add inventory page
+- [ ] Add pets page
+- [ ] Make compatible with mobile devices

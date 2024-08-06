@@ -8,20 +8,32 @@
 
 import {useCallback, useEffect, useState} from 'react';
 import Header from './assets/components/Header.jsx';
+import Page0 from './pages/Page0.jsx'
 import Page1 from './pages/Page1.jsx';
 import Page2 from './pages/Page2.jsx';
 import Page3 from "./pages/Page3.jsx";
 import Page4 from "./pages/Page4.jsx";
 import Page5 from "./pages/Page5.jsx";
 import './App.css';
-import {loadLocalStorageFile, saveLocalStorageFile} from "./assets/systems/SaveLoad.jsx";
+import {deleteItem, loadLocalStorageFile, saveItem, saveLocalStorageFile} from "./assets/systems/SaveLoad.jsx";
 
 function App() {
+    const [isLoading, setIsLoading] = useState(true);
+    const [currentPage, setCurrentPage] = useState(parseInt(sessionStorage.getItem('currentPage')) || 0);
+    const [configMenuIsVisible, setConfigMenuIsVisible] = useState(false);
 
     const pages = 5;
 
-    const [isLoading, setIsLoading] = useState(true);
-    const [currentPage, setCurrentPage] = useState(1);
+
+    useEffect(() => {
+
+        if (currentPage !== 0) {
+            sessionStorage.setItem('currentPage', currentPage);
+        } else {
+            sessionStorage.removeItem('currentPage');
+        }
+
+    }, [currentPage]);
 
     const goToPage = useCallback((page) => {
         setCurrentPage(page);
@@ -34,7 +46,7 @@ function App() {
     }, [currentPage]);
 
     const goToPreviousPage = useCallback(() => {
-        if (currentPage > 1) {
+        if (currentPage > 0) {
             setCurrentPage((prevPage) => prevPage - 1);
         }
     }, [currentPage]);
@@ -89,14 +101,6 @@ function App() {
         return () => clearTimeout(timer);
     }, []);
 
-    const selector = (navTitle) => {
-
-        if (navTitle === currentPage) {
-            return "> "
-        }
-
-    };
-
     return (
         <main>
             <div>
@@ -106,41 +110,27 @@ function App() {
                     </div>
                 )}
             </div>
-            <Header titulo={ChoseTitle(currentPage)}
-                    onNext={goToNextPage}
-                    onBack={goToPreviousPage}
-                    showBackButton={currentPage > 1}
-                    showNextButton={currentPage < pages}
+            <Header showPage0={() => goToPage(0)}
+                    showPage1={() => goToPage(1)}
+                    showPage2={() => goToPage(2)}
+                    showPage3={() => goToPage(3)}
+                    showPage4={() => goToPage(4)}
+                    showPage5={() => goToPage(5)}
+                    currentPage={currentPage}
+                    showConfigMenu={() => setConfigMenuIsVisible(!configMenuIsVisible)}
+                    isConfigMenuVisible={configMenuIsVisible}
             />
+            {currentPage === 0 && <Page0/>}
             {currentPage === 1 && <Page1/>}
             {currentPage === 2 && <Page2/>}
             {currentPage === 3 && <Page3/>}
             {currentPage === 4 && <Page4/>}
             {currentPage === 5 && <Page5/>}
 
-            <div className={"viewport up"}>
-                <div className={"mb-3 sticky"}>
-                    <div className={"icon-save right"}>
-                        <div className={"navbar"}>
-                            <span className={currentPage === 1 ? "" : 'off'}
-                                  onClick={() => goToPage(1)}>{selector(1)}individual.</span>
-                            <span className={currentPage === 2 ? "" : 'off'}
-                                  onClick={() => goToPage(2)}>{selector(2)}características.</span>
-                            <span className={currentPage === 3 ? "" : 'off'}
-                                  onClick={() => goToPage(3)}>{selector(3)}status.</span>
-                            <span className={currentPage === 4 ? "" : 'off'}
-                                  onClick={() => goToPage(4)}>{selector(4)}skills.</span>
-                            <span className={currentPage === 5 ? "" : 'off'}
-                                  onClick={() => goToPage(5)}>{selector(5)}anotações.</span>
-                        </div>
-                    </div>
-
-                </div>
-            </div>
-            <div className="viewport">
+            {currentPage !== 0 && configMenuIsVisible ? <div className="fixed-bottom">
                 <div className="mb-3 sticky">
                     <div className="icon-save right">
-                    <button className="button-header active up clear"
+                        <button className="button-header active up clear"
                                 onClick={() => {
                                     localStorage.clear();
                                     location.reload()
@@ -171,24 +161,9 @@ function App() {
                         <i className="bi bi-floppy2-fill"></i>
                     </button>
                 </div>
-            </div>
+            </div> : null}
         </main>
     );
-}
-
-/**
- * Chooses and returns a title based on the current page number.
- *
- * @param {number} page - The current page number.
- * @returns {string} The chosen title for the current page.
- */
-function ChoseTitle(page) {
-    const titles = ["console.log(individual)",
-        "console.log(características)",
-        "console.log(status)",
-        "console.log(skills)",
-        "console.log(anotações)"];
-    return titles[page - 1]
 }
 
 export default App;

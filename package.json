@@ -1,7 +1,7 @@
 {
   "name": "ficha_online",
   "private": true,
-  "version": "0.0.0",
+  "version": "1.1.0",
   "homepage": "https://marcosalves90.github.io/projetoRPG_TMW_Ficha",
   "type": "module",
   "scripts": {

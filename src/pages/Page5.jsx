@@ -16,7 +16,7 @@ const CreateAnnotations = ({ array, handleContentChange, handleDelete }) => {
         >
             <div className="container-textarea-annotation">
                 <TextareaAutosize
-                    className="form-control textarea-ficha"
+                    className="form-control textarea-sheet"
                     id={`textarea-${annotation.id}`} // Usar ID único aqui também
                     value={annotation.content}
                     onChange={(event) => handleContentChange(event, index)}

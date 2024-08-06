@@ -61,7 +61,7 @@ export default function ProfilePicUploader() {
                     src={profilePic || './images/rgPlaceholder.png'}
                     alt="Profile"
                     className="image-profile"
-                    style={{ width: '150px', height: '150px', cursor: 'pointer' }}
+                    style={{ cursor: 'pointer' }}
                 />
             </label>
             <input

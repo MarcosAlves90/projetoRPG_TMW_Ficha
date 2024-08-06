@@ -189,7 +189,7 @@ const CreateSkills = ({ array, handleContentChange, handleDelete }) => {
             </container>
             <div className="container-textarea-annotation">
                 <TextareaAutosize
-                    className="form-control textarea-ficha content-skill"
+                    className="form-control textarea-sheet content-skill"
                     id={`textarea-${skill.id}`}
                     value={skill.content}
                     onChange={(event) => handleContentChange(event, index)}

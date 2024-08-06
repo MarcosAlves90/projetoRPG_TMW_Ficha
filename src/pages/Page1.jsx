@@ -151,30 +151,33 @@ export default function Page1() {
                     <div className={"title-2-container"}>
                         <h2 className={"mainCommon title-2"}>pessoal.</h2>
                     </div>
-                    <fieldset>
+                    <fieldset className={"page-1"}>
                         <input type={"text"} value={name} onChange={handleChange(setName)}
                                placeholder="nome"/>
                         <input type={"text"} value={title} onChange={handleChange(setTitle)}
                                placeholder="título"/>
-                        <input type={"text"} value={career} onChange={handleChange(setCareer)}
+                        <input type={"text"} className={"input-small"} value={career} onChange={handleChange(setCareer)}
                                placeholder={"profissão"}/>
                     </fieldset>
-                    <fieldset>
+                    <fieldset className={"page-1"}>
                         <input type={"text"}
                                value={age}
                                onChange={handleChange(setAge)}
+                               className={"input-small"}
                                placeholder="data de nascimento"/>
                         <input type={"number"}
                                value={altura}
                                onChange={handleChange(setAltura)}
                                min={0}
                                step={0.01}
+                               className={"input-small"}
                                placeholder="altura"/>
                         <input type={"number"}
                                value={peso}
                                onChange={handleChange(setPeso)}
                                min={0}
                                step={0.1}
+                               className={"input-small"}
                                placeholder="peso"/>
                     </fieldset>
                 </section>
@@ -183,7 +186,7 @@ export default function Page1() {
                     <div className={"title-2-container"}>
                         <h2 className={"mainCommon title-2"}>forma.</h2>
                     </div>
-                    <fieldset className={"status-meio justify-center"}>
+                    <fieldset className={"page-1"}>
                         <div>
                             <input className={"input-left"}
                                    type={"text"}
@@ -192,7 +195,7 @@ export default function Page1() {
                                    placeholder={"nome da forma"}/>
                         </div>
                         <div className={"custom-select-father meio"}>
-                            <select className="form-select custom-select status-meio-dr"
+                            <select className="form-select custom-select input-center-dropdown"
                                     style={seletorFormaStyle}
                                     onChange={handleChange(setForma)}
                                     value={forma}>
@@ -213,7 +216,7 @@ export default function Page1() {
                 </section>
 
                 <section className={"section-recursos"}>
-                    <fieldset className={"status-meio justify-center"}>
+                    <fieldset className={"page-1"}>
                         <div>
                             <div className={"title-2-container"}>
                                 <h2 className={"mainCommon title-2"}>vida.</h2>
@@ -253,7 +256,7 @@ export default function Page1() {
                             </div>
                         </div>
                     </fieldset>
-                    <fieldset className={"status-meio justify-center"}>
+                    <fieldset className={"page-1"}>
                         <div>
                             <div className={"title-2-container"}>
                                 <h2 className={"mainCommon title-2"}>energia.</h2>
@@ -296,8 +299,8 @@ export default function Page1() {
                 </section>
 
                 <section className={"section-ajustes"}>
-                    <fieldset className={"status-meio justify-center"}>
-                        <div>
+                    <fieldset className={"page-1 bottom"}>
+                        <div className={"display-block-center"}>
                             <div className={"title-2-container"}>
                                 <h2 className={"mainCommon title-2"}>defesa.</h2>
                             </div>
@@ -310,12 +313,12 @@ export default function Page1() {
                                        disabled={true}/>
                             </div>
                         </div>
-                        <div>
+                        <div className={"display-block-center"}>
                             <div className={"title-2-container"}>
                                 <h2 className={"mainCommon title-2"}>nível.</h2>
                             </div>
                             <div className={"display-flex-center"}>
-                                <input className={"status-meio-dr"}
+                                <input className={"input-center-dropdown"}
                                        type={"number"}
                                        value={level}
                                        onChange={handleChange(setLevel)}
@@ -323,7 +326,7 @@ export default function Page1() {
                                        placeholder={"nível atual"}/>
                             </div>
                         </div>
-                        <div>
+                        <div className={"display-block-center"}>
                             <div className={"title-2-container"}>
                                 <h2 className={"mainCommon title-2"}>afinidade.</h2>
                             </div>

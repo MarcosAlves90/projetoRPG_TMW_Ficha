@@ -143,9 +143,9 @@ export default function Page3() {
 
                 </div>
                 <div className={"title-2-container"}>
-                    <div className={"messagebox-collapsible"} style={recommendations ? null : {display: "none"}}>
-                        <div className={"messagebox"}>
-                            <div className={"messagebox-message"}>
+                    <div className={"alert-box-collapsible"} style={recommendations ? null : {display: "none"}}>
+                        <div className={"alert-box"}>
+                            <div className={"alert-box-message"}>
                                 <p>biotipo: [9] | máximo: [3]</p>
                                 <p>atributos: [{atributesPoints()}] | máximo: [{atributesCap()}]</p>
                                 <p>perícias: [{periciasPoints()}] | máximo: [{periciasCap()}]</p>
@@ -160,7 +160,7 @@ export default function Page3() {
                 <div className={"title-2-container"}>
                     <h2 className={"mainCommon title-2"}>biotipo: [{bioPoints}] pontos utilizados.</h2>
                 </div>
-                <div className={"status-meio justify-center min"}>
+                <div className={"input-center justify-center min"}>
                     {bioMap.map(biotipo => (
                         <Biotipos key={biotipo} isLocked={isLocked} biotipo={biotipo}/>
                     ))}
@@ -171,7 +171,7 @@ export default function Page3() {
                 <div className={"title-2-container"}>
                     <h2 className={"mainCommon title-2"}>atributos: [{atrPoints}] pontos utilizados.</h2>
                 </div>
-                <div className={"status-meio justify-center min"}>
+                <div className={"input-center justify-center min"}>
                     {atrMap.map(atr => (
                         <Atributos key={atr} isLocked={isLocked} atributo={atr} atr={atr} />
                     ))}

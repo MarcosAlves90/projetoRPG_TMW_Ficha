@@ -58,7 +58,7 @@ export function PericiasSection({ isLocked }) {
     return (
         <>
             {groupPericias(perArray, 4).map((group, index) => (
-                <div className={"status-meio justify-center"} key={index}>
+                <div className={"input-center justify-center"} key={index}>
                     {group.map(({ pericia, atr }) => (
                         <Pericia isLocked={isLocked} pericia={pericia} atr={atr} key={pericia} />
                     ))}
@@ -166,7 +166,7 @@ export function ArtsSection({ isLocked }) {
     return (
         <>
             {groupArts(arcArray, 4).map((group, index) => (
-                <div className={"status-meio justify-center"} key={index}>
+                <div className={"input-center justify-center"} key={index}>
                     {group.map(({ art }) => (
                         <ArcaneArts isLocked={isLocked} art={art} key={art} />
                     ))}
@@ -232,7 +232,7 @@ export function SubArtsSection({ isLocked }) {
     return (
         <>
             {groupSubArts(subArcArray, 4).map((group, index) => (
-                <div className={"status-meio justify-center"} key={index}>
+                <div className={"input-center justify-center"} key={index}>
                     {group.map(({ subArt, art }) => (
                         <SubArcaneArts isLocked={isLocked} subArt={subArt} key={subArt} art={art} />
                     ))}
