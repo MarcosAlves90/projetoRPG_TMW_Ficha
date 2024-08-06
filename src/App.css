@@ -559,7 +559,7 @@ body {
   background-size: auto;
   width: 100%;
   height: 100%;
-  background-image: url("./images/lobbyBackground.png");
+  background-image: url("../images/lobbyBackground.png");
   z-index: -1;
 }
 
