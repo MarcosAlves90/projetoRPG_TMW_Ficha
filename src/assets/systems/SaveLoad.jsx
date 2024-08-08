@@ -20,6 +20,18 @@ export const deleteItem = (key) => {
 };
 
 /**
+ * Decompresses a value from a compressed string.
+ * @param {string} compressed - The compressed string to decompress.
+ * @returns {*} The decompressed value, converted to the appropriate type.
+ */
+function decompressValue(compressed) {
+    const decompressed = LZString.decompressFromUTF16(compressed);
+    if (decompressed === true) return true;
+    if (decompressed === false) return false;
+    return isNaN(parseFloat(decompressed)) ? decompressed : Number(decompressed);
+}
+
+/**
  * Retrieves a value from localStorage by key, decompresses it, and returns it. Returns a default value if the key does not exist.
  * @param {string} key - The key of the item to retrieve.
  * @param {*} defaultValue - The default value to return if the key is not found.
@@ -46,18 +58,6 @@ export const handleChange = (setter) => (event) => {
         setter(value);
     }
 };
-
-/**
- * Decompresses a value from a compressed string.
- * @param {string} compressed - The compressed string to decompress.
- * @returns {*} The decompressed value, converted to the appropriate type.
- */
-function decompressValue(compressed) {
-    const decompressed = LZString.decompressFromUTF16(compressed);
-    if (decompressed === true) return true;
-    if (decompressed === false) return false;
-    return isNaN(parseFloat(decompressed)) ? decompressed : Number(decompressed);
-}
 
 /**
  * Saves the current state of localStorage to a file, allowing it to be downloaded.

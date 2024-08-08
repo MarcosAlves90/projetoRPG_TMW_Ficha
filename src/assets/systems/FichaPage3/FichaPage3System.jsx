@@ -5,6 +5,28 @@ import {arcColors, atrColors, bioColors} from "../../styles/CommonStyles.jsx";
 import {arcArray, perArray, subArcArray} from "./FichaPage3Arrays.jsx";
 import {map} from "jquery";
 
+/**
+ * Handles key press events on input fields to restrict input to numeric values and control commands.
+ *
+ * This function is designed to be attached to the `onKeyDownCapture` event of input elements. It allows
+ * numeric inputs, backspace, delete, arrow keys, and tab for navigation. Additionally, it permits the use
+ * of 'Control + A' and 'Control + C' for select all and copy operations, respectively. Any other key press
+ * is prevented from affecting the input field, ensuring that only numeric values can be entered.
+ *
+ * @param {Object} event - The event object provided by the onKeyDownCapture event.
+ */
+function handleKeyPress(event) {
+    // Verifica se a tecla pressionada é Control+A, Control+C ou Control+V
+    if (event.ctrlKey && (event.key === 'a' || event.key === 'c')) {
+        return; // Não faz nada, permitindo a ação padrão do navegador
+    }
+
+    // Verifica se a tecla pressionada não é um número e não é uma tecla de controle (como backspace, delete, etc.)
+    if (!/[0-9]/.test(event.key) && !['Backspace', 'ArrowLeft', 'ArrowRight', 'Delete', 'Tab', 'ArrowUp', 'ArrowDown'].includes(event.key)) {
+        event.preventDefault();
+    }
+}
+
 export function Biotipos(props) {
 
     const [value, setValue] = useState(getItem(`biotipo-${props.biotipo}`, ''));
@@ -288,25 +310,3 @@ SubArcaneArts.propTypes = {
     art: PropTypes.string.isRequired,
     isLocked: PropTypes.bool.isRequired,
 };
-
-/**
- * Handles key press events on input fields to restrict input to numeric values and control commands.
- *
- * This function is designed to be attached to the `onKeyDownCapture` event of input elements. It allows
- * numeric inputs, backspace, delete, arrow keys, and tab for navigation. Additionally, it permits the use
- * of 'Control + A' and 'Control + C' for select all and copy operations, respectively. Any other key press
- * is prevented from affecting the input field, ensuring that only numeric values can be entered.
- *
- * @param {Object} event - The event object provided by the onKeyDownCapture event.
- */
-function handleKeyPress(event) {
-    // Verifica se a tecla pressionada é Control+A, Control+C ou Control+V
-    if (event.ctrlKey && (event.key === 'a' || event.key === 'c')) {
-        return; // Não faz nada, permitindo a ação padrão do navegador
-    }
-
-    // Verifica se a tecla pressionada não é um número e não é uma tecla de controle (como backspace, delete, etc.)
-    if (!/[0-9]/.test(event.key) && !['Backspace', 'ArrowLeft', 'ArrowRight', 'Delete', 'Tab', 'ArrowUp', 'ArrowDown'].includes(event.key)) {
-        event.preventDefault();
-    }
-}
