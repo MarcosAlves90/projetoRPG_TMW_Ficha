@@ -3,12 +3,13 @@ import {deleteItem, getItem, saveItem} from "../assets/systems/SaveLoad.jsx";
 import {lockedInputStyle} from "../assets/styles/CommonStyles.jsx";
 import {
     ArtsSection,
-    Atributos,
+    Attributes,
     Biotipos,
     PericiasSection,
     SubArtsSection
 } from "../assets/systems/FichaPage3/FichaPage3System.jsx";
 import {arcArray, atrMap, bioMap, perArray, subArcArray} from "../assets/systems/FichaPage3/FichaPage3Arrays.jsx";
+import {map} from "jquery";
 
 export default function Page3() {
     const [isLocked, setIsLocked] = useState(getItem('isLocked', false) === 'true');
@@ -18,6 +19,9 @@ export default function Page3() {
     const [arcPoints, setArcPoints] = useState(getItem('art-Points', 0));
     const [subArcPoints, setSubArcPoints] = useState(getItem('subArt-Points', 0));
     const [recommendations, setRecommendations] = useState(false);
+    const [tempPericia, setTempPericia] = useState('');
+    const [tempDice, setTempDice] = useState('');
+    const [tempResult, setTempResult] = useState('');
 
     const getTotalPoints = useCallback((map, prefix) => {
         if (prefix === 'pericia') {
@@ -60,6 +64,12 @@ export default function Page3() {
         updatePoints();
     });
 
+    useEffect(() => {
+        setTempPericia(sessionStorage.getItem('tempPericia') || '');
+        setTempDice(sessionStorage.getItem('tempDice') || '');
+        setTempResult(sessionStorage.getItem('tempResult') || '');
+    }, []);
+
     // Save the isLocked state to localStorage
     useEffect(() => {
         if (isLocked) {
@@ -94,9 +104,11 @@ export default function Page3() {
         } else {
             return 5;
         }
+
     }
 
     function periciasPoints() {
+
         const level = getItem('nivel', 1);
         const bPericias = getItem('biotipo-Pericias', 0);
         const aInt = getItem('atributo-INT', 0);
@@ -115,10 +127,49 @@ export default function Page3() {
         return getItem('nivel', 1);
     }
 
+    function RollDice(e) {
+        const periciaName = (e.target.id).slice(7);
+        const pericia = getItem(`pericia-${periciaName}`, 0);
+        const attribute = map(perArray, function (per) {
+            if (per.pericia === periciaName) {
+                return getItem(`atributo-${per.atr}`, 0);
+            }
+        })
+        const dice = [];
+
+        for (let i = 0; i < attribute; i++) {
+            dice.push(Math.floor(Math.random() * 20) + 1);
+        }
+
+        const diceBestResult = Math.max(...dice);
+        const result = diceBestResult + pericia;
+
+        sessionStorage.setItem('tempPericia', periciaName);
+        sessionStorage.setItem('tempDice', dice);
+        sessionStorage.setItem('tempResult', result);
+
+        setTempPericia(sessionStorage.getItem('tempPericia') || '');
+        setTempDice(sessionStorage.getItem('tempDice') || '');
+        setTempResult(sessionStorage.getItem('tempResult') || '');
+
+    }
+
     return (
-        <main className={"mainCommon"}>
+        <main className={"mainCommon page-3"}>
+            <section className={"section-dice"}>
+                <div className={"display-flex-center"}>
+                    <div>
+                        <h2>Rolagem:</h2>
+                    </div>
+                    <article className={"display-flex-center dice"}>
+                        <div className={"dice-background dice-font left"}>{tempPericia}</div>
+                        <div className={"dice-background dice-font center"}>[{tempDice}]</div>
+                        <div className={"dice-background dice-font right"}>{tempResult}</div>
+                    </article>
+                </div>
+            </section>
             <section className={"section-options"}>
-                <div className={"title-2-container"}>
+                <div className={"display-flex-center"}>
                     <button type="button"
                             className="button-lock"
                             onClick={() => setIsLocked(!isLocked)}
@@ -142,14 +193,14 @@ export default function Page3() {
                     </button>
 
                 </div>
-                <div className={"title-2-container"}>
+                <div className={"display-flex-center"}>
                     <div className={"alert-box-collapsible"} style={recommendations ? null : {display: "none"}}>
                         <div className={"alert-box"}>
                             <div className={"alert-box-message"}>
                                 <p>biotipo: [9] | máximo: [3]</p>
                                 <p>atributos: [{atributesPoints()}] | máximo: [{atributesCap()}]</p>
                                 <p>perícias: [{periciasPoints()}] | máximo: [{periciasCap()}]</p>
-                                <p>(sub)artes arcanas: [{getItem('pericia-Magia Arcana', 0) * 5}] | máximo [{15}]</p>
+                                <p className={"last-p"}>(sub)artes arcanas: [{getItem('pericia-Magia Arcana', 0) * 5}] | máximo [{15}]</p>
                             </div>
                         </div>
                     </div>
@@ -157,7 +208,7 @@ export default function Page3() {
             </section>
 
             <section className={"section-biotipo"}>
-                <div className={"title-2-container"}>
+                <div className={"display-flex-center"}>
                     <h2 className={"mainCommon title-2"}>biotipo: [{bioPoints}] pontos utilizados.</h2>
                 </div>
                 <div className={"input-center justify-center min"}>
@@ -168,32 +219,32 @@ export default function Page3() {
             </section>
 
             <section className={"section-atributos"}>
-                <div className={"title-2-container"}>
+                <div className={"display-flex-center"}>
                     <h2 className={"mainCommon title-2"}>atributos: [{atrPoints}] pontos utilizados.</h2>
                 </div>
                 <div className={"input-center justify-center min"}>
                     {atrMap.map(atr => (
-                        <Atributos key={atr} isLocked={isLocked} atributo={atr} atr={atr} />
+                        <Attributes key={atr} isLocked={isLocked} atributo={atr} atr={atr} />
                     ))}
                 </div>
             </section>
 
             <section className={"section-perArray"}>
-                <div className={"title-2-container"}>
+                <div className={"display-flex-center"}>
                     <h2 className={"mainCommon title-2"}>perícias: [{perPoints}] pontos utilizados.</h2>
                 </div>
-                <PericiasSection isLocked={isLocked} />
+                <PericiasSection isLocked={isLocked}  rollDice={RollDice}/>
             </section>
 
             <section className={"section-arts"}>
-                <div className={"title-2-container"}>
+                <div className={"display-flex-center"}>
                     <h2 className={"mainCommon title-2"}>artes arcanas: [{arcPoints}] pontos utilizados.</h2>
                 </div>
                 <ArtsSection isLocked={isLocked}/>
             </section>
 
             <section className={"section-subArts"}>
-                <div className={"title-2-container"}>
+                <div className={"display-flex-center"}>
                     <h2 className={"mainCommon title-2"}>
                     subartes arcanas: [{subArcPoints}] pontos utilizados.
                     </h2>

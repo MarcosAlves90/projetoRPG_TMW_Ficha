@@ -2,8 +2,8 @@
 @import url('https://fonts.googleapis.com/css2?family=Arimo:ital,wght@0,400..700;1,400..700&family=Lora:ital,wght@0,400..700;1,400..700&display=swap');
 @font-face {
   font-family: 'Cascadia Mono';
-    src: url('./assets/fonts/CascadiaMono.ttf') format('woff');
-    src: url('./assets/fonts/CascadiaMono.ttf') format('truetype');
+  src: url('./assets/fonts/CascadiaMono.ttf') format('woff');
+  src: url('./assets/fonts/CascadiaMono.ttf') format('truetype');
   font-weight: normal;
   font-style: normal;
 }
@@ -90,7 +90,7 @@ body {
 }
 
 .container-skill-select.last-select {
-    margin-bottom: 0;
+  margin-bottom: 0;
 }
 
 .container-skill-select {
@@ -188,8 +188,8 @@ body {
     margin-left: 3vw;
 
     .search.skill {
-        padding: var(--common-input-padding);
-        width: 100%;
+      padding: var(--common-input-padding);
+      width: 100%;
     }
 
   }
@@ -229,6 +229,11 @@ body {
   background-color: var(--green-background);
   width: fit-content;
   margin-bottom: 2rem;
+
+  .last-p {
+    margin-bottom: 0;
+  }
+
 }
 
 .Collapsible__trigger {
@@ -635,7 +640,82 @@ body {
 
   }
 
+}
 
+.mainCommon.page-3 {
+  .section-dice {
+
+    div h2 {
+      font-size: 2vw;
+      margin: 0;
+    }
+
+    div .dice {
+
+      margin-left: 2vw;
+      min-width: 21.354vw;
+
+      .dice-background {
+        background-color: #121212;
+      }
+      .dice-font {
+        font-size: calc(var(--common-button-font-size) + 0.4vw);
+        color: white;
+        padding: calc(var(--common-input-padding) + 0.4vw);
+        border: var(--gray-border);
+      }
+
+      .dice-font.left {
+        width: 100%;
+        border-radius: 60px 0 0 60px;
+      }
+
+      .dice-font.right {
+        width: 100%;
+        border-radius: 0 60px 60px 0;
+      }
+
+      .dice-font.center {
+        width: 100%;
+        border-left: none;
+        border-right: none;
+        border-radius: 0;
+      }
+
+    }
+  }
+
+  --status-background: #121212;
+
+  .section-biotipo {
+    background-color: var(--status-background);
+    border-radius: 1vw;
+    margin-bottom: 1vw;
+  }
+
+  .section-atributos {
+    background-color: var(--status-background);
+    border-radius: 1vw;
+    margin-bottom: 1vw;
+  }
+
+  .section-perArray {
+    background-color: var(--status-background);
+    border-radius: 1vw;
+    margin-bottom: 1vw;
+  }
+
+  .section-arts {
+    background-color: var(--status-background);
+    border-radius: 1vw;
+    margin-bottom: 1vw;
+  }
+
+  .section-subArts {
+    background-color: var(--status-background);
+    border-radius: 1vw;
+    margin-bottom: 1vw;
+  }
 }
 
 .mainCommon {
@@ -821,6 +901,11 @@ body {
     color: white;
     font-size: 0.7vw;
     transition: var(--common-transition);
+  }
+
+  .input-group-text-center.pericia:hover {
+    opacity: 0.5;
+    cursor: pointer;
   }
 
   .input-group-text-left {

@@ -102,7 +102,7 @@ function App() {
     }, []);
 
     return (
-        <main>
+        <main className={"display-flex"}>
             <div>
                 {isLoading && (
                     <div id="loader">

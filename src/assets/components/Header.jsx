@@ -41,7 +41,7 @@ export default function Header(props) {
                         </span>
                             <span className={`header-infos-span ${props.currentPage === 5 ? "active" : ""}`}
                                   onClick={props.showPage5}>
-                            {props.currentPage === 5 ? "> " : ""} inventário
+                            {props.currentPage === 5 ? "> " : ""} anotações
                         </span>
                     </div>
                     <button className={"header-infos-configButton"}

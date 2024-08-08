@@ -3,6 +3,7 @@ import {useEffect, useState} from "react";
 import {deleteItem, getItem, handleChange, saveItem} from "../SaveLoad.jsx";
 import {arcColors, atrColors, bioColors} from "../../styles/CommonStyles.jsx";
 import {arcArray, perArray, subArcArray} from "./FichaPage3Arrays.jsx";
+import {map} from "jquery";
 
 export function Biotipos(props) {
 
@@ -45,7 +46,7 @@ Biotipos.propTypes = {
     isLocked: PropTypes.bool.isRequired,
 };
 
-export function PericiasSection({ isLocked }) {
+export function PericiasSection({ isLocked, rollDice }) {
 
     function groupPericias(pericias, groupSize) {
         const grouped = [];
@@ -60,7 +61,7 @@ export function PericiasSection({ isLocked }) {
             {groupPericias(perArray, 4).map((group, index) => (
                 <div className={"input-center justify-center"} key={index}>
                     {group.map(({ pericia, atr }) => (
-                        <Pericia isLocked={isLocked} pericia={pericia} atr={atr} key={pericia} />
+                        <Pericia isLocked={isLocked} pericia={pericia} atr={atr} key={pericia}  rollDice={rollDice}/>
                     ))}
                 </div>
             ))}
@@ -70,6 +71,7 @@ export function PericiasSection({ isLocked }) {
 
 PericiasSection.propTypes = {
     isLocked: PropTypes.bool.isRequired,
+    rollDice: PropTypes.func.isRequired,
 }
 
 function Pericia(props) {
@@ -86,7 +88,9 @@ function Pericia(props) {
             <span className={"input-group-text-left"}
                   style={{backgroundColor: atrColors[props.atr].background,
                       color: atrColors[props.atr].color}}>{props.atr}</span>
-            <span className={"input-group-text-center"}
+            <span className={"input-group-text-center pericia"}
+                  id={`button-${props.pericia}`}
+                  onClick={(e) => props.rollDice(e)}
                   style={props.isLocked ? {borderColor: `${atrColors[props.atr].background}`} : {}}>
                 {props.pericia}</span>
             <input type={"number"}
@@ -109,9 +113,10 @@ Pericia.propTypes = {
     pericia: PropTypes.string.isRequired,
     atr: PropTypes.string.isRequired,
     isLocked: PropTypes.bool.isRequired,
+    rollDice: PropTypes.func.isRequired,
 };
 
-export function Atributos(props) {
+export function Attributes(props) {
 
     const [value, setValue] = useState(getItem(`atributo-${props.atr}`, ''));
 
@@ -147,7 +152,7 @@ export function Atributos(props) {
 
 }
 
-Atributos.propTypes = {
+Attributes.propTypes = {
     atributo: PropTypes.string.isRequired,
     atr: PropTypes.string.isRequired,
     isLocked: PropTypes.bool.isRequired,
