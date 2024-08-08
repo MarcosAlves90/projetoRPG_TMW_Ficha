@@ -33,7 +33,7 @@ export default function Page0() {
                     </article>
                 </section>
                 <section className={"mainCommon-page-0-section-1"}>
-                    <p>An online character sheet project for the virtual tabletop role-playing game "The Mental World". The project uses technologies such as HTML, CSS, JavaScript, React and Vite for its operation and stylization. The idea is for the user to be able to build their sheet on the platform and download it in JSON format for future use.</p>
+                    <p>An online character sheet project for the virtual tabletop role-playing game &quot;The Mental World&quot;. The project uses technologies such as HTML, CSS, JavaScript, React and Vite for its operation and stylization. The idea is for the user to be able to build their sheet on the platform and download it in JSON format for future use.</p>
                     <div className={"mainCommon-page-0-section-1-footer"}>
                         <button onClick={() => window.open("https://github.com/MarcosAlves90/projetoRPG_TMW_Ficha/tree/develop", "_blank")}>
                             GitHub
