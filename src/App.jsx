@@ -106,7 +106,7 @@ function App() {
             <div>
                 {isLoading && (
                     <div id="loader">
-                        <div className="loader"></div>
+                        <div className="loader" />
                     </div>
                 )}
             </div>
@@ -136,7 +136,7 @@ function App() {
                                     location.reload()
                                 }}>
                             {"Limpar "}
-                            <i className="bi bi-trash3-fill"></i>
+                            <i className="bi bi-trash3-fill" />
                         </button>
                     </div>
                     <input className="form-control dark" type="file" id="formFile"
@@ -145,7 +145,7 @@ function App() {
                             onClick={() => document.getElementById('formFile').click()}>
                         <label htmlFor="formFile" style={{width: "100%"}} className="file-selector">
                             {"Carregar "}
-                            <i className="bi bi-box-arrow-up"></i>
+                            <i className="bi bi-box-arrow-up" />
                         </label>
                     </button>
                 </div>
@@ -153,12 +153,12 @@ function App() {
                     <div className={"icon-save right"}>
                         <button className={"button-header active up"} onClick={() => scrollTo(0, 0)}>
                             {"Subir "}
-                            <i className="bi bi-caret-up-fill"></i>
+                            <i className="bi bi-caret-up-fill" />
                         </button>
                     </div>
                     <button className="button-header active" onClick={saveLocalStorageFile}>
                         {"Salvar "}
-                        <i className="bi bi-floppy2-fill"></i>
+                        <i className="bi bi-floppy2-fill" />
                     </button>
                 </div>
             </div> : null}

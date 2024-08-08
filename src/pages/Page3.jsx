@@ -175,13 +175,13 @@ export default function Page3() {
                             onClick={() => setIsLocked(!isLocked)}
                             style={isLocked ? lockedInputStyle() : {}}>
                         {isLocked ? "Entradas bloqueadas " : "Entradas desbloqueadas "}
-                        <i className={isLocked ? "bi bi-lock-fill" : "bi bi-unlock-fill"}></i>
+                        <i className={isLocked ? "bi bi-lock-fill" : "bi bi-unlock-fill"} />
                     </button>
                     <button type="button"
                             className="button-lock"
                             onClick={updatePoints}>
                         {"Atualizar pontos "}
-                        <i className={"bi bi-arrow-clockwise"}></i>
+                        <i className={"bi bi-arrow-clockwise"} />
                     </button>
                     <button type={"button"}
                             className={"button-lock"}
@@ -189,7 +189,7 @@ export default function Page3() {
                             style={recommendations ? lockedInputStyle() : {}}
                     >
                         {"Pontos recomendados "}
-                        <i className={recommendations ? "bi bi-exclamation-triangle-fill" : "bi bi-exclamation-triangle"}></i>
+                        <i className={recommendations ? "bi bi-exclamation-triangle-fill" : "bi bi-exclamation-triangle"} />
                     </button>
 
                 </div>

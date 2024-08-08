@@ -22,11 +22,11 @@ const CreateAnnotations = ({ array, handleContentChange, handleDelete }) => {
                     onChange={(event) => handleContentChange(event, index)}
                     minRows="4"
                     placeholder="Escreva suas anotações."
-                ></TextareaAutosize>
+                 />
                 <div className={"delete-button"}>
                     <button className={"button-header active clear"} onClick={() => handleDelete(index)}>
                         {"Excluir "}
-                        <i className="bi bi-trash3-fill"></i></button>
+                        <i className="bi bi-trash3-fill" /></button>
                 </div>
             </div>
         </Collapsible>

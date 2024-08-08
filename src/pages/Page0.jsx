@@ -17,7 +17,7 @@ export default function Page0() {
 
     return (
         <>
-            <div className={"backgroundCommon"}></div>
+            <div className={"backgroundCommon"} />
             <main className={"mainCommon page-0 root-style"}>
                 <section className={"mainCommon-page-0-section-0"}>
                     <article className={"mainCommon-page-0-section-0-article"}>

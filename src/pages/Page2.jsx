@@ -49,7 +49,7 @@ export default function Page2() {
                                               value={origem}
                                               onChange={handleChange(setOrigem)}
                                               minRows="7"
-                                              placeholder={"Escreva a sua origem."}></TextareaAutosize>
+                                              placeholder={"Escreva a sua origem."} />
                         </article>
                     </Collapsible>
                 </section>
@@ -65,7 +65,7 @@ export default function Page2() {
                                               value={fisico}
                                               onChange={handleChange(setFisico)}
                                               minRows="4"
-                                              placeholder={"Descreva sua aparência."}></TextareaAutosize>
+                                              placeholder={"Descreva sua aparência."} />
                         </div>
                     </Collapsible>
                 </section>
@@ -81,7 +81,7 @@ export default function Page2() {
                                               value={ideais}
                                               onChange={handleChange(setIdeais)}
                                               minRows="4"
-                                              placeholder={"- Escreva um ou mais ideais."}></TextareaAutosize>
+                                              placeholder={"- Escreva um ou mais ideais."} />
                         </div>
                     </Collapsible>
                 </section>
@@ -100,7 +100,7 @@ export default function Page2() {
                                                       onChange={handleChange(setTracosNegativos)}
                                                       minRows="4"
                                                       placeholder={"- Escreva um ou mais traços negativos.\n" +
-                                                          "- Os traços podem ser físicos ou mentais."}></TextareaAutosize>
+                                                          "- Os traços podem ser físicos ou mentais."} />
                                 </div>
                             </Collapsible>
                         </div>
@@ -116,7 +116,7 @@ export default function Page2() {
                                                       onChange={handleChange(setTracosPositivos)}
                                                       minRows="4"
                                                       placeholder={"- Escreva um ou mais traços positivos.\n" +
-                                                          "- Os traços podem ser físicos ou mentais."}></TextareaAutosize>
+                                                          "- Os traços podem ser físicos ou mentais."} />
                                 </div>
                             </Collapsible>
                         </div>
@@ -134,7 +134,7 @@ export default function Page2() {
                                               value={origemForma}
                                               onChange={handleChange(setOrigemForma)}
                                               minRows="7"
-                                              placeholder={"Escreva a origem da sua forma."}></TextareaAutosize>
+                                              placeholder={"Escreva a origem da sua forma."} />
                         </div>
                     </Collapsible>
                 </section>
