@@ -3,7 +3,6 @@ import {useEffect, useState} from "react";
 import {deleteItem, getItem, handleChange, saveItem} from "../SaveLoad.jsx";
 import {arcColors, atrColors, bioColors} from "../../styles/CommonStyles.jsx";
 import {arcArray, perArray, subArcArray} from "./FichaPage3Arrays.jsx";
-import {map} from "jquery";
 
 /**
  * Handles key press events on input fields to restrict input to numeric values and control commands.
@@ -16,12 +15,10 @@ import {map} from "jquery";
  * @param {Object} event - The event object provided by the onKeyDownCapture event.
  */
 function handleKeyPress(event) {
-    // Verifica se a tecla pressionada é Control+A, Control+C ou Control+V
     if (event.ctrlKey && (event.key === 'a' || event.key === 'c')) {
         return; // Não faz nada, permitindo a ação padrão do navegador
     }
 
-    // Verifica se a tecla pressionada não é um número e não é uma tecla de controle (como backspace, delete, etc.)
     if (!/[0-9]/.test(event.key) && !['Backspace', 'ArrowLeft', 'ArrowRight', 'Delete', 'Tab', 'ArrowUp', 'ArrowDown'].includes(event.key)) {
         event.preventDefault();
     }
@@ -112,7 +109,7 @@ function Pericia(props) {
                       color: atrColors[props.atr].color}}>{props.atr}</span>
             <span className={"input-group-text-center pericia"}
                   id={`button-${props.pericia}`}
-                  onClick={(e) => props.rollDice(e)}
+                  onClick={props.rollDice}
                   style={props.isLocked ? {borderColor: `${atrColors[props.atr].background}`} : {}}>
                 {props.pericia}</span>
             <input type={"number"}

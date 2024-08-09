@@ -35,111 +35,111 @@ export default function Page2() {
     }, [ideais, tracosNegativos, tracosPositivos, origem, origemForma, fisico]);
 
     return (
-        <>
-            <div className={"mainCommon"}>
 
-                <section className={"section-origem"}>
-                    <Collapsible trigger={"origem "}
-                                 triggerStyle={{fontSize: "1.5em", color: "rgb(43, 43, 43)"}}
-                                 transitionTime={100}
-                                 transitionCloseTime={100}>
-                        <article className={"textarea-container"}>
-                            <TextareaAutosize className="form-control textarea-sheet"
-                                              id="exampleFormControlTextarea1"
-                                              value={origem}
-                                              onChange={handleChange(setOrigem)}
-                                              minRows="7"
-                                              placeholder={"Escreva a sua origem."} />
-                        </article>
-                    </Collapsible>
-                </section>
+        <main className={"mainCommon"}>
 
-                <section className={"section-fisico"}>
-                    <Collapsible trigger={"aparência."}
-                                 triggerStyle={{fontSize: "1.5em", color: "rgb(43, 43, 43)"}}
-                                 transitionTime={100}
-                                 transitionCloseTime={100}>
-                        <div className={"textarea-container"}>
-                            <TextareaAutosize className="form-control textarea-sheet"
-                                              id="exampleFormControlTextarea1"
-                                              value={fisico}
-                                              onChange={handleChange(setFisico)}
-                                              minRows="4"
-                                              placeholder={"Descreva sua aparência."} />
-                        </div>
-                    </Collapsible>
-                </section>
+            <section className={"section-origem"}>
+                <Collapsible trigger={"origem "}
+                             triggerStyle={{fontSize: "1.5em", color: "rgb(43, 43, 43)"}}
+                             transitionTime={100}
+                             transitionCloseTime={100}>
+                    <article className={"textarea-container"}>
+                        <TextareaAutosize className="form-control textarea-sheet"
+                                          id="exampleFormControlTextarea1"
+                                          value={origem}
+                                          onChange={handleChange(setOrigem)}
+                                          minRows="7"
+                                          placeholder={"Escreva a sua origem."} />
+                    </article>
+                </Collapsible>
+            </section>
 
-                <section className={"section-ideais"}>
-                    <Collapsible trigger={"ideais."}
-                                 triggerStyle={{fontSize: "1.5em", color: "rgb(43, 43, 43)"}}
-                                 transitionTime={100}
-                                 transitionCloseTime={100}>
-                        <div className={"textarea-container"}>
-                            <TextareaAutosize className="form-control textarea-sheet"
-                                              id="exampleFormControlTextarea1"
-                                              value={ideais}
-                                              onChange={handleChange(setIdeais)}
-                                              minRows="4"
-                                              placeholder={"- Escreva um ou mais ideais."} />
-                        </div>
-                    </Collapsible>
-                </section>
-
-                <section className={"section-tracos"}>
-                    <div className={"textarea-center-container"}>
-                        <div className={"textarea-meio"}>
-                            <Collapsible trigger={"traços negativos."}
-                                         triggerStyle={{fontSize: "1.5em", color: "rgb(43, 43, 43)"}}
-                                         transitionTime={100}
-                                         transitionCloseTime={100}>
-                                <div className={"textarea-container"}>
-                                    <TextareaAutosize className="form-control textarea-sheet"
-                                                      id="exampleFormControlTextarea1"
-                                                      value={tracosNegativos}
-                                                      onChange={handleChange(setTracosNegativos)}
-                                                      minRows="4"
-                                                      placeholder={"- Escreva um ou mais traços negativos.\n" +
-                                                          "- Os traços podem ser físicos ou mentais."} />
-                                </div>
-                            </Collapsible>
-                        </div>
-                        <div className={"textarea-meio"}>
-                            <Collapsible trigger={"traços positivos."}
-                                         triggerStyle={{fontSize: "1.5em", color: "rgb(43, 43, 43)"}}
-                                         transitionTime={100}
-                                         transitionCloseTime={100}>
-                                <div className={"textarea-container"}>
-                                    <TextareaAutosize className="form-control textarea-sheet"
-                                                      id="exampleFormControlTextarea1"
-                                                      value={tracosPositivos}
-                                                      onChange={handleChange(setTracosPositivos)}
-                                                      minRows="4"
-                                                      placeholder={"- Escreva um ou mais traços positivos.\n" +
-                                                          "- Os traços podem ser físicos ou mentais."} />
-                                </div>
-                            </Collapsible>
-                        </div>
+            <section className={"section-fisico"}>
+                <Collapsible trigger={"aparência."}
+                             triggerStyle={{fontSize: "1.5em", color: "rgb(43, 43, 43)"}}
+                             transitionTime={100}
+                             transitionCloseTime={100}>
+                    <div className={"textarea-container"}>
+                        <TextareaAutosize className="form-control textarea-sheet"
+                                          id="exampleFormControlTextarea1"
+                                          value={fisico}
+                                          onChange={handleChange(setFisico)}
+                                          minRows="4"
+                                          placeholder={"Descreva sua aparência."} />
                     </div>
-                </section>
+                </Collapsible>
+            </section>
 
-                <section className={"section-origem-forma"}>
-                    <Collapsible trigger={"origem da forma."}
-                                 triggerStyle={{fontSize: "1.5em", color: "rgb(43, 43, 43)"}}
-                                 transitionTime={100}
-                                 transitionCloseTime={100}>
-                        <div className={"textarea-container"}>
-                            <TextareaAutosize className="form-control textarea-sheet"
-                                              id="exampleFormControlTextarea1"
-                                              value={origemForma}
-                                              onChange={handleChange(setOrigemForma)}
-                                              minRows="7"
-                                              placeholder={"Escreva a origem da sua forma."} />
-                        </div>
-                    </Collapsible>
-                </section>
+            <section className={"section-ideais"}>
+                <Collapsible trigger={"ideais."}
+                             triggerStyle={{fontSize: "1.5em", color: "rgb(43, 43, 43)"}}
+                             transitionTime={100}
+                             transitionCloseTime={100}>
+                    <div className={"textarea-container"}>
+                        <TextareaAutosize className="form-control textarea-sheet"
+                                          id="exampleFormControlTextarea1"
+                                          value={ideais}
+                                          onChange={handleChange(setIdeais)}
+                                          minRows="4"
+                                          placeholder={"- Escreva um ou mais ideais."} />
+                    </div>
+                </Collapsible>
+            </section>
 
-            </div>
-        </>
+            <section className={"section-tracos"}>
+                <div className={"textarea-center-container"}>
+                    <div className={"textarea-meio"}>
+                        <Collapsible trigger={"traços negativos."}
+                                     triggerStyle={{fontSize: "1.5em", color: "rgb(43, 43, 43)"}}
+                                     transitionTime={100}
+                                     transitionCloseTime={100}>
+                            <div className={"textarea-container"}>
+                                <TextareaAutosize className="form-control textarea-sheet"
+                                                  id="exampleFormControlTextarea1"
+                                                  value={tracosNegativos}
+                                                  onChange={handleChange(setTracosNegativos)}
+                                                  minRows="4"
+                                                  placeholder={"- Escreva um ou mais traços negativos.\n" +
+                                                      "- Os traços podem ser físicos ou mentais."} />
+                            </div>
+                        </Collapsible>
+                    </div>
+                    <div className={"textarea-meio"}>
+                        <Collapsible trigger={"traços positivos."}
+                                     triggerStyle={{fontSize: "1.5em", color: "rgb(43, 43, 43)"}}
+                                     transitionTime={100}
+                                     transitionCloseTime={100}>
+                            <div className={"textarea-container"}>
+                                <TextareaAutosize className="form-control textarea-sheet"
+                                                  id="exampleFormControlTextarea1"
+                                                  value={tracosPositivos}
+                                                  onChange={handleChange(setTracosPositivos)}
+                                                  minRows="4"
+                                                  placeholder={"- Escreva um ou mais traços positivos.\n" +
+                                                      "- Os traços podem ser físicos ou mentais."} />
+                            </div>
+                        </Collapsible>
+                    </div>
+                </div>
+            </section>
+
+            <section className={"section-origem-forma"}>
+                <Collapsible trigger={"origem da forma."}
+                             triggerStyle={{fontSize: "1.5em", color: "rgb(43, 43, 43)"}}
+                             transitionTime={100}
+                             transitionCloseTime={100}>
+                    <div className={"textarea-container"}>
+                        <TextareaAutosize className="form-control textarea-sheet"
+                                          id="exampleFormControlTextarea1"
+                                          value={origemForma}
+                                          onChange={handleChange(setOrigemForma)}
+                                          minRows="7"
+                                          placeholder={"Escreva a origem da sua forma."} />
+                    </div>
+                </Collapsible>
+            </section>
+
+        </main>
+
     )
 }

@@ -112,247 +112,247 @@ export default function Page1() {
     }
 
     return (
-        <>
-            <main className={"mainCommon"}>
 
-                <section className={"section-identity"}>
-                    <article className={"container-identity"}>
-                        <div className={"container-identity-inside outside"}>
-                            <div className={"container-identity-outside"}>
-                                <div className={"container-identity-outside-text"}>
-                                    <p className={"container-identity-outside-text-p"}>
-                                        REPÚBLICA FEDERATIVA DO BRASIL
-                                    </p>
-                                </div>
-                                <div className={"container-identity-inside center"}>
-                                    <p>REGIÃO DE AGAMEMNON</p>
-                                    <p>SECRETARIA DE SEGURANÇA PÚBLICA</p>
-                                    <p>INSTITUTO DE IDENTIFICAÇÃO</p>
-                                </div>
-                                <div className={"container-identity-inside"}>
-                                    <ProfilePicUploader/>
-                                    <div className={"container-identity-inside-text"}>
-                                        <p>NOME: {name}</p>
-                                        <p>DATA NASCIMENTO: {age}</p>
-                                        <p>ÓRGÃO EXPEDIDOR: SSP-SEV</p>
-                                    </div>
-                                </div>
-                                <div className={"container-identity-outside-text"}>
-                                    <p className={"container-identity-outside-text-p"}>
-                                        CARTEIRA DE IDENTIDADE
-                                    </p>
+        <main className={"mainCommon"}>
+
+            <section className={"section-identity"}>
+                <article className={"container-identity"}>
+                    <div className={"container-identity-inside outside"}>
+                        <div className={"container-identity-outside"}>
+                            <div className={"container-identity-outside-text"}>
+                                <p className={"container-identity-outside-text-p"}>
+                                    REPÚBLICA FEDERATIVA DO BRASIL
+                                </p>
+                            </div>
+                            <div className={"container-identity-inside center"}>
+                                <p>REGIÃO DE AGAMEMNON</p>
+                                <p>SECRETARIA DE SEGURANÇA PÚBLICA</p>
+                                <p>INSTITUTO DE IDENTIFICAÇÃO</p>
+                            </div>
+                            <div className={"container-identity-inside"}>
+                                <ProfilePicUploader/>
+                                <div className={"container-identity-inside-text"}>
+                                    <p>NOME: {name}</p>
+                                    <p>DATA NASCIMENTO: {age}</p>
+                                    <p>ÓRGÃO EXPEDIDOR: SSP-SEV</p>
                                 </div>
                             </div>
+                            <div className={"container-identity-outside-text"}>
+                                <p className={"container-identity-outside-text-p"}>
+                                    CARTEIRA DE IDENTIDADE
+                                </p>
+                            </div>
                         </div>
-                    </article>
-                </section>
-
-                <section className={"section-pessoal"}>
-                    <div className={"title-2-container"}>
-                        <h2 className={"mainCommon title-2"}>pessoal.</h2>
                     </div>
-                    <fieldset className={"page-1"}>
-                        <input type={"text"} value={name} onChange={handleChange(setName)}
-                               placeholder="nome"/>
-                        <input type={"text"} value={title} onChange={handleChange(setTitle)}
-                               placeholder="título"/>
-                        <input type={"text"} className={"input-small"} value={career} onChange={handleChange(setCareer)}
-                               placeholder={"profissão"}/>
-                    </fieldset>
-                    <fieldset className={"page-1"}>
-                        <input type={"text"}
-                               value={age}
-                               onChange={handleChange(setAge)}
-                               className={"input-small"}
-                               placeholder="data de nascimento"/>
-                        <input type={"number"}
-                               value={altura}
-                               onChange={handleChange(setAltura)}
-                               min={0}
-                               step={0.01}
-                               className={"input-small"}
-                               placeholder="altura"/>
-                        <input type={"number"}
-                               value={peso}
-                               onChange={handleChange(setPeso)}
-                               min={0}
-                               step={0.1}
-                               className={"input-small"}
-                               placeholder="peso"/>
-                    </fieldset>
-                </section>
+                </article>
+            </section>
 
-                <section className={"section-forma"}>
-                    <div className={"title-2-container"}>
-                        <h2 className={"mainCommon title-2"}>forma.</h2>
+            <section className={"section-pessoal"}>
+                <div className={"title-2-container"}>
+                    <h2 className={"mainCommon title-2"}>pessoal.</h2>
+                </div>
+                <fieldset className={"page-1"}>
+                    <input type={"text"} value={name} onChange={handleChange(setName)}
+                           placeholder="nome"/>
+                    <input type={"text"} value={title} onChange={handleChange(setTitle)}
+                           placeholder="título"/>
+                    <input type={"text"} className={"input-small"} value={career} onChange={handleChange(setCareer)}
+                           placeholder={"profissão"}/>
+                </fieldset>
+                <fieldset className={"page-1"}>
+                    <input type={"text"}
+                           value={age}
+                           onChange={handleChange(setAge)}
+                           className={"input-small"}
+                           placeholder="data de nascimento"/>
+                    <input type={"number"}
+                           value={altura}
+                           onChange={handleChange(setAltura)}
+                           min={0}
+                           step={0.01}
+                           className={"input-small"}
+                           placeholder="altura"/>
+                    <input type={"number"}
+                           value={peso}
+                           onChange={handleChange(setPeso)}
+                           min={0}
+                           step={0.1}
+                           className={"input-small"}
+                           placeholder="peso"/>
+                </fieldset>
+            </section>
+
+            <section className={"section-forma"}>
+                <div className={"title-2-container"}>
+                    <h2 className={"mainCommon title-2"}>forma.</h2>
+                </div>
+                <fieldset className={"page-1"}>
+                    <div>
+                        <input className={"input-left"}
+                               type={"text"}
+                               value={nomeF}
+                               onChange={handleChange(setNomeF)}
+                               placeholder={"nome da forma"}/>
                     </div>
-                    <fieldset className={"page-1"}>
+                    <div className={"custom-select-father meio"}>
+                        <select className="form-select custom-select input-center-dropdown"
+                                style={seletorFormaStyle}
+                                onChange={handleChange(setForma)}
+                                value={forma}>
+                            <option value=''>medo/fobia/trauma</option>
+                            <option value={1}>medo</option>
+                            <option value={2}>fobia</option>
+                            <option value={3}>trauma</option>
+                        </select>
+                    </div>
+                    <div>
+                        <input className={"input-right"}
+                               type={"text"}
+                               value={tipoF}
+                               onChange={handleChange(setTipoF)}
+                               placeholder={"tipo da forma"}/>
+                    </div>
+                </fieldset>
+            </section>
+
+            <section className={"section-recursos"}>
+                <fieldset className={"page-1"}>
+                    <div>
+                        <div className={"title-2-container"}>
+                            <h2 className={"mainCommon title-2"}>vida.</h2>
+                        </div>
                         <div>
                             <input className={"input-left"}
-                                   type={"text"}
-                                   value={nomeF}
-                                   onChange={handleChange(setNomeF)}
-                                   placeholder={"nome da forma"}/>
+                                   type={"number"}
+                                   value={localLife()}
+                                   min={0}
+                                   placeholder={"pontos de vida"}
+                                   disabled={true}/>
+                            <input className={"input-right"}
+                                   type={"number"}
+                                   value={vidaGasta}
+                                   onChange={handleChange(setVidaGasta)}
+                                   min={0}
+                                   placeholder={"vida atual"}/>
                         </div>
-                        <div className={"custom-select-father meio"}>
-                            <select className="form-select custom-select input-center-dropdown"
-                                    style={seletorFormaStyle}
-                                    onChange={handleChange(setForma)}
-                                    value={forma}>
-                                <option value=''>medo/fobia/trauma</option>
-                                <option value={1}>medo</option>
-                                <option value={2}>fobia</option>
-                                <option value={3}>trauma</option>
+                    </div>
+                    <div>
+                        <div className={"title-2-container"}>
+                            <h2 className={"mainCommon title-2"}>estresse.</h2>
+                        </div>
+                        <div>
+                            <input className={"input-left"}
+                                   type={"number"}
+                                   value={((getItem(`pericia-${'Foco'}`)/2)*10) || 0}
+                                   min={0}
+                                   placeholder={"pontos de estresse"}
+                                   disabled={true}/>
+                            <input className={"input-right"}
+                                   type={"number"}
+                                   value={estresseGasto}
+                                   onChange={handleChange(setEstresseGasto)}
+                                   min={0}
+                                   placeholder={"estresse atual"}/>
+                        </div>
+                    </div>
+                </fieldset>
+                <fieldset className={"page-1"}>
+                    <div>
+                        <div className={"title-2-container"}>
+                            <h2 className={"mainCommon title-2"}>energia.</h2>
+                        </div>
+                        <div>
+                            <input className={"input-left"}
+                                   type={"number"}
+                                   value={localEnergy()}
+                                   min={0}
+                                   placeholder={"pontos de energia"}
+                                   disabled={true}/>
+                            <input className={"input-right"}
+                                   type={"number"}
+                                   value={energiaGasta}
+                                   onChange={handleChange(setEnergiaGasta)}
+                                   min={0}
+                                   placeholder={"energia atual"}/>
+                        </div>
+                    </div>
+                    <div>
+                        <div className={"title-2-container"}>
+                            <h2 className={"mainCommon title-2"}>sanidade.</h2>
+                        </div>
+                        <div>
+                            <input className={"input-left"}
+                                   type={"number"}
+                                   value={((getItem(`pericia-${'Foco'}`)/2)*10) || 0}
+                                   min={0}
+                                   placeholder={"pontos de sanidade"}
+                                   disabled={true}/>
+                            <input className={"input-right"}
+                                   type={"number"}
+                                   value={sanidadeGasta}
+                                   onChange={handleChange(setSanidadeGasta)}
+                                   min={0}
+                                   placeholder={"sanidade atual"}/>
+                        </div>
+                    </div>
+                </fieldset>
+            </section>
+
+            <section className={"section-ajustes"}>
+                <fieldset className={"page-1 bottom"}>
+                    <div className={"display-block-center"}>
+                        <div className={"title-2-container"}>
+                            <h2 className={"mainCommon title-2"}>defesa.</h2>
+                        </div>
+                        <div>
+                            <input className={"input-left"}
+                                   type={"number"}
+                                   value={10 + getItem(`atributo-${'DES'}`, 0)}
+                                   min={0}
+                                   placeholder={"pontos de defesa"}
+                                   disabled={true}/>
+                        </div>
+                    </div>
+                    <div className={"display-block-center"}>
+                        <div className={"title-2-container"}>
+                            <h2 className={"mainCommon title-2"}>nível.</h2>
+                        </div>
+                        <div className={"display-flex-center"}>
+                            <input className={"input-center-dropdown"}
+                                   type={"number"}
+                                   value={level}
+                                   onChange={handleChange(setLevel)}
+                                   min={0}
+                                   placeholder={"nível atual"}/>
+                        </div>
+                    </div>
+                    <div className={"display-block-center"}>
+                        <div className={"title-2-container"}>
+                            <h2 className={"mainCommon title-2"}>afinidade.</h2>
+                        </div>
+                        <div className={"custom-select-father direito"}>
+                            <select className="form-select custom-select input-right"
+                                    style={seletorAfinidadeStyle}
+                                    onChange={handleChange(setAffinity)}
+                                    value={affinity}>
+                                <option value=''>afinidade</option>
+                                <option value={1}>aqua</option>
+                                <option value={2}>axis</option>
+                                <option value={3}>geo</option>
+                                <option value={4}>khaos</option>
+                                <option value={5}>lumen</option>
+                                <option value={6}>pyro</option>
+                                <option value={7}>volt</option>
+                                <option value={8}>zephyr</option>
+                                <option value={9}>tenebris</option>
                             </select>
                         </div>
-                        <div>
-                            <input className={"input-right"}
-                                   type={"text"}
-                                   value={tipoF}
-                                   onChange={handleChange(setTipoF)}
-                                   placeholder={"tipo da forma"}/>
-                        </div>
-                    </fieldset>
-                </section>
+                    </div>
+                </fieldset>
+            </section>
 
-                <section className={"section-recursos"}>
-                    <fieldset className={"page-1"}>
-                        <div>
-                            <div className={"title-2-container"}>
-                                <h2 className={"mainCommon title-2"}>vida.</h2>
-                            </div>
-                            <div>
-                                <input className={"input-left"}
-                                       type={"number"}
-                                       value={localLife()}
-                                       min={0}
-                                       placeholder={"pontos de vida"}
-                                       disabled={true}/>
-                                <input className={"input-right"}
-                                       type={"number"}
-                                       value={vidaGasta}
-                                       onChange={handleChange(setVidaGasta)}
-                                       min={0}
-                                       placeholder={"vida atual"}/>
-                            </div>
-                        </div>
-                        <div>
-                            <div className={"title-2-container"}>
-                                <h2 className={"mainCommon title-2"}>estresse.</h2>
-                            </div>
-                            <div>
-                                <input className={"input-left"}
-                                       type={"number"}
-                                       value={((getItem(`pericia-${'Foco'}`)/2)*10) || 0}
-                                       min={0}
-                                       placeholder={"pontos de estresse"}
-                                       disabled={true}/>
-                                <input className={"input-right"}
-                                       type={"number"}
-                                       value={estresseGasto}
-                                       onChange={handleChange(setEstresseGasto)}
-                                       min={0}
-                                       placeholder={"estresse atual"}/>
-                            </div>
-                        </div>
-                    </fieldset>
-                    <fieldset className={"page-1"}>
-                        <div>
-                            <div className={"title-2-container"}>
-                                <h2 className={"mainCommon title-2"}>energia.</h2>
-                            </div>
-                            <div>
-                                <input className={"input-left"}
-                                       type={"number"}
-                                       value={localEnergy()}
-                                       min={0}
-                                       placeholder={"pontos de energia"}
-                                       disabled={true}/>
-                                <input className={"input-right"}
-                                       type={"number"}
-                                       value={energiaGasta}
-                                       onChange={handleChange(setEnergiaGasta)}
-                                       min={0}
-                                       placeholder={"energia atual"}/>
-                            </div>
-                        </div>
-                        <div>
-                            <div className={"title-2-container"}>
-                                <h2 className={"mainCommon title-2"}>sanidade.</h2>
-                            </div>
-                            <div>
-                                <input className={"input-left"}
-                                       type={"number"}
-                                       value={((getItem(`pericia-${'Foco'}`)/2)*10) || 0}
-                                       min={0}
-                                       placeholder={"pontos de sanidade"}
-                                       disabled={true}/>
-                                <input className={"input-right"}
-                                       type={"number"}
-                                       value={sanidadeGasta}
-                                       onChange={handleChange(setSanidadeGasta)}
-                                       min={0}
-                                       placeholder={"sanidade atual"}/>
-                            </div>
-                        </div>
-                    </fieldset>
-                </section>
+        </main>
 
-                <section className={"section-ajustes"}>
-                    <fieldset className={"page-1 bottom"}>
-                        <div className={"display-block-center"}>
-                            <div className={"title-2-container"}>
-                                <h2 className={"mainCommon title-2"}>defesa.</h2>
-                            </div>
-                            <div>
-                                <input className={"input-left"}
-                                       type={"number"}
-                                       value={10 + getItem(`atributo-${'DES'}`, 0)}
-                                       min={0}
-                                       placeholder={"pontos de defesa"}
-                                       disabled={true}/>
-                            </div>
-                        </div>
-                        <div className={"display-block-center"}>
-                            <div className={"title-2-container"}>
-                                <h2 className={"mainCommon title-2"}>nível.</h2>
-                            </div>
-                            <div className={"display-flex-center"}>
-                                <input className={"input-center-dropdown"}
-                                       type={"number"}
-                                       value={level}
-                                       onChange={handleChange(setLevel)}
-                                       min={0}
-                                       placeholder={"nível atual"}/>
-                            </div>
-                        </div>
-                        <div className={"display-block-center"}>
-                            <div className={"title-2-container"}>
-                                <h2 className={"mainCommon title-2"}>afinidade.</h2>
-                            </div>
-                            <div className={"custom-select-father direito"}>
-                                <select className="form-select custom-select input-right"
-                                        style={seletorAfinidadeStyle}
-                                        onChange={handleChange(setAffinity)}
-                                        value={affinity}>
-                                    <option value=''>afinidade</option>
-                                    <option value={1}>aqua</option>
-                                    <option value={2}>axis</option>
-                                    <option value={3}>geo</option>
-                                    <option value={4}>khaos</option>
-                                    <option value={5}>lumen</option>
-                                    <option value={6}>pyro</option>
-                                    <option value={7}>volt</option>
-                                    <option value={8}>zephyr</option>
-                                    <option value={9}>tenebris</option>
-                                </select>
-                            </div>
-                        </div>
-                    </fieldset>
-                </section>
-
-            </main>
-        </>
     )
 
 }

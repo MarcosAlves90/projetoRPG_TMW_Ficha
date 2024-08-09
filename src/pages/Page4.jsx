@@ -272,61 +272,61 @@ export default function Page4() {
     };
 
     return (
-        <>
-            <main className="mainCommon">
-                <div className="create-annotation">
-                    <div className="create-annotation input">
-                        <input
-                            className="create-annotation-title"
-                            type="text"
-                            value={createSkill}
-                            onChange={(event) => setCreateSkill(event.target.value)}
-                            placeholder="Nome da Skill."
-                        />
-                    </div>
-                    <div className="create-annotation button">
-                        <button
-                            className="button-header active create"
-                            onClick={() => {
-                                if (createSkill.trim()) {
-                                    saveSkills([...skillsArray, {
-                                        title: createSkill,
-                                        content: '',
-                                        circle: 1,
-                                        type: 1,
-                                        art: '',
-                                        execution: 1,
-                                        range: 1,
-                                        target: '',
-                                        duration: '',
-                                        resistance: '',
-                                        area: '',
-                                        spent: '',
-                                    }]);
-                                    clearInput();
-                                }
-                            }}
-                        >
-                            Criar Skill
-                        </button>
-                    </div>
-                    <div className={"search"}>
-                        <input
-                            className={"search skill"}
-                            type="text"
-                            placeholder="pesquisar skills..."
-                            value={searchTerm}
-                            onChange={(event) => setSearchTerm(event.target.value)}
-                        />
 
-                    </div>
+        <main className="mainCommon">
+            <div className="create-annotation">
+                <div className="create-annotation input">
+                    <input
+                        className="create-annotation-title"
+                        type="text"
+                        value={createSkill}
+                        onChange={(event) => setCreateSkill(event.target.value)}
+                        placeholder="Nome da Skill."
+                    />
                 </div>
-                <CreateSkills
-                    array={filteredSkills}
-                    handleContentChange={handleContentChange}
-                    handleDelete={handleDelete}
-                />
-            </main>
-        </>
+                <div className="create-annotation button">
+                    <button
+                        className="button-header active create"
+                        onClick={() => {
+                            if (createSkill.trim()) {
+                                saveSkills([...skillsArray, {
+                                    title: createSkill,
+                                    content: '',
+                                    circle: 1,
+                                    type: 1,
+                                    art: '',
+                                    execution: 1,
+                                    range: 1,
+                                    target: '',
+                                    duration: '',
+                                    resistance: '',
+                                    area: '',
+                                    spent: '',
+                                }]);
+                                clearInput();
+                            }
+                        }}
+                    >
+                        Criar Skill
+                    </button>
+                </div>
+                <div className={"search"}>
+                    <input
+                        className={"search skill"}
+                        type="text"
+                        placeholder="pesquisar skills..."
+                        value={searchTerm}
+                        onChange={(event) => setSearchTerm(event.target.value)}
+                    />
+
+                </div>
+            </div>
+            <CreateSkills
+                array={filteredSkills}
+                handleContentChange={handleContentChange}
+                handleDelete={handleDelete}
+            />
+        </main>
+
     );
 }

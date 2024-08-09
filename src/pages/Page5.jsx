@@ -69,46 +69,46 @@ export default function Page5() {
     );
 
     return (
-        <>
-            <main className="mainCommon">
-                <div className="create-annotation">
-                    <div className="create-annotation input">
-                        <input
-                            className="create-annotation-title"
-                            type="text"
-                            onChange={(event) => setCreateTitle(event.target.value)}
-                            placeholder="Título da anotação."
-                        />
-                    </div>
-                    <div className="create-annotation button">
-                        <button
-                            className="button-header active create"
-                            onClick={() => (createTitle.trim()) ? saveAnnotations([...annotationsArray, {
-                                title: createTitle,
-                                content: ''
-                            }]) : null}
-                        >
-                            Criar Anotação
-                        </button>
-                    </div>
-                    <div className={"search"}>
-                        <input
-                            className={"search skill"}
-                            type="text"
-                            placeholder="pesquisar anotações..."
-                            value={searchTerm}
-                            onChange={(event) => setSearchTerm(event.target.value)}
-                        />
-                    </div>
-                </div>
-                <section className={"container-annotations"}>
-                    <CreateAnnotations
-                        array={filteredAnnotations}
-                        handleContentChange={handleContentChange}
-                        handleDelete={handleDelete}
+
+        <main className="mainCommon">
+            <div className="create-annotation">
+                <div className="create-annotation input">
+                    <input
+                        className="create-annotation-title"
+                        type="text"
+                        onChange={(event) => setCreateTitle(event.target.value)}
+                        placeholder="Título da anotação."
                     />
-                </section>
-            </main>
-        </>
+                </div>
+                <div className="create-annotation button">
+                    <button
+                        className="button-header active create"
+                        onClick={() => (createTitle.trim()) ? saveAnnotations([...annotationsArray, {
+                            title: createTitle,
+                            content: ''
+                        }]) : null}
+                    >
+                        Criar Anotação
+                    </button>
+                </div>
+                <div className={"search"}>
+                    <input
+                        className={"search skill"}
+                        type="text"
+                        placeholder="pesquisar anotações..."
+                        value={searchTerm}
+                        onChange={(event) => setSearchTerm(event.target.value)}
+                    />
+                </div>
+            </div>
+            <section className={"container-annotations"}>
+                <CreateAnnotations
+                    array={filteredAnnotations}
+                    handleContentChange={handleContentChange}
+                    handleDelete={handleDelete}
+                />
+            </section>
+        </main>
+
     );
 }
