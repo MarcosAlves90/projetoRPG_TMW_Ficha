@@ -88,15 +88,19 @@ export function loadLocalStorageFile(event) {
 
     const reader = new FileReader();
     reader.onload = ({ target }) => {
+
+        function checkFile(file) {
+            if (!file) throw Error('Missing data')
+        }
+
         try {
             const data = JSON.parse(target.result);
-            if (!data) new Error('O arquivo não é uma ficha válida.');
+            checkFile(data);
             localStorage.clear();
             Object.entries(data).forEach(([key, value]) => localStorage.setItem(key, value));
-            console.log('Dados importados com sucesso!');
             location.reload();
         } catch (error) {
-            console.error('Erro ao processar o arquivo:', error);
+            console.error('Error processing the file:', error);
         }
     };
     reader.onerror = (error) => console.error('Erro ao ler o arquivo:', error);

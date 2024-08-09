@@ -1,6 +1,6 @@
 import PropTypes from "prop-types";
 import {useEffect, useState} from "react";
-import {deleteItem, getItem, handleChange, saveItem} from "../SaveLoad.jsx";
+import {deleteItem, getItem, saveItem} from "../SaveLoad.jsx";
 import {arcColors, atrColors, bioColors} from "../../styles/CommonStyles.jsx";
 import {arcArray, perArray, subArcArray} from "./FichaPage3Arrays.jsx";
 
@@ -31,6 +31,7 @@ export function Biotipos(props) {
     useEffect(() => {
         const action = value === '' ? deleteItem : saveItem;
         action(`biotipo-${props.biotipo}`, parseInt(value, 10) || 0);
+        props.updatePoints();
     }, [value, props.biotipo]);
 
     return (
@@ -49,7 +50,7 @@ export function Biotipos(props) {
                    className="form-control input-status"
                    placeholder="0"
                    value={value}
-                   onChange={handleChange(setValue)}
+                   onChange={props.handleStatusChange(setValue)}
                    onKeyDownCapture={handleKeyPress}
                    style={props.isLocked ? {borderColor: bioColors[props.biotipo].background} : {}}
                    id={`label-${props.biotipo}`}
@@ -63,9 +64,11 @@ export function Biotipos(props) {
 Biotipos.propTypes = {
     biotipo: PropTypes.string.isRequired,
     isLocked: PropTypes.bool.isRequired,
+    handleStatusChange: PropTypes.func.isRequired,
+    updatePoints: PropTypes.func.isRequired,
 };
 
-export function PericiasSection({ isLocked, rollDice }) {
+export function PericiasSection({ isLocked, rollDice, handleStatusChange, updatePoints }) {
 
     function groupPericias(pericias, groupSize) {
         const grouped = [];
@@ -80,7 +83,13 @@ export function PericiasSection({ isLocked, rollDice }) {
             {groupPericias(perArray, 4).map((group, index) => (
                 <div className={"input-center justify-center"} key={index}>
                     {group.map(({ pericia, atr }) => (
-                        <Pericia isLocked={isLocked} pericia={pericia} atr={atr} key={pericia}  rollDice={rollDice}/>
+                        <Pericia isLocked={isLocked}
+                                 pericia={pericia}
+                                 atr={atr}
+                                 key={pericia}
+                                 rollDice={rollDice}
+                                 handleStatusChange={handleStatusChange}
+                                 updatePoints={updatePoints}/>
                     ))}
                 </div>
             ))}
@@ -91,6 +100,8 @@ export function PericiasSection({ isLocked, rollDice }) {
 PericiasSection.propTypes = {
     isLocked: PropTypes.bool.isRequired,
     rollDice: PropTypes.func.isRequired,
+    handleStatusChange: PropTypes.func.isRequired,
+    updatePoints: PropTypes.func.isRequired,
 }
 
 function Pericia(props) {
@@ -100,6 +111,7 @@ function Pericia(props) {
     useEffect(() => {
         const action = value === '' ? deleteItem : saveItem;
         action(`pericia-${props.pericia}`, value === '' ? 0 : parseInt(value, 10));
+        props.updatePoints();
     }, [value, props.pericia]);
 
     return (
@@ -118,7 +130,7 @@ function Pericia(props) {
                    className="form-control input-status"
                    placeholder="0"
                    value={value}
-                   onChange={handleChange(setValue)}
+                   onChange={props.handleStatusChange(setValue)}
                    onKeyDownCapture={handleKeyPress}
                    id={`label-${props.pericia}`}
                    disabled={props.isLocked}
@@ -132,9 +144,23 @@ Pericia.propTypes = {
     pericia: PropTypes.string.isRequired,
     atr: PropTypes.string.isRequired,
     isLocked: PropTypes.bool.isRequired,
+    handleStatusChange: PropTypes.func.isRequired,
     rollDice: PropTypes.func.isRequired,
+    updatePoints: PropTypes.func.isRequired,
 };
 
+/**
+ * Component for rendering an attribute input field.
+ *
+ * This component displays an attribute with a label and an input field. The input field is restricted to numeric values
+ * and can be locked to prevent user interaction. The component also handles saving and deleting the attribute value
+ * in session storage.
+ *
+ * @param {Object} props - The properties object.
+ * @param {string} props.atr - The attribute name.
+ * @param {string} props.atributo - The attribute label.
+ * @param {boolean} props.isLocked - Flag indicating if the input field is locked.
+ */
 export function Attributes(props) {
 
     const [value, setValue] = useState(getItem(`atributo-${props.atr}`, ''));
@@ -142,13 +168,16 @@ export function Attributes(props) {
     useEffect(() => {
         const action = value === '' ? deleteItem : saveItem;
         action(`atributo-${props.atr}`, parseInt(value, 10) || 0);
+        props.updatePoints();
     }, [value, props.atr]);
 
     return (
         <div className={"input-group mb-3"}>
 
             <div className={"text-div"}>
-                <span className={`input-group-text-left defined ${props.isLocked ? "locked" : ""}`}
+                <span className={`input-group-text-left defined attribute ${props.isLocked ? "locked" : ""}`}
+                      id={`button-${props.atributo}`}
+                      onClick={props.rollDice}
                       style={{
                           backgroundColor: atrColors[props.atr].background,
                           color: atrColors[props.atr].color, border: `${atrColors[props.atr].background} 2px solid`
@@ -160,7 +189,7 @@ export function Attributes(props) {
                    className="form-control input-status"
                    placeholder="0"
                    value={value}
-                   onChange={handleChange(setValue)}
+                   onChange={props.handleStatusChange(setValue)}
                    onKeyDownCapture={handleKeyPress}
                    style={props.isLocked ? {borderColor: atrColors[props.atr].background} : {}}
                    id={`label-${props.atributo}`}
@@ -175,9 +204,12 @@ Attributes.propTypes = {
     atributo: PropTypes.string.isRequired,
     atr: PropTypes.string.isRequired,
     isLocked: PropTypes.bool.isRequired,
+    handleStatusChange: PropTypes.func.isRequired,
+    updatePoints: PropTypes.func.isRequired,
+    rollDice: PropTypes.func.isRequired,
 };
 
-export function ArtsSection({ isLocked }) {
+export function ArtsSection({ isLocked, handleStatusChange, updatePoints }) {
 
     function groupArts(arts, groupSize) {
         const grouped = [];
@@ -192,7 +224,7 @@ export function ArtsSection({ isLocked }) {
             {groupArts(arcArray, 4).map((group, index) => (
                 <div className={"input-center justify-center"} key={index}>
                     {group.map(({ art }) => (
-                        <ArcaneArts isLocked={isLocked} art={art} key={art} />
+                        <ArcaneArts isLocked={isLocked} art={art} key={art}  handleStatusChange={handleStatusChange} updatePoints={updatePoints}/>
                     ))}
                 </div>
             ))}
@@ -202,6 +234,8 @@ export function ArtsSection({ isLocked }) {
 
 ArtsSection.propTypes = {
     isLocked: PropTypes.bool.isRequired,
+    handleStatusChange: PropTypes.func.isRequired,
+    updatePoints: PropTypes.func.isRequired,
 };
 
 export function ArcaneArts(props) {
@@ -210,6 +244,7 @@ export function ArcaneArts(props) {
     useEffect(() => {
         const action = value === '' ? deleteItem : saveItem;
         action(`art-${props.art}`, parseInt(value, 10) || 0);
+        props.updatePoints();
     }, [value, props.art]);
 
     return (
@@ -228,7 +263,7 @@ export function ArcaneArts(props) {
                    className="form-control input-status"
                    placeholder="0"
                    value={value}
-                   onChange={handleChange(setValue)}
+                   onChange={props.handleStatusChange(setValue)}
                    onKeyDownCapture={handleKeyPress}
                    style={props.isLocked ? {borderColor: arcColors[props.art].background} : {}}
                    id={`label-${props.art}`}
@@ -241,10 +276,28 @@ export function ArcaneArts(props) {
 ArcaneArts.propTypes = {
     art: PropTypes.string.isRequired,
     isLocked: PropTypes.bool.isRequired,
+    handleStatusChange: PropTypes.func.isRequired,
+    updatePoints: PropTypes.func.isRequired,
 };
 
-export function SubArtsSection({ isLocked }) {
+/**
+ * Component for rendering a section of sub-arcane arts.
+ *
+ * This component groups sub-arcane arts into rows and displays them. Each sub-arcane art is rendered
+ * using the SubArcaneArts component. The number of sub-arcane arts per row is determined by the groupSize parameter.
+ *
+ * @param {Object} props - The properties object.
+ * @param {boolean} props.isLocked - Flag indicating if the input fields are locked.
+ */
+export function SubArtsSection({ isLocked, handleStatusChange, updatePoints }) {
 
+    /**
+     * Groups sub-arcane arts into rows of a specified size.
+     *
+     * @param {Array} arts - The array of sub-arcane arts to be grouped.
+     * @param {number} groupSize - The number of sub-arcane arts per group.
+     * @returns {Array} An array of grouped sub-arcane arts.
+     */
     function groupSubArts(arts, groupSize) {
         const grouped = [];
         for (let i = 0; i < arts.length; i += groupSize) {
@@ -258,7 +311,13 @@ export function SubArtsSection({ isLocked }) {
             {groupSubArts(subArcArray, 4).map((group, index) => (
                 <div className={"input-center justify-center"} key={index}>
                     {group.map(({ subArt, art }) => (
-                        <SubArcaneArts isLocked={isLocked} subArt={subArt} key={subArt} art={art} />
+                        <SubArcaneArts isLocked={isLocked}
+                                       subArt={subArt}
+                                       key={subArt}
+                                       art={art}
+                                       handleStatusChange={handleStatusChange}
+                                       updatePoints={updatePoints}
+                        />
                     ))}
                 </div>
             ))}
@@ -268,6 +327,8 @@ export function SubArtsSection({ isLocked }) {
 
 SubArtsSection.propTypes = {
     isLocked: PropTypes.bool.isRequired,
+    handleStatusChange: PropTypes.func.isRequired,
+    updatePoints: PropTypes.func.isRequired,
 };
 
 export function SubArcaneArts(props) {
@@ -276,6 +337,7 @@ export function SubArcaneArts(props) {
     useEffect(() => {
         const action = value === '' ? deleteItem : saveItem;
         action(`subArt-${props.subArt}`, value === '' ? 0 : parseInt(value, 10));
+        props.updatePoints();
     }, [value, props.subArt]);
 
     return (
@@ -292,7 +354,7 @@ export function SubArcaneArts(props) {
                    className="form-control input-status"
                    placeholder="0"
                    value={value}
-                   onChange={handleChange(setValue)}
+                   onChange={props.handleStatusChange(setValue)}
                    onKeyDownCapture={handleKeyPress}
                    id={`label-${props.subArt}`}
                    disabled={props.isLocked}
@@ -306,4 +368,6 @@ SubArcaneArts.propTypes = {
     subArt: PropTypes.string.isRequired,
     art: PropTypes.string.isRequired,
     isLocked: PropTypes.bool.isRequired,
+    handleStatusChange: PropTypes.func.isRequired,
+    updatePoints: PropTypes.func.isRequired,
 };

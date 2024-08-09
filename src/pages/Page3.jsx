@@ -19,20 +19,17 @@ export default function Page3() {
     const [arcPoints, setArcPoints] = useState(getItem('art-Points', 0));
     const [subArcPoints, setSubArcPoints] = useState(getItem('subArt-Points', 0));
     const [recommendations, setRecommendations] = useState(false);
-    const [tempPericia, setTempPericia] = useState('');
-    const [tempDice, setTempDice] = useState('');
-    const [tempResult, setTempResult] = useState('');
+    const [tempRoll, setTempRoll] = useState({Pericia: '', Dice: [], Result: ''});
 
     const getTotalPoints = useCallback((map, prefix) => {
-        if (prefix === 'pericia') {
-            return map.reduce((total, {pericia}) => total + getItem(`${prefix}-${pericia}`, 0), 0);
-        } else if (prefix === 'art') {
-            return map.reduce((total, {art}) => total + getItem(`${prefix}-${art}`, 0), 0);
-        } else if (prefix === 'subArt') {
-            return map.reduce((total, {subArt}) => total + getItem(`${prefix}-${subArt}`, 0), 0);
+        const prefixList = ['pericia', 'art', 'subArt'];
+
+        if (prefixList.includes(prefix)) {
+            return map.reduce((total, obj) => total + getItem(`${prefix}-${obj[prefix]}`, 0), 0);
         } else {
             return map.reduce((total, key) => total + getItem(`${prefix}-${key}`, 0), 0);
         }
+
     }, []);
 
     const updatePoints = useCallback(() => {
@@ -60,26 +57,38 @@ export default function Page3() {
 
     }, [getTotalPoints]);
 
-    useEffect(() => {
-        updatePoints();
-    });
-
-    useEffect(() => {
-        setTempPericia(sessionStorage.getItem('tempPericia') || '');
-        setTempDice(sessionStorage.getItem('tempDice') || '');
-        setTempResult(sessionStorage.getItem('tempResult') || '');
-    }, []);
-
-    // Save the isLocked state to localStorage
-    useEffect(() => {
-        if (isLocked) {
+    function SaveLockedState(lockState) {
+        if (lockState) {
+            console.log("Bloqueando entradas...");
             saveItem('isLocked', true);
         } else {
             deleteItem('isLocked');
         }
-    }, [isLocked]);
+    }
 
-    function atributesPoints() {
+    const handleLockChange = () => {
+        const lock = !isLocked;
+        setIsLocked(lock);
+        SaveLockedState(lock);
+    }
+
+    function UpdateTempRoll() {
+        const temps = [
+            "Pericia",
+            "Dice",
+            "Result",
+        ]
+
+        const tempRollClone = { ...tempRoll };
+
+        temps.forEach((temp) => {
+            tempRollClone[temp] = sessionStorage.getItem(`temp${temp}`) || '';
+        });
+
+        setTempRoll(tempRollClone);
+    }
+
+    function CalculateAttributesPoints() {
         if (getItem('nivel', 1) < 4) {
             return 9;
         } else if (getItem('nivel', 1) < 10) {
@@ -93,7 +102,7 @@ export default function Page3() {
         }
     }
 
-    function atributesCap() {
+    function CalculateAttributesCap() {
 
         const level = getItem('nivel', 1);
 
@@ -107,7 +116,7 @@ export default function Page3() {
 
     }
 
-    function periciasPoints() {
+    function CalculatePericiasPoints() {
 
         const level = getItem('nivel', 1);
         const bPericias = getItem('biotipo-Pericias', 0);
@@ -123,48 +132,81 @@ export default function Page3() {
 
     }
 
-    function periciasCap() {
+    function CalculatePericiasCap() {
         return getItem('nivel', 1);
     }
 
-    function RollDice(e) {
-        const periciaName = (e.target.id).slice(7);
-        const pericia = getItem(`pericia-${periciaName}`, 0);
-        const attribute = map(perArray, function (per) {
-            if (per.pericia === periciaName) {
-                return getItem(`atributo-${per.atr}`, 0);
-            }
-        })
-        const dice = [];
+    const rollDice = (e) => {
 
-        for (let i = 0; i < attribute; i++) {
-            dice.push(Math.floor(Math.random() * 20) + 1);
+        function setTempRoll(periciaNameProp, diceProp, resultProp) {
+            sessionStorage.setItem('tempPericia', periciaNameProp);
+            sessionStorage.setItem('tempDice', diceProp);
+            sessionStorage.setItem('tempResult', resultProp);
         }
 
-        const diceBestResult = Math.max(...dice);
-        const result = diceBestResult + pericia;
+        if (atrMap.includes((e.target.id).slice(7))) {
+            const attributeName = (e.target.id).slice(7);
+            const attribute = getItem(`atributo-${attributeName}`, 0);
+            const dice = [];
 
-        sessionStorage.setItem('tempPericia', periciaName);
-        sessionStorage.setItem('tempDice', dice);
-        sessionStorage.setItem('tempResult', result);
+            for (let i = 0; i < attribute; i++) {
+                dice.push(Math.floor(Math.random() * 20) + 1);
+            }
 
-        setTempPericia(sessionStorage.getItem('tempPericia') || '');
-        setTempDice(sessionStorage.getItem('tempDice') || '');
-        setTempResult(sessionStorage.getItem('tempResult') || '');
+            const diceBestResult = Math.max(...dice);
 
+            setTempRoll(attributeName, dice, diceBestResult);
+            UpdateTempRoll();
+        } else {
+            const periciaName = (e.target.id).slice(7);
+            const pericia = getItem(`pericia-${periciaName}`, 0);
+            const attribute = map(perArray, function (per) {
+                if (per.pericia === periciaName) {
+                    return getItem(`atributo-${per.atr}`, 0);
+                }
+            })
+            const dice = [];
+
+            for (let i = 0; i < attribute; i++) {
+                dice.push(Math.floor(Math.random() * 20) + 1);
+            }
+
+            const diceBestResult = Math.max(...dice);
+            const result = diceBestResult + pericia;
+
+            setTempRoll(periciaName, dice, result);
+            UpdateTempRoll();
+        }
     }
+
+    const handleStatusChange = (setter) => (event) => {
+        const value = event.target.value;
+        if (event.target.type === 'number') {
+            setter(value === '' ? '' : parseFloat(value));
+        } else {
+            setter(value);
+        }
+    };
+
+    useEffect(() => {
+
+        updatePoints();
+        UpdateTempRoll();
+
+    },[]);
 
     return (
         <main className={"mainCommon page-3"}>
+
             <section className={"section-dice"}>
                 <div className={"display-flex-center"}>
                     <div>
                         <h2>Rolagem:</h2>
                     </div>
                     <article className={"display-flex-center dice"}>
-                        <div className={"dice-background dice-font left"}>{tempPericia}</div>
-                        <div className={"dice-background dice-font center"}>[{tempDice}]</div>
-                        <div className={"dice-background dice-font right"}>{tempResult}</div>
+                        <div className={"dice-background dice-font left"}>{tempRoll.Pericia ? tempRoll.Pericia : "Nenhum"}</div>
+                        <div className={"dice-background dice-font center"}>{tempRoll.Dice ? `[${tempRoll.Dice}]` : 0}</div>
+                        <div className={"dice-background dice-font right"}>{tempRoll.Result ? tempRoll.Result : 0}</div>
                     </article>
                 </div>
             </section>
@@ -172,16 +214,10 @@ export default function Page3() {
                 <div className={"display-flex-center"}>
                     <button type="button"
                             className="button-lock"
-                            onClick={() => setIsLocked(!isLocked)}
+                            onClick={handleLockChange}
                             style={isLocked ? lockedInputStyle() : {}}>
                         {isLocked ? "Entradas bloqueadas " : "Entradas desbloqueadas "}
                         <i className={isLocked ? "bi bi-lock-fill" : "bi bi-unlock-fill"} />
-                    </button>
-                    <button type="button"
-                            className="button-lock"
-                            onClick={updatePoints}>
-                        {"Atualizar pontos "}
-                        <i className={"bi bi-arrow-clockwise"} />
                     </button>
                     <button type={"button"}
                             className={"button-lock"}
@@ -198,8 +234,8 @@ export default function Page3() {
                         <div className={"alert-box"}>
                             <div className={"alert-box-message"}>
                                 <p>biotipo: [9] | máximo: [3]</p>
-                                <p>atributos: [{atributesPoints()}] | máximo: [{atributesCap()}]</p>
-                                <p>perícias: [{periciasPoints()}] | máximo: [{periciasCap()}]</p>
+                                <p>atributos: [{CalculateAttributesPoints()}] | máximo: [{CalculateAttributesCap()}]</p>
+                                <p>perícias: [{CalculatePericiasPoints()}] | máximo: [{CalculatePericiasCap()}]</p>
                                 <p className={"last-p"}>(sub)artes arcanas: [{getItem('pericia-Magia Arcana', 0) * 5}] | máximo [{15}]</p>
                             </div>
                         </div>
@@ -208,48 +244,73 @@ export default function Page3() {
             </section>
 
             <section className={"section-biotipo"}>
-                <div className={"display-flex-center"}>
+                <div className={"display-flex-center column"}>
                     <h2 className={"mainCommon title-2"}>biotipo: [{bioPoints}] pontos utilizados.</h2>
+                    <p className={"statusDescription"}>O biotipo representa a essência do personagem,
+                        seu estado natural sem treinos, modificações ou conhecimentos.</p>
                 </div>
                 <div className={"input-center justify-center min"}>
                     {bioMap.map(biotipo => (
-                        <Biotipos key={biotipo} isLocked={isLocked} biotipo={biotipo}/>
+                        <Biotipos key={biotipo}
+                                  isLocked={isLocked}
+                                  biotipo={biotipo}
+                                  handleStatusChange={handleStatusChange}
+                                  updatePoints={updatePoints}/>
                     ))}
                 </div>
             </section>
 
             <section className={"section-atributos"}>
-                <div className={"display-flex-center"}>
+                <div className={"display-flex-center column"}>
                     <h2 className={"mainCommon title-2"}>atributos: [{atrPoints}] pontos utilizados.</h2>
+                    <p className={"statusDescription"}>Os atributos são os status principais do personagem.
+                        Eles guiam as perícias e as (sub)artes arcanas.</p>
                 </div>
                 <div className={"input-center justify-center min"}>
                     {atrMap.map(atr => (
-                        <Attributes key={atr} isLocked={isLocked} atributo={atr} atr={atr} />
+                        <Attributes key={atr}
+                                    isLocked={isLocked}
+                                    atributo={atr}
+                                    atr={atr}
+                                    handleStatusChange={handleStatusChange}
+                                    updatePoints={updatePoints}
+                                    rollDice={rollDice}/>
                     ))}
                 </div>
             </section>
 
             <section className={"section-perArray"}>
-                <div className={"display-flex-center"}>
+                <div className={"display-flex-center column"}>
                     <h2 className={"mainCommon title-2"}>perícias: [{perPoints}] pontos utilizados.</h2>
+                    <p className={"statusDescription"}>As perícias são os conhecimentos e habilidades naturais do
+                        personagem, elas determinam aquilo que ele sabe ou não fazer.</p>
                 </div>
-                <PericiasSection isLocked={isLocked}  rollDice={RollDice}/>
+                <PericiasSection isLocked={isLocked}
+                                 rollDice={rollDice}
+                                 handleStatusChange={handleStatusChange}
+                                 updatePoints={updatePoints}/>
             </section>
 
             <section className={"section-arts"}>
-                <div className={"display-flex-center"}>
+                <div className={"display-flex-center column"}>
                     <h2 className={"mainCommon title-2"}>artes arcanas: [{arcPoints}] pontos utilizados.</h2>
+                    <p className={"statusDescription"}>As artes arcanas são os focos de conhecimento em magia
+                        arcana do personagem, definindo em quais ações ele é melhor.</p>
                 </div>
-                <ArtsSection isLocked={isLocked}/>
+                <ArtsSection isLocked={isLocked}
+                             handleStatusChange={handleStatusChange}
+                             updatePoints={updatePoints}/>
             </section>
 
             <section className={"section-subArts"}>
-                <div className={"display-flex-center"}>
+                <div className={"display-flex-center column"}>
                     <h2 className={"mainCommon title-2"}>
-                    subartes arcanas: [{subArcPoints}] pontos utilizados.
+                        subartes arcanas: [{subArcPoints}] pontos utilizados.
                     </h2>
+                    <p className={"statusDescription"}>As subartes arcanas são as especializações das artes
+                    arcanas do personagem, aumentando as possibilidades de skills.</p>
                 </div>
-                <SubArtsSection isLocked={isLocked}/>
+                <SubArtsSection isLocked={isLocked} handleStatusChange={handleStatusChange} updatePoints={updatePoints}/>
             </section>
         </main>
     );
