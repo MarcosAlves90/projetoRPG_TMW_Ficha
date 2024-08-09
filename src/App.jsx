@@ -15,7 +15,7 @@ import Page3 from "./pages/Page3.jsx";
 import Page4 from "./pages/Page4.jsx";
 import Page5 from "./pages/Page5.jsx";
 import './App.css';
-import {deleteItem, loadLocalStorageFile, saveItem, saveLocalStorageFile} from "./assets/systems/SaveLoad.jsx";
+import { loadLocalStorageFile, saveLocalStorageFile} from "./assets/systems/SaveLoad.jsx";
 
 function App() {
     const [isLoading, setIsLoading] = useState(true);
