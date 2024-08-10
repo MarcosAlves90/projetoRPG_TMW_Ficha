@@ -122,7 +122,9 @@ export default function Page3() {
         const bPericias = getItem('biotipo-Pericias', 0);
         const aInt = getItem('atributo-INT', 0);
 
-        if (bPericias === 1) {
+        if (bPericias === 0 || aInt === 0) {
+            return 0;
+        } else if (bPericias === 1) {
             return ((3+(aInt)) * level) + (level * 2);
         } else if (bPericias === 2) {
             return ((5+(aInt)) * level) + (level * 2);
@@ -138,40 +140,75 @@ export default function Page3() {
 
     const rollDice = (e) => {
 
+        let diceBestResult = 0;
+        const dice = [];
+        let noAttribute = false;
+
         function setTempRoll(periciaNameProp, diceProp, resultProp) {
             sessionStorage.setItem('tempPericia', periciaNameProp);
             sessionStorage.setItem('tempDice', diceProp);
             sessionStorage.setItem('tempResult', resultProp);
         }
 
-        if (atrMap.includes((e.target.id).slice(7))) {
-            const attributeName = (e.target.id).slice(7);
-            const attribute = getItem(`atributo-${attributeName}`, 0);
-            const dice = [];
+        function verifyAttribute(atr, bonus) {
+            if ((atr + bonus) === 0) {
+                return [true, 2];
+            }
+            return [false, atr, bonus];
+        }
 
-            for (let i = 0; i < attribute; i++) {
+        function rollAttributeDice(atr, bonus) {
+            for (let i = 0; i < (atr + bonus); i++) {
                 dice.push(Math.floor(Math.random() * 20) + 1);
             }
+        }
 
-            const diceBestResult = Math.max(...dice);
+        function choseMinOrMax(noAtr) {
+            if (!noAtr) {
+                diceBestResult = Math.max(...dice);
+            } else {
+                diceBestResult = Math.min(...dice);
+            }
+        }
+
+        function addPericiaBonus(bonus) {
+            diceBestResult += bonus;
+        }
+
+        if (atrMap.includes((e.target.id).slice(7))) {
+            const attributeName = (e.target.id).slice(7);
+            let attribute = getItem(`atributo-${attributeName}`, 0);
+            let attributeBonus = getItem(`atributo-${attributeName}-bonus`, 0);
+
+            [noAttribute, attribute, attributeBonus] = verifyAttribute(attribute, attributeBonus);
+            rollAttributeDice(attribute, attributeBonus);
+            choseMinOrMax(noAttribute);
 
             setTempRoll(attributeName, dice, diceBestResult);
             UpdateTempRoll();
         } else {
             const periciaName = (e.target.id).slice(7);
             const pericia = getItem(`pericia-${periciaName}`, 0);
-            const attribute = map(perArray, function (per) {
+            const periciaBonus = getItem(`pericia-${periciaName}-bonus`, 0);
+            let attribute = map(perArray, function (per) {
                 if (per.pericia === periciaName) {
                     return getItem(`atributo-${per.atr}`, 0);
                 }
-            })
-            const dice = [];
+            });
+            let attributeBonus = map(perArray, function (per) {
+                if (per.pericia === periciaName) {
+                    return getItem(`atributo-${per.atr}-bonus`, 0);
+                }
+            });
 
-            for (let i = 0; i < attribute; i++) {
-                dice.push(Math.floor(Math.random() * 20) + 1);
-            }
+            attribute = attribute.length > 0 ? attribute[0] : 0;
+            attributeBonus = attributeBonus.length > 0 ? attributeBonus[0] : 0;
 
-            const diceBestResult = Math.max(...dice);
+            [noAttribute, attribute, attributeBonus] = verifyAttribute(attribute, attributeBonus);
+            rollAttributeDice(attribute, attributeBonus);
+            choseMinOrMax(noAttribute);
+            addPericiaBonus(periciaBonus);
+
             const result = diceBestResult + pericia;
 
             setTempRoll(periciaName, dice, result);
@@ -235,7 +272,7 @@ export default function Page3() {
                             <div className={"alert-box-message"}>
                                 <p>biotipo: [9] | máximo: [3]</p>
                                 <p>atributos: [{CalculateAttributesPoints()}] | máximo: [{CalculateAttributesCap()}]</p>
-                                <p>perícias: [{CalculatePericiasPoints()}] | máximo: [{CalculatePericiasCap()}]</p>
+                                <p>perícias: [{CalculatePericiasPoints() !== 0 ? CalculatePericiasPoints() : "Preencha o Biotipo e Atributos"}] | máximo: [{CalculatePericiasCap()}]</p>
                                 <p className={"last-p"}>(sub)artes arcanas: [{getItem('pericia-Magia Arcana', 0) * 5}] | máximo [{15}]</p>
                             </div>
                         </div>

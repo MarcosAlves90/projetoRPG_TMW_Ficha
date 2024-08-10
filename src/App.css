@@ -64,6 +64,7 @@ input[type=number] {
   --common-button-font-size: 0.833vw;
   --common-textarea-font-size: 0.9vw;
   --common-header-font-size: 0.833vw;
+  --common-status-input-padding: 1.5vw;
 
   width: 100%;
   height: 100%;
@@ -87,6 +88,79 @@ body {
 
 .display-block-center {
   display: block !important;
+}
+
+.mainCommon.page-0 {
+  padding: 0;
+  font-family: "Lora", sans-serif;
+  width: 100%;
+
+  .mainCommon-page-0-section-0 {
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    .mainCommon-page-0-section-0-article {
+
+      .mainCommon-page-0-logo {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-bottom: 3vw;
+      }
+
+      .mainCommon-page-0-logo img {
+        rotate: 90deg;
+        height: 10vw;
+      }
+
+    }
+
+  }
+
+  .mainCommon-page-0-section-1 {
+    background-color: white;
+    padding-bottom: 1vw;
+
+    p {
+      margin-bottom: 0;
+      padding-top: 1vw;
+    }
+
+    .mainCommon-page-0-section-1-footer {
+      padding-top: 1vw;
+
+      button {
+        outline: none;
+        border: none;
+        transition: var(--common-transition);
+      }
+
+      button:hover {
+        background-color: var(--green-text);
+      }
+
+    }
+
+  }
+
+  .mainCommon-page-0-titleHover {
+    color: white;
+    width: fit-content;
+    cursor: pointer;
+    transition: var(--common-transition);
+
+    h1 {
+      font-size: 4vw;
+    }
+
+    h2 {
+      font-size: 2vw;
+    }
+
+  }
+
 }
 
 .container-skill-select.last-select {
@@ -527,6 +601,7 @@ body {
     }
 
     .header-infos-configButton {
+      font-size: var(--common-header-font-size);
       position: fixed;
       right: 0;
       margin: 0 2rem;
@@ -574,80 +649,6 @@ body {
   height: 100%;
   background-image: url("../images/lobbyBackground.png");
   z-index: -1;
-}
-
-
-.mainCommon.page-0 {
-  padding: 0;
-  font-family: "Lora", sans-serif;
-  width: 100%;
-
-  .mainCommon-page-0-section-0 {
-    height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-
-    .mainCommon-page-0-section-0-article {
-
-      .mainCommon-page-0-logo {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        margin-bottom: 3vw;
-      }
-
-      .mainCommon-page-0-logo img {
-        rotate: 90deg;
-        height: 10vw;
-      }
-
-    }
-
-  }
-
-  .mainCommon-page-0-section-1 {
-    background-color: white;
-    padding-bottom: 1vw;
-
-    p {
-      margin-bottom: 0;
-      padding-top: 1vw;
-    }
-
-    .mainCommon-page-0-section-1-footer {
-      padding-top: 1vw;
-
-      button {
-        outline: none;
-        border: none;
-        transition: var(--common-transition);
-      }
-
-      button:hover {
-        background-color: var(--green-text);
-      }
-
-    }
-
-  }
-
-  .mainCommon-page-0-titleHover {
-    color: white;
-    width: fit-content;
-    cursor: pointer;
-    transition: var(--common-transition);
-
-    h1 {
-      font-size: 4vw;
-    }
-
-    h2 {
-      font-size: 2vw;
-    }
-
-  }
-
 }
 
 .mainCommon.page-3 {
@@ -762,7 +763,7 @@ body {
   input, .custom-select {
     background-color: var(--gray-background);
     outline: none;
-    padding: 12px;
+    padding: var(--common-input-padding);
     border: var(--gray-border);
     text-align: center;
     border-radius: 30px;
@@ -876,6 +877,10 @@ body {
     border-left: none;
   }
 
+  .input-status.border-right-none {
+    border-right: none;
+  }
+
   .input-status:focus {
     border-left: none;
     cursor: text;
@@ -883,6 +888,26 @@ body {
 
   .input-status:disabled {
     background-color: var(--gray-background);
+  }
+
+  .input-bonus {
+    color: yellow;
+    background-color: #160523;
+    border: 2px solid #4e1977;
+    border-right: 2px solid #5f5f00;
+    border-left: none;
+  }
+
+  .input-bonus:focus {
+    color: yellow;
+    border: 2px solid #8f3bd1;
+    border-right: 2px solid yellow;
+    border-left: none;
+    background-color: #3e135e !important;
+  }
+
+  .input-bonus:disabled {
+    background-color: #0b0312;
   }
 
   .min {
@@ -898,7 +923,7 @@ body {
 
   .input-group-text-center, .input-group-text-left {
     display: flex;
-    padding: 12px;
+    padding: var(--common-input-padding);
     border: none;
     justify-content: center;
     align-items: center;
@@ -922,8 +947,8 @@ body {
   }
 
   .input-group-text-left {
-    font-size: 1vw;
-    min-width: 2rem;
+    font-size: 0.8vw;
+    min-width: 1.667vw;
     border-radius: 100px 0 0 100px;
   }
 

@@ -107,18 +107,25 @@ PericiasSection.propTypes = {
 function Pericia(props) {
 
     const [value, setValue] = useState(getItem(`pericia-${props.pericia}`, ''));
+    const [bonus, setBonus] = useState(getItem(`pericia-${props.pericia}-bonus`, ''));
 
     useEffect(() => {
         const action = value === '' ? deleteItem : saveItem;
         action(`pericia-${props.pericia}`, value === '' ? 0 : parseInt(value, 10));
+
+        const bonusAction = bonus === '' ? deleteItem : saveItem;
+        bonusAction(`pericia-${props.pericia}-bonus`, bonus === '' ? 0 : parseInt(bonus, 10));
+
         props.updatePoints();
-    }, [value, props.pericia]);
+    }, [value, bonus, props.pericia]);
 
     return (
         <div className={"input-group mb-3"}>
             <span className={"input-group-text-left"}
-                  style={{backgroundColor: atrColors[props.atr].background,
-                      color: atrColors[props.atr].color}}>{props.atr}</span>
+                  style={{
+                      backgroundColor: atrColors[props.atr].background,
+                      color: atrColors[props.atr].color
+                  }}>{props.atr}</span>
             <span className={"input-group-text-center pericia"}
                   id={`button-${props.pericia}`}
                   onClick={props.rollDice}
@@ -127,12 +134,24 @@ function Pericia(props) {
             <input type={"number"}
                    step={1}
                    min={0}
-                   className="form-control input-status"
+                   className="form-control input-status border-right-none"
                    placeholder="0"
                    value={value}
                    onChange={props.handleStatusChange(setValue)}
                    onKeyDownCapture={handleKeyPress}
                    id={`label-${props.pericia}`}
+                   disabled={props.isLocked}
+                   style={props.isLocked ? {borderColor: `${atrColors[props.atr].background}`} : {}}
+            />
+            <input type={"number"}
+                   step={1}
+                   min={0}
+                   className="form-control input-status input-bonus"
+                   placeholder="0"
+                   value={bonus}
+                   onChange={props.handleStatusChange(setBonus)}
+                   onKeyDownCapture={handleKeyPress}
+                   id={`label-${props.pericia}-bonus`}
                    disabled={props.isLocked}
                    style={props.isLocked ? {borderColor: `${atrColors[props.atr].background}`} : {}}
             />
@@ -164,12 +183,17 @@ Pericia.propTypes = {
 export function Attributes(props) {
 
     const [value, setValue] = useState(getItem(`atributo-${props.atr}`, ''));
+    const [bonus, setBonus] = useState(getItem(`atributo-${props.atr}-bonus`, ''));
 
     useEffect(() => {
         const action = value === '' ? deleteItem : saveItem;
         action(`atributo-${props.atr}`, parseInt(value, 10) || 0);
+
+        const bonusAction = bonus === '' ? deleteItem : saveItem;
+        bonusAction(`atributo-${props.atr}-bonus`, parseInt(bonus, 10) || 0);
+
         props.updatePoints();
-    }, [value, props.atr]);
+    }, [value, bonus, props.atr]);
 
     return (
         <div className={"input-group mb-3"}>
@@ -186,13 +210,25 @@ export function Attributes(props) {
             <input type={"number"}
                    step={1}
                    min={0}
-                   className="form-control input-status"
+                   className="form-control input-status border-right-none"
                    placeholder="0"
                    value={value}
                    onChange={props.handleStatusChange(setValue)}
                    onKeyDownCapture={handleKeyPress}
                    style={props.isLocked ? {borderColor: atrColors[props.atr].background} : {}}
                    id={`label-${props.atributo}`}
+                   disabled={props.isLocked}
+            />
+            <input type={"number"}
+                   step={1}
+                   min={0}
+                   className="form-control input-status input-bonus"
+                   placeholder="0"
+                   value={bonus}
+                   onChange={props.handleStatusChange(setBonus)}
+                   onKeyDownCapture={handleKeyPress}
+                   style={props.isLocked ? {borderColor: atrColors[props.atr].background} : {}}
+                   id={`label-${props.atributo}-bonus`}
                    disabled={props.isLocked}
             />
         </div>
@@ -209,7 +245,7 @@ Attributes.propTypes = {
     rollDice: PropTypes.func.isRequired,
 };
 
-export function ArtsSection({ isLocked, handleStatusChange, updatePoints }) {
+export function ArtsSection({isLocked, handleStatusChange, updatePoints}) {
 
     function groupArts(arts, groupSize) {
         const grouped = [];
