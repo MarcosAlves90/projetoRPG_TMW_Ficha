@@ -1,6 +1,20 @@
-# [TMW - Ficha](https://marcosalves90.github.io/projetoRPG_TMW_Ficha)
+# The Mental World Character Sheet Editor
 
-Um projeto de ficha online feito para o jogo de RPG de mesa virtual "The Mental World". O projeto utiliza tecnologias como HTML, CSS, JavaScript, React e Vite para seu funcionamento e estilização.
-A ideia é que o usuário seja capaz de montar sua ficha na plataforma e baixá-la em formato JSON para usos futuros.
+![GitHub repo size](https://img.shields.io/github/repo-size/MarcosAlves90/projetoRPG_TMW_Ficha?style=for-the-badge)
+![GitHub language count](https://img.shields.io/github/languages/count/MarcosAlves90/projetoRPG_TMW_Ficha?style=for-the-badge)
+![GitHub forks](https://img.shields.io/github/forks/MarcosAlves90/projetoRPG_TMW_Ficha?style=for-the-badge)
+![Bitbucket open issues](https://img.shields.io/bitbucket/issues/MarcosAlves90/projetoRPG_TMW_Ficha?style=for-the-badge)
+![Bitbucket open pull requests](https://img.shields.io/bitbucket/pr-raw/MarcosAlves90/projetoRPG_TMW_Ficha?style=for-the-badge)
 
-![Página de Individual](./readme_details/tmw_ficha_image_1.png)
+<img src="readme_details/tmw_ficha_image_1.png" alt="Página inicial da plataforma">
+
+> A platform for creating, importing and exporting RPG tokens in JSON format.
+
+### Adjustments and improvements
+
+The project is still under development and the next updates will focus on the following tasks:
+
+- [ ] Add energy page
+- [ ] Add inventory page
+- [ ] Add pets page
+- [ ] Make compatible with mobile devices

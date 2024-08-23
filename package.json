@@ -1,17 +1,32 @@
 {
   "name": "ficha_online",
   "private": true,
-  "version": "0.0.0",
+  "version": "1.1.0",
+  "homepage": "https://marcosalves90.github.io/projetoRPG_TMW_Ficha",
   "type": "module",
   "scripts": {
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d dist",
+    "clean": "rm -rf dist",
     "dev": "vite",
     "build": "vite build",
     "lint": "eslint . --ext js,jsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview"
   },
   "dependencies": {
+    "@types/jquery.total-storage": "^1.1.36",
+    "bootstrap": "^5.3.3",
+    "bootstrap-icons": "^1.11.3",
+    "browser-image-compression": "^2.0.2",
+    "gh-pages": "^6.1.1",
+    "jquery": "^3.7.1",
+    "lz-string": "^1.5.0",
+    "prop-types": "^15.8.1",
     "react": "^18.3.1",
-    "react-dom": "^18.3.1"
+    "react-collapsible": "^2.10.0",
+    "react-dom": "^18.3.1",
+    "react-router-dom": "^6.24.1",
+    "react-textarea-autosize": "^8.5.3"
   },
   "devDependencies": {
     "@types/react": "^18.3.3",
