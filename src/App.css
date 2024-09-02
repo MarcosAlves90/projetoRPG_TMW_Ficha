@@ -66,6 +66,7 @@ input[type=number] {
   --common-header-font-size: 0.833vw;
   --common-status-input-padding: 1.5vw;
 
+  max-width: 100vw;
   width: 100%;
   height: 100%;
   margin: 0 auto;
@@ -560,69 +561,90 @@ body {
   backdrop-filter: none;
 }
 
-.header {
+/*.header {*/
+/*  z-index: 1;*/
+/*  background-color: rgba(0, 0, 0, 0.51);*/
+/*  left: 0;*/
+/*  right: 0;*/
+/*  position: fixed;*/
+/*  top: 0;*/
+/*  width: 100%;*/
+/*  display: flex;*/
+/*  justify-content: center;*/
+/*  align-items: center;*/
+/*  margin-bottom: 3em;*/
+
+/*  .infos {*/
+
+/*    max-width: 100vw;*/
+/*    backdrop-filter: blur(1vw);*/
+/*    width: 100%;*/
+/*    padding: 1vw 15vw;*/
+/*    margin: 0;*/
+/*    transition: all 0.6s ease-in-out;*/
+
+/*    .header-infos-span {*/
+/*      font-size: var(--common-header-font-size);*/
+/*      white-space: nowrap;*/
+/*      color: white;*/
+/*      opacity: 0.17;*/
+/*      cursor: pointer;*/
+/*      margin-left: 1.2vw;*/
+/*      transition: var(--common-transition);*/
+/*    }*/
+
+/*    .header-infos-span.active {*/
+/*      opacity: 1;*/
+/*    }*/
+
+/*    .header-infos-span:hover {*/
+/*      color: var(--green-text);*/
+/*      opacity: 1;*/
+/*    }*/
+
+/*    .header-infos-configButton {*/
+/*      font-size: var(--common-header-font-size);*/
+/*      position: fixed;*/
+/*      right: 0;*/
+/*      margin: 0 2rem;*/
+/*      outline: none;*/
+/*      border: none;*/
+/*      transition: var(--common-transition);*/
+/*    }*/
+
+/*    .header-infos-configButton:hover {*/
+/*      background-color: var(--green-text);*/
+/*    }*/
+
+/*  }*/
+
+/*  .button-header {*/
+/*    margin-left: 0.625vw;*/
+/*    margin-right: 0.625vw;*/
+/*  }*/
+
+/*  .title-container {*/
+/*    width: 100%;*/
+/*  }*/
+
+/*}*/
+
+.navbar {
   z-index: 1;
-  background-color: rgba(0, 0, 0, 0.51);
-  left: 0;
-  right: 0;
-  position: fixed;
-  top: 0;
   width: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-bottom: 3em;
+  position: fixed;
 
-  .infos {
-
-    backdrop-filter: blur(1vw);
-    width: 100%;
-    padding: 1vw 15vw;
-    margin: 0;
-    transition: all 0.6s ease-in-out;
-
-    .header-infos-span {
-      font-size: var(--common-header-font-size);
-      white-space: nowrap;
-      color: white;
-      opacity: 0.17;
-      cursor: pointer;
-      margin-left: 1.2vw;
-      transition: var(--common-transition);
-    }
-
-    .header-infos-span.active {
-      opacity: 1;
-    }
-
-    .header-infos-span:hover {
-      color: var(--green-text);
-      opacity: 1;
-    }
-
-    .header-infos-configButton {
-      font-size: var(--common-header-font-size);
-      position: fixed;
-      right: 0;
-      margin: 0 2rem;
-      outline: none;
-      border: none;
-      transition: var(--common-transition);
-    }
-
-    .header-infos-configButton:hover {
-      background-color: var(--green-text);
-    }
-
+  .collapse.show {
+    display: flex;
+    flex-direction: column;
   }
 
-  .button-header {
-    margin-left: 0.625vw;
-    margin-right: 0.625vw;
+  .navbar-toggler {
+    margin-right: calc(1vw + 1vh);
   }
 
-  .title-container {
-    width: 100%;
+  .navbar-toggler:focus {
+    box-shadow: none;
   }
 
 }
@@ -1010,31 +1032,7 @@ body {
 
 }
 
-@media (min-width: 768px) {
-  .hamburger-button {
-    display: none;
-  }
-}
-
-@media (max-width: 768px) {
-  .header-pc-resolution {
-    display: none;
-  }
-  .header.infos {
-    align-items: end;
-    padding: 1vw 3vw;
-    flex-direction: column;
-
-    .hamburger-button {
-      font-size: calc(2vw + 2vh);
-
-      .fa.fa-bars {
-        color: white;
-      }
-
-    }
-
-  }
+@media (max-width: 992px) {
   .mainCommon.page-0 {
     .mainCommon-page-0-titleHover {
       h1 {
@@ -1046,6 +1044,13 @@ body {
     }
     .mainCommon-page-0-section-0 {
       .mainCommon-page-0-section-0-article {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        .mainCommon-page-0-logo {
+          width: fit-content;
+        }
         .mainCommon-page-0-logo img {
           height: calc(15vw + 15vh);
         }

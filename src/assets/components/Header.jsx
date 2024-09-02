@@ -3,6 +3,7 @@ import {useEffect, useState} from "react";
 
 export default function Header(props) {
     const [headerBackground, setHeaderBackground] = useState(false);
+    const [collapsed, setCollapsed] = useState(true);
 
     useEffect(() => {
         const handleScroll = () => {
@@ -16,48 +17,29 @@ export default function Header(props) {
 
     return (
 
-        <div className={"header"}>
-            <div className={`header infos ${(props.currentPage === 0) && !headerBackground ? "lobby" : ""}`}>
-                <a className="hamburger-button" onClick="myFunction()">
-                    <i className="fa fa-bars"></i>
-                </a>
-                <div className={"header-pc-resolution"}>
-                    <span className={`header-infos-span ${props.currentPage === 0 ? "active" : ""}`}
-                          onClick={props.showPage0}>
-                        {props.currentPage === 0 ? "> " : ""} início
-                    </span>
-                    <span className={`header-infos-span ${props.currentPage === 1 ? "active" : ""}`}
-                          onClick={props.showPage1}>
-                        {props.currentPage === 1 ? "> " : ""} individual
-                    </span>
-                    <span className={`header-infos-span ${props.currentPage === 2 ? "active" : ""}`}
-                          onClick={props.showPage2}>
-                        {props.currentPage === 2 ? "> " : ""} características
-                    </span>
-                    <span className={`header-infos-span ${props.currentPage === 3 ? "active" : ""}`}
-                          onClick={props.showPage3}>
-                        {props.currentPage === 3 ? "> " : ""} status
-                    </span>
-                    <span className={`header-infos-span ${props.currentPage === 4 ? "active" : ""}`}
-                          onClick={props.showPage4}>
-                        {props.currentPage === 4 ? "> " : ""} skills
-                    </span>
-                    <span className={`header-infos-span ${props.currentPage === 5 ? "active" : ""}`}
-                          onClick={props.showPage5}>
-                        {props.currentPage === 5 ? "> " : ""} anotações
-                    </span>
-                </div>
-                <div className={"header-mobile-resolution"}></div>
-                <button className={"header-infos-configButton"}
-                        onClick={props.showConfigMenu}
-                        style={{
-                            display: props.currentPage !== 0 ? "flex" : "none",
-                            backgroundColor: props.isConfigMenuVisible ? "var(--green-text)" : "#1a1a1a"
-                        }}>
-                    Opções
-                </button>
+        <nav className="navbar navbar-expand-lg navbar-light bg-light">
+            <a className="navbar-brand" href="#">Navbar w/ text</a>
+            <button className="navbar-toggler" onClick={() => setCollapsed(!collapsed)} type="button" data-toggle="collapse" data-target="#navbarText"
+                    aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+                <span className="navbar-toggler-icon"></span>
+            </button>
+            <div className={`collapse navbar-collapse ${collapsed ? "" : "show"}`} id="navbarText">
+                <ul className="navbar-nav mr-auto">
+                    <li className="nav-item active">
+                        <a className="nav-link" href="#">Home <span className="sr-only">(current)</span></a>
+                    </li>
+                    <li className="nav-item">
+                        <a className="nav-link" href="#">Features</a>
+                    </li>
+                    <li className="nav-item">
+                        <a className="nav-link" href="#">Pricing</a>
+                    </li>
+                </ul>
+                <span className="navbar-text">
+                  Navbar text with an inline element
+                </span>
             </div>
-        </div>
+        </nav>
 
     );
 }
