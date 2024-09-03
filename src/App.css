@@ -374,29 +374,10 @@ body {
   background-color: grey;
 }
 
-.container-identity {
-  font-family: "Arimo", serif;
-  font-weight: bold;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-bottom: 1vw;
-}
-
 .container-identity-outside {
   padding-left: 1vw;
   padding-right: 1vw;
   background-color: var(--identity-outside-background);
-}
-
-.image-profile {
-  height: 7.813vw;
-  width: 7.813vw;
-  transition: opacity 0.2s ease-in-out;
-}
-
-.image-profile:hover {
-  opacity: 80%;
 }
 
 .container-identity-outside-text {
@@ -571,6 +552,10 @@ body {
   background-color: transparent;
 }
 
+.navbar.show {
+  height: 100%;
+}
+
 .navbar {
   z-index: 1;
   width: 100%;
@@ -614,6 +599,13 @@ body {
 
   }
 
+  .navbar-toggler.active {
+    background-color: var(--green-text);
+    .navbar-toggler-icon {
+      opacity: 1;
+    }
+  }
+
   .navbar-toggler:focus {
     box-shadow: none;
   }
@@ -624,13 +616,16 @@ body {
   }
 
   #navbarText {
-    margin: calc(1vw + 1vh) calc(1vw + 1vh) 0 calc(1vw + 1vh);
+    height: 100%;
+    margin: 0 calc(1vw + 1vh) 0 calc(1vw + 1vh);
     .navbar-nav {
       display: flex;
       align-items: center;
       justify-content: center;
       width: 100%;
       .nav-item {
+        margin-right: 0.5vw;
+        margin-left: 0.5vw;
         border-radius: 50px;
         background-color: var(--button-background-color);
         width: 100%;
@@ -722,6 +717,29 @@ body {
     margin-bottom: 1vw;
   }
 
+}
+
+.mainCommon.page-1 {
+  .section-identity {
+    .image-profile {
+      height: 7.813vw;
+      width: 7.813vw;
+      transition: opacity 0.2s ease-in-out;
+    }
+
+    .image-profile:hover {
+      opacity: 80%;
+    }
+
+    .container-identity {
+      font-family: "Arimo", serif;
+      font-weight: bold;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-bottom: 1vw;
+    }
+  }
 }
 
 .mainCommon {
@@ -1007,7 +1025,15 @@ body {
 
 }
 
-@media (max-width: 992px) {
+@media (max-width: 991px) {
+  .navbar {
+    #navbarText {
+      margin: calc(1vw + 1vh) calc(1vw + 1vh) 0 calc(1vw + 1vh);
+      .nav-item {
+        margin: unset;
+      }
+    }
+  }
   .mainCommon.page-0 {
     .mainCommon-page-0-titleHover {
       h1 {
@@ -1031,6 +1057,88 @@ body {
         }
       }
     }
+  }
+  .mainCommon.page-1 {
+    width: 100%;
+    .title-2-container {
+      .mainCommon.title-2 {
+        font-size: calc(1.7vw + 1.7vh);
+        margin: 10px;
+      }
+    }
+    fieldset.page-1 {
+      flex-direction: column;
+      .custom-select-father {
+        padding: 0;
+      }
+      input, .custom-select-father .custom-select {
+        font-size: calc(1.2vw + 1.2vh);
+        height: calc(3.5vw + 3.5vh);
+        margin: 1vw;
+        border-radius: 30px;
+      }
+      .container-recurso {
+        flex-direction: column;
+        .input-left {
+          border-radius: 30px 0 0 30px;
+        }
+        .input-right {
+          border-radius: 0 30px 30px 0;
+        }
+      }
+    }
+    .section-identity {
+      .container-identity {
+        .container-identity-inside.outside {
+          background-color: transparent;
+        }
+        .container-identity-outside {
+          background-color: transparent;
+          .container-identity-inside {
+            background-color: transparent;
+
+            .profile-pic-image {
+              .custom-file-upload {
+                .image-profile {
+                  border-radius: 50%;
+                  height: calc(13vw + 13vh);
+                  width: calc(13vw + 13vh);
+                }
+              }
+            }
+            .container-identity-inside-text {
+              display: none;
+            }
+          }
+          .container-identity-inside.center {
+            display: none;
+          }
+          .container-identity-outside-text {
+            display: none;
+          }
+        }
+      }
+    }
+  }
+  .mainCommon.page-2 {
+    width: 100%;
+    .Collapsible__trigger {
+      font-size: calc(1.7vw + 1.7vh) !important;
+    }
+    .textarea-sheet {
+      font-size: calc(1.2vw + 1.2vh);
+    }
+    .section-tracos {
+      .textarea-center-container {
+        flex-direction: column;
+        .textarea-meio {
+          width: 100%;
+        }
+      }
+    }
+  }
+  .mainCommon.page-3 {
+    width: 100%;
   }
 }
 

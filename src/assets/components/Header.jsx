@@ -18,9 +18,9 @@ export default function Header() {
 
     return (
 
-        <nav className={`navbar navbar-expand-lg navbar-light ${headerBackground || !collapsed ? "custom-theme" : "default-theme"}`}>
+        <nav className={`navbar ${collapsed ? "" : "show"} navbar-expand-lg navbar-light ${headerBackground || !collapsed ? "custom-theme" : "default-theme"}`}>
             <Link className={"navbar-brand"} to={"/"}>TMWCSE</Link>
-            <button className="navbar-toggler" onClick={() => setCollapsed(!collapsed)} type="button" data-toggle="collapse" data-target="#navbarText"
+            <button className={`navbar-toggler ${!collapsed ? "active" : ""}`} onClick={() => setCollapsed(!collapsed)} type="button" data-toggle="collapse" data-target="#navbarText"
                     aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
                 <span className="navbar-toggler-icon"></span>
             </button>

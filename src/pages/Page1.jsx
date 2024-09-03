@@ -113,7 +113,7 @@ export default function Page1() {
 
     return (
 
-        <main className={"mainCommon"}>
+        <main className={"mainCommon page-1"}>
 
             <section className={"section-identity"}>
                 <article className={"container-identity"}>
@@ -148,7 +148,7 @@ export default function Page1() {
             </section>
 
             <section className={"section-pessoal"}>
-                <div className={"title-2-container"}>
+            <div className={"title-2-container"}>
                     <h2 className={"mainCommon title-2"}>pessoal.</h2>
                 </div>
                 <fieldset className={"page-1"}>
@@ -217,11 +217,11 @@ export default function Page1() {
 
             <section className={"section-recursos"}>
                 <fieldset className={"page-1"}>
-                    <div>
+                    <div className={"container-recurso"}>
                         <div className={"title-2-container"}>
                             <h2 className={"mainCommon title-2"}>vida.</h2>
                         </div>
-                        <div>
+                        <div className={"container-recurso-inputs"}>
                             <input className={"input-left"}
                                    type={"number"}
                                    value={localLife()}
@@ -236,14 +236,14 @@ export default function Page1() {
                                    placeholder={"vida atual"}/>
                         </div>
                     </div>
-                    <div>
+                    <div className={"container-recurso"}>
                         <div className={"title-2-container"}>
                             <h2 className={"mainCommon title-2"}>estresse.</h2>
                         </div>
-                        <div>
+                        <div className={"container-recurso-inputs"}>
                             <input className={"input-left"}
                                    type={"number"}
-                                   value={((getItem(`pericia-${'Foco'}`)/2)*10) || 0}
+                                   value={((getItem(`pericia-${'Foco'}`) / 2) * 10) || 0}
                                    min={0}
                                    placeholder={"pontos de estresse"}
                                    disabled={true}/>
@@ -257,11 +257,11 @@ export default function Page1() {
                     </div>
                 </fieldset>
                 <fieldset className={"page-1"}>
-                    <div>
+                    <div className={"container-recurso"}>
                         <div className={"title-2-container"}>
                             <h2 className={"mainCommon title-2"}>energia.</h2>
                         </div>
-                        <div>
+                        <div className={"container-recurso-inputs"}>
                             <input className={"input-left"}
                                    type={"number"}
                                    value={localEnergy()}
@@ -276,14 +276,14 @@ export default function Page1() {
                                    placeholder={"energia atual"}/>
                         </div>
                     </div>
-                    <div>
+                    <div className={"container-recurso"}>
                         <div className={"title-2-container"}>
                             <h2 className={"mainCommon title-2"}>sanidade.</h2>
                         </div>
-                        <div>
+                        <div className={"container-recurso-inputs"}>
                             <input className={"input-left"}
                                    type={"number"}
-                                   value={((getItem(`pericia-${'Foco'}`)/2)*10) || 0}
+                                   value={((getItem(`pericia-${'Foco'}`) / 2) * 10) || 0}
                                    min={0}
                                    placeholder={"pontos de sanidade"}
                                    disabled={true}/>

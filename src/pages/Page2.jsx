@@ -36,7 +36,7 @@ export default function Page2() {
 
     return (
 
-        <main className={"mainCommon"}>
+        <main className={"mainCommon page-2"}>
 
             <section className={"section-origem"}>
                 <Collapsible trigger={"origem "}
