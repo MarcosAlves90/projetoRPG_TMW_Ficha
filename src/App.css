@@ -75,11 +75,8 @@ input[type=number] {
   font-family: var(--common-font-family), sans-serif;
 }
 
-* {
-}
-
-body {
-
+.no-scroll {
+  overflow: hidden;
 }
 
 .display-flex-center {
@@ -1062,7 +1059,7 @@ body {
     width: 100%;
     .title-2-container {
       .mainCommon.title-2 {
-        font-size: calc(1.7vw + 1.7vh);
+        font-size: calc(5vw);
         margin: 10px;
       }
     }
@@ -1072,18 +1069,18 @@ body {
         padding: 0;
       }
       input, .custom-select-father .custom-select {
-        font-size: calc(1.2vw + 1.2vh);
-        height: calc(3.5vw + 3.5vh);
+        font-size: calc(4vw);
+        height: calc(10vw);
         margin: 1vw;
-        border-radius: 30px;
+        border-radius: 100vw;
       }
       .container-recurso {
         flex-direction: column;
         .input-left {
-          border-radius: 30px 0 0 30px;
+          border-radius: 100vw 0 0 100vw;
         }
         .input-right {
-          border-radius: 0 30px 30px 0;
+          border-radius: 0 100vw 100vw 0;
         }
       }
     }
@@ -1101,8 +1098,8 @@ body {
               .custom-file-upload {
                 .image-profile {
                   border-radius: 50%;
-                  height: calc(13vw + 13vh);
-                  width: calc(13vw + 13vh);
+                  height: calc(40vw);
+                  width: calc(40vw);
                 }
               }
             }
@@ -1123,10 +1120,10 @@ body {
   .mainCommon.page-2 {
     width: 100%;
     .Collapsible__trigger {
-      font-size: calc(1.7vw + 1.7vh) !important;
+      font-size: calc(5vw) !important;
     }
     .textarea-sheet {
-      font-size: calc(1.2vw + 1.2vh);
+      font-size: calc(4vw);
     }
     .section-tracos {
       .textarea-center-container {

@@ -16,6 +16,14 @@ export default function Header() {
         return () => window.removeEventListener('scroll', handleScroll);
     }, []);
 
+    useEffect(() => {
+        if (!collapsed) {
+            document.body.classList.add('no-scroll');
+        } else {
+            document.body.classList.remove('no-scroll');
+        }
+    }, [collapsed]);
+
     return (
 
         <nav className={`navbar ${collapsed ? "" : "show"} navbar-expand-lg navbar-light ${headerBackground || !collapsed ? "custom-theme" : "default-theme"}`}>
