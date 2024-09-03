@@ -16,13 +16,12 @@ import Page4 from "./pages/Page4.jsx";
 import Page5 from "./pages/Page5.jsx";
 import './App.css';
 import { loadLocalStorageFile, saveLocalStorageFile} from "./assets/systems/SaveLoad.jsx";
+import {Route, Routes} from "react-router-dom";
 
 function App() {
     const [isLoading, setIsLoading] = useState(true);
     const [currentPage, setCurrentPage] = useState(parseInt(sessionStorage.getItem('currentPage')) || 0);
     const [configMenuIsVisible, setConfigMenuIsVisible] = useState(false);
-
-    const pages = 5;
 
 
     useEffect(() => {
@@ -34,59 +33,6 @@ function App() {
         }
 
     }, [currentPage]);
-
-    const goToPage = useCallback((page) => {
-        setCurrentPage(page);
-    }, []);
-
-    const goToNextPage = useCallback(() => {
-        if (currentPage < pages) {
-            setCurrentPage((prevPage) => prevPage + 1);
-        }
-    }, [currentPage]);
-
-    const goToPreviousPage = useCallback(() => {
-        if (currentPage > 0) {
-            setCurrentPage((prevPage) => prevPage - 1);
-        }
-    }, [currentPage]);
-
-    useEffect(() => {
-        /**
-         * Handles key down events for navigation.
-         * This function listens for right and left arrow key presses to navigate between pages.
-         * It checks if the currently focused element is an input, textarea, or select element
-         * to prevent navigation when these elements are focused.
-         *
-         * @param {KeyboardEvent} event - The keyboard event triggered by the user.
-         */
-        const handleKeyDown = (event) => {
-            const focusedElement = document.activeElement;
-            const focusableTags = ['INPUT', 'TEXTAREA', 'SELECT'];
-
-            if (focusableTags.includes(focusedElement.tagName)) {
-                return;
-            }
-
-            switch (event.key) {
-                case 'ArrowRight':
-                    goToNextPage();
-                    break;
-                case 'ArrowLeft':
-                    goToPreviousPage();
-                    break;
-                default:
-                    break;
-            }
-        };
-
-        window.addEventListener('keydown', handleKeyDown);
-
-        return () => {
-            window.removeEventListener('keydown', handleKeyDown);
-        };
-
-    }, [goToNextPage, goToPreviousPage]);
 
     useEffect(() => {
         const htmlElement = document.documentElement;
@@ -110,22 +56,15 @@ function App() {
                     </div>
                 )}
             </div>
-            <Header showPage0={() => goToPage(0)}
-                    showPage1={() => goToPage(1)}
-                    showPage2={() => goToPage(2)}
-                    showPage3={() => goToPage(3)}
-                    showPage4={() => goToPage(4)}
-                    showPage5={() => goToPage(5)}
-                    currentPage={currentPage}
-                    showConfigMenu={() => setConfigMenuIsVisible(!configMenuIsVisible)}
-                    isConfigMenuVisible={configMenuIsVisible}
-            />
-            {currentPage === 0 && <Page0/>}
-            {currentPage === 1 && <Page1/>}
-            {currentPage === 2 && <Page2/>}
-            {currentPage === 3 && <Page3/>}
-            {currentPage === 4 && <Page4/>}
-            {currentPage === 5 && <Page5/>}
+            <Header/>
+            <Routes>
+                <Route path="/" element={<Page0/>} />
+                <Route path="/individual" element={<Page1/>} />
+                <Route path="/caracteristicas" element={<Page2/>} />
+                <Route path="/status" element={<Page3/>} />
+                <Route path="/skills" element={<Page4/>} />
+                <Route path="/anotacoes" element={<Page5/>} />
+            </Routes>
 
             {currentPage !== 0 && configMenuIsVisible ? <div className="fixed-bottom">
                 <div className="mb-3 sticky">
