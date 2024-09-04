@@ -15,6 +15,12 @@ export const lockedInputStyle = () => ({
     border: "var(--green-border)"
 })
 
+export const yellowLockedInputStyle = () => ({
+    backgroundColor: "var(--yellow-background)",
+    color: "var(--yellow-text)",
+    border: "var(--yellow-border)"
+})
+
 /**
  * Object containing the color schemes for different attributes (DES, FOR, INT, PRE, VIG).
  * Each attribute has a specified background and text color.

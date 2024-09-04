@@ -273,7 +273,7 @@ export default function Page4() {
 
     return (
 
-        <main className="mainCommon">
+        <main className="mainCommon page-4">
             <div className="create-annotation">
                 <div className="create-annotation input">
                     <input

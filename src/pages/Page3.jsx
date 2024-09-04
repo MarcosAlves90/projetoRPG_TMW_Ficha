@@ -1,6 +1,6 @@
 import {useCallback, useEffect, useState} from "react";
 import {deleteItem, getItem, saveItem} from "../assets/systems/SaveLoad.jsx";
-import {lockedInputStyle} from "../assets/styles/CommonStyles.jsx";
+import {lockedInputStyle, yellowLockedInputStyle} from "../assets/styles/CommonStyles.jsx";
 import {
     ArtsSection,
     Attributes,
@@ -310,7 +310,7 @@ export default function Page3() {
                     <h2 className={"title-2"}>Rolagem:</h2>
                     <article className={"display-flex-center dice"}>
                         <div className={"dice-background dice-font left"}>{tempRoll.Pericia ? tempRoll.Pericia : "Nenhum"}</div>
-                        <div className={"dice-background dice-font center"}>{tempRoll.Dice && tempRoll.Dice.length <= 7  ? `[${tempRoll.Dice}]` : tempRoll.Dice.length > 7 ? `[${tempRoll.Dice.slice(0,7)}...]` : "Role um dado"}</div>
+                        <div className={"dice-background dice-font center"}>{tempRoll.Dice && tempRoll.Dice.length <= 7  ? `[${tempRoll.Dice}]` : tempRoll.Dice.length > 7 ? `[${tempRoll.Dice.slice(0,7)}...]` : "0"}</div>
                         <div className={"dice-background dice-font right"}>{tempRoll.Result ? tempRoll.Result : 0}</div>
                     </article>
                 </div>
@@ -325,9 +325,9 @@ export default function Page3() {
                         <i className={isLocked ? "bi bi-lock-fill" : "bi bi-unlock-fill"}/>
                     </button>
                     <button type={"button"}
-                            className={"button-lock"}
+                            className={"button-lock recommendations"}
                             onClick={() => setRecommendations(!recommendations)}
-                            style={recommendations ? lockedInputStyle() : {}}
+                            style={recommendations ? yellowLockedInputStyle() : {}}
                     >
                         {"Pontos recomendados "}
                         <i className={recommendations ? "bi bi-exclamation-triangle-fill" : "bi bi-exclamation-triangle"}/>
