@@ -2,7 +2,6 @@ import PropTypes from "prop-types";
 import {useEffect, useState} from "react";
 import {deleteItem, getItem, saveItem} from "../SaveLoad.jsx";
 import {arcColors, atrColors, bioColors} from "../../styles/CommonStyles.jsx";
-import {arcArray, perArray, subArcArray} from "./FichaPage3Arrays.jsx";
 
 /**
  * Handles key press events on input fields to restrict input to numeric values and control commands.
@@ -16,7 +15,7 @@ import {arcArray, perArray, subArcArray} from "./FichaPage3Arrays.jsx";
  */
 function handleKeyPress(event) {
     if (event.ctrlKey && (event.key === 'a' || event.key === 'c')) {
-        return; // Não faz nada, permitindo a ação padrão do navegador
+        return;
     }
 
     if (!/[0-9]/.test(event.key) && !['Backspace', 'ArrowLeft', 'ArrowRight', 'Delete', 'Tab', 'ArrowUp', 'ArrowDown'].includes(event.key)) {
@@ -68,8 +67,7 @@ Biotipos.propTypes = {
     updatePoints: PropTypes.func.isRequired,
 };
 
-export function PericiasSection({ isLocked, rollDice, handleStatusChange, updatePoints }) {
-
+export function PericiasSection({ isLocked, rollDice, handleStatusChange, updatePoints, perArray }) {
     function groupPericias(pericias, groupSize) {
         const grouped = [];
         for (let i = 0; i < pericias.length; i += groupSize) {
@@ -83,13 +81,15 @@ export function PericiasSection({ isLocked, rollDice, handleStatusChange, update
             {groupPericias(perArray, 4).map((group, index) => (
                 <div className={"input-center justify-center"} key={index}>
                     {group.map(({ pericia, atr }) => (
-                        <Pericia isLocked={isLocked}
-                                 pericia={pericia}
-                                 atr={atr}
-                                 key={pericia}
-                                 rollDice={rollDice}
-                                 handleStatusChange={handleStatusChange}
-                                 updatePoints={updatePoints}/>
+                        <Pericia
+                            isLocked={isLocked}
+                            pericia={pericia}
+                            atr={atr}
+                            key={pericia}
+                            rollDice={rollDice}
+                            handleStatusChange={handleStatusChange}
+                            updatePoints={updatePoints}
+                        />
                     ))}
                 </div>
             ))}
@@ -102,6 +102,7 @@ PericiasSection.propTypes = {
     rollDice: PropTypes.func.isRequired,
     handleStatusChange: PropTypes.func.isRequired,
     updatePoints: PropTypes.func.isRequired,
+    perArray: PropTypes.array.isRequired,
 }
 
 function Pericia(props) {
@@ -245,14 +246,13 @@ Attributes.propTypes = {
     rollDice: PropTypes.func.isRequired,
 };
 
-export function ArtsSection({isLocked, handleStatusChange, updatePoints}) {
-
+export function ArtsSection({ isLocked, handleStatusChange, updatePoints, arcArray }) {
     function groupArts(arts, groupSize) {
         const grouped = [];
         for (let i = 0; i < arts.length; i += groupSize) {
             grouped.push(arts.slice(i, i + groupSize));
         }
-        return grouped
+        return grouped;
     }
 
     return (
@@ -260,7 +260,13 @@ export function ArtsSection({isLocked, handleStatusChange, updatePoints}) {
             {groupArts(arcArray, 4).map((group, index) => (
                 <div className={"input-center justify-center"} key={index}>
                     {group.map(({ art }) => (
-                        <ArcaneArts isLocked={isLocked} art={art} key={art}  handleStatusChange={handleStatusChange} updatePoints={updatePoints}/>
+                        <ArcaneArts
+                            isLocked={isLocked}
+                            art={art}
+                            key={art}
+                            handleStatusChange={handleStatusChange}
+                            updatePoints={updatePoints}
+                        />
                     ))}
                 </div>
             ))}
@@ -272,6 +278,7 @@ ArtsSection.propTypes = {
     isLocked: PropTypes.bool.isRequired,
     handleStatusChange: PropTypes.func.isRequired,
     updatePoints: PropTypes.func.isRequired,
+    arcArray: PropTypes.array.isRequired,
 };
 
 export function ArcaneArts(props) {
@@ -325,21 +332,13 @@ ArcaneArts.propTypes = {
  * @param {Object} props - The properties object.
  * @param {boolean} props.isLocked - Flag indicating if the input fields are locked.
  */
-export function SubArtsSection({ isLocked, handleStatusChange, updatePoints }) {
-
-    /**
-     * Groups sub-arcane arts into rows of a specified size.
-     *
-     * @param {Array} arts - The array of sub-arcane arts to be grouped.
-     * @param {number} groupSize - The number of sub-arcane arts per group.
-     * @returns {Array} An array of grouped sub-arcane arts.
-     */
+export function SubArtsSection({ isLocked, handleStatusChange, updatePoints, subArcArray }) {
     function groupSubArts(arts, groupSize) {
         const grouped = [];
         for (let i = 0; i < arts.length; i += groupSize) {
             grouped.push(arts.slice(i, i + groupSize));
         }
-        return grouped
+        return grouped;
     }
 
     return (
@@ -347,12 +346,13 @@ export function SubArtsSection({ isLocked, handleStatusChange, updatePoints }) {
             {groupSubArts(subArcArray, 4).map((group, index) => (
                 <div className={"input-center justify-center"} key={index}>
                     {group.map(({ subArt, art }) => (
-                        <SubArcaneArts isLocked={isLocked}
-                                       subArt={subArt}
-                                       key={subArt}
-                                       art={art}
-                                       handleStatusChange={handleStatusChange}
-                                       updatePoints={updatePoints}
+                        <SubArcaneArts
+                            isLocked={isLocked}
+                            subArt={subArt}
+                            key={subArt}
+                            art={art}
+                            handleStatusChange={handleStatusChange}
+                            updatePoints={updatePoints}
                         />
                     ))}
                 </div>
@@ -365,6 +365,7 @@ SubArtsSection.propTypes = {
     isLocked: PropTypes.bool.isRequired,
     handleStatusChange: PropTypes.func.isRequired,
     updatePoints: PropTypes.func.isRequired,
+    subArcArray: PropTypes.array.isRequired,
 };
 
 export function SubArcaneArts(props) {

@@ -51,6 +51,10 @@ input[type=number] {
   --green-border: #006400 2px solid;
   --green-text: #339c33;
 
+  --yellow-border: #ffcc00 2px solid;
+  --yellow-background: #231d03;
+  --yellow-text: #ffcc00;
+
   --identity-inside-background: #f9f3cd;
   --identity-outside-background: #467d51;
 
@@ -79,6 +83,8 @@ input[type=number] {
   overflow: hidden;
 }
 
+
+
 .display-flex-center {
   display: flex;
   justify-content: center;
@@ -87,6 +93,10 @@ input[type=number] {
 
 .display-block-center {
   display: block !important;
+}
+
+.display-none {
+  display: none;
 }
 
 .mainCommon.page-0 {
@@ -302,21 +312,6 @@ input[type=number] {
   flex-direction: column;
 }
 
-.alert-box {
-  text-align: left;
-  border-left: var(--green-border);
-  padding: 1vw;
-  color: var(--green-text);
-  background-color: var(--green-background);
-  width: 100%;
-  margin-bottom: 2rem;
-
-  .last-p {
-    margin-bottom: 0;
-  }
-
-}
-
 .Collapsible__trigger {
   font-size: 1.25vw !important;
   display: block;
@@ -480,7 +475,7 @@ input[type=number] {
 .mainCommon .button-lock:hover,
 .button-header.active.clear:hover {
   background-color: var(--green-background) !important;
-  border: var(--green-border);
+  border: var(--green-border) !important;
   color: var(--green-text);
   cursor: pointer;
 }
@@ -705,6 +700,40 @@ input[type=number] {
 
     }
   }
+  .section-options {
+    .button-lock {
+      width: 25%;
+      font-size: var(--common-button-font-size);
+      border-radius: 100px;
+      transition: var(--common-transition);
+      min-width: 110px;
+      border: var(--gray-border);
+      margin: 1vw;
+      padding: var(--common-input-padding);
+      background-color: var(--gray-background);
+    }
+    .search {
+      margin: 1vw;
+      width: 50%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    .alert-box {
+      text-align: left;
+      border-left: var(--yellow-border);
+      padding: 1vw;
+      color: var(--yellow-text);
+      background-color: var(--yellow-background);
+      width: 100%;
+      margin-bottom: 2rem;
+
+      .last-p {
+        margin-bottom: 0;
+      }
+
+    }
+  }
 
   --status-background: #121212;
 
@@ -781,17 +810,6 @@ input[type=number] {
     border-radius: 30px;
     font-size: 0.8vw;
     transition: var(--common-transition);
-  }
-
-  .button-lock {
-    font-size: var(--common-button-font-size);
-    border-radius: 100px;
-    transition: var(--common-transition);
-    min-width: 110px;
-    border: var(--gray-border);
-    margin: 2rem;
-    padding: var(--common-input-padding);
-    background-color: var(--gray-background);
   }
 
   input::placeholder, .textarea-sheet::placeholder {
@@ -1136,6 +1154,77 @@ input[type=number] {
   }
   .mainCommon.page-3 {
     width: 100%;
+    .section-dice {
+      .title-2 {
+        font-size: calc(5vw);
+      }
+      .display-flex-center.dice {
+        width: 100%;
+        margin: 2vw 0 0 0;
+        .dice-background {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          font-size: calc(4vw);
+          height: calc(14vw);
+        }
+      }
+    }
+    .section-dice > .display-flex-center {
+      flex-direction: column;
+    }
+    .section-options .display-flex-center {
+      flex-direction: column;
+      .button-lock, .search.status {
+        width: 100%;
+        font-size: calc(4vw);
+        height: calc(10vw);
+        border-radius: 100px;
+      }
+      .alert-box {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border: var(--yellow-border);
+        padding: 3vw 0 3vw 0;
+        border-radius: 20px;
+        margin-bottom: 2vw;
+        .alert-box-message {
+          text-align: center;
+          font-size: calc(3.5vw);
+        }
+      }
+    }
+    .section-options .display-flex-center.buttons {
+      margin: 1vw 0 1vw 0;
+    }
+    .section-status {
+      border-radius: 20px;
+      margin-bottom: 2vw;
+      .mainCommon.title-2 {
+        font-size: calc(5vw);
+      }
+      .statusDescription {
+        display: none;
+      }
+    }
+    .input-center {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      margin: 0 2vw 0 2vw;
+      .input-group.mb-3 {
+        height: calc(8.5vw);
+        width: 100%;
+        .input-group-text-left:not(.defined) {
+          width: 20%;
+        }
+      }
+      .input-group.mb-3 * {
+        font-size: calc(3vw);
+      }
+    }
   }
 }
 

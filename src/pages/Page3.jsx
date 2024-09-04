@@ -20,6 +20,7 @@ export default function Page3() {
     const [subArcPoints, setSubArcPoints] = useState(getItem('subArt-Points', 0));
     const [recommendations, setRecommendations] = useState(false);
     const [tempRoll, setTempRoll] = useState({Pericia: '', Dice: [], Result: ''});
+    const [searchTerm, setSearchTerm] = useState('');
 
     const getTotalPoints = useCallback((map, prefix) => {
         const prefixList = ['pericia', 'art', 'subArt'];
@@ -73,16 +74,14 @@ export default function Page3() {
     }
 
     function UpdateTempRoll() {
-        const temps = [
-            "Pericia",
-            "Dice",
-            "Result",
-        ]
-
         const tempRollClone = { ...tempRoll };
 
-        temps.forEach((temp) => {
-            tempRollClone[temp] = sessionStorage.getItem(`temp${temp}`) || '';
+        ["Pericia", "Dice", "Result"].forEach((temp) => {
+            let value = sessionStorage.getItem(`temp${temp}`) || '';
+            if (temp === "Dice" && value) {
+                value = value.split(',').map(Number);
+            }
+            tempRollClone[temp] = value;
         });
 
         setTempRoll(tempRollClone);
@@ -130,6 +129,8 @@ export default function Page3() {
             return ((5+(aInt)) * level) + (level * 2);
         } else if (bPericias === 3) {
             return ((7+(aInt)) * level) + (level * 2);
+        } else {
+            return -1;
         }
 
     }
@@ -152,7 +153,7 @@ export default function Page3() {
 
         let diceBestResult = 0;
         const dice = [];
-        let noAttribute = false;
+        let noAttribute;
 
         /**
          * Sets the temporary roll values in the session storage.
@@ -274,6 +275,26 @@ export default function Page3() {
         }
     };
 
+    const handleSearchChange = (event) => {
+        setSearchTerm(event.target.value.toLowerCase());
+    };
+
+    const filteredBioMap = bioMap.filter((item) =>
+        item.toLowerCase().includes(searchTerm)
+    );
+    const filteredAtrMap = atrMap.filter((item) =>
+        item.toLowerCase().includes(searchTerm)
+    );
+    const filteredPerArray = perArray.filter((item) =>
+        item.pericia.toLowerCase().includes(searchTerm)
+    );
+    const filteredArcArray = arcArray.filter((item) =>
+        item.art.toLowerCase().includes(searchTerm)
+    );
+    const filteredSubArcArray = subArcArray.filter((item) =>
+        item.subArt.toLowerCase().includes(searchTerm)
+    );
+
     useEffect(() => {
 
         updatePoints();
@@ -286,24 +307,22 @@ export default function Page3() {
 
             <section className={"section-dice"}>
                 <div className={"display-flex-center"}>
-                    <div>
-                        <h2>Rolagem:</h2>
-                    </div>
+                    <h2 className={"title-2"}>Rolagem:</h2>
                     <article className={"display-flex-center dice"}>
                         <div className={"dice-background dice-font left"}>{tempRoll.Pericia ? tempRoll.Pericia : "Nenhum"}</div>
-                        <div className={"dice-background dice-font center"}>{tempRoll.Dice ? `[${tempRoll.Dice}]` : 0}</div>
+                        <div className={"dice-background dice-font center"}>{tempRoll.Dice && tempRoll.Dice.length <= 7  ? `[${tempRoll.Dice}]` : tempRoll.Dice.length > 7 ? `[${tempRoll.Dice.slice(0,7)}...]` : "Role um dado"}</div>
                         <div className={"dice-background dice-font right"}>{tempRoll.Result ? tempRoll.Result : 0}</div>
                     </article>
                 </div>
             </section>
             <section className={"section-options"}>
-                <div className={"display-flex-center"}>
+                <div className={"display-flex-center buttons"}>
                     <button type="button"
                             className="button-lock"
                             onClick={handleLockChange}
                             style={isLocked ? lockedInputStyle() : {}}>
                         {isLocked ? "Entradas bloqueadas " : "Entradas desbloqueadas "}
-                        <i className={isLocked ? "bi bi-lock-fill" : "bi bi-unlock-fill"} />
+                        <i className={isLocked ? "bi bi-lock-fill" : "bi bi-unlock-fill"}/>
                     </button>
                     <button type={"button"}
                             className={"button-lock"}
@@ -311,17 +330,24 @@ export default function Page3() {
                             style={recommendations ? lockedInputStyle() : {}}
                     >
                         {"Pontos recomendados "}
-                        <i className={recommendations ? "bi bi-exclamation-triangle-fill" : "bi bi-exclamation-triangle"} />
+                        <i className={recommendations ? "bi bi-exclamation-triangle-fill" : "bi bi-exclamation-triangle"}/>
                     </button>
-
+                    <input
+                        className={"search status"}
+                        type="text"
+                        placeholder="pesquisar status..."
+                        value={searchTerm}
+                        onChange={handleSearchChange}
+                    />
                 </div>
                 <div className={"display-flex-center"}>
                     <div className={"alert-box-collapsible"} style={recommendations ? null : {display: "none"}}>
                         <div className={"alert-box"}>
                             <div className={"alert-box-message"}>
+                                <p>Pontos recomendados:</p>
                                 <p>biotipo: [9] | máximo: [3]</p>
                                 <p>atributos: [{CalculateAttributesPoints()}] | máximo: [{CalculateAttributesCap()}]</p>
-                                <p>perícias: [{CalculatePericiasPoints() !== 0 ? CalculatePericiasPoints() : "Preencha o Biotipo e Atributos"}] | máximo: [{CalculatePericiasCap()}]</p>
+                                <p>perícias: [{CalculatePericiasPoints() > 0 ? CalculatePericiasPoints() : CalculatePericiasPoints() === 0 ? "Preencha o Biotipo e Atributos" : "Valores maiores do que o esperado."}] | máximo: [{CalculatePericiasCap()}]</p>
                                 <p className={"last-p"}>(sub)artes arcanas: [{getItem('pericia-Magia Arcana', 0) * 5}] | máximo [{15}]</p>
                             </div>
                         </div>
@@ -329,43 +355,47 @@ export default function Page3() {
                 </div>
             </section>
 
-            <section className={"section-biotipo"}>
+            <section className={`section-biotipo section-status ${filteredBioMap.length < 1 ? "display-none" : ""}`}>
                 <div className={"display-flex-center column"}>
                     <h2 className={"mainCommon title-2"}>biotipo: [{bioPoints}] pontos utilizados.</h2>
                     <p className={"statusDescription"}>O biotipo representa a essência do personagem,
                         seu estado natural sem treinos, modificações ou conhecimentos.</p>
                 </div>
                 <div className={"input-center justify-center min"}>
-                    {bioMap.map(biotipo => (
-                        <Biotipos key={biotipo}
-                                  isLocked={isLocked}
-                                  biotipo={biotipo}
-                                  handleStatusChange={handleStatusChange}
-                                  updatePoints={updatePoints}/>
+                    {filteredBioMap.map((biotipo) => (
+                        <Biotipos
+                            key={biotipo}
+                            isLocked={isLocked}
+                            biotipo={biotipo}
+                            handleStatusChange={handleStatusChange}
+                            updatePoints={updatePoints}
+                        />
                     ))}
                 </div>
             </section>
 
-            <section className={"section-atributos"}>
+            <section className={`section-atributos section-status ${filteredAtrMap.length < 1 ? "display-none" : ""}`}>
                 <div className={"display-flex-center column"}>
                     <h2 className={"mainCommon title-2"}>atributos: [{atrPoints}] pontos utilizados.</h2>
                     <p className={"statusDescription"}>Os atributos são os status principais do personagem.
                         Eles guiam as perícias e as (sub)artes arcanas.</p>
                 </div>
                 <div className={"input-center justify-center min"}>
-                    {atrMap.map(atr => (
-                        <Attributes key={atr}
-                                    isLocked={isLocked}
-                                    atributo={atr}
-                                    atr={atr}
-                                    handleStatusChange={handleStatusChange}
-                                    updatePoints={updatePoints}
-                                    rollDice={rollDice}/>
+                    {filteredAtrMap.map((atr) => (
+                        <Attributes
+                            key={atr}
+                            isLocked={isLocked}
+                            atributo={atr}
+                            atr={atr}
+                            handleStatusChange={handleStatusChange}
+                            updatePoints={updatePoints}
+                            rollDice={rollDice}
+                        />
                     ))}
                 </div>
             </section>
 
-            <section className={"section-perArray"}>
+            <section className={`section-perArray section-status ${filteredPerArray.length < 1 ? "display-none" : ""}`}>
                 <div className={"display-flex-center column"}>
                     <h2 className={"mainCommon title-2"}>perícias: [{perPoints}] pontos utilizados.</h2>
                     <p className={"statusDescription"}>As perícias são os conhecimentos e habilidades naturais do
@@ -374,10 +404,12 @@ export default function Page3() {
                 <PericiasSection isLocked={isLocked}
                                  rollDice={rollDice}
                                  handleStatusChange={handleStatusChange}
-                                 updatePoints={updatePoints}/>
+                                 updatePoints={updatePoints}
+                                 perArray={filteredPerArray}
+                />
             </section>
 
-            <section className={"section-arts"}>
+            <section className={`section-arts section-status ${filteredArcArray.length < 1 ? "display-none" : ""}`}>
                 <div className={"display-flex-center column"}>
                     <h2 className={"mainCommon title-2"}>artes arcanas: [{arcPoints}] pontos utilizados.</h2>
                     <p className={"statusDescription"}>As artes arcanas são os focos de conhecimento em magia
@@ -385,10 +417,12 @@ export default function Page3() {
                 </div>
                 <ArtsSection isLocked={isLocked}
                              handleStatusChange={handleStatusChange}
-                             updatePoints={updatePoints}/>
+                             updatePoints={updatePoints}
+                             arcArray={filteredArcArray}
+                />
             </section>
 
-            <section className={"section-subArts"}>
+            <section className={`section-subArts section-status ${filteredSubArcArray.length < 1 ? "display-none" : ""}`}>
                 <div className={"display-flex-center column"}>
                     <h2 className={"mainCommon title-2"}>
                         subartes arcanas: [{subArcPoints}] pontos utilizados.
@@ -396,7 +430,11 @@ export default function Page3() {
                     <p className={"statusDescription"}>As subartes arcanas são as especializações das artes
                     arcanas do personagem, aumentando as possibilidades de skills.</p>
                 </div>
-                <SubArtsSection isLocked={isLocked} handleStatusChange={handleStatusChange} updatePoints={updatePoints}/>
+                <SubArtsSection isLocked={isLocked}
+                                handleStatusChange={handleStatusChange}
+                                updatePoints={updatePoints}
+                                subArcArray={filteredSubArcArray}
+                />
             </section>
         </main>
     );
