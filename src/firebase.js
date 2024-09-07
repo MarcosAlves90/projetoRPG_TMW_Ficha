@@ -1,7 +1,6 @@
 // src/firebase.js
-import { getApps, initializeApp } from "firebase/app";
+import { initializeApp } from "firebase/app";
 import { getFirestore } from "firebase/firestore";
-import { initializeAuth, browserLocalPersistence  } from "firebase/auth";
 import {getAuth} from "firebase/auth";
 
 const firebaseConfig = {
