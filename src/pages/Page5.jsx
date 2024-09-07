@@ -1,7 +1,8 @@
-import { useState, useEffect } from "react";
+import {useState, useEffect} from "react";
 import TextareaAutosize from "react-textarea-autosize";
 import Collapsible from "react-collapsible";
-import { saveItem } from "../assets/systems/SaveLoad.jsx";
+import {saveItem} from "../assets/systems/SaveLoad.jsx";
+import {v4 as uuidv4} from 'uuid';
 
 const CreateAnnotations = ({ array, handleContentChange, handleDelete }) => {
     return array.length > 0 && array.map((annotation) => (
@@ -82,7 +83,7 @@ export default function Page5() {
                     <button
                         className="button-header active create"
                         onClick={() => (createTitle.trim()) ? saveAnnotations([...annotationsArray, {
-                            id: Date.now(),
+                            id: uuidv4(),
                             title: createTitle,
                             content: ''
                         }]) : null}

@@ -1,10 +1,18 @@
 import {useEffect, useState} from "react";
-import {Link, useLocation} from "react-router-dom";
+import {Link, useLocation, useNavigate} from "react-router-dom";
+import {useSignOut} from "../systems/SaveLoad.jsx";
+import {onAuthStateChanged} from "firebase/auth";
+import { auth } from "../../firebase";
 
 export default function Header() {
     const [headerBackground, setHeaderBackground] = useState(false);
     const [collapsed, setCollapsed] = useState(true);
+    const [currentUser, setCurrentUser] = useState(null);
+
     const location = useLocation();
+    const navigate = useNavigate();
+
+    const signOut = useSignOut();
 
     useEffect(() => {
         const handleScroll = () => {
@@ -24,11 +32,19 @@ export default function Header() {
         }
     }, [collapsed]);
 
+    useEffect(() => {
+        const unsubscribe = onAuthStateChanged(auth, (user) => {
+            setCurrentUser(user); // Atualiza o estado com o usuário atual
+        });
+
+        return () => unsubscribe();
+    }, []);
+
     return (
 
-        <nav className={`navbar ${collapsed ? "" : "show"} navbar-expand-lg navbar-light ${headerBackground || !collapsed ? "custom-theme" : "default-theme"}`}>
+        <nav className={`navbar ${collapsed ? "" : "show"} navbar-expand-lg navbar-light ${headerBackground || !collapsed ? "custom-theme" : "default-theme"} `}>
             <Link className={"navbar-brand"} to={"/"}>TMWCSE</Link>
-            <button className={`navbar-toggler ${!collapsed ? "active" : ""}`} onClick={() => setCollapsed(!collapsed)} type="button" data-toggle="collapse" data-target="#navbarText"
+            <button className={`navbar-toggler ${!collapsed ? "active" : ""} ${location.pathname === "/login" ? "login-themed" : ""}`} onClick={() => setCollapsed(!collapsed)} type="button" data-toggle="collapse" data-target="#navbarText"
                     aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
                 <span className="navbar-toggler-icon"></span>
             </button>
@@ -52,6 +68,10 @@ export default function Header() {
                     <li className={`nav-item ${location.pathname === "/anotacoes" ? "active" : ""}`}>
                         <Link className="nav-link" to={"/anotacoes"}>Anotações</Link>
                     </li>
+                    <li className={`nav-item sign-in ${!currentUser ? "login" : "sign-out"} ${location.pathname === "/login" ? "login-themed" : ""}`}
+                    onClick={() => currentUser ? signOut() : navigate("/login")}>
+                        <p>{!currentUser ? "Login" : "Sair"}</p>
+                    </li>
                 </ul>
             </div>
         </nav>
@@ -59,6 +79,4 @@ export default function Header() {
     );
 }
 
-Header.propTypes = {
-
-};
+Header.propTypes = {};

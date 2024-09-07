@@ -1,4 +1,8 @@
 import LZString from "lz-string";
+import {auth} from "../../firebase.js";
+import {useCallback} from "react";
+import {useNavigate} from "react-router-dom";
+import {saveUserData} from "../../firebaseUtils.js";
 
 /**
  * Saves a given value under a specified key in localStorage after compressing it.
@@ -24,7 +28,7 @@ export const deleteItem = (key) => {
  * @param {string} compressed - The compressed string to decompress.
  * @returns {*} The decompressed value, converted to the appropriate type.
  */
-function decompressValue(compressed) {
+export function decompressValue(compressed) {
     const decompressed = LZString.decompressFromUTF16(compressed);
     if (decompressed === true) return true;
     if (decompressed === false) return false;
@@ -105,4 +109,40 @@ export function loadLocalStorageFile(event) {
     };
     reader.onerror = (error) => console.error('Erro ao ler o arquivo:', error);
     reader.readAsText(files[0]);
+}
+
+export function clearLocalStorage() {
+    localStorage.clear();
+    location.reload();
+}
+
+export function useSignOut() {
+    const navigate = useNavigate();
+
+    return useCallback(async () => {
+        try {
+            await saveUserData(returnLocalStorageData());
+            await auth.signOut();
+            navigate('/login');
+            clearLocalStorage();
+            console.log('Sign-out realizado com sucesso.');
+        } catch (error) {
+            console.error('Erro ao tentar fazer sign-out:', error);
+        }
+    }, [navigate]);
+}
+
+export function returnLocalStorageData() {
+    const dados = {};
+    for (let i = 0; i < localStorage.length; i++) {
+        const chave = localStorage.key(i);
+        dados[chave] = localStorage.getItem(chave);
+    }
+    return dados;
+}
+
+export function importDatabaseData(data) {
+    localStorage.clear();
+    Object.entries(data).forEach(([key, value]) => localStorage.setItem(key, value));
+    location.reload();
 }

@@ -1,5 +1,10 @@
 import {useState, useEffect} from "react";
-import {getItem, saveItem, handleChange, deleteItem} from "../assets/systems/SaveLoad.jsx";
+import {
+    getItem,
+    saveItem,
+    handleChange,
+    deleteItem,
+} from "../assets/systems/SaveLoad.jsx";
 import TextareaAutosize from 'react-textarea-autosize';
 import Collapsible from "react-collapsible";
 import 'bootstrap-icons/font/bootstrap-icons.css';
@@ -12,7 +17,6 @@ export default function Page2() {
     const [tracosPositivos, setTracosPositivos] = useState(getItem('tracosPositivos', ''));
     const [origem, setOrigem] = useState(getItem('origem', ''));
     const [origemForma, setOrigemForma] = useState(getItem('origemForma', ''));
-
 
     useEffect(() => {
         const stateMap = {

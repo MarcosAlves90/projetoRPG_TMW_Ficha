@@ -19,7 +19,11 @@ export default function Page3() {
     const [arcPoints, setArcPoints] = useState(getItem('art-Points', 0));
     const [subArcPoints, setSubArcPoints] = useState(getItem('subArt-Points', 0));
     const [recommendations, setRecommendations] = useState(false);
-    const [tempRoll, setTempRoll] = useState({Pericia: '', Dice: [], Result: ''});
+    const [tempRoll, setTempRoll] = useState({
+        Pericia: sessionStorage.getItem('tempPericia') || '',
+        Dice: sessionStorage.getItem('tempDice') ? sessionStorage.getItem('tempDice').split(',').map(Number) : [],
+        Result: sessionStorage.getItem('tempResult') || ''
+    });
     const [searchTerm, setSearchTerm] = useState('');
 
     const getTotalPoints = useCallback((map, prefix) => {
@@ -298,9 +302,12 @@ export default function Page3() {
     useEffect(() => {
 
         updatePoints();
-        UpdateTempRoll();
 
     },[]);
+
+    useEffect(() => {
+        document.documentElement.style.setProperty('--text-length', `${(tempRoll.Dice.length < 31 ? tempRoll.Dice.length : 30)}`);
+    }, [tempRoll.Dice.length]);
 
     return (
         <main className={"mainCommon page-3"}>
@@ -310,7 +317,7 @@ export default function Page3() {
                     <h2 className={"title-2"}>Rolagem:</h2>
                     <article className={"display-flex-center dice"}>
                         <div className={"dice-background dice-font left"}>{tempRoll.Pericia ? tempRoll.Pericia : "Nenhum"}</div>
-                        <div className={"dice-background dice-font center"}>{tempRoll.Dice && tempRoll.Dice.length <= 7  ? `[${tempRoll.Dice}]` : tempRoll.Dice.length > 7 ? `[${tempRoll.Dice.slice(0,7)}...]` : "0"}</div>
+                        <div className={"dice-background dice-font center display-flex-center"}><p>{tempRoll.Dice.length < 31 ? `[${tempRoll.Dice}]` : tempRoll.Dice.length >= 31 ? `[${tempRoll.Dice.slice(0,30)}...]` : "0"}</p></div>
                         <div className={"dice-background dice-font right"}>{tempRoll.Result ? tempRoll.Result : 0}</div>
                     </article>
                 </div>
