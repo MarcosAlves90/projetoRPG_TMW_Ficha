@@ -2,6 +2,7 @@
 import { getApps, initializeApp } from "firebase/app";
 import { getFirestore } from "firebase/firestore";
 import { initializeAuth, browserLocalPersistence  } from "firebase/auth";
+import {getAuth} from "firebase/auth";
 
 const firebaseConfig = {
     apiKey: import.meta.env.VITE_APP_FIREBASE_API_KEY,
@@ -13,11 +14,8 @@ const firebaseConfig = {
     measurementId: import.meta.env.VITE_APP_FIREBASE_MEASUREMENT_ID
 };
 
-export const firebaseApp =
-    getApps().length === 0 ? initializeApp(firebaseConfig) : getApps()[0];
+export const app = initializeApp(firebaseConfig);
 
-export const db = getFirestore(firebaseApp);
+export const db = getFirestore(app);
 
-export const auth = initializeAuth(firebaseApp, {
-    persistence: browserLocalPersistence,
-});
+export const auth = getAuth(app);

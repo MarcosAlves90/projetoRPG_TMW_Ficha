@@ -34,7 +34,7 @@ export default function Header() {
 
     useEffect(() => {
         const unsubscribe = onAuthStateChanged(auth, (user) => {
-            setCurrentUser(user); // Atualiza o estado com o usuário atual
+            setCurrentUser(user);
         });
 
         return () => unsubscribe();

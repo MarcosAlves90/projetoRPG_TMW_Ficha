@@ -9,6 +9,8 @@ import Page5 from "./pages/Page5.jsx";
 import './App.css';
 import { Route, Routes } from "react-router-dom";
 import Login from "./pages/Login.jsx";
+import {auth} from "./firebase.js";
+import {onAuthStateChanged} from "firebase/auth";
 
 function App() {
     const [isLoading, setIsLoading] = useState(true);
@@ -24,6 +26,18 @@ function App() {
         }, 500);
 
         return () => clearTimeout(timer);
+    }, []);
+
+    useEffect(() => {
+        const unsubscribe = onAuthStateChanged(auth, (user) => {
+            if (user) {
+                console.log("Usuário está logado");
+            } else {
+                console.log("Usuário deslogado");
+            }
+        });
+
+        return () => unsubscribe();
     }, []);
 
     return (

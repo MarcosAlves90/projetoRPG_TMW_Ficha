@@ -654,10 +654,8 @@ input[type=number] {
 }
 
 .mainCommon.page-login {
-  padding: 2rem 2rem 2rem 2rem;
   margin: auto;
   width: 70%;
-  min-height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;
