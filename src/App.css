@@ -905,6 +905,11 @@ input[type=number] {
       cursor: pointer;
     }
   }
+  .section-statics {
+    .static-container, .static-container .static-status {
+      width: 100%;
+    }
+  }
 }
 
 .mainCommon.page-0 {

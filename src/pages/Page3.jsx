@@ -26,13 +26,13 @@ export default function Page3() {
     });
     const [searchTerm, setSearchTerm] = useState('');
 
-    const getTotalPoints = useCallback((map, prefix) => {
+    const getTotalPoints = useCallback((totalPoints, prefix) => {
         const prefixList = ['pericia', 'art', 'subArt'];
 
         if (prefixList.includes(prefix)) {
-            return map.reduce((total, obj) => total + getItem(`${prefix}-${obj[prefix]}`, 0), 0);
+            return totalPoints.reduce((total, obj) => total + getItem(`${prefix}-${obj[prefix]}`, 0), 0);
         } else {
-            return map.reduce((total, key) => total + getItem(`${prefix}-${key}`, 0), 0);
+            return totalPoints.reduce((total, key) => total + getItem(`${prefix}-${key}`, 0), 0);
         }
 
     }, []);
@@ -166,7 +166,7 @@ export default function Page3() {
          * @param {Array} diceProp - The array of dice rolled.
          * @param {number} resultProp - The result of the roll.
          */
-        function setTempRoll(periciaNameProp, diceProp, resultProp) {
+        function setTempRollDice(periciaNameProp, diceProp, resultProp) {
             sessionStorage.setItem('tempPericia', periciaNameProp);
             sessionStorage.setItem('tempDice', diceProp);
             sessionStorage.setItem('tempResult', resultProp);
@@ -232,7 +232,7 @@ export default function Page3() {
             rollAttributeDice(attribute, attributeBonus);
             choseMinOrMax(noAttribute);
 
-            setTempRoll(attributeName, dice, diceBestResult);
+            setTempRollDice(attributeName, dice, diceBestResult);
             UpdateTempRoll();
         } else {
             const periciaName = (e.target.id).slice(7);
@@ -242,11 +242,13 @@ export default function Page3() {
                 if (per.pericia === periciaName) {
                     return getItem(`atributo-${per.atr}`, 0);
                 }
+                return null;
             });
             let attributeBonus = map(perArray, function (per) {
                 if (per.pericia === periciaName) {
                     return getItem(`atributo-${per.atr}-bonus`, 0);
                 }
+                return null;
             });
 
             attribute = attribute.length > 0 ? attribute[0] : 0;
@@ -259,7 +261,7 @@ export default function Page3() {
 
             const result = diceBestResult + pericia;
 
-            setTempRoll(periciaName, dice, result);
+            setTempRollDice(periciaName, dice, result);
             UpdateTempRoll();
         }
     }

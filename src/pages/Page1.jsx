@@ -176,7 +176,7 @@ export default function Page1() {
 
             <section className={"section-pessoal"}>
                 <div className={"title-2-container"}>
-                    <h2 className={"mainCommon title-2"}>pessoal.</h2>
+                    <h2 className={"mainCommon title-2"}>pessoal</h2>
                 </div>
                 <fieldset className={"page-1"}>
                     <input type={"text"} value={name} onChange={handleChange(setName)}
@@ -211,7 +211,7 @@ export default function Page1() {
 
             <section className={"section-forma"}>
                 <div className={"title-2-container"}>
-                    <h2 className={"mainCommon title-2"}>forma.</h2>
+                    <h2 className={"mainCommon title-2"}>forma</h2>
                 </div>
                 <fieldset className={"page-1"}>
                     <div>
@@ -246,7 +246,7 @@ export default function Page1() {
                 <fieldset className={"page-1"}>
                     <div className={"container-recurso"}>
                         <div className={"title-2-container"}>
-                            <h2 className={"mainCommon title-2"}>vida.</h2>
+                            <h2 className={"mainCommon title-2"}>vida</h2>
                         </div>
                         <div className={"container-recurso-inputs"}>
                             <input className={"input-left"}
@@ -265,7 +265,7 @@ export default function Page1() {
                     </div>
                     <div className={"container-recurso"}>
                         <div className={"title-2-container"}>
-                            <h2 className={"mainCommon title-2"}>estresse.</h2>
+                            <h2 className={"mainCommon title-2"}>estresse</h2>
                         </div>
                         <div className={"container-recurso-inputs"}>
                             <input className={"input-left"}
@@ -286,7 +286,7 @@ export default function Page1() {
                 <fieldset className={"page-1"}>
                     <div className={"container-recurso"}>
                         <div className={"title-2-container"}>
-                            <h2 className={"mainCommon title-2"}>energia.</h2>
+                            <h2 className={"mainCommon title-2"}>energia</h2>
                         </div>
                         <div className={"container-recurso-inputs"}>
                             <input className={"input-left"}
@@ -305,7 +305,7 @@ export default function Page1() {
                     </div>
                     <div className={"container-recurso"}>
                         <div className={"title-2-container"}>
-                            <h2 className={"mainCommon title-2"}>sanidade.</h2>
+                            <h2 className={"mainCommon title-2"}>sanidade</h2>
                         </div>
                         <div className={"container-recurso-inputs"}>
                             <input className={"input-left"}
@@ -329,7 +329,7 @@ export default function Page1() {
                 <fieldset className={"page-1 bottom"}>
                     <div className={"display-block-center"}>
                         <div className={"title-2-container"}>
-                            <h2 className={"mainCommon title-2"}>defesa.</h2>
+                            <h2 className={"mainCommon title-2"}>defesa</h2>
                         </div>
                         <div>
                             <input className={"input-left"}
@@ -342,7 +342,7 @@ export default function Page1() {
                     </div>
                     <div className={"display-block-center"}>
                         <div className={"title-2-container"}>
-                            <h2 className={"mainCommon title-2"}>nível.</h2>
+                            <h2 className={"mainCommon title-2"}>nível</h2>
                         </div>
                         <div className={"display-flex-center"}>
                             <input className={"input-center-dropdown"}
@@ -355,7 +355,7 @@ export default function Page1() {
                     </div>
                     <div className={"display-block-center"}>
                         <div className={"title-2-container"}>
-                            <h2 className={"mainCommon title-2"}>afinidade.</h2>
+                            <h2 className={"mainCommon title-2"}>afinidade</h2>
                         </div>
                         <div className={"custom-select-father direito"}>
                             <select className="form-select custom-select input-right"
@@ -378,6 +378,25 @@ export default function Page1() {
                 </fieldset>
             </section>
 
+            <section className={"section-statics"}>
+                <div className={"title-2-container"}>
+                    <h2 className={"mainCommon title-2"}>DT</h2>
+                </div>
+                <fieldset className={"page-1"}>
+                    <div className={"static-container display-flex-center"}>
+                        <input className={"static-status"}
+                               type={"number"}
+                               value={10 +
+                                   getItem(`atributo-${'PRE'}`, 0) +
+                                   getItem(`atributo-${'PRE'}-bonus`, 0) +
+                                   level}
+                               min={0}
+                               placeholder={"pontos de defesa"}
+                               disabled={true}/>
+                    </div>
+                </fieldset>
+            </section>
+
             <section className={"section-files"}>
                 <p>Configurações</p>
                 <input className="form-control dark" type="file" id="formFile"
@@ -385,7 +404,7 @@ export default function Page1() {
                 <button className="button-header active file"
                         onClick={() => document.getElementById('formFile').click()}>
                     <label htmlFor="formFile" style={{width: "100%"}} className="file-selector">
-                        {"Importar "}
+                    {"Importar "}
                         <i className="bi bi-arrow-down-circle"/>
                     </label>
                 </button>
