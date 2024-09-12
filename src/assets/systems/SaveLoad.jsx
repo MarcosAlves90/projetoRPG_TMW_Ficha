@@ -125,10 +125,8 @@ export function returnLocalStorageData() {
     return dados;
 }
 
-
 export function useSignOut() {
     const navigate = useNavigate();
-
     return useCallback(async () => {
         try {
             await saveUserData(returnLocalStorageData());

@@ -9,12 +9,9 @@ import imageCompression from 'browser-image-compression';
  * The compressed image is then stored in local storage and displayed as the user's profile picture.
  */
 export default function ProfilePicUploader() {
-    // State to hold the profile picture URL.
     const [profilePic, setProfilePic] = useState(getItem('profilePic', ''));
 
-    // Effect to update local storage whenever the profile picture changes.
     useEffect(() => {
-        // Save the profile picture to local storage if it exists, otherwise delete it from local storage.
         profilePic ? saveItem('profilePic', profilePic) : deleteItem('profilePic');
     }, [profilePic]);
 
@@ -22,10 +19,9 @@ export default function ProfilePicUploader() {
      * Handles file selection and compresses the selected image.
      * @param {Event} event - The event triggered by file input change.
      */
-    const handleFileChange = async (event) => {
-        const file = event.target.files[0]; // Get the selected file.
+    async function handleFileChange (event) {
+        const file = event.target.files[0];
         if (file) {
-            // Options for image compression.
             const options = {
                 maxSizeMB: 0.5,
                 maxWidthOrHeight: 150,
@@ -35,14 +31,12 @@ export default function ProfilePicUploader() {
             };
 
             try {
-                // Compress the image file.
                 const compressedFile = await imageCompression(file, options);
                 if (compressedFile) {
-                    // Read the compressed file and update the profile picture state.
                     const reader = new FileReader();
                     reader.onload = (e) => {
                         setProfilePic(e.target.result);
-                        saveItem('profilePic', e.target.result); // Save the compressed image to local storage.
+                        saveItem('profilePic', e.target.result);
                     };
                     reader.readAsDataURL(compressedFile);
                 } else {
@@ -52,7 +46,7 @@ export default function ProfilePicUploader() {
                 console.error(error);
             }
         }
-    };
+    }
 
     return (
         <div className="profile-pic-image">

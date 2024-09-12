@@ -3,6 +3,10 @@ import { useEffect, useState } from 'react';
 export default function Page0() {
     const [rotation, setRotation] = useState(0);
 
+    function handleGitHubButtonClick() {
+        window.open("https://github.com/MarcosAlves90/projetoRPG_TMW_Ficha/tree/develop", "_blank")
+    }
+
     useEffect(() => {
         const handleScroll = () => {
             const scrollTop = window.scrollY;
@@ -35,7 +39,7 @@ export default function Page0() {
                 <section className={"mainCommon-page-0-section-1"}>
                     <p>An online character sheet project for the virtual tabletop role-playing game &quot;The Mental World&quot;. The project uses technologies such as HTML, CSS, JavaScript, React and Vite for its operation and stylization. The idea is for the user to be able to build their sheet on the platform and download it in JSON format for future use.</p>
                     <div className={"mainCommon-page-0-section-1-footer"}>
-                        <button onClick={() => window.open("https://github.com/MarcosAlves90/projetoRPG_TMW_Ficha/tree/develop", "_blank")}>
+                        <button onClick={handleGitHubButtonClick}>
                             GitHub
                         </button>
                     </div>

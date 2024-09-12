@@ -14,6 +14,14 @@ export default function Header() {
 
     const signOut = useSignOut();
 
+    function handleMenuToggle() {
+        setCollapsed(!collapsed)
+    }
+
+    function handleLoginClick() {
+        currentUser ? signOut() : navigate("/login");
+    }
+
     useEffect(() => {
         const handleScroll = () => {
             const scrollTop = window.scrollY;
@@ -44,9 +52,10 @@ export default function Header() {
 
         <nav className={`navbar ${collapsed ? "" : "show"} navbar-expand-lg navbar-light ${headerBackground || !collapsed ? "custom-theme" : "default-theme"} `}>
             <Link className={"navbar-brand"} to={"/"}>TMWCSE</Link>
-            <button className={`navbar-toggler ${!collapsed ? "active" : ""} ${location.pathname === "/login" ? "login-themed" : ""}`} onClick={() => setCollapsed(!collapsed)} type="button" data-toggle="collapse" data-target="#navbarText"
+            <button className={`navbar-toggler ${!collapsed ? "active" : ""} ${location.pathname === "/login" ? "login-themed" : ""}`}
+                    onClick={handleMenuToggle} type="button" data-toggle="collapse" data-target="#navbarText"
                     aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
-                <span className="navbar-toggler-icon"></span>
+                <span className="navbar-toggler-icon"/>
             </button>
             <div className={`collapse navbar-collapse ${collapsed ? "" : "show"}`} id="navbarText">
                 <ul className="navbar-nav mr-auto">
@@ -69,7 +78,7 @@ export default function Header() {
                         <Link className="nav-link" to={"/anotacoes"}>Anotações</Link>
                     </li>
                     <li className={`nav-item sign-in ${!currentUser ? "login" : "sign-out"} ${location.pathname === "/login" ? "login-themed" : ""}`}
-                    onClick={() => currentUser ? signOut() : navigate("/login")}>
+                    onClick={handleLoginClick}>
                         <p>{!currentUser ? "Login" : "Sair"}</p>
                     </li>
                 </ul>

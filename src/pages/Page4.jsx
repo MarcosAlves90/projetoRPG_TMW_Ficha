@@ -3,7 +3,7 @@ import TextareaAutosize from "react-textarea-autosize";
 import Collapsible from "react-collapsible";
 import {v4 as uuidv4} from 'uuid';
 
-const CreateSkills = ({ array, handleContentChange, handleDelete }) => {
+function CreateSkills ({ array, handleContentChange, handleDelete }) {
 
     return array.length > 0 && array.map((skill) => (
         <Collapsible
@@ -21,7 +21,7 @@ const CreateSkills = ({ array, handleContentChange, handleDelete }) => {
                         <div className={"container-skill-select"}>
                             <p>Círculo: </p>
                             <select className={"form-select custom-select margin circle-skill"}
-                                    onChange={(event) => handleContentChange(event, skill.id)}
+                                    onChange={(e) => handleContentChange(e, skill.id)}
                                     value={skill.circle}
                                     id={`select-${skill.id}`}>
                                 <option value={1}>
@@ -38,7 +38,7 @@ const CreateSkills = ({ array, handleContentChange, handleDelete }) => {
                         <div className={"container-skill-select"}>
                             <p>Categoria: </p>
                             <select className={"form-select custom-select margin type-skill"}
-                                    onChange={(event) => handleContentChange(event, skill.id)}
+                                    onChange={(e) => handleContentChange(e, skill.id)}
                                     value={skill.type}
                                     id={`select-type-${skill.id}`}>
                                 <option value={1}>
@@ -54,7 +54,7 @@ const CreateSkills = ({ array, handleContentChange, handleDelete }) => {
                             <input
                                 type={"text"}
                                 className={"input-skill spent-skill"}
-                                onChange={(event) => handleContentChange(event, skill.id)}
+                                onChange={(e) => handleContentChange(e, skill.id)}
                                 value={skill.spent}
                                 id={`select-spent-${skill.id}`}
                                 placeholder={"gasto da skill."}
@@ -65,7 +65,7 @@ const CreateSkills = ({ array, handleContentChange, handleDelete }) => {
                             <input
                                 type={"text"}
                                 className={"input-skill art-skill"}
-                                onChange={(event) => handleContentChange(event, skill.id)}
+                                onChange={(e) => handleContentChange(e, skill.id)}
                                 value={skill.art}
                                 id={`select-art-${skill.id}`}
                                 placeholder={"arte utilizada pela skill."}
@@ -74,7 +74,7 @@ const CreateSkills = ({ array, handleContentChange, handleDelete }) => {
                         <div className={"container-skill-select last-select"}>
                             <p>Execução: </p>
                             <select className={"form-select custom-select margin execution-skill"}
-                                    onChange={(event) => handleContentChange(event, skill.id)}
+                                    onChange={(e) => handleContentChange(e, skill.id)}
                                     value={skill.execution}
                                     id={`select-execution-${skill.id}`}>
                                 <option value={1}>
@@ -102,7 +102,7 @@ const CreateSkills = ({ array, handleContentChange, handleDelete }) => {
                         <div className={"container-skill-select"}>
                             <p>Alcance: </p>
                             <select className={"form-select custom-select margin range-skill"}
-                                    onChange={(event) => handleContentChange(event, skill.id)}
+                                    onChange={(e) => handleContentChange(e, skill.id)}
                                     value={skill.range}
                                     id={`select-range-${skill.id}`}>
                                 <option value={1}>
@@ -133,7 +133,7 @@ const CreateSkills = ({ array, handleContentChange, handleDelete }) => {
                             <input
                                 type={"text"}
                                 className={"input-skill area-skill"}
-                                onChange={(event) => handleContentChange(event, skill.id)}
+                                onChange={(e) => handleContentChange(e, skill.id)}
                                 value={skill.area}
                                 id={`select-area-${skill.id}`}
                                 placeholder={"área da skill."}
@@ -144,7 +144,7 @@ const CreateSkills = ({ array, handleContentChange, handleDelete }) => {
                             <input
                                 type={"text"}
                                 className={"input-skill target-skill"}
-                                onChange={(event) => handleContentChange(event, skill.id)}
+                                onChange={(e) => handleContentChange(e, skill.id)}
                                 value={skill.target}
                                 id={`select-target-${skill.id}`}
                                 placeholder={"alvos da skill."}
@@ -155,7 +155,7 @@ const CreateSkills = ({ array, handleContentChange, handleDelete }) => {
                             <input
                                 type={"text"}
                                 className={"input-skill duration-skill"}
-                                onChange={(event) => handleContentChange(event, skill.id)}
+                                onChange={(e) => handleContentChange(e, skill.id)}
                                 value={skill.duration}
                                 id={`select-duration-${skill.id}`}
                                 placeholder={"duração da skill."}
@@ -166,7 +166,7 @@ const CreateSkills = ({ array, handleContentChange, handleDelete }) => {
                             <input
                                 type={"text"}
                                 className={"input-skill resistance-skill"}
-                                onChange={(event) => handleContentChange(event, skill.id)}
+                                onChange={(e) => handleContentChange(e, skill.id)}
                                 value={skill.resistance}
                                 id={`select-resistance-${skill.id}`}
                                 placeholder={"resistência da skill."}
@@ -182,7 +182,7 @@ const CreateSkills = ({ array, handleContentChange, handleDelete }) => {
                             className={"input-skill skill-title"}
                             value={skill.title}
                             id={`skill-title-${skill.id}`}
-                            onChange={(event) => handleContentChange(event, skill.id)}
+                            onChange={(e) => handleContentChange(e, skill.id)}
                         />
                     </div>
 
@@ -193,7 +193,7 @@ const CreateSkills = ({ array, handleContentChange, handleDelete }) => {
                     className="form-control textarea-sheet content-skill"
                     id={`textarea-${skill.id}`}
                     value={skill.content}
-                    onChange={(event) => handleContentChange(event, skill.id)}
+                    onChange={(e) => handleContentChange(e, skill.id)}
                     minRows="4"
                     placeholder="Descrição da Skill."
                  />
@@ -224,39 +224,39 @@ export default function Page4() {
         localStorage.setItem('skillsArray', JSON.stringify(newSkills));
     };
 
-    const handleContentChange = (event, id) => {
+    function handleContentChange (e, id) {
         const updatedSkills = skillsArray.map((skill) => {
             if (skill.id === id) {
-                if (event.target.classList.contains('circle-skill')) {
-                    return {...skill, circle: parseInt(event.target.value)};
-                } else if (event.target.classList.contains('content-skill')) {
-                    return {...skill, content: event.target.value};
-                } else if (event.target.classList.contains('type-skill')) {
-                    return {...skill, type: parseInt(event.target.value)};
-                } else if (event.target.classList.contains('art-skill')) {
-                    return {...skill, art: event.target.value};
-                } else if (event.target.classList.contains('execution-skill')) {
-                    return {...skill, execution: parseInt(event.target.value)};
-                } else if (event.target.classList.contains('range-skill')) {
-                    return {...skill, range: parseInt(event.target.value)}
-                } else if (event.target.classList.contains('target-skill')) {
-                    return {...skill, target: event.target.value};
-                } else if (event.target.classList.contains('duration-skill')) {
-                    return {...skill, duration: event.target.value};
-                } else if (event.target.classList.contains('resistance-skill')) {
-                    return {...skill, resistance: event.target.value};
-                } else if (event.target.classList.contains('area-skill')) {
-                    return {...skill, area: event.target.value};
-                } else if (event.target.classList.contains('spent-skill')) {
-                    return {...skill, spent: event.target.value};
-                } else if (event.target.id.includes('skill-title')) {
-                    return {...skill, title: event.target.value};
+                if (e.target.classList.contains('circle-skill')) {
+                    return {...skill, circle: parseInt(e.target.value)};
+                } else if (e.target.classList.contains('content-skill')) {
+                    return {...skill, content: e.target.value};
+                } else if (e.target.classList.contains('type-skill')) {
+                    return {...skill, type: parseInt(e.target.value)};
+                } else if (e.target.classList.contains('art-skill')) {
+                    return {...skill, art: e.target.value};
+                } else if (e.target.classList.contains('execution-skill')) {
+                    return {...skill, execution: parseInt(e.target.value)};
+                } else if (e.target.classList.contains('range-skill')) {
+                    return {...skill, range: parseInt(e.target.value)}
+                } else if (e.target.classList.contains('target-skill')) {
+                    return {...skill, target: e.target.value};
+                } else if (e.target.classList.contains('duration-skill')) {
+                    return {...skill, duration: e.target.value};
+                } else if (e.target.classList.contains('resistance-skill')) {
+                    return {...skill, resistance: e.target.value};
+                } else if (e.target.classList.contains('area-skill')) {
+                    return {...skill, area: e.target.value};
+                } else if (e.target.classList.contains('spent-skill')) {
+                    return {...skill, spent: e.target.value};
+                } else if (e.target.id.includes('skill-title')) {
+                    return {...skill, title: e.target.value};
                 }
             }
             return skill;
         });
         saveSkills(updatedSkills);
-    };
+    }
 
     const handleDelete = (id) => {
         const updatedSkills = skillsArray.filter((skill) => skill.id !== id);
