@@ -17,13 +17,14 @@ export const getUserData = async () => {
     } catch (error) {
         console.error('Erro ao recuperar dados:', error);
     }
+    return null;
 };
 
 export const saveUserData = async (data) => {
     const userId = auth.currentUser.uid;
     try {
         const userDoc = doc(db, 'userData', userId);
-        await setDoc(userDoc, { data: data });
+        await setDoc(userDoc, { data });
         console.log('Dados salvos com sucesso!');
     } catch (error) {
         console.error('Erro ao salvar dados:', error);

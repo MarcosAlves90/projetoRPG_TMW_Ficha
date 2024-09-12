@@ -157,7 +157,7 @@ export default function Page3() {
 
         let diceBestResult = 0;
         const dice = [];
-        let noAttribute;
+        let noAttribute = false;
 
         /**
          * Sets the temporary roll values in the session storage.

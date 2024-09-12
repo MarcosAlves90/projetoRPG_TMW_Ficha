@@ -119,7 +119,7 @@ export function clearLocalStorage() {
 export function useSignOut() {
     const navigate = useNavigate();
 
-    export function returnLocalStorageData() {
+     function returnLocalStorageData() {
         const dados = {};
         for (let i = 0; i < localStorage.length; i++) {
             const chave = localStorage.key(i);

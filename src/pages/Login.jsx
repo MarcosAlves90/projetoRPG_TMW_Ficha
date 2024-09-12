@@ -70,7 +70,7 @@ export default function Login() {
 
             navigate('/individual');
         } catch (error) {
-            setErrorMessage('Erro ao tentar fazer login: ' + error.message);
+            setErrorMessage(`Erro ao tentar fazer login: ${error.message}`);
             console.error("Erro de login:", error);
         }
     };
