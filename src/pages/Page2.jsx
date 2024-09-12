@@ -20,12 +20,12 @@ export default function Page2() {
 
     useEffect(() => {
         const stateMap = {
-            'ideais': ideais,
-            'tracosNegativos': tracosNegativos,
-            'tracosPositivos': tracosPositivos,
-            'origem': origem,
-            'origemForma': origemForma,
-            'fisico': fisico,
+            ideais,
+            tracosNegativos,
+            tracosPositivos,
+            origem,
+            origemForma,
+            fisico,
         };
 
         Object.keys(stateMap).forEach((key) => {
@@ -35,7 +35,6 @@ export default function Page2() {
                 deleteItem(key);
             }
         });
-
     }, [ideais, tracosNegativos, tracosPositivos, origem, origemForma, fisico]);
 
     return (

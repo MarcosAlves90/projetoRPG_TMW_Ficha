@@ -37,21 +37,21 @@ export default function Page1() {
     useEffect(() => {
 
         const stateMap = {
-            'nome': name,
-            'titulo': title,
-            'idade': age,
-            'profissao': career,
-            'altura': altura,
-            'peso': peso,
-            'nomeF': nomeF,
-            'tipoF': tipoF,
-            'forma': forma,
-            'vidaGasta': vidaGasta,
-            'estresseGasto': estresseGasto,
-            'energiaGasta': energiaGasta,
-            'sanidadeGasta': sanidadeGasta,
-            'afinidade': affinity,
-            'nivel': level
+            name,
+            title,
+            age,
+            career,
+            altura,
+            peso,
+            nomeF,
+            tipoF,
+            forma,
+            vidaGasta,
+            estresseGasto,
+            energiaGasta,
+            sanidadeGasta,
+            affinity,
+            level
         }
 
         Object.keys(stateMap).forEach((key) => {

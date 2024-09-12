@@ -23,7 +23,7 @@ const sanitizeInput = (input) => {
 export default function Login() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [error, setError] = useState('');
+    const [errorMessage, setErrorMessage] = useState('');
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -41,12 +41,12 @@ export default function Login() {
         console.log("Tentando logar...");
 
         if (!validateEmail(email)) {
-            setError('Email inválido.');
+            setErrorMessage('Email inválido.');
             setTimeout(() => console.error('Email inválido.'), 0);
             return;
         }
         if (!validatePassword(password)) {
-            setError('A Senha deve ter pelo menos 6 caracteres.');
+            setErrorMessage('A Senha deve ter pelo menos 6 caracteres.');
             setTimeout(() => console.error('A Senha deve ter pelo menos 6 caracteres.'), 0);
             return;
         }
@@ -70,7 +70,7 @@ export default function Login() {
 
             navigate('/individual');
         } catch (error) {
-            setError('Erro ao tentar fazer login: ' + error.message);
+            setErrorMessage('Erro ao tentar fazer login: ' + error.message);
             console.error("Erro de login:", error);
         }
     };
@@ -101,7 +101,7 @@ export default function Login() {
                                 required
                             />
                         </div>
-                        {error && <p className={"p-error"} style={{color: 'red'}}>{error}</p>}
+                        {errorMessage && <p className={"p-error"} style={{color: 'red'}}>{errorMessage}</p>}
                         <button className={"button-header submit"} type="submit">Fazer login</button>
                     </form>
                 </article>

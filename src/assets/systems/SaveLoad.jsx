@@ -119,6 +119,15 @@ export function clearLocalStorage() {
 export function useSignOut() {
     const navigate = useNavigate();
 
+    export function returnLocalStorageData() {
+        const dados = {};
+        for (let i = 0; i < localStorage.length; i++) {
+            const chave = localStorage.key(i);
+            dados[chave] = localStorage.getItem(chave);
+        }
+        return dados;
+    }
+
     return useCallback(async () => {
         try {
             await saveUserData(returnLocalStorageData());
@@ -130,15 +139,6 @@ export function useSignOut() {
             console.error('Erro ao tentar fazer sign-out:', error);
         }
     }, [navigate]);
-}
-
-export function returnLocalStorageData() {
-    const dados = {};
-    for (let i = 0; i < localStorage.length; i++) {
-        const chave = localStorage.key(i);
-        dados[chave] = localStorage.getItem(chave);
-    }
-    return dados;
 }
 
 export function importDatabaseData(data) {
