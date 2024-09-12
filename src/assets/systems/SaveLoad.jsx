@@ -116,17 +116,18 @@ export function clearLocalStorage() {
     location.reload();
 }
 
+export function returnLocalStorageData() {
+    const dados = {};
+    for (let i = 0; i < localStorage.length; i++) {
+        const chave = localStorage.key(i);
+        dados[chave] = localStorage.getItem(chave);
+    }
+    return dados;
+}
+
+
 export function useSignOut() {
     const navigate = useNavigate();
-
-     function returnLocalStorageData() {
-        const dados = {};
-        for (let i = 0; i < localStorage.length; i++) {
-            const chave = localStorage.key(i);
-            dados[chave] = localStorage.getItem(chave);
-        }
-        return dados;
-    }
 
     return useCallback(async () => {
         try {
