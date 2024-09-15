@@ -84,18 +84,20 @@ export default function Login() {
                     <p className={"p-login"}>Por favor, faça login em sua conta</p>
                     <form id={"login-form"} onSubmit={handleLogin}>
                         <div className={"display-flex-center"}>
-                            <label>Email:</label>
+                            <label htmlFor="email">Email:</label>
                             <input
                                 type="email"
+                                id="email"
                                 value={email}
                                 onChange={(e) => setEmail(e.target.value)}
                                 required
                             />
                         </div>
                         <div className={"display-flex-center"}>
-                            <label>Senha:</label>
+                            <label htmlFor="password">Senha:</label>
                             <input
                                 type="password"
+                                id="password"
                                 value={password}
                                 onChange={(e) => setPassword(e.target.value)}
                                 required

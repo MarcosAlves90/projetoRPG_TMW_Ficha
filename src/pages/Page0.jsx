@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
+import PropTypes from "prop-types";
 
-function LogoSection( rotation ) {
+function LogoSection({ rotation }) {
     return (
         <div className={"mainCommon-page-0-logo"} style={{ transform: `rotate(${rotation}deg)`, transition: 'transform 0.5s ease-out' }}>
             <img src={"./images/tmwLogo.png"} alt={"The Mental World Logo"} />
@@ -19,7 +20,7 @@ function TitleSection() {
     );
 }
 
-function FooterSection( handleGitHubButtonClick ) {
+function FooterSection({ handleGitHubButtonClick }) {
     return (
         <div className={"mainCommon-page-0-section-1-footer"}>
             <button onClick={handleGitHubButtonClick}>
@@ -27,6 +28,14 @@ function FooterSection( handleGitHubButtonClick ) {
             </button>
         </div>
     );
+}
+
+LogoSection.propTypes = {
+    rotation: PropTypes.number.isRequired,
+}
+
+FooterSection.propTypes = {
+    handleGitHubButtonClick: PropTypes.func.isRequired,
 }
 
 export default function Page0() {

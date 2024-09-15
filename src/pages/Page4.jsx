@@ -205,7 +205,7 @@ function CreateSkills ({ array, handleContentChange, handleDelete }) {
             </div>
         </Collapsible>
     ));
-};
+}
 
 export default function Page4() {
     const [createSkill, setCreateSkill] = useState("");
