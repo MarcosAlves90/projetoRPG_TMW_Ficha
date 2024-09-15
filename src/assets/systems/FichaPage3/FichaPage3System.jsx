@@ -3,6 +3,26 @@ import {useEffect, useState} from "react";
 import {deleteItem, getItem, saveItem} from "../SaveLoad.jsx";
 import {arcColors, atrColors, bioColors} from "../../styles/CommonStyles.jsx";
 
+const perArrayPropType = PropTypes.arrayOf(
+    PropTypes.shape({
+        pericia: PropTypes.string.isRequired,
+        atr: PropTypes.string.isRequired,
+    })
+);
+
+const arcArrayPropType = PropTypes.arrayOf(
+    PropTypes.shape({
+        art: PropTypes.string.isRequired,
+    })
+);
+
+const subArcArrayPropType = PropTypes.arrayOf(
+    PropTypes.shape({
+        subArt: PropTypes.string.isRequired,
+        art: PropTypes.string.isRequired,
+    })
+);
+
 /**
  * Handles key press events on input fields to restrict input to numeric values and control commands.
  *
@@ -102,7 +122,7 @@ PericiasSection.propTypes = {
     rollDice: PropTypes.func.isRequired,
     handleStatusChange: PropTypes.func.isRequired,
     updatePoints: PropTypes.func.isRequired,
-    perArray: PropTypes.array.isRequired,
+    perArray: perArrayPropType.isRequired,
 }
 
 function Pericia(props) {
@@ -278,7 +298,7 @@ ArtsSection.propTypes = {
     isLocked: PropTypes.bool.isRequired,
     handleStatusChange: PropTypes.func.isRequired,
     updatePoints: PropTypes.func.isRequired,
-    arcArray: PropTypes.array.isRequired,
+    arcArray: arcArrayPropType.isRequired,
 };
 
 export function ArcaneArts(props) {
@@ -365,7 +385,7 @@ SubArtsSection.propTypes = {
     isLocked: PropTypes.bool.isRequired,
     handleStatusChange: PropTypes.func.isRequired,
     updatePoints: PropTypes.func.isRequired,
-    subArcArray: PropTypes.array.isRequired,
+    subArcArray: subArcArrayPropType.isRequired,
 };
 
 export function SubArcaneArts(props) {
