@@ -67,11 +67,12 @@ export default function Page3() {
             console.log("Bloqueando entradas...");
             saveItem('isLocked', true);
         } else {
+            console.log("Desbloqueando entradas...");
             deleteItem('isLocked');
         }
     }
 
-    const handleLockChange = () => {
+    function handleLockChange() {
         const lock = !isLocked;
         setIsLocked(lock);
         SaveLockedState(lock);
@@ -152,12 +153,44 @@ export default function Page3() {
      * Rolls dice based on the event target id and updates the temporary roll values.
      *
      * @param {Object} e - The event object.
+     * @param {Array} simpleDice - The simple dice array.
      */
-    const rollDice = (e) => {
+    const rollDice = (e, simpleDice) => {
 
-        let diceBestResult = 0;
+        let diceResult = 0;
         const dice = [];
         let noAttribute = false;
+
+        /**
+         * Rolls a simple dice based on the given quantity.
+         *
+         * @param {number} qty - The quantity of dice to be rolled.
+         * @param {number} sides - The number of sides of the dice.
+         */
+        function rollSimpleDice(qty, sides) {
+            for (let i = 0; i < qty; i++) {
+                dice.push(Math.floor(Math.random() * sides) + 1);
+            }
+        }
+
+        /**
+         * Sums the values of the dice rolled.
+         * @returns {number} - The sum of the dice rolled.
+         */
+        function simpleDiceSum() {
+            return dice.reduce((acc, curr) => acc + curr, 0);
+        }
+
+        /**
+         * Chooses the best or worst dice result based on the presence of an attribute.
+         */
+        function chooseSimpleDiceResult() {
+            if (simpleDice.sum) {
+                diceResult = simpleDiceSum();
+            } else {
+                chooseMinOrMax(false);
+            }
+        }
 
         /**
          * Sets the temporary roll values in the session storage.
@@ -166,7 +199,7 @@ export default function Page3() {
          * @param {Array} diceProp - The array of dice rolled.
          * @param {number} resultProp - The result of the roll.
          */
-        function setTempRollDice(periciaNameProp, diceProp, resultProp) {
+        function setTempRollSessionStorage(periciaNameProp, diceProp, resultProp) {
             sessionStorage.setItem('tempPericia', periciaNameProp);
             sessionStorage.setItem('tempDice', diceProp);
             sessionStorage.setItem('tempResult', resultProp);
@@ -181,9 +214,7 @@ export default function Page3() {
          *                  the second element is the attribute value, and the third element is the bonus value.
          */
         function verifyAttribute(atr, bonus) {
-            if ((atr + bonus) === 0) {
-                return [true, 2, bonus];
-            }
+            if ((atr + bonus) === 0) return [true, 2, bonus];
             return [false, atr, bonus];
         }
 
@@ -206,11 +237,12 @@ export default function Page3() {
          *                          If true, the minimum dice result is chosen.
          *                          If false, the maximum dice result is chosen.
          */
-        function choseMinOrMax(noAtr) {
+        function chooseMinOrMax(noAtr) {
+            console.log(noAtr);
             if (!noAtr) {
-                diceBestResult = Math.max(...dice);
+                diceResult = Math.max(...dice);
             } else {
-                diceBestResult = Math.min(...dice);
+                diceResult = Math.min(...dice);
             }
         }
 
@@ -220,7 +252,7 @@ export default function Page3() {
          * @param {number} bonus - The bonus value to be added to the dice best result.
          */
         function addPericiaBonus(bonus) {
-            diceBestResult += bonus;
+            diceResult += bonus;
         }
 
         if (atrMap.includes((e.target.id).slice(7))) {
@@ -229,12 +261,12 @@ export default function Page3() {
             let attributeBonus = getItem(`atributo-${attributeName}-bonus`, 0);
 
             [noAttribute, attribute, attributeBonus] = verifyAttribute(attribute, attributeBonus);
-            rollAttributeDice(attribute, attributeBonus);
-            choseMinOrMax(noAttribute);
 
-            setTempRollDice(attributeName, dice, diceBestResult);
-            UpdateTempRoll();
-        } else {
+            rollAttributeDice(attribute, attributeBonus);
+            chooseMinOrMax(noAttribute);
+            setTempRollSessionStorage(attributeName, dice, diceResult);
+
+        } else if (perArray.map(per => per.pericia).includes((e.target.id).slice(7))) {
             const periciaName = (e.target.id).slice(7);
             const pericia = getItem(`pericia-${periciaName}`, 0);
             const periciaBonus = getItem(`pericia-${periciaName}-bonus`, 0);
@@ -256,14 +288,19 @@ export default function Page3() {
 
             [noAttribute, attribute, attributeBonus] = verifyAttribute(attribute, attributeBonus);
             rollAttributeDice(attribute, attributeBonus);
-            choseMinOrMax(noAttribute);
+            chooseMinOrMax(noAttribute);
             addPericiaBonus(periciaBonus);
 
-            const result = diceBestResult + pericia;
+            const result = diceResult + pericia;
 
-            setTempRollDice(periciaName, dice, result);
-            UpdateTempRoll();
+            setTempRollSessionStorage(periciaName, dice, result);
+        } else {
+            rollSimpleDice(simpleDice.qty, simpleDice.sides);
+            chooseSimpleDiceResult();
+            setTempRollSessionStorage("N/A", dice, diceResult);
         }
+
+        UpdateTempRoll();
     }
 
     /**
@@ -302,10 +339,8 @@ export default function Page3() {
     );
 
     useEffect(() => {
-
         updatePoints();
-
-    },[]);
+    },);
 
     useEffect(() => {
         document.documentElement.style.setProperty('--text-length', `${(tempRoll.Dice.length < 31 ? tempRoll.Dice.length : 30)}`);
@@ -326,21 +361,23 @@ export default function Page3() {
             </section>
             <section className={"section-options"}>
                 <div className={"display-flex-center buttons"}>
-                    <button type="button"
-                            className="button-lock"
-                            onClick={handleLockChange}
-                            style={isLocked ? lockedInputStyle() : {}}>
-                        {isLocked ? "Entradas bloqueadas " : "Entradas desbloqueadas "}
-                        <i className={isLocked ? "bi bi-lock-fill" : "bi bi-unlock-fill"}/>
-                    </button>
-                    <button type={"button"}
-                            className={"button-lock recommendations"}
-                            onClick={() => setRecommendations(!recommendations)}
-                            style={recommendations ? yellowLockedInputStyle() : {}}
-                    >
-                        {"Pontos recomendados "}
-                        <i className={recommendations ? "bi bi-exclamation-triangle-fill" : "bi bi-exclamation-triangle"}/>
-                    </button>
+                    <article className={"options-buttons display-flex-center"}>
+                        <button type="button"
+                                className="button-lock"
+                                onClick={handleLockChange}
+                                style={isLocked ? lockedInputStyle() : {}}>
+                            {isLocked ? "Entradas bloqueadas " : "Entradas desbloqueadas "}
+                            <i className={isLocked ? "bi bi-lock-fill" : "bi bi-unlock-fill"}/>
+                        </button>
+                        <button type={"button"}
+                                className={"button-lock recommendations"}
+                                onClick={() => setRecommendations(!recommendations)}
+                                style={recommendations ? yellowLockedInputStyle() : {}}
+                        >
+                            {"Pontos recomendados "}
+                            <i className={recommendations ? "bi bi-exclamation-triangle-fill" : "bi bi-exclamation-triangle"}/>
+                        </button>
+                    </article>
                     <input
                         className={"search status"}
                         type="text"

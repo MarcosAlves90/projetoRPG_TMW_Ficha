@@ -102,79 +102,6 @@ input[type=number] {
   display: none;
 }
 
-.mainCommon.page-0 {
-  padding: 0;
-  font-family: "Lora", sans-serif;
-  width: 100%;
-
-  .mainCommon-page-0-section-0 {
-    height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-
-    .mainCommon-page-0-section-0-article {
-
-      .mainCommon-page-0-logo {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        margin-bottom: 3vw;
-      }
-
-      .mainCommon-page-0-logo img {
-        rotate: 90deg;
-        height: 10vw;
-      }
-
-    }
-
-  }
-
-  .mainCommon-page-0-section-1 {
-    background-color: white;
-    padding-bottom: 1vw;
-
-    p {
-      margin-bottom: 0;
-      padding-top: 1vw;
-    }
-
-    .mainCommon-page-0-section-1-footer {
-      padding-top: 1vw;
-
-      button {
-        outline: none;
-        border: none;
-        transition: var(--common-transition);
-      }
-
-      button:hover {
-        background-color: var(--green-text);
-      }
-
-    }
-
-  }
-
-  .mainCommon-page-0-titleHover {
-    color: white;
-    width: fit-content;
-    cursor: pointer;
-    transition: var(--common-transition);
-
-    h1 {
-      font-size: 4vw;
-    }
-
-    h2 {
-      font-size: 2vw;
-    }
-
-  }
-
-}
-
 .container-skill-select.last-select {
   margin-bottom: 0;
 }
@@ -259,54 +186,6 @@ input[type=number] {
 
 }
 
-.create-annotation {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-
-  .search {
-
-    font-size: 0.9vw;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 45%;
-    margin-left: 3vw;
-
-    .search.skill {
-      padding: var(--common-input-padding);
-      width: 100%;
-    }
-
-  }
-
-  .create-annotation.input {
-    width: 40%;
-
-    .create-annotation-title {
-      width: 100%;
-      font-size: 0.9vw;
-      padding: var(--common-input-padding);
-      margin: 0.625vw;
-    }
-
-  }
-
-  .create-annotation.button {
-    height: 100%;
-    min-width: 15%;
-
-    .create {
-      font-size: 0.9vw;
-      width: 100%;
-      padding: var(--common-input-padding);
-      margin: 0.625vw;
-    }
-
-  }
-
-}
-
 .alert-box-collapsible {
   width: 100%;
 }
@@ -367,67 +246,6 @@ input[type=number] {
 .Collapsible__trigger.is-disabled {
   opacity: 0.5;
   background-color: grey;
-}
-
-.container-identity-outside {
-  padding-left: 1vw;
-  padding-right: 1vw;
-  background-color: var(--identity-outside-background);
-}
-
-.container-identity-outside-text {
-  font-size: var(--common-button-font-size);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.container-identity-outside-text-p {
-  --padding: 0.7vw;
-  color: var(--identity-outside-background);
-  margin: 0;
-  width: fit-content;
-  background-color: var(--identity-inside-background);
-  padding-right: var(--padding);
-  padding-left: var(--padding);
-  border-radius: 5vw;
-}
-
-.container-identity-inside {
-  min-width: 25.6vw;
-  padding: 0 1vw 1vw 1vw;
-  display: flex;
-  justify-content: left;
-  align-items: start;
-  background-color: var(--identity-inside-background);
-  width: fit-content;
-  font-size: var(--common-button-font-size);
-}
-
-.container-identity-inside.outside {
-  padding: 0.6vw;
-}
-
-.container-identity-inside.center {
-  width: 100%;
-  display: block;
-  justify-content: center;
-  align-items: center;
-  padding: 0.5vw 0 1vw;
-}
-
-.container-identity-inside.center p {
-  margin: 0.1vw;
-}
-
-.container-identity-inside-text {
-  margin-left: 1vw;
-  text-align: left;
-
-  p {
-    margin-bottom: 0.6vw;
-  }
-
 }
 
 .fixed-bottom {
@@ -519,11 +337,9 @@ input[type=number] {
   width: 100%;
   position: fixed;
   transition: var(--common-transition);
-  --button-background-color: #121212;
 
   .navbar-brand {
-    margin-left: calc(1vw + 1vh);
-    transition: var(--common-transition);
+    display: none;
   }
 
   .navbar-brand.show {
@@ -579,7 +395,7 @@ input[type=number] {
 
   #navbarText {
     height: 100%;
-    margin: 0 calc(1vw + 1vh) 0 calc(1vw + 1vh);
+    margin: 0 calc(5vw + 5vh) 0 calc(5vw + 5vh);
     .navbar-nav {
       display: flex;
       align-items: center;
@@ -599,6 +415,15 @@ input[type=number] {
           opacity: 1;
         }
         background-color: var(--green-text);
+      }
+      .nav-item.active:hover {
+        .nav-link {
+          opacity: 1;
+        }
+        background-color: rgba(51, 156, 140, 0.28);
+      }
+      .nav-item:hover {
+        background-color: rgba(255, 255, 255, 0.15);
       }
       .nav-item.sign-in {
         cursor: pointer;
@@ -704,20 +529,55 @@ input[type=number] {
   }
 }
 
+.mainCommon.page-4, .mainCommon.page-5 {
+  .create-annotation {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    .search {
+      font-size: 0.9vw;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 45%;
+      margin-left: 3vw;
+      .search.skill {
+        padding: var(--common-input-padding);
+        width: 100%;
+      }
+    }
+  }
+  .create-annotation.input {
+    width: 40%;
+    .create-annotation-title {
+      width: 100%;
+      font-size: 0.9vw;
+      padding: var(--common-input-padding);
+      margin: 0.625vw;
+    }
+  }
+  .create-annotation.button {
+    height: 100%;
+    min-width: 15%;
+    .create {
+      font-size: 0.9vw;
+      width: 100%;
+      padding: var(--common-input-padding);
+      margin: 0.625vw;
+    }
+  }
+}
+
 .mainCommon.page-3 {
   .section-dice {
-
     div h2 {
       font-size: 2vw;
       margin: 0;
     }
-
     div .dice {
-
       margin-left: 2vw;
       min-width: 21.354vw;
       height: 4vw;
-
       .dice-background {
         background-color: #121212;
       }
@@ -727,19 +587,16 @@ input[type=number] {
         padding: calc(var(--common-input-padding) + 0.4vw);
         border: var(--gray-border);
       }
-
       .dice-font.left {
         height: 100%;
         width: 100%;
         border-radius: 60px 0 0 60px;
       }
-
       .dice-font.right {
         height: 100%;
         width: 100%;
         border-radius: 0 60px 60px 0;
       }
-
       .dice-font.center {
         font-size: calc(1.2333vw - 0.01vw * var(--text-length));
         height: 100%;
@@ -755,16 +612,17 @@ input[type=number] {
     }
   }
   .section-options {
-    .button-lock {
-      width: 25%;
-      font-size: var(--common-button-font-size);
-      border-radius: 100px;
-      transition: var(--common-transition);
-      min-width: 110px;
-      border: var(--gray-border);
-      margin: 1vw;
-      padding: var(--common-input-padding);
-      background-color: var(--gray-background);
+    .options-buttons {
+      .button-lock {
+        font-size: var(--common-button-font-size);
+        border-radius: 100px;
+        transition: var(--common-transition);
+        min-width: 110px;
+        border: var(--gray-border);
+        margin: 1vw;
+        padding: var(--common-input-padding);
+        background-color: var(--gray-background);
+      }
     }
     .button-lock:hover {
       background-color: var(--green-background);
@@ -848,6 +706,68 @@ input[type=number] {
 
 .mainCommon.page-1 {
   .section-identity {
+
+    .container-identity-outside {
+      padding-left: 1vw;
+      padding-right: 1vw;
+      background-color: var(--identity-outside-background);
+    }
+
+    .container-identity-outside-text {
+      font-size: var(--common-button-font-size);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .container-identity-outside-text-p {
+      --padding: 0.7vw;
+      color: var(--identity-outside-background);
+      margin: 0;
+      width: fit-content;
+      background-color: var(--identity-inside-background);
+      padding-right: var(--padding);
+      padding-left: var(--padding);
+      border-radius: 5vw;
+    }
+
+    .container-identity-inside {
+      min-width: 25.6vw;
+      padding: 0 1vw 1vw 1vw;
+      display: flex;
+      justify-content: left;
+      align-items: start;
+      background-color: var(--identity-inside-background);
+      width: fit-content;
+      font-size: var(--common-button-font-size);
+    }
+
+    .container-identity-inside.outside {
+      padding: 0.6vw;
+    }
+
+    .container-identity-inside.center {
+      width: 100%;
+      display: block;
+      justify-content: center;
+      align-items: center;
+      padding: 0.5vw 0 1vw;
+    }
+
+    .container-identity-inside.center p {
+      margin: 0.1vw;
+    }
+
+    .container-identity-inside-text {
+      margin-left: 1vw;
+      text-align: left;
+
+      p {
+        margin-bottom: 0.6vw;
+      }
+
+    }
+
     .image-profile {
       height: 7.813vw;
       width: 7.813vw;
@@ -913,8 +833,41 @@ input[type=number] {
 }
 
 .mainCommon.page-0 {
+  padding: 0;
+  font-family: "Lora", sans-serif;
+  width: 100%;
+  .mainCommon-page-0-titleHover {
+    z-index: 0.5;
+    color: white;
+    width: fit-content;
+    cursor: pointer;
+    transition: var(--common-transition);
+
+    h1 {
+      font-size: 4vw;
+    }
+
+    h2 {
+      font-size: 2vw;
+    }
+
+  }
   .mainCommon-page-0-section-0 {
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     .mainCommon-page-0-section-0-article {
+      .mainCommon-page-0-logo img {
+        rotate: 90deg;
+        height: 10vw;
+      }
+      .mainCommon-page-0-logo {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-bottom: 3vw;
+      }
       .button-login {
         padding: 0;
         margin: 1vw 0 0 0;
@@ -935,6 +888,31 @@ input[type=number] {
         color: white;
       }
     }
+  }
+  .mainCommon-page-0-section-1 {
+    background-color: white;
+    padding-bottom: 1vw;
+
+    p {
+      margin-bottom: 0;
+      padding-top: 1vw;
+    }
+
+    .mainCommon-page-0-section-1-footer {
+      padding-top: 1vw;
+
+      button {
+        outline: none;
+        border: none;
+        transition: var(--common-transition);
+      }
+
+      button:hover {
+        background-color: var(--green-text);
+      }
+
+    }
+
   }
 }
 
@@ -1172,6 +1150,12 @@ input[type=number] {
 
 @media (max-width: 991px) {
   .navbar {
+    --button-background-color: #121212;
+    .navbar-brand {
+      display: flex;
+      margin-left: calc(1vw + 1vh);
+      transition: var(--common-transition);
+    }
     #navbarText {
       margin: calc(1vw + 1vh) calc(1vw + 1vh) 0 calc(1vw + 1vh);
       .nav-item {
@@ -1393,6 +1377,9 @@ input[type=number] {
     }
     .section-options .display-flex-center {
       flex-direction: column;
+      .options-buttons {
+        width: 100%;
+      }
       .button-lock, .search.status {
         width: 100%;
         font-size: calc(4vw);
@@ -1464,7 +1451,7 @@ input[type=number] {
       }
     }
     .create-annotation > * {
-      width: 100%;
+      width: 100% !important;
     }
     .Collapsible__trigger {
       margin: 0;
@@ -1537,8 +1524,4 @@ input[type=number] {
       font-size: calc(3vw);
     }
   }
-}
-
-@media (max-width: 480px) {
-
 }
