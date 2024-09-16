@@ -444,6 +444,23 @@ input[type=number] {
         background-color: var(--red-text);
         color: white;
       }
+      .config {
+        margin-left: 5vw;
+        width: 10vw;
+        background-color: #003640;
+        .nav-link {
+          opacity: 1;
+        }
+      }
+      .config:hover {
+        background-color: #00849e;
+      }
+      .active.config {
+        background-color: #00849e;
+      }
+      .active.config:hover {
+        background-color: #003640;
+      }
     }
   }
 
@@ -476,6 +493,49 @@ input[type=number] {
 .backgroundCommon.negative {
   filter: invert(1);
   rotate: 180deg;
+}
+
+.mainCommon.page-config {
+  .section-files {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    background-color: var(--gray-background);
+    padding: 3vw;
+    border-radius: 1vw;
+    gap: 1vw;
+    .sheet {
+      color: gray;
+    }
+    p {
+      grid-column: span 2;
+      color: white;
+      font-size: 1.25vw;
+    }
+    .clear.confirmation, .cloud-save.confirmation {
+      background-color: var(--yellow-background);
+      border: var(--yellow-border);
+      color: var(--yellow-text);
+    }
+    .clear.confirmation:hover, .cloud-save.confirmation:hover {
+      background-color: var(--red-background) !important;
+      border: var(--red-border) !important;
+      color: var(--red-text);
+    }
+    .cloud-save {
+      background-color: var(--blue-background);
+      border: var(--blue-border);
+      color: var(--blue-text);
+    }
+    .cloud-save:hover {
+      color: var(--green-text);
+    }
+    .file, .save, .clear, .cloud-save {
+      margin: 0;
+    }
+    .file > * {
+      cursor: pointer;
+    }
+  }
 }
 
 .mainCommon.page-login {
@@ -785,44 +845,6 @@ input[type=number] {
       justify-content: center;
       align-items: center;
       margin-bottom: 1vw;
-    }
-  }
-  .section-files {
-    margin: 2vw 0 0 0;
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    background-color: var(--gray-background);
-    padding: 3vw;
-    border-radius: 1vw;
-    gap: 1vw;
-    p {
-      grid-column: span 2;
-      color: white;
-      font-size: 1.25vw;
-    }
-    .clear.confirmation, .cloud-save.confirmation {
-      background-color: var(--yellow-background);
-      border: var(--yellow-border);
-      color: var(--yellow-text);
-    }
-    .clear.confirmation:hover, .cloud-save.confirmation:hover {
-      background-color: var(--red-background) !important;
-      border: var(--red-border) !important;
-      color: var(--red-text);
-    }
-    .cloud-save {
-      background-color: var(--blue-background);
-      border: var(--blue-border);
-      color: var(--blue-text);
-    }
-    .cloud-save:hover {
-      color: var(--green-text);
-    }
-    .file, .save, .clear, .cloud-save {
-      margin: 0;
-    }
-    .file > * {
-      cursor: pointer;
     }
   }
   .section-statics {
@@ -1164,7 +1186,45 @@ input[type=number] {
       .nav-item.sign-in {
         margin: 8vw 0 0 0;
       }
-
+      .navbar-nav {
+        .config {
+          margin-left: 0.5vw;
+          width: 100%;
+        }
+      }
+    }
+  }
+  .mainCommon.page-config {
+    width: 100%;
+    .section-files {
+      margin: 5vw 0 0 0;
+      border-radius: 4vw;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 0;
+      p {
+        font-size: calc(5vw);
+        margin-bottom: 4vw;
+      }
+      .clear, .file, .save, .cloud-save {
+        height: calc(10vw);
+        font-size: calc(4vw);
+        text-align: center;
+        line-height: calc(5vw);
+      }
+      .cloud-save {
+        margin: 2vw 0 0 0;
+        grid-column: span 2;
+      }
+      .clear {
+        margin: 2vw 0 0 0;
+        grid-column: span 2;
+      }
+      .file {
+        margin: 0 1vw 0 0;
+      }
+      .save {
+        margin: 0 0 0 1vw;
+      }
     }
   }
   .mainCommon.page-login {
@@ -1291,36 +1351,6 @@ input[type=number] {
             display: none;
           }
         }
-      }
-    }
-    .section-files {
-      margin: 5vw 0 0 0;
-      border-radius: 4vw;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 0;
-      p {
-        font-size: calc(5vw);
-        margin-bottom: 4vw;
-      }
-      .clear, .file, .save, .cloud-save {
-        height: calc(10vw);
-        font-size: calc(4vw);
-        text-align: center;
-        line-height: calc(5vw);
-      }
-      .cloud-save {
-        margin: 2vw 0 0 0;
-        grid-column: span 2;
-      }
-      .clear {
-        margin: 2vw 0 0 0;
-        grid-column: span 2;
-      }
-      .file {
-        margin: 0 1vw 0 0;
-      }
-      .save {
-        margin: 0 0 0 1vw;
       }
     }
   }

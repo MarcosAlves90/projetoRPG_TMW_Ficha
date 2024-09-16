@@ -77,8 +77,11 @@ export default function Header() {
                     <li className={`nav-item ${location.pathname === "/anotacoes" ? "active" : ""}`}>
                         <Link className="nav-link" to={"/anotacoes"}>Anotações</Link>
                     </li>
+                    <li className={`nav-item ${location.pathname === "/configuracoes" ? "active" : ""} config`}>
+                        <Link className="nav-link" to={"/configuracoes"}>⚙️</Link>
+                    </li>
                     <li className={`nav-item sign-in ${!currentUser ? "login" : "sign-out"} ${location.pathname === "/login" ? "login-themed" : ""}`}
-                    onClick={handleLoginClick}>
+                        onClick={handleLoginClick}>
                         <p>{!currentUser ? "Login" : "Sair"}</p>
                     </li>
                 </ul>

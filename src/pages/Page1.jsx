@@ -4,11 +4,8 @@ import {
     saveItem,
     handleChange,
     deleteItem,
-    loadLocalStorageFile,
-    saveLocalStorageFile, clearLocalStorage, returnLocalStorageData
 } from "../assets/systems/SaveLoad.jsx";
 import ProfilePicUploader from "../assets/components/ProfilePicUploader.jsx";
-import {saveUserData} from "../firebaseUtils.js";
 
 export default function Page1() {
 
@@ -31,8 +28,6 @@ export default function Page1() {
     const [sanidadeGasta, setSanidadeGasta] = useState(getItem('sanidadeGasta', ''));
 
     const [level, setLevel] = useState(getItem('nivel', ''));
-
-    const [unlockedStates, setUnlockedStates] = useState({Delete: false, CloudSave: false});
 
     useEffect(() => {
 
@@ -86,23 +81,6 @@ export default function Page1() {
             return (4 + pre)* level;
         } else {
             return 0;
-        }
-    }
-
-    function verifyDeleteUnlock() {
-        if (!unlockedStates.Delete) {
-            setUnlockedStates({...unlockedStates, Delete: true});
-        } else {
-            clearLocalStorage();
-        }
-    }
-
-    function verifyCloudSaveUnlock() {
-        if (!unlockedStates.CloudSave) {
-            setUnlockedStates({...unlockedStates, CloudSave: true});
-        } else {
-            saveUserData(returnLocalStorageData());
-            setUnlockedStates({...unlockedStates, CloudSave: false});
         }
     }
 
@@ -270,7 +248,7 @@ export default function Page1() {
                         <div className={"container-recurso-inputs"}>
                             <input className={"input-left"}
                                    type={"number"}
-                                   value={((getItem(`pericia-${'Foco'}`) / 2) * 10) || 0}
+                                   value={((getItem(`pericia-Foco`, 0) / 2) * 10) || 0}
                                    min={0}
                                    placeholder={"pontos de estresse"}
                                    disabled={true}/>
@@ -310,7 +288,7 @@ export default function Page1() {
                         <div className={"container-recurso-inputs"}>
                             <input className={"input-left"}
                                    type={"number"}
-                                   value={((getItem(`pericia-${'Foco'}`) / 2) * 10) || 0}
+                                   value={((getItem(`pericia-Foco`, 0) / 2) * 10) || 0}
                                    min={0}
                                    placeholder={"pontos de sanidade"}
                                    disabled={true}/>
@@ -334,7 +312,7 @@ export default function Page1() {
                         <div>
                             <input className={"input-left"}
                                    type={"number"}
-                                   value={10 + getItem(`atributo-${'DES'}`, 0)}
+                                   value={10 + getItem(`atributo-DES`, 0)}
                                    min={0}
                                    placeholder={"pontos de defesa"}
                                    disabled={true}/>
@@ -387,41 +365,14 @@ export default function Page1() {
                         <input className={"static-status"}
                                type={"number"}
                                value={10 +
-                                   getItem(`atributo-${'PRE'}`, 0) +
-                                   getItem(`atributo-${'PRE'}-bonus`, 0) +
+                                   getItem(`atributo-PRE`, 0) +
+                                   getItem(`atributo-PRE-bonus`, 0) +
                                    level}
                                min={0}
                                placeholder={"pontos de defesa"}
                                disabled={true}/>
                     </div>
                 </fieldset>
-            </section>
-
-            <section className={"section-files"}>
-                <p>Configurações</p>
-                <input className="form-control dark" type="file" id="formFile"
-                       onChange={loadLocalStorageFile} style={{display: 'none'}}/>
-                <button className="button-header active file"
-                        onClick={() => document.getElementById('formFile').click()}>
-                    <label htmlFor="formFile" style={{width: "100%"}} className="file-selector">
-                    {"Importar "}
-                        <i className="bi bi-arrow-down-circle"/>
-                    </label>
-                </button>
-                <button className="button-header active save" onClick={saveLocalStorageFile}>
-                    {"Baixar "}
-                    <i className="bi bi-arrow-up-circle"/>
-                </button>
-                <button className={`button-header active cloud-save ${!unlockedStates.CloudSave ? "" : "confirmation"}`}
-                        onClick={() => verifyCloudSaveUnlock()}>
-                    {!unlockedStates.CloudSave ? "Salvar na nuvem " : "Tem certeza? "}
-                    <i className="bi bi-cloud-arrow-down-fill"/>
-                </button>
-                <button className={`button-header active clear ${!unlockedStates.Delete ? "" : "confirmation"}`}
-                        onClick={() => verifyDeleteUnlock()}>
-                    {!unlockedStates.Delete ? "Limpar " : "Tem certeza? "}
-                    <i className="bi bi-trash3-fill"/>
-                </button>
             </section>
 
         </main>

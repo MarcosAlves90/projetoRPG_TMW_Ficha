@@ -11,6 +11,7 @@ import { Route, Routes } from "react-router-dom";
 import Login from "./pages/Login.jsx";
 import {auth} from "./firebase.js";
 import {onAuthStateChanged} from "firebase/auth";
+import Config from "./pages/Config.jsx";
 
 function App() {
     const [isLoading, setIsLoading] = useState(true);
@@ -58,6 +59,7 @@ function App() {
                 <Route path="/status" element={<Page3 />} />
                 <Route path="/skills" element={<Page4 />} />
                 <Route path="/anotacoes" element={<Page5 />} />
+                <Route path="/configuracoes" element={<Config />} />
             </Routes>
         </main>
     );
