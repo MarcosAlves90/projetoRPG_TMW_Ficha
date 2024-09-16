@@ -32,7 +32,7 @@ export default function Config() {
         <main className={"mainCommon page-config"}>
             <section className={"section-files"}>
                 <p>Configurações</p>
-                <p className={"sheet"}>{`Ficha atual: ${getItem("name", "Indefinido")}`}</p>
+                <p className={"sheet"}>{`Ficha atual: ${getItem("nome", "Indefinido")}`}</p>
                 <input className="form-control dark" type="file" id="formFile"
                        onChange={loadLocalStorageFile} style={{display: 'none'}}/>
                 <button className="button-header active file"

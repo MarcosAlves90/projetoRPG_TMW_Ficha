@@ -9,13 +9,13 @@ import ProfilePicUploader from "../assets/components/ProfilePicUploader.jsx";
 
 export default function Page1() {
 
-    const [affinity, setAffinity] = useState(getItem('afinidade', ''));
+    const [afinidade, setAfinidade] = useState(getItem('afinidade', ''));
     const [forma, setForma] = useState(getItem('forma', ''));
 
-    const [name, setName] = useState(getItem('nome', ''));
-    const [title, setTitle] = useState(getItem('titulo', ''));
-    const [career, setCareer] = useState(getItem('profissao', ''));
-    const [age, setAge] = useState(getItem('idade', ''));
+    const [nome, setNome] = useState(getItem('nome', ''));
+    const [titulo, setTitulo] = useState(getItem('titulo', ''));
+    const [profissao, setProfissao] = useState(getItem('profissao', ''));
+    const [idade, setIdade] = useState(getItem('idade', ''));
     const [altura, setAltura] = useState(getItem('altura', ''));
     const [peso, setPeso] = useState(getItem('peso', ''));
 
@@ -27,15 +27,15 @@ export default function Page1() {
     const [energiaGasta, setEnergiaGasta] = useState(getItem('energiaGasta', ''));
     const [sanidadeGasta, setSanidadeGasta] = useState(getItem('sanidadeGasta', ''));
 
-    const [level, setLevel] = useState(getItem('nivel', ''));
+    const [nivel, setNivel] = useState(getItem('nivel', ''));
 
     useEffect(() => {
 
         const stateMap = {
-            name,
-            title,
-            age,
-            career,
+            nome,
+            titulo,
+            idade,
+            profissao,
             altura,
             peso,
             nomeF,
@@ -45,8 +45,8 @@ export default function Page1() {
             estresseGasto,
             energiaGasta,
             sanidadeGasta,
-            affinity,
-            level
+            afinidade,
+            nivel
         }
 
         Object.keys(stateMap).forEach((key) => {
@@ -57,16 +57,16 @@ export default function Page1() {
             }
         });
 
-    }, [name, title, age, career, altura,
+    }, [nome, titulo, idade, profissao, altura,
         peso, nomeF, tipoF, forma, vidaGasta,
         estresseGasto, energiaGasta,
-        sanidadeGasta, affinity, level]);
+        sanidadeGasta, afinidade, nivel]);
 
     const getSelectorStyle = (value) => ({
         color: value === '' ? "var(--gray-placeholder)" : "white",
     });
 
-    const seletorAfinidadeStyle = getSelectorStyle(affinity);
+    const seletorAfinidadeStyle = getSelectorStyle(afinidade);
     const seletorFormaStyle = getSelectorStyle(forma);
 
     function localEnergy() {
@@ -74,11 +74,11 @@ export default function Page1() {
         const bioEnergy = getItem('biotipo-Energia', 0);
 
         if (bioEnergy === 1) {
-            return (2 + pre) * level;
+            return (2 + pre) * nivel;
         } else if (bioEnergy === 2) {
-            return (3 + pre) * level;
+            return (3 + pre) * nivel;
         } else if (bioEnergy === 3) {
-            return (4 + pre)* level;
+            return (4 + pre)* nivel;
         } else {
             return 0;
         }
@@ -106,11 +106,11 @@ export default function Page1() {
         const bioLife = getItem('biotipo-Vida', 0);
 
         if (bioLife === 1) {
-            return (12 + vig) + ((level-1)*(2+vig));
+            return (12 + vig) + ((nivel-1)*(2+vig));
         } else if (bioLife === 2) {
-            return (16 + vig) + ((level-1)*(3+vig));
+            return (16 + vig) + ((nivel-1)*(3+vig));
         } else if (bioLife === 3) {
-            return (20 + vig) + ((level-1)*(4+vig));
+            return (20 + vig) + ((nivel-1)*(4+vig));
         } else {
             return 0;
         }
@@ -137,8 +137,8 @@ export default function Page1() {
                             <div className={"container-identity-inside"}>
                                 <ProfilePicUploader/>
                                 <div className={"container-identity-inside-text"}>
-                                    <p>NOME: {name}</p>
-                                    <p>DATA NASCIMENTO: {age}</p>
+                                    <p>NOME: {nome}</p>
+                                    <p>DATA NASCIMENTO: {idade}</p>
                                     <p>ÓRGÃO EXPEDIDOR: SSP-SEV</p>
                                 </div>
                             </div>
@@ -157,17 +157,17 @@ export default function Page1() {
                     <h2 className={"mainCommon title-2"}>pessoal</h2>
                 </div>
                 <fieldset className={"page-1"}>
-                    <input type={"text"} value={name} onChange={handleChange(setName)}
+                    <input type={"text"} value={nome} onChange={handleChange(setNome)}
                            placeholder="nome"/>
-                    <input type={"text"} value={title} onChange={handleChange(setTitle)}
+                    <input type={"text"} value={titulo} onChange={handleChange(setTitulo)}
                            placeholder="título"/>
-                    <input type={"text"} className={"input-small"} value={career} onChange={handleChange(setCareer)}
+                    <input type={"text"} className={"input-small"} value={profissao} onChange={handleChange(setProfissao)}
                            placeholder={"profissão"}/>
                 </fieldset>
                 <fieldset className={"page-1"}>
                     <input type={"text"}
-                           value={age}
-                           onChange={handleChange(setAge)}
+                           value={idade}
+                           onChange={handleChange(setIdade)}
                            className={"input-small"}
                            placeholder="data de nascimento"/>
                     <input type={"number"}
@@ -325,8 +325,8 @@ export default function Page1() {
                         <div className={"display-flex-center"}>
                             <input className={"input-center-dropdown"}
                                    type={"number"}
-                                   value={level}
-                                   onChange={handleChange(setLevel)}
+                                   value={nivel}
+                                   onChange={handleChange(setNivel)}
                                    min={0}
                                    placeholder={"nível atual"}/>
                         </div>
@@ -338,8 +338,8 @@ export default function Page1() {
                         <div className={"custom-select-father direito"}>
                             <select className="form-select custom-select input-right"
                                     style={seletorAfinidadeStyle}
-                                    onChange={handleChange(setAffinity)}
-                                    value={affinity}>
+                                    onChange={handleChange(setAfinidade)}
+                                    value={afinidade}>
                                 <option value=''>afinidade</option>
                                 <option value={1}>aqua</option>
                                 <option value={2}>axis</option>
@@ -367,7 +367,7 @@ export default function Page1() {
                                value={10 +
                                    getItem(`atributo-PRE`, 0) +
                                    getItem(`atributo-PRE-bonus`, 0) +
-                                   level}
+                                   nivel}
                                min={0}
                                placeholder={"pontos de defesa"}
                                disabled={true}/>
