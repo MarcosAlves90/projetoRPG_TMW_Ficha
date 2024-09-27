@@ -35,6 +35,10 @@ export function decompressValue(compressed) {
     return isNaN(parseFloat(decompressed)) ? decompressed : Number(decompressed);
 }
 
+export function compressValue(value) {
+    return LZString.compressToUTF16(value);
+}
+
 /**
  * Retrieves a value from localStorage by key, decompresses it, and returns it. Returns a default value if the key does not exist.
  * @param {string} key - The key of the item to retrieve.
@@ -113,7 +117,6 @@ export function loadLocalStorageFile(event) {
 
 export function clearLocalStorage() {
     localStorage.clear();
-    location.reload();
 }
 
 export function returnLocalStorageData() {
@@ -141,7 +144,8 @@ export function useSignOut() {
 }
 
 export function importDatabaseData(data) {
+    // Primeiro se usa a getUserData para recuperar os dados do usuário,
+    // e depois essa função para importar os dados para o localStorage.
     localStorage.clear();
     Object.entries(data).forEach(([key, value]) => localStorage.setItem(key, value));
-    location.reload();
 }

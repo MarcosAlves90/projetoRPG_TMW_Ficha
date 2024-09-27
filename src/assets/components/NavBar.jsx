@@ -4,7 +4,7 @@ import {useSignOut} from "../systems/SaveLoad.jsx";
 import {onAuthStateChanged} from "firebase/auth";
 import { auth } from "../../firebase";
 
-export default function Header() {
+export default function NavBar() {
     const [headerBackground, setHeaderBackground] = useState(false);
     const [collapsed, setCollapsed] = useState(true);
     const [currentUser, setCurrentUser] = useState(null);
@@ -91,4 +91,4 @@ export default function Header() {
     );
 }
 
-Header.propTypes = {};
+NavBar.propTypes = {};
