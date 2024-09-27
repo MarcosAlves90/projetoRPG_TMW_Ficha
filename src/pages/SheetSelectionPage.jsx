@@ -26,7 +26,7 @@ export default function SheetSelectionPage() {
 
     useEffect(() => {
         const fetchSheets = async () => {
-            if (!sheetCode) {
+            if (localStorage.getItem('sheetCode') === null) {
                 const key = uuidv4();
                 setSheetCode(key);
                 localStorage.setItem('sheetCode', key);
