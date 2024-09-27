@@ -26,6 +26,11 @@ export default function SheetSelectionPage() {
 
     useEffect(() => {
         const fetchSheets = async () => {
+            if (!sheetCode) {
+                const key = uuidv4();
+                setSheetCode(key);
+                localStorage.setItem('sheetCode', key);
+            }
             if (auth.currentUser) {
                 const sheetsData = await getUserSheets();
                 console.log(sheetsData.length > 0 ? 'Fichas encontradas. Carregando...' : 'Nenhuma ficha encontrada.');
