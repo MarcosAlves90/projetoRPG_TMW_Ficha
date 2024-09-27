@@ -13,7 +13,6 @@ export function UserProvider({ children }) {
             console.log("Criando nova ficha...");
             const newSheetCode = uuidv4();
             localStorage.setItem('sheetCode', newSheetCode);
-            setSheetCode(newSheetCode);
         }
     }, [sheetCode]);
 

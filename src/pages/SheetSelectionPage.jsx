@@ -50,12 +50,18 @@ export default function SheetSelectionPage() {
     function updateSheets(sheetsParam) {
         const key = sheetCode;
         const newSheet = returnLocalStorageData();
-        const updatedSheets = sheetsParam.map(sheet =>
+        let updatedSheets = sheetsParam.map(sheet =>
             sheet.sheetCode === key ? newSheet : sheet
         );
+
         if (!updatedSheets.some(sheet => sheet.sheetCode === key)) {
             updatedSheets.push(newSheet);
         }
+
+        updatedSheets = updatedSheets.filter((sheet, index, self) =>
+            index === self.findIndex((s) => s.sheetCode === sheet.sheetCode)
+        );
+
         setSheets(updatedSheets);
         saveUserSheets(updatedSheets);
     }
