@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import Header from './assets/components/Header.jsx';
+import NavBar from './assets/components/NavBar.jsx';
 import Page0 from './pages/Page0.jsx';
 import Page1 from './pages/Page1.jsx';
 import Page2 from './pages/Page2.jsx';
@@ -7,14 +7,16 @@ import Page3 from "./pages/Page3.jsx";
 import Page4 from "./pages/Page4.jsx";
 import Page5 from "./pages/Page5.jsx";
 import './App.css';
-import { Route, Routes } from "react-router-dom";
+import {Route, Routes, useLocation} from "react-router-dom";
 import Login from "./pages/Login.jsx";
 import {auth} from "./firebase.js";
 import {onAuthStateChanged} from "firebase/auth";
 import Config from "./pages/Config.jsx";
+import SheetSelectionPage from "./pages/SheetSelectionPage.jsx";
 
 function App() {
     const [isLoading, setIsLoading] = useState(true);
+    const location = useLocation();
 
     useEffect(() => {
         const htmlElement = document.documentElement;
@@ -50,7 +52,7 @@ function App() {
                     </div>
                 )}
             </div>
-            <Header />
+            {location.pathname !== "/fichas" && <NavBar />}
             <Routes>
                 <Route path="/login" element={<Login />} />
                 <Route path="/" element={<Page0 />} />
@@ -59,6 +61,8 @@ function App() {
                 <Route path="/status" element={<Page3 />} />
                 <Route path="/skills" element={<Page4 />} />
                 <Route path="/anotacoes" element={<Page5 />} />
+                <Route path="/fichas" element={<SheetSelectionPage />} />
+
                 <Route path="/configuracoes" element={<Config />} />
             </Routes>
         </main>

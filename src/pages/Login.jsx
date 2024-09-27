@@ -4,10 +4,10 @@ import { signInWithEmailAndPassword } from 'firebase/auth';
 import { getUserData, saveUserData } from '../firebaseUtils.js';
 import { useNavigate } from 'react-router-dom';
 import {importDatabaseData} from "../assets/systems/SaveLoad.jsx";
+import validator from 'validator';
 
 const validateEmail = (email) => {
-    const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return re.test(String(email).toLowerCase());
+    return validator.isEmail(email);
 };
 
 const validatePassword = (password) => {
@@ -29,7 +29,9 @@ export default function Login() {
     useEffect(() => {
         const unsubscribe = auth.onAuthStateChanged((user) => {
             if (user) {
-                navigate('/individual');
+                console.log("Usuário detectado.");
+            } else {
+                console.log("Usuário não detectado.");
             }
         });
 
@@ -55,20 +57,19 @@ export default function Login() {
         const sanitizedPassword = sanitizeInput(password);
 
         try {
-            const userCredential = await signInWithEmailAndPassword(auth, sanitizedEmail, sanitizedPassword);
+            await signInWithEmailAndPassword(auth, sanitizedEmail, sanitizedPassword);
 
-            const userId = userCredential.user.uid;
-
-            const userData = await getUserData(userId);
+            const userData = await getUserData("data");
             if (userData) {
                 console.log('Dados encontrados. Redirecionando...');
                 importDatabaseData(userData);
             } else {
                 console.log('Nenhum dado encontrado. Salvando dados...');
-                await saveUserData(userId, '');
+                await saveUserData('');
             }
 
             navigate('/individual');
+
         } catch (error) {
             setErrorMessage(`Erro ao tentar fazer login: ${error.message}`);
             console.error("Erro de login:", error);

@@ -52,9 +52,9 @@ export default function ProfilePicUploader() {
         <div className="profile-pic-image">
             <label htmlFor="file-upload" className="custom-file-upload">
                 <img
-                    src={profilePic || './images/rgPlaceholder.png'}
+                    src={profilePic || './images/rgPlaceholder.jpg'}
                     alt="Profile"
-                    className="image-profile"
+                    className={`image-profile ${profilePic ? 'active' : ''}`}
                     style={{ cursor: 'pointer' }}
                 />
             </label>

@@ -6,16 +6,22 @@ import {
 } from "../assets/systems/SaveLoad.jsx";
 import {saveUserData} from "../firebaseUtils.js";
 import {useState} from "react";
+import {useNavigate} from "react-router-dom";
 
 export default function Config() {
 
     const [unlockedStates, setUnlockedStates] = useState({Delete: false, CloudSave: false});
 
+    const navigate = useNavigate();
+
     function verifyDeleteUnlock() {
         if (!unlockedStates.Delete) {
             setUnlockedStates({...unlockedStates, Delete: true});
         } else {
+            console.log("Limpando dados...");
             clearLocalStorage();
+            setUnlockedStates({...unlockedStates, Delete: false});
+            console.log("Dados limpos.");
         }
     }
 
@@ -26,6 +32,10 @@ export default function Config() {
             saveUserData(returnLocalStorageData());
             setUnlockedStates({...unlockedStates, CloudSave: false});
         }
+    }
+
+    function handleSheetsButtonClick() {
+        navigate("/fichas");
     }
 
     return (
@@ -55,6 +65,11 @@ export default function Config() {
                         onClick={() => verifyDeleteUnlock()}>
                     {!unlockedStates.Delete ? "Limpar " : "Tem certeza? "}
                     <i className="bi bi-trash3-fill"/>
+                </button>
+                <button className={`button-header active sheets`}
+                        onClick={() => handleSheetsButtonClick()}>
+                    {"Trocar ficha "}
+                    <i className="bi bi-file-spreadsheet-fill"></i>
                 </button>
             </section>
         </main>
