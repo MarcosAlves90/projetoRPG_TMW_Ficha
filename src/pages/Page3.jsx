@@ -1,5 +1,5 @@
 import {useCallback, useEffect, useState} from "react";
-import {deleteItem, getItem, saveItem} from "../assets/systems/SaveLoad.jsx";
+import {deleteItem, getItem, returnLocalStorageData, saveItem} from "../assets/systems/SaveLoad.jsx";
 import {lockedInputStyle, yellowLockedInputStyle} from "../assets/styles/CommonStyles.jsx";
 import {
     ArtsSection,
@@ -10,6 +10,7 @@ import {
 } from "../assets/systems/FichaPage3/FichaPage3System.jsx";
 import {arcArray, atrMap, bioMap, perArray, subArcArray} from "../assets/systems/FichaPage3/FichaPage3Arrays.jsx";
 import {map} from "jquery";
+import {saveUserData} from "../firebaseUtils.js";
 
 export default function Page3() {
     const [isLocked, setIsLocked] = useState(getItem('isLocked', false) === 'true');
@@ -59,6 +60,8 @@ export default function Page3() {
         const saPoints = getTotalPoints(subArcArray, 'subArt');
         setSubArcPoints(saPoints);
         saveItem('subArt-Points', saPoints);
+
+        saveUserData(returnLocalStorageData());
 
     }, [getTotalPoints]);
 
@@ -340,7 +343,7 @@ export default function Page3() {
 
     useEffect(() => {
         updatePoints();
-    },);
+    },[]);
 
     useEffect(() => {
         document.documentElement.style.setProperty('--text-length', `${(tempRoll.Dice.length < 31 ? tempRoll.Dice.length : 30)}`);

@@ -13,6 +13,8 @@ import {auth} from "./firebase.js";
 import {onAuthStateChanged} from "firebase/auth";
 import Config from "./pages/Config.jsx";
 import SheetSelectionPage from "./pages/SheetSelectionPage.jsx";
+import {getUserData} from "./firebaseUtils.js";
+import {importDatabaseData} from "./assets/systems/SaveLoad.jsx";
 
 function App() {
     const [isLoading, setIsLoading] = useState(true);
@@ -30,6 +32,15 @@ function App() {
 
         return () => clearTimeout(timer);
     }, []);
+
+    useEffect(() => {
+        async function fetchData() {
+            const userData = await getUserData("data");
+            importDatabaseData(userData);
+        }
+
+        fetchData();
+    }, [location.pathname]);
 
     useEffect(() => {
         const unsubscribe = onAuthStateChanged(auth, (user) => {

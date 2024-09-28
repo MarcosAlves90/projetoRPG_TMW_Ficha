@@ -1,8 +1,9 @@
 import {useState, useEffect} from "react";
 import TextareaAutosize from "react-textarea-autosize";
 import Collapsible from "react-collapsible";
-import {saveItem} from "../assets/systems/SaveLoad.jsx";
+import {returnLocalStorageData, saveItem} from "../assets/systems/SaveLoad.jsx";
 import {v4 as uuidv4} from 'uuid';
+import {saveUserData} from "../firebaseUtils.js";
 
 const CreateAnnotations = ({ array, handleContentChange, handleDelete }) => {
     return array.length > 0 && array.map((annotation) => (
@@ -49,6 +50,7 @@ export default function Page5() {
         setAnnotationsArray(newAnnotations);
         saveItem('annotationsArray', newAnnotations);
         localStorage.setItem('annotationsArray', JSON.stringify(newAnnotations));
+        saveUserData(returnLocalStorageData());
     };
 
     const handleContentChange = (event, id) => {

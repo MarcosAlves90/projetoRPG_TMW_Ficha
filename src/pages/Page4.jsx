@@ -2,6 +2,8 @@ import {useState, useEffect} from "react";
 import TextareaAutosize from "react-textarea-autosize";
 import Collapsible from "react-collapsible";
 import {v4 as uuidv4} from 'uuid';
+import {saveUserData} from "../firebaseUtils.js";
+import {returnLocalStorageData} from "../assets/systems/SaveLoad.jsx";
 
 function CreateSkills ({ array, handleContentChange, handleDelete }) {
 
@@ -222,6 +224,7 @@ export default function Page4() {
     const saveSkills = (newSkills) => {
         setSkillsArray(newSkills);
         localStorage.setItem('skillsArray', JSON.stringify(newSkills));
+        saveUserData(returnLocalStorageData());
     };
 
     function handleContentChange (e, id) {

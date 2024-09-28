@@ -3,11 +3,12 @@ import {
     getItem,
     saveItem,
     handleChange,
-    deleteItem,
+    deleteItem, returnLocalStorageData,
 } from "../assets/systems/SaveLoad.jsx";
 import TextareaAutosize from 'react-textarea-autosize';
 import Collapsible from "react-collapsible";
 import 'bootstrap-icons/font/bootstrap-icons.css';
+import {saveUserData} from "../firebaseUtils.js";
 
 export default function Page2() {
 
@@ -35,6 +36,9 @@ export default function Page2() {
                 deleteItem(key);
             }
         });
+
+        saveUserData(returnLocalStorageData());
+
     }, [ideais, tracosNegativos, tracosPositivos, origem, origemForma, fisico]);
 
     return (

@@ -3,9 +3,10 @@ import {
     getItem,
     saveItem,
     handleChange,
-    deleteItem,
+    deleteItem, returnLocalStorageData,
 } from "../assets/systems/SaveLoad.jsx";
 import ProfilePicUploader from "../assets/components/ProfilePicUploader.jsx";
+import {saveUserData} from "../firebaseUtils.js";
 
 export default function Page1() {
 
@@ -56,6 +57,8 @@ export default function Page1() {
                 deleteItem(key);
             }
         });
+
+        saveUserData(returnLocalStorageData());
 
     }, [nome, titulo, idade, profissao, altura,
         peso, nomeF, tipoF, forma, vidaGasta,
