@@ -30,9 +30,9 @@ export const deleteItem = (key) => {
  */
 export function decompressValue(compressed) {
     const decompressed = LZString.decompressFromUTF16(compressed);
-    if (decompressed === true) return true;
-    if (decompressed === false) return false;
-    return isNaN(parseFloat(decompressed)) ? decompressed : Number(decompressed);
+    // modifiquei isso aqui
+    if (decompressed === null) return null;
+    return /^[0-9]+(\.[0-9]+)?$/.test(decompressed) ? Number(decompressed) : decompressed;
 }
 
 export function compressValue(value) {
