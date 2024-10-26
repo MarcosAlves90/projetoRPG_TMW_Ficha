@@ -1,4 +1,9 @@
 import { useEffect, useState } from 'react';
+import { Route, Routes, useLocation } from "react-router-dom";
+import { onAuthStateChanged } from "firebase/auth";
+import { auth } from "./firebase.js";
+import { getUserData } from "./firebaseUtils.js";
+import { importDatabaseData } from "./assets/systems/SaveLoad.jsx";
 import NavBar from './assets/components/NavBar.jsx';
 import Page0 from './pages/Page0.jsx';
 import Page1 from './pages/Page1.jsx';
@@ -6,15 +11,10 @@ import Page2 from './pages/Page2.jsx';
 import Page3 from "./pages/Page3.jsx";
 import Page4 from "./pages/Page4.jsx";
 import Page5 from "./pages/Page5.jsx";
-import './App.css';
-import {Route, Routes, useLocation} from "react-router-dom";
 import Login from "./pages/Login.jsx";
-import {auth} from "./firebase.js";
-import {onAuthStateChanged} from "firebase/auth";
 import Config from "./pages/Config.jsx";
 import SheetSelectionPage from "./pages/SheetSelectionPage.jsx";
-import {getUserData} from "./firebaseUtils.js";
-import {importDatabaseData} from "./assets/systems/SaveLoad.jsx";
+import './App.css';
 
 function App() {
     const [isLoading, setIsLoading] = useState(true);
@@ -22,7 +22,6 @@ function App() {
 
     useEffect(() => {
         const htmlElement = document.documentElement;
-
         htmlElement.classList.add('disable-scroll');
 
         const timer = setTimeout(() => {
@@ -34,30 +33,23 @@ function App() {
     }, []);
 
     useEffect(() => {
-        async function fetchData() {
-            const userData = await getUserData("data");
-            importDatabaseData(userData);
-        }
-
-        fetchData();
-    }, [location.pathname]);
-
-    useEffect(() => {
-        const unsubscribe = onAuthStateChanged(auth, (user) => {
+        const unsubscribe = onAuthStateChanged(auth, async (user) => {
             if (user) {
                 console.log("Usuário está logado");
+                const userData = await getUserData("data");
+                importDatabaseData(userData);
             } else {
                 console.log("Usuário deslogado");
             }
         });
 
         return () => unsubscribe();
-    }, []);
+    }, [location.pathname]);
 
     return (
         <main className={"appMain display-flex"}>
             <div>
-                {(isLoading ) && (
+                {isLoading && (
                     <div id="loader">
                         <div className="loader" />
                     </div>
@@ -73,7 +65,6 @@ function App() {
                 <Route path="/skills" element={<Page4 />} />
                 <Route path="/anotacoes" element={<Page5 />} />
                 <Route path="/fichas" element={<SheetSelectionPage />} />
-
                 <Route path="/configuracoes" element={<Config />} />
             </Routes>
         </main>

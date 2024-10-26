@@ -157,7 +157,7 @@ export default function Page1() {
 
             <section className={"section-pessoal"}>
                 <div className={"title-2-container"}>
-                    <h2 className={"mainCommon title-2"}>pessoal</h2>
+                    <h2 className={"mainCommon title-2"}>Pessoal</h2>
                 </div>
                 <fieldset className={"page-1"}>
                     <input type={"text"} value={nome} onChange={handleChange(setNome)}
@@ -192,7 +192,7 @@ export default function Page1() {
 
             <section className={"section-forma"}>
                 <div className={"title-2-container"}>
-                    <h2 className={"mainCommon title-2"}>forma</h2>
+                    <h2 className={"mainCommon title-2"}>Forma</h2>
                 </div>
                 <fieldset className={"page-1"}>
                     <div>
@@ -227,7 +227,7 @@ export default function Page1() {
                 <fieldset className={"page-1"}>
                     <div className={"container-recurso"}>
                         <div className={"title-2-container"}>
-                            <h2 className={"mainCommon title-2"}>vida</h2>
+                            <h2 className={"mainCommon title-2"}>Vida</h2>
                         </div>
                         <div className={"container-recurso-inputs"}>
                             <input className={"input-left"}
@@ -246,7 +246,7 @@ export default function Page1() {
                     </div>
                     <div className={"container-recurso"}>
                         <div className={"title-2-container"}>
-                            <h2 className={"mainCommon title-2"}>estresse</h2>
+                            <h2 className={"mainCommon title-2"}>Estresse</h2>
                         </div>
                         <div className={"container-recurso-inputs"}>
                             <input className={"input-left"}
@@ -267,7 +267,7 @@ export default function Page1() {
                 <fieldset className={"page-1"}>
                     <div className={"container-recurso"}>
                         <div className={"title-2-container"}>
-                            <h2 className={"mainCommon title-2"}>energia</h2>
+                            <h2 className={"mainCommon title-2"}>Energia</h2>
                         </div>
                         <div className={"container-recurso-inputs"}>
                             <input className={"input-left"}
@@ -286,7 +286,7 @@ export default function Page1() {
                     </div>
                     <div className={"container-recurso"}>
                         <div className={"title-2-container"}>
-                            <h2 className={"mainCommon title-2"}>sanidade</h2>
+                            <h2 className={"mainCommon title-2"}>Sanidade</h2>
                         </div>
                         <div className={"container-recurso-inputs"}>
                             <input className={"input-left"}
@@ -310,12 +310,15 @@ export default function Page1() {
                 <fieldset className={"page-1 bottom"}>
                     <div className={"display-block-center"}>
                         <div className={"title-2-container"}>
-                            <h2 className={"mainCommon title-2"}>defesa</h2>
+                            <h2 className={"mainCommon title-2"}>Defesa</h2>
                         </div>
                         <div>
                             <input className={"input-left"}
                                    type={"number"}
-                                   value={10 + getItem(`atributo-DES`, 0)}
+                                   value={10 +
+                                       getItem(`atributo-DES`, 0) +
+                                       getItem(`atributo-DES-bonus`, 0) +
+                                       nivel}
                                    min={0}
                                    placeholder={"pontos de defesa"}
                                    disabled={true}/>
@@ -323,7 +326,7 @@ export default function Page1() {
                     </div>
                     <div className={"display-block-center"}>
                         <div className={"title-2-container"}>
-                            <h2 className={"mainCommon title-2"}>nível</h2>
+                            <h2 className={"mainCommon title-2"}>Nível</h2>
                         </div>
                         <div className={"display-flex-center"}>
                             <input className={"input-center-dropdown"}
@@ -336,7 +339,7 @@ export default function Page1() {
                     </div>
                     <div className={"display-block-center"}>
                         <div className={"title-2-container"}>
-                            <h2 className={"mainCommon title-2"}>afinidade</h2>
+                            <h2 className={"mainCommon title-2"}>Afinidade</h2>
                         </div>
                         <div className={"custom-select-father direito"}>
                             <select className="form-select custom-select input-right"
@@ -360,22 +363,39 @@ export default function Page1() {
             </section>
 
             <section className={"section-statics"}>
-                <div className={"title-2-container"}>
-                    <h2 className={"mainCommon title-2"}>DT</h2>
-                </div>
-                <fieldset className={"page-1"}>
-                    <div className={"static-container display-flex-center"}>
-                        <input className={"static-status"}
-                               type={"number"}
-                               value={10 +
-                                   getItem(`atributo-PRE`, 0) +
-                                   getItem(`atributo-PRE-bonus`, 0) +
-                                   nivel}
-                               min={0}
-                               placeholder={"pontos de defesa"}
-                               disabled={true}/>
+                <div className={"display-block-center"}>
+                    <div className={"title-2-container"}>
+                        <h2 className={"mainCommon title-2"}>DT de Skill</h2>
                     </div>
-                </fieldset>
+                    <fieldset className={"page-1"}>
+                        <div className={"static-container display-flex-center"}>
+                            <input className={"static-status"}
+                                   type={"number"}
+                                   value={10 +
+                                       getItem(`atributo-PRE`, 0) +
+                                       getItem(`atributo-PRE-bonus`, 0) +
+                                       nivel}
+                                   min={0}
+                                   placeholder={"pontos de defesa"}
+                                   disabled={true}/>
+                        </div>
+                    </fieldset>
+                </div>
+                <div className={"display-block-center"}>
+                    <div className={"title-2-container"}>
+                        <h2 className={"mainCommon title-2"}>Deslocamento</h2>
+                    </div>
+                    <fieldset className={"page-1"}>
+                        <div className={"static-container display-flex-center"}>
+                            <input className={"static-status"}
+                                   type={"number"}
+                                   value={9}
+                                   min={0}
+                                   placeholder={"pontos de defesa"}
+                                   disabled={true}/>
+                        </div>
+                    </fieldset>
+                </div>
             </section>
 
         </main>

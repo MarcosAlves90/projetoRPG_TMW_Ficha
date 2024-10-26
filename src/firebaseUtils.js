@@ -1,8 +1,13 @@
 import { doc, getDoc, setDoc } from "firebase/firestore";
-import {auth, db} from './firebase';
+import { auth, db } from './firebase';
 
 export const getUserData = async (type) => {
-    const userId = auth.currentUser.uid;
+    const user = auth.currentUser;
+    if (!user) {
+        console.error('Usuário não autenticado');
+        return null;
+    }
+    const userId = user.uid;
     try {
         const userDoc = doc(db, 'userData', userId);
         const docSnap = await getDoc(userDoc);
@@ -24,7 +29,12 @@ export const getUserData = async (type) => {
 };
 
 export const saveUserData = async (data) => {
-    const userId = auth.currentUser.uid;
+    const user = auth.currentUser;
+    if (!user) {
+        console.error('Usuário não autenticado');
+        return;
+    }
+    const userId = user.uid;
     try {
         const userDoc = doc(db, 'userData', userId);
         await setDoc(userDoc, { data }, { merge: true });
@@ -35,7 +45,12 @@ export const saveUserData = async (data) => {
 };
 
 export const saveUserSheets = async (sheets) => {
-    const userId = auth.currentUser.uid;
+    const user = auth.currentUser;
+    if (!user) {
+        console.error('Usuário não autenticado');
+        return;
+    }
+    const userId = user.uid;
     try {
         const userDoc = doc(db, 'userData', userId);
         await setDoc(userDoc, { sheets }, { merge: true });
@@ -46,10 +61,15 @@ export const saveUserSheets = async (sheets) => {
 }
 
 export const deleteUserData = async () => {
-    const userId = auth.currentUser.uid;
+    const user = auth.currentUser;
+    if (!user) {
+        console.error('Usuário não autenticado');
+        return;
+    }
+    const userId = user.uid;
     try {
         const userDoc = doc(db, 'userData', userId);
-        await setDoc(userDoc, { data: ''}, { merge: true });
+        await setDoc(userDoc, { data: '' }, { merge: true });
         console.log('Dados deletados com sucesso!');
     } catch (error) {
         console.error('Erro ao deletar dados:', error);

@@ -797,22 +797,19 @@ input[type=number] {
             background-color: var(--identity-inside-background);
             width: fit-content;
             font-size: var(--common-button-font-size);
-        }
-
-        .container-identity-inside.outside {
-            padding: 0.6vw;
-        }
-
-        .container-identity-inside.center {
-            width: 100%;
-            display: block;
-            justify-content: center;
-            align-items: center;
-            padding: 0.5vw 0 1vw;
-        }
-
-        .container-identity-inside.center p {
-            margin: 0.1vw;
+            &.outside {
+                padding: 0.6vw;
+            }
+            &.center {
+                width: 100%;
+                display: block;
+                justify-content: center;
+                align-items: center;
+                padding: 0.5vw 0 1vw;
+                p {
+                    margin: 0.1vw;
+                }
+            }
         }
 
         .container-identity-inside-text {
@@ -829,15 +826,13 @@ input[type=number] {
             height: 7.813vw;
             width: 7.813vw;
             transition: all 0.2s ease-in-out;
-        }
-
-        .image-profile.active:hover {
-            filter: none;
-            opacity: 70%;
-        }
-
-        .image-profile:hover {
-            filter: invert(1);
+            &:hover {
+                filter: invert(1);
+            }
+            &.active:hover {
+                filter: none;
+                opacity: 70%;
+            }
         }
 
         .container-identity {
@@ -850,7 +845,11 @@ input[type=number] {
         }
     }
     .section-statics {
+        display: flex;
         .static-container, .static-container .static-status {
+            width: 100%;
+        }
+        .display-block-center {
             width: 100%;
         }
     }
