@@ -365,7 +365,7 @@ export default function Page1() {
             <section className={"section-statics"}>
                 <div className={"display-block-center"}>
                     <div className={"title-2-container"}>
-                        <h2 className={"mainCommon title-2"}>DT de Skill</h2>
+                        <h2 className={"mainCommon title-2"}>DT</h2>
                     </div>
                     <fieldset className={"page-1"}>
                         <div className={"static-container display-flex-center"}>

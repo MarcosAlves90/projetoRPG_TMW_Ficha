@@ -43,7 +43,8 @@ input[type=number] {
     --login-themed-background: #b1449e;
 
     --gray-placeholder: #454545;
-    --gray-background: #121212;
+    /*--gray-background: #121212;*/
+    --gray-background: black;
     --dark-gray-background: #0a0a0a;
     --gray-border-color : #333333;
     --gray-border: #333333 2px solid;
@@ -61,11 +62,15 @@ input[type=number] {
     --yellow-text: #ffcc00;
 
     --identity-inside-background: #f9f3cd;
-    --identity-outside-background: #467d51;
+    --identity-outside-background: #467d70;
 
     --red-background: #1c0000;
     --red-border: #800000 2px solid;
     --red-text: #ff3333;
+
+    --nav-link-background: rgba(255, 255, 255, 0.15);
+
+    --gray-card-background: #121212;
 
     --common-transition: all 0.3s ease-in-out;
     --common-font-family: "Cascadia Mono";
@@ -405,7 +410,7 @@ input[type=number] {
                 margin-right: 0.5vw;
                 margin-left: 0.5vw;
                 border-radius: 50px;
-                background-color: rgba(255, 255, 255, 0.15);
+                background-color: var(--nav-link-background);
                 width: 100%;
                 margin-bottom: 5px;
                 transition: var(--common-transition);
@@ -440,9 +445,10 @@ input[type=number] {
             }
             .config {
                 margin-left: 5vw;
-                width: 10vw;
-                background-color: #003640;
+                width: fit-content;
+                background-color: var(--nav-link-background);
                 .nav-link {
+                    width: 2.5rem;
                     opacity: 1;
                 }
             }
@@ -493,7 +499,8 @@ input[type=number] {
     .section-files {
         display: grid;
         grid-template-columns: repeat(2, 1fr);
-        background-color: var(--gray-background);
+        border: var(--gray-border);
+        background-color: var(--gray-card-background);
         padding: 3vw;
         border-radius: 1vw;
         gap: 1vw;
@@ -543,6 +550,7 @@ input[type=number] {
     align-items: center;
     max-width: 100%;
     .loginCard {
+        border: 2px solid var(--login-themed-background);
         border-radius: 1vw;
         background-color: var(--gray-background);
         padding: 4vw;
@@ -716,10 +724,9 @@ input[type=number] {
         }
     }
 
-    --status-background: #121212;
-
     .section-status {
-        background-color: var(--status-background);
+        border: var(--gray-border);
+        background-color: var(--gray-card-background);
         border-radius: 1vw;
         margin-bottom: 1vw;
 
@@ -881,34 +888,16 @@ input[type=number] {
         justify-content: center;
         align-items: center;
         .mainCommon-page-0-section-0-article {
-            .mainCommon-page-0-logo img {
-                rotate: 90deg;
-                height: 10vw;
-            }
+
             .mainCommon-page-0-logo {
                 display: flex;
                 justify-content: center;
                 align-items: center;
                 margin-bottom: 3vw;
-            }
-            .button-login {
-                padding: 0;
-                margin: 1vw 0 0 0;
-                background-color: white;
-                color: var(--green-text);
-                font-size: 1.2vw;
-                border-radius: 3vw;
-                border: none;
-                transition: var(--common-transition);
-                a {
-                    padding: calc(0.2vw + 0.6em) calc(4vw + 1.2em);
+                img {
+                    rotate: 90deg;
+                    height: 10vw;
                 }
-            }
-            .button-login:hover {
-                border: none;
-                outline: none;
-                background-color: var(--green-text);
-                color: white;
             }
         }
     }
@@ -928,10 +917,9 @@ input[type=number] {
                 outline: none;
                 border: none;
                 transition: var(--common-transition);
-            }
-
-            button:hover {
-                background-color: var(--green-text);
+                &:hover {
+                    background-color: var(--green-text);
+                }
             }
 
         }
@@ -1267,6 +1255,9 @@ input[type=number] {
                     background-color: #001f23;
                     margin-left: 0.5vw;
                     width: 100%;
+                    .nav-link {
+                        width: 100%;
+                    }
                 }
                 .nav-item.config:hover {
                     background-color: #001f23;
