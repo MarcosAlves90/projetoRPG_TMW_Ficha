@@ -723,13 +723,16 @@ input[type=number] {
 
         }
     }
-
     .section-status {
         border: var(--gray-border);
         background-color: var(--gray-card-background);
         border-radius: 1vw;
         margin-bottom: 1vw;
 
+        .mainCommon.title-2 {
+            color: white;
+            margin: 1.3rem;
+        }
         .input-bonus {
             color: yellow;
             background-color: #160523;

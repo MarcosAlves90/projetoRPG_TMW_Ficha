@@ -377,7 +377,7 @@ export default function Page3() {
                                 onClick={() => setRecommendations(!recommendations)}
                                 style={recommendations ? yellowLockedInputStyle() : {}}
                         >
-                            {"Pontos recomendados "}
+                            {"Regras "}
                             <i className={recommendations ? "bi bi-exclamation-triangle-fill" : "bi bi-exclamation-triangle"}/>
                         </button>
                     </article>
@@ -393,11 +393,11 @@ export default function Page3() {
                     <div className={"alert-box-collapsible"} style={recommendations ? null : {display: "none"}}>
                         <div className={"alert-box"}>
                             <div className={"alert-box-message"}>
-                                <p>Pontos recomendados:</p>
-                                <p>biotipo: [9] | máximo: [3]</p>
-                                <p>atributos: [{CalculateAttributesPoints()}] | máximo: [{CalculateAttributesCap()}]</p>
-                                <p>perícias: [{CalculatePericiasPoints() > 0 ? CalculatePericiasPoints() : CalculatePericiasPoints() === 0 ? "Preencha o Biotipo e Atributos" : "Valores maiores do que o esperado."}] | máximo: [{CalculatePericiasCap()}]</p>
-                                <p className={"last-p"}>(sub)artes arcanas: [{getItem('pericia-Magia Arcana', 0) * 5}] | máximo [{15}]</p>
+                                <p>Máximo de pontos em cada categoria:</p>
+                                <p>biotipo: máximo: [3]</p>
+                                <p>atributos: máximo: [{CalculateAttributesCap()}]</p>
+                                <p>perícias: máximo: [{CalculatePericiasCap()}]</p>
+                                <p className={"last-p"}>artes e subartes: máximo [{15}]</p>
                             </div>
                         </div>
                     </div>
@@ -406,7 +406,7 @@ export default function Page3() {
 
             <section className={`section-biotipo section-status ${filteredBioMap.length < 1 ? "display-none" : ""}`}>
                 <div className={"display-flex-center column"}>
-                    <h2 className={"mainCommon title-2"}>biotipo: [{bioPoints}] pontos utilizados.</h2>
+                    <h2 className={"mainCommon title-2"}>biotipo: [{bioPoints}]/[9]</h2>
                     <p className={"statusDescription"}>O biotipo representa a essência do personagem,
                         seu estado natural sem treinos, modificações ou conhecimentos.</p>
                 </div>
@@ -425,7 +425,7 @@ export default function Page3() {
 
             <section className={`section-atributos section-status ${filteredAtrMap.length < 1 ? "display-none" : ""}`}>
                 <div className={"display-flex-center column"}>
-                    <h2 className={"mainCommon title-2"}>atributos: [{atrPoints}] pontos utilizados.</h2>
+                    <h2 className={"mainCommon title-2"}>atributos: [{atrPoints}]/[{CalculateAttributesPoints()}]</h2>
                     <p className={"statusDescription"}>Os atributos são os status principais do personagem.
                         Eles guiam as perícias e as (sub)artes arcanas.</p>
                 </div>
@@ -446,7 +446,11 @@ export default function Page3() {
 
             <section className={`section-perArray section-status ${filteredPerArray.length < 1 ? "display-none" : ""}`}>
                 <div className={"display-flex-center column"}>
-                    <h2 className={"mainCommon title-2"}>perícias: [{perPoints}] pontos utilizados.</h2>
+                    <h2 className={"mainCommon title-2"}>
+                        perícias: [{perPoints}]/[{CalculatePericiasPoints() > 0 ? CalculatePericiasPoints() :
+                        CalculatePericiasPoints() === 0 ? "Preencha o Biotipo e Atributos" :
+                            "Valores maiores do que o esperado."}]
+                    </h2>
                     <p className={"statusDescription"}>As perícias são os conhecimentos e habilidades naturais do
                         personagem, elas determinam aquilo que ele sabe ou não fazer.</p>
                 </div>
@@ -460,7 +464,9 @@ export default function Page3() {
 
             <section className={`section-arts section-status ${filteredArcArray.length < 1 ? "display-none" : ""}`}>
                 <div className={"display-flex-center column"}>
-                    <h2 className={"mainCommon title-2"}>artes arcanas: [{arcPoints}] pontos utilizados.</h2>
+                    <h2 className={"mainCommon title-2"}>
+                        artes: [{arcPoints}]/[{getItem('pericia-Magia Arcana', 0) * 5}]
+                    </h2>
                     <p className={"statusDescription"}>As artes arcanas são os focos de conhecimento em magia
                         arcana do personagem, definindo em quais ações ele é melhor.</p>
                 </div>
@@ -474,7 +480,7 @@ export default function Page3() {
             <section className={`section-subArts section-status ${filteredSubArcArray.length < 1 ? "display-none" : ""}`}>
                 <div className={"display-flex-center column"}>
                     <h2 className={"mainCommon title-2"}>
-                        subartes arcanas: [{subArcPoints}] pontos utilizados.
+                        subartes: [{subArcPoints}]/[{getItem('pericia-Magia Arcana', 0) * 5}]
                     </h2>
                     <p className={"statusDescription"}>As subartes arcanas são as especializações das artes
                     arcanas do personagem, aumentando as possibilidades de skills.</p>
