@@ -1101,6 +1101,9 @@ input[type=number] {
         display: flex;
         justify-content: center;
         align-items: center;
+        .mainCommon.title-2 {
+            width: 100%;
+        }
     }
 
     .title-2 {
