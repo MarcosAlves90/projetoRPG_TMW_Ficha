@@ -641,8 +641,10 @@ input[type=number] {
             border-radius: 100px;
             background-color: var(--nav-link-background);
             transition: var(--common-transition);
-            &.active, &:hover {
+            &.active {
                 background-color: var(--green-text);
+            }
+            &:hover, &.active {
                 cursor: pointer;
             }
         }
