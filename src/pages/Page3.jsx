@@ -406,7 +406,7 @@ export default function Page3() {
 
             <section className={`section-biotipo section-status ${filteredBioMap.length < 1 ? "display-none" : ""}`}>
                 <div className={"display-flex-center column"}>
-                    <h2 className={"mainCommon title-2"}>biotipo: [{bioPoints}]/[9]</h2>
+                    <h2 className={"mainCommon title-2"}>Biotipo: [{bioPoints}]/[9]</h2>
                     <p className={"statusDescription"}>O biotipo representa a essência do personagem,
                         seu estado natural sem treinos, modificações ou conhecimentos.</p>
                 </div>
@@ -425,7 +425,7 @@ export default function Page3() {
 
             <section className={`section-atributos section-status ${filteredAtrMap.length < 1 ? "display-none" : ""}`}>
                 <div className={"display-flex-center column"}>
-                    <h2 className={"mainCommon title-2"}>atributos: [{atrPoints}]/[{CalculateAttributesPoints()}]</h2>
+                    <h2 className={"mainCommon title-2"}>Atributos: [{atrPoints}]/[{CalculateAttributesPoints()}]</h2>
                     <p className={"statusDescription"}>Os atributos são os status principais do personagem.
                         Eles guiam as perícias e as (sub)artes arcanas.</p>
                 </div>
@@ -447,7 +447,7 @@ export default function Page3() {
             <section className={`section-perArray section-status ${filteredPerArray.length < 1 ? "display-none" : ""}`}>
                 <div className={"display-flex-center column"}>
                     <h2 className={"mainCommon title-2"}>
-                        perícias: [{perPoints}]/[{CalculatePericiasPoints() > 0 ? CalculatePericiasPoints() :
+                        Perícias: [{perPoints}]/[{CalculatePericiasPoints() > 0 ? CalculatePericiasPoints() :
                         CalculatePericiasPoints() === 0 ? "Preencha o Biotipo e Atributos" :
                             "Valores maiores do que o esperado."}]
                     </h2>
@@ -465,7 +465,7 @@ export default function Page3() {
             <section className={`section-arts section-status ${filteredArcArray.length < 1 ? "display-none" : ""}`}>
                 <div className={"display-flex-center column"}>
                     <h2 className={"mainCommon title-2"}>
-                        artes: [{arcPoints}]/[{getItem('pericia-Magia Arcana', 0) * 5}]
+                        Artes: [{arcPoints}]/[{getItem('pericia-Magia Arcana', 0) * 5}]
                     </h2>
                     <p className={"statusDescription"}>As artes arcanas são os focos de conhecimento em magia
                         arcana do personagem, definindo em quais ações ele é melhor.</p>
@@ -480,7 +480,7 @@ export default function Page3() {
             <section className={`section-subArts section-status ${filteredSubArcArray.length < 1 ? "display-none" : ""}`}>
                 <div className={"display-flex-center column"}>
                     <h2 className={"mainCommon title-2"}>
-                        subartes: [{subArcPoints}]/[{getItem('pericia-Magia Arcana', 0) * 5}]
+                        Subartes: [{subArcPoints}]/[{getItem('pericia-Magia Arcana', 0) * 5}]
                     </h2>
                     <p className={"statusDescription"}>As subartes arcanas são as especializações das artes
                     arcanas do personagem, aumentando as possibilidades de skills.</p>

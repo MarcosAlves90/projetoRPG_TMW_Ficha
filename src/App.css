@@ -631,6 +631,22 @@ input[type=number] {
             margin: 0.625vw;
         }
     }
+    .tag-cloud {
+        margin: 1vw;
+        .tag {
+            color: white;
+            font-size: 0.9vw;
+            padding: var(--common-input-padding);
+            margin: 0.625vw;
+            border-radius: 100px;
+            background-color: var(--nav-link-background);
+            transition: var(--common-transition);
+            &.active, &:hover {
+                background-color: var(--green-text);
+                cursor: pointer;
+            }
+        }
+    }
 }
 
 .mainCommon.page-3 {
@@ -1612,10 +1628,15 @@ input[type=number] {
                     }
                 }
                 .container-textarea-skill-right {
-                    margin: 1vw 0 0 0;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    flex-direction: column;
+                    margin: 0;
                     padding: 0;
                     .container-skill-select {
-                        margin: 0;
+                        margin: 1vw 0 1vw 0;
+                        width: 100%;
                         input {
                             height: calc(8.5vw);
                             font-size: calc(3vw);
@@ -1647,6 +1668,19 @@ input[type=number] {
         }
         .textarea-sheet {
             font-size: calc(3vw);
+        }
+        .tag-cloud {
+            margin: 4vw 0;
+            .tag {
+                font-size: 1.1rem;
+                padding: 1.4vw;
+                margin: 0 1.5vw;
+                border-radius: 100px;
+                transition: var(--common-transition);
+                &:hover {
+                    cursor: pointer;
+                }
+            }
         }
     }
     .mainCommon.sheet-selection {

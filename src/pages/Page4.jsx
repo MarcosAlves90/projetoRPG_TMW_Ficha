@@ -187,6 +187,15 @@ function CreateSkills ({ array, handleContentChange, handleDelete }) {
                             onChange={(e) => handleContentChange(e, skill.id)}
                         />
                     </div>
+                    <div className={"container-skill-select"}>
+                        <p>Domínio: </p>
+                        <input
+                            className={"input-skill skill-domain"}
+                            value={skill.domain}
+                            id={`skill-domain-${skill.id}`}
+                            onChange={(e) => handleContentChange(e, skill.id)}
+                        />
+                    </div>
 
                 </article>
             </div>
@@ -254,6 +263,8 @@ export default function Page4() {
                     return {...skill, spent: e.target.value};
                 } else if (e.target.id.includes('skill-title')) {
                     return {...skill, title: e.target.value};
+                } else if (e.target.id.includes('skill-domain')) {
+                    return {...skill, domain: e.target.value};
                 }
             }
             return skill;
@@ -266,7 +277,7 @@ export default function Page4() {
         saveSkills(updatedSkills);
     };
 
-    const filteredSkills = skillsArray.filter(skill =>
+    const filteredSkillsSearch = skillsArray.filter(skill =>
         skill.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
         skill.content.toLowerCase().includes(searchTerm.toLowerCase())
     );
@@ -275,10 +286,40 @@ export default function Page4() {
         setCreateSkill("");
     };
 
+    const uniqueDomains = Array.from(new Set(
+        skillsArray
+            .filter(skill => skill.domain && skill.domain.trim() !== "")
+            .map(skill => skill.domain)
+    ));
+
+    const [activeDomains, setActiveDomains] = useState([]);
+
+    const [skillsFilteredByDomains, setSkillsFilteredByDomains] = useState([]);
+
+    const filteredSkills = filteredSkillsSearch.filter(skill =>
+        skillsFilteredByDomains.length > 0
+            ? skillsFilteredByDomains.includes(skill)
+            : skill
+    );
+
+    function searchByDomain(e) {
+        const domain = e.target.innerText;
+        const updatedDomains = activeDomains.includes(domain)
+            ? activeDomains.filter(d => d !== domain)
+            : [...activeDomains, domain];
+
+        console.log(updatedDomains);
+
+        setSkillsFilteredByDomains(skillsArray.filter(skill =>
+            updatedDomains.includes(skill.domain)
+        ));
+        setActiveDomains(updatedDomains);
+    }
+
     return (
 
         <main className="mainCommon page-4">
-            <div className="create-annotation">
+            <section className="create-annotation">
                 <div className="create-annotation input">
                     <input
                         className="create-annotation-title"
@@ -295,6 +336,7 @@ export default function Page4() {
                             if (createSkill.trim()) {
                                 saveSkills([...skillsArray, {
                                     title: createSkill,
+                                    domain: '',
                                     content: '',
                                     circle: 1,
                                     type: 1,
@@ -323,9 +365,19 @@ export default function Page4() {
                         value={searchTerm}
                         onChange={(event) => setSearchTerm(event.target.value)}
                     />
-
                 </div>
-            </div>
+            </section>
+
+            <section className="tag-cloud display-flex-center">
+                {uniqueDomains.map((domain) => (
+                    <span key={domain}
+                          className={`tag ${activeDomains.includes(domain) ? "active" : ""}`}
+                          onClick={(e) => searchByDomain(e)}>
+                        {domain}
+                    </span>
+                ))}
+            </section>
+
             <CreateSkills
                 array={filteredSkills}
                 handleContentChange={handleContentChange}
