@@ -1,18 +1,17 @@
-import {useState, useEffect} from "react";
+import { useState, useEffect } from "react";
 import TextareaAutosize from "react-textarea-autosize";
 import Collapsible from "react-collapsible";
-import {v4 as uuidv4} from 'uuid';
-import {saveUserData} from "../firebaseUtils.js";
-import {returnLocalStorageData} from "../assets/systems/SaveLoad.jsx";
+import { v4 as uuidv4 } from 'uuid';
+import { saveUserData } from "../firebaseUtils.js";
+import { returnLocalStorageData } from "../assets/systems/SaveLoad.jsx";
 
-function CreateSkills ({ array, handleContentChange, handleDelete }) {
-
+function CreateSkills({ array, handleContentChange, handleDelete }) {
     return array.length > 0 && array.map((skill) => (
         <Collapsible
             className={"skill"}
             openedClassName={"skill"}
             trigger={skill.title}
-            triggerStyle={{fontSize: "1.5em", color: "rgb(43, 43, 43)"}}
+            triggerStyle={{ fontSize: "1.5em", color: "rgb(43, 43, 43)" }}
             transitionTime={100}
             transitionCloseTime={100}
             key={skill.id}
@@ -207,7 +206,7 @@ function CreateSkills ({ array, handleContentChange, handleDelete }) {
                     onChange={(e) => handleContentChange(e, skill.id)}
                     minRows="4"
                     placeholder="Descrição da Skill."
-                 />
+                />
                 <div className={"delete-button"}>
                     <button className={"button-header active clear"} onClick={() => handleDelete(skill.id)}>
                         {"Excluir "}
@@ -222,6 +221,7 @@ export default function Page4() {
     const [createSkill, setCreateSkill] = useState("");
     const [skillsArray, setSkillsArray] = useState([]);
     const [searchTerm, setSearchTerm] = useState("");
+    const [activeDomains, setActiveDomains] = useState([]);
 
     useEffect(() => {
         const savedSkills = JSON.parse(localStorage.getItem('skillsArray'));
@@ -236,51 +236,52 @@ export default function Page4() {
         saveUserData(returnLocalStorageData());
     };
 
-    function handleContentChange (e, id) {
+    function handleContentChange(e, id) {
         const updatedSkills = skillsArray.map((skill) => {
             if (skill.id === id) {
                 if (e.target.classList.contains('circle-skill')) {
-                    return {...skill, circle: parseInt(e.target.value)};
+                    return { ...skill, circle: parseInt(e.target.value) };
                 } else if (e.target.classList.contains('content-skill')) {
-                    return {...skill, content: e.target.value};
+                    return { ...skill, content: e.target.value };
                 } else if (e.target.classList.contains('type-skill')) {
-                    return {...skill, type: parseInt(e.target.value)};
+                    return { ...skill, type: parseInt(e.target.value) };
                 } else if (e.target.classList.contains('art-skill')) {
-                    return {...skill, art: e.target.value};
+                    return { ...skill, art: e.target.value };
                 } else if (e.target.classList.contains('execution-skill')) {
-                    return {...skill, execution: parseInt(e.target.value)};
+                    return { ...skill, execution: parseInt(e.target.value) };
                 } else if (e.target.classList.contains('range-skill')) {
-                    return {...skill, range: parseInt(e.target.value)}
+                    return { ...skill, range: parseInt(e.target.value) }
                 } else if (e.target.classList.contains('target-skill')) {
-                    return {...skill, target: e.target.value};
+                    return { ...skill, target: e.target.value };
                 } else if (e.target.classList.contains('duration-skill')) {
-                    return {...skill, duration: e.target.value};
+                    return { ...skill, duration: e.target.value };
                 } else if (e.target.classList.contains('resistance-skill')) {
-                    return {...skill, resistance: e.target.value};
+                    return { ...skill, resistance: e.target.value };
                 } else if (e.target.classList.contains('area-skill')) {
-                    return {...skill, area: e.target.value};
+                    return { ...skill, area: e.target.value };
                 } else if (e.target.classList.contains('spent-skill')) {
-                    return {...skill, spent: e.target.value};
+                    return { ...skill, spent: e.target.value };
                 } else if (e.target.id.includes('skill-title')) {
-                    return {...skill, title: e.target.value};
+                    return { ...skill, title: e.target.value };
                 } else if (e.target.id.includes('skill-domain')) {
-                    return {...skill, domain: e.target.value};
+                    return { ...skill, domain: e.target.value };
                 }
             }
             return skill;
         });
+
         saveSkills(updatedSkills);
+
+        const updatedActiveDomains = activeDomains.filter(domain =>
+            updatedSkills.some(skill => skill.domain === domain)
+        );
+        setActiveDomains(updatedActiveDomains);
     }
 
     const handleDelete = (id) => {
         const updatedSkills = skillsArray.filter((skill) => skill.id !== id);
         saveSkills(updatedSkills);
     };
-
-    const filteredSkillsSearch = skillsArray.filter(skill =>
-        skill.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        skill.content.toLowerCase().includes(searchTerm.toLowerCase())
-    );
 
     const clearInput = () => {
         setCreateSkill("");
@@ -292,32 +293,25 @@ export default function Page4() {
             .map(skill => skill.domain)
     ));
 
-    const [activeDomains, setActiveDomains] = useState([]);
+    const filteredSkills = skillsArray.filter(skill => {
+        const matchesSearchTerm = searchTerm === "" || Object.values(skill).some(value =>
+            value.toString().toLowerCase().includes(searchTerm.toLowerCase())
+        );
+        const matchesDomain = activeDomains.length === 0 || activeDomains.includes(skill.domain);
+        return matchesSearchTerm && matchesDomain;
+    });
 
-    const [skillsFilteredByDomains, setSkillsFilteredByDomains] = useState([]);
-
-    const filteredSkills = filteredSkillsSearch.filter(skill =>
-        skillsFilteredByDomains.length > 0
-            ? skillsFilteredByDomains.includes(skill)
-            : skill
-    );
-
-    function searchByDomain(e) {
-        const domain = e.target.innerText;
+    function searchByDomain(domain) {
         const updatedDomains = activeDomains.includes(domain)
             ? activeDomains.filter(d => d !== domain)
             : [...activeDomains, domain];
 
-        console.log(updatedDomains);
-
-        setSkillsFilteredByDomains(skillsArray.filter(skill =>
-            updatedDomains.includes(skill.domain)
-        ));
         setActiveDomains(updatedDomains);
     }
 
-    return (
+    const linkedDomains = ["Fass", "Ris", "Xata", "Lohk", "Khra", "Netra", "Vome", "Jahu"];
 
+    return (
         <main className="mainCommon page-4">
             <section className="create-annotation">
                 <div className="create-annotation input">
@@ -369,13 +363,20 @@ export default function Page4() {
             </section>
 
             <section className="tag-cloud display-flex-center">
-                {uniqueDomains.map((domain) => (
-                    <span key={domain}
-                          className={`tag ${activeDomains.includes(domain) ? "active" : ""}`}
-                          onClick={(e) => searchByDomain(e)}>
-                        {domain}
-                    </span>
-                ))}
+                {uniqueDomains.map((domain) => {
+                    const isLinked = linkedDomains.includes(domain);
+                    const isReflex = domain.toLowerCase() === "reflexo";
+                    return (
+                        <span key={domain}
+                              className={`tag 
+                              ${activeDomains.includes(domain) ? "active" : ""} ${isLinked ? "linked" : ""} 
+                              ${isReflex ? "reflex" : ""}`}
+                              onClick={() => searchByDomain(domain)}>
+                                <i className="bi bi-stars"></i>
+                                {domain}
+                        </span>
+                    );
+                })}
             </section>
 
             <CreateSkills
@@ -384,6 +385,5 @@ export default function Page4() {
                 handleDelete={handleDelete}
             />
         </main>
-
     );
 }

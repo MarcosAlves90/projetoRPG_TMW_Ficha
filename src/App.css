@@ -50,7 +50,7 @@ input[type=number] {
     --gray-border: #333333 2px solid;
 
     --green-background: #001300;
-    --green-border: #006400 2px solid;
+    --green-border: #339c33 2px solid;
     --green-text: #339c33;
 
     --blue-background: #000c13;
@@ -60,6 +60,10 @@ input[type=number] {
     --yellow-border: #ffcc00 2px solid;
     --yellow-background: #231d03;
     --yellow-text: #ffcc00;
+
+    --purple-border: #8537ba 2px solid;
+    --purple-background: #1a0b25;
+    --purple-text: #8537ba;
 
     --identity-inside-background: #f9f3cd;
     --identity-outside-background: #467d70;
@@ -634,18 +638,41 @@ input[type=number] {
     .tag-cloud {
         margin: 1vw;
         .tag {
-            color: white;
             font-size: 0.9vw;
             padding: var(--common-input-padding);
             margin: 0.625vw;
             border-radius: 100px;
-            background-color: var(--nav-link-background);
+            background-color: var(--green-background);
+            color: var(--green-text);
             transition: var(--common-transition);
             &.active {
                 background-color: var(--green-text);
+                color: white;
             }
-            &:hover, &.active {
+            &.active.linked {
+                background-color: var(--purple-text);
+                color: white;
+            }
+            &.linked {
+                background-color: var(--purple-background);
+                color: var(--purple-text);
+            }
+            &.active.reflex {
+                background-color: var(--red-text);
+                color: white;
+            }
+            &.reflex {
+                background-color: var(--red-background);
+                color: var(--red-text);
+            }
+            &.linked, &.reflex {
+                border-radius: 10px;
+            }
+            &:hover {
                 cursor: pointer;
+            }
+            .bi {
+                margin-right: 0.3rem;
             }
         }
     }
