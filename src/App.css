@@ -1729,7 +1729,7 @@ input[type=number] {
         .tag-cloud {
             margin: 4vw 0;
             .tag {
-                font-size: 1.1rem;
+                font-size: 0.7rem;
                 padding: 1.4vw;
                 margin: 0 1.5vw;
                 border-radius: 100px;
