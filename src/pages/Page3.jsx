@@ -150,7 +150,38 @@ export default function Page3() {
         const dice = [];
         let noAttribute = false;
 
-        const emojis = ["😭", "😐", "😀", "😁"];
+        const emojis = {
+            1: "💀",
+            2: "🤡",
+            3: "😔",
+            4: "😟",
+            5: "🙁",
+            6: "😐",
+            7: "🙂",
+            8: "😀",
+            9: "😃",
+            10: "😄",
+            11: "😁",
+            12: "😎",
+            13: "🥶"
+        };
+
+        const selectEmoji = (result) => {
+            if (result === 20) return 13;
+            if (result === 19) return 12;
+            if (result === 18) return 11;
+            if (result === 17) return 10;
+            if (result === 16) return 9;
+            if (result === 15) return 8;
+            if (result === 14) return 7;
+            if (result >= 10 && result <= 13) return 6;
+            if (result === 9 || result === 8) return 5;
+            if (result === 7) return 4;
+            if (result === 6) return 3;
+            if (result >= 2 && result <= 5) return 2;
+            if (result === 1) return 1;
+            return null;
+        };
 
         const notify = (message, emoji) => toast(message, {
             theme:"dark",
@@ -181,7 +212,7 @@ export default function Page3() {
             sessionStorage.setItem('tempDice', diceProp);
             sessionStorage.setItem('tempResult', resultProp);
             notify(`${periciaNameProp}: [${diceProp}] = ${resultProp}`,
-                emojis[resultProp < 10 ? 0 : resultProp < 15 ? 1 : resultProp < 20 ? 2 : 3]);
+                emojis[selectEmoji(noAttribute ? Math.min(...diceProp) : Math.max(...diceProp))]);
         }
 
         function verifyAttribute(atr, bonus) {
