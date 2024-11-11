@@ -10,6 +10,9 @@ import {
 } from "../assets/systems/FichaPage3/FichaPage3System.jsx";
 import { arcArray, atrMap, bioMap, perArray, subArcArray } from "../assets/systems/FichaPage3/FichaPage3Arrays.jsx";
 import { saveUserData } from "../firebaseUtils.js";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import {map} from "jquery";
 
 export default function Page3() {
     const [isLocked, setIsLocked] = useState(getItem('isLocked', false) === 'true');
@@ -141,10 +144,19 @@ export default function Page3() {
         return getItem('nivel', 1);
     }, []);
 
-    const rollDice = useCallback((e, simpleDice) => {
+    const rollDice = (e, simpleDice) => {
+
         let diceResult = 0;
         const dice = [];
         let noAttribute = false;
+
+        const emojis = ["😭", "😐", "😀", "😁"];
+
+        const notify = (message, emoji) => toast(message, {
+            theme:"dark",
+            position: "bottom-right",
+            icon: () => `${emoji}`,
+        });
 
         function rollSimpleDice(qty, sides) {
             for (let i = 0; i < qty; i++) {
@@ -168,6 +180,8 @@ export default function Page3() {
             sessionStorage.setItem('tempPericia', periciaNameProp);
             sessionStorage.setItem('tempDice', diceProp);
             sessionStorage.setItem('tempResult', resultProp);
+            notify(`${periciaNameProp}: [${diceProp}] = ${resultProp}`,
+                emojis[resultProp < 10 ? 0 : resultProp < 15 ? 1 : resultProp < 20 ? 2 : 3]);
         }
 
         function verifyAttribute(atr, bonus) {
@@ -208,8 +222,21 @@ export default function Page3() {
             const periciaName = (e.target.id).slice(7);
             const pericia = getItem(`pericia-${periciaName}`, 0);
             const periciaBonus = getItem(`pericia-${periciaName}-bonus`, 0);
-            let attribute = perArray.find(per => per.pericia === periciaName)?.atr || 0;
-            let attributeBonus = getItem(`atributo-${attribute}-bonus`, 0);
+            let attribute = map(perArray, function (per) {
+                if (per.pericia === periciaName) {
+                    return getItem(`atributo-${per.atr}`, 0);
+                }
+                return null;
+            });
+            let attributeBonus = map(perArray, function (per) {
+                if (per.pericia === periciaName) {
+                    return getItem(`atributo-${per.atr}-bonus`, 0);
+                }
+                return null;
+            });
+
+            attribute = attribute.length > 0 ? attribute[0] : 0;
+            attributeBonus = attributeBonus.length > 0 ? attributeBonus[0] : 0;
 
             [noAttribute, attribute, attributeBonus] = verifyAttribute(attribute, attributeBonus);
             rollAttributeDice(attribute, attributeBonus);
@@ -226,7 +253,7 @@ export default function Page3() {
         }
 
         UpdateTempRoll();
-    }, [UpdateTempRoll]);
+    }
 
     const handleStatusChange = useCallback((setter) => (event) => {
         const value = event.target.value;
@@ -272,6 +299,7 @@ export default function Page3() {
     return (
         <main className={"mainCommon page-3"}>
 
+            <ToastContainer limit={5} closeOnClick />
             <section className={"section-dice"}>
                 <div className={"display-flex-center"}>
                     <h2 className={"title-2"}>Rolagem:</h2>
