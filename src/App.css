@@ -632,10 +632,15 @@ input[type=number] {
     }
     .tag-cloud {
         margin: 1vw;
+        gap: 1vw;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        align-items: center;
         .tag {
+            margin: 0;
             font-size: 0.9vw;
             padding: var(--common-input-padding);
-            margin: 0.625vw;
             border-radius: 10px;
             background-color: var(--gray-border-color);
             color: var(--common-font-color);
@@ -1728,10 +1733,10 @@ input[type=number] {
         }
         .tag-cloud {
             margin: 4vw 0;
+            gap: 2vw;
             .tag {
                 font-size: 0.7rem;
                 padding: 1.4vw;
-                margin: 0 1.5vw;
                 border-radius: 100px;
                 transition: var(--common-transition);
                 &:hover {
