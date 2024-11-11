@@ -46,29 +46,29 @@ export default function Config() {
                 <p className={"sheet"}>{`Ficha atual: ${getItem("nome", "Indefinido")}`}</p>
                 <input className="form-control dark" type="file" id="formFile"
                        onChange={loadLocalStorageFile} style={{display: 'none'}}/>
-                <button className="button-header active file"
+                <button className="button-header active light file"
                         onClick={() => document.getElementById('formFile').click()}>
                     <label htmlFor="formFile" style={{width: "100%"}} className="file-selector">
                         {"Importar "}
                         <i className="bi bi-arrow-down-circle"/>
                     </label>
                 </button>
-                <button className="button-header active save" onClick={saveLocalStorageFile}>
+                <button className="button-header active light save" onClick={saveLocalStorageFile}>
                     {"Baixar "}
                     <i className="bi bi-arrow-up-circle"/>
                 </button>
-                <button className={`button-header active cloud-save ${!unlockedStates.CloudSave ? "" : "confirmation"}`}
+                <button className={`button-header active dark cloud-save ${!unlockedStates.CloudSave ? "" : "confirmation"}`}
                         onClick={() => verifyCloudSaveUnlock()}>
                     {!unlockedStates.CloudSave ? "Salvar na nuvem " : "Tem certeza? "}
                     <i className="bi bi-cloud-arrow-down-fill"/>
                 </button>
-                <button className={`button-header active clear ${!unlockedStates.Delete ? "" : "confirmation"}`}
+                <button className={`button-header active dark clear-delete ${!unlockedStates.Delete ? "" : "confirmation"}`}
                         onClick={() => verifyDeleteUnlock()}>
                     {!unlockedStates.Delete ? "Limpar " : "Tem certeza? "}
                     <i className="bi bi-trash3-fill"/>
                 </button>
                 {auth.currentUser && (
-                    <button className={`button-header active sheets`}
+                    <button className={`button-header active light sheets`}
                             onClick={() => handleSheetsButtonClick()}>
                         {"Trocar ficha "}
                         <i className="bi bi-file-spreadsheet-fill"></i>

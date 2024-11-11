@@ -76,8 +76,24 @@ export default function Login() {
         }
     };
 
+    useEffect(() => {
+        const options = {
+            animate: true,
+            patternWidth: 100,
+            patternHeight: 100,
+            grainOpacity: 0.1,
+            grainDensity: 1,
+            grainWidth: 1,
+            grainHeight: 1
+        };
+
+        // eslint-disable-next-line no-undef
+        grained('#grain-background', options);
+    }, []);
+
     return (
         <>
+            <div id={"grain-background"}></div>
             <div className={"backgroundCommon negative"}/>
             <main className="mainCommon page-login">
                 <article className={"loginCard"}>

@@ -24,6 +24,10 @@ export default function SheetSelectionPage() {
 
     const navigate = useNavigate();
 
+    function goToSettings() {
+        navigate("/configuracoes");
+    }
+
     useEffect(() => {
         if (localStorage.getItem('sheetCode') === null) {
             const key = uuidv4();
@@ -99,6 +103,9 @@ export default function SheetSelectionPage() {
                 ) : (
                     <>
                         <div className={"container-buttons display-flex-center"}>
+                            <button className={"button-header active light back"} onClick={goToSettings}>Voltar&nbsp; <i
+                                className="bi bi-arrow-up-circle"></i>
+                            </button>
                             <input
                                 type="text"
                                 className={"input-name"}
@@ -106,11 +113,13 @@ export default function SheetSelectionPage() {
                                 onChange={(e) => setNewSheetName(e.target.value)}
                                 placeholder="Nome da nova ficha"
                             />
-                            <button className={"button-header active create"} onClick={addSheet}>Adicionar Ficha</button>
+                            <button className={"button-header active light create"} onClick={addSheet}>Adicionar Ficha
+                            </button>
                         </div>
                         <div className={"sheet-list"}>
                             {sheets.map(sheet => (
-                                <div className={`sheet display-flex-center ${sheet.sheetCode === sheetCode ? "active" : ""}`} key={sheet.sheetCode}>
+                                <div
+                                    className={`sheet display-flex-center ${sheet.sheetCode === sheetCode ? "active" : ""}`} key={sheet.sheetCode}>
                                     <p className={"p-name"} onClick={() => switchSheet(sheet.sheetCode)}>{decompressValue(sheet.nome)}</p>
                                     <i className="bi bi-trash3" onClick={() => deleteSheet(sheet.sheetCode)}></i>
                                 </div>

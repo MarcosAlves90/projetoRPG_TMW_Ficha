@@ -10,15 +10,9 @@
  * @returns {Object} The style object with background color, text color, and border properties.
  */
 export const lockedInputStyle = () => ({
-    backgroundColor: "var(--green-background)",
-    color: "var(--green-text)",
-    border: "var(--green-border)"
-})
-
-export const yellowLockedInputStyle = () => ({
-    backgroundColor: "var(--yellow-background)",
-    color: "var(--yellow-text)",
-    border: "var(--yellow-border)"
+    backgroundColor: "var(--gray-border-color)",
+    color: "var(--gray-placeholder)",
+    border: "var(--gray-border)"
 })
 
 /**

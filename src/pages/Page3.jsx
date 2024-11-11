@@ -1,6 +1,6 @@
-import {useCallback, useEffect, useState} from "react";
-import {deleteItem, getItem, returnLocalStorageData, saveItem} from "../assets/systems/SaveLoad.jsx";
-import {lockedInputStyle, yellowLockedInputStyle} from "../assets/styles/CommonStyles.jsx";
+import { useCallback, useEffect, useState, useMemo } from "react";
+import { deleteItem, getItem, returnLocalStorageData, saveItem } from "../assets/systems/SaveLoad.jsx";
+import { lockedInputStyle } from "../assets/styles/CommonStyles.jsx";
 import {
     ArtsSection,
     Attributes,
@@ -8,9 +8,8 @@ import {
     PericiasSection,
     SubArtsSection
 } from "../assets/systems/FichaPage3/FichaPage3System.jsx";
-import {arcArray, atrMap, bioMap, perArray, subArcArray} from "../assets/systems/FichaPage3/FichaPage3Arrays.jsx";
-import {map} from "jquery";
-import {saveUserData} from "../firebaseUtils.js";
+import { arcArray, atrMap, bioMap, perArray, subArcArray } from "../assets/systems/FichaPage3/FichaPage3Arrays.jsx";
+import { saveUserData } from "../firebaseUtils.js";
 
 export default function Page3() {
     const [isLocked, setIsLocked] = useState(getItem('isLocked', false) === 'true');
@@ -39,7 +38,6 @@ export default function Page3() {
     }, []);
 
     const updatePoints = useCallback(() => {
-        console.log("Atualizando pontos...");
 
         const bPoints = getTotalPoints(bioMap, 'biotipo');
         setBioPoints(bPoints);
@@ -65,7 +63,7 @@ export default function Page3() {
 
     }, [getTotalPoints]);
 
-    function SaveLockedState(lockState) {
+    const SaveLockedState = useCallback((lockState) => {
         if (lockState) {
             console.log("Bloqueando entradas...");
             saveItem('isLocked', true);
@@ -73,15 +71,15 @@ export default function Page3() {
             console.log("Desbloqueando entradas...");
             deleteItem('isLocked');
         }
-    }
+    }, []);
 
-    function handleLockChange() {
+    const handleLockChange = useCallback(() => {
         const lock = !isLocked;
         setIsLocked(lock);
         SaveLockedState(lock);
-    }
+    }, [isLocked, SaveLockedState]);
 
-    function UpdateTempRoll() {
+    const UpdateTempRoll = useCallback(() => {
         const tempRollClone = { ...tempRoll };
 
         ["Pericia", "Dice", "Result"].forEach((temp) => {
@@ -93,9 +91,9 @@ export default function Page3() {
         });
 
         setTempRoll(tempRollClone);
-    }
+    }, [tempRoll]);
 
-    function CalculateAttributesPoints() {
+    const CalculateAttributesPoints = useCallback(() => {
         if (getItem('nivel', 1) < 4) {
             return 9;
         } else if (getItem('nivel', 1) < 10) {
@@ -107,10 +105,9 @@ export default function Page3() {
         } else {
             return 13
         }
-    }
+    }, []);
 
-    function CalculateAttributesCap() {
-
+    const CalculateAttributesCap = useCallback(() => {
         const level = getItem('nivel', 1);
 
         if (level < 4) {
@@ -120,11 +117,9 @@ export default function Page3() {
         } else {
             return 5;
         }
+    }, []);
 
-    }
-
-    function CalculatePericiasPoints() {
-
+    const CalculatePericiasPoints = useCallback(() => {
         const level = getItem('nivel', 1);
         const bPericias = getItem('biotipo-Pericias', 0);
         const aInt = getItem('atributo-INT', 0);
@@ -140,53 +135,27 @@ export default function Page3() {
         } else {
             return -1;
         }
+    }, []);
 
-    }
-
-    /**
-     * Calculates the cap for the skills based on the character's level.
-     *
-     * @returns {number} - The cap for the skills.
-     */
-    function CalculatePericiasCap() {
+    const CalculatePericiasCap = useCallback(() => {
         return getItem('nivel', 1);
-    }
+    }, []);
 
-    /**
-     * Rolls dice based on the event target id and updates the temporary roll values.
-     *
-     * @param {Object} e - The event object.
-     * @param {Array} simpleDice - The simple dice array.
-     */
-    const rollDice = (e, simpleDice) => {
-
+    const rollDice = useCallback((e, simpleDice) => {
         let diceResult = 0;
         const dice = [];
         let noAttribute = false;
 
-        /**
-         * Rolls a simple dice based on the given quantity.
-         *
-         * @param {number} qty - The quantity of dice to be rolled.
-         * @param {number} sides - The number of sides of the dice.
-         */
         function rollSimpleDice(qty, sides) {
             for (let i = 0; i < qty; i++) {
                 dice.push(Math.floor(Math.random() * sides) + 1);
             }
         }
 
-        /**
-         * Sums the values of the dice rolled.
-         * @returns {number} - The sum of the dice rolled.
-         */
         function simpleDiceSum() {
             return dice.reduce((acc, curr) => acc + curr, 0);
         }
 
-        /**
-         * Chooses the best or worst dice result based on the presence of an attribute.
-         */
         function chooseSimpleDiceResult() {
             if (simpleDice.sum) {
                 diceResult = simpleDiceSum();
@@ -195,53 +164,24 @@ export default function Page3() {
             }
         }
 
-        /**
-         * Sets the temporary roll values in the session storage.
-         *
-         * @param {string} periciaNameProp - The name of the skill.
-         * @param {Array} diceProp - The array of dice rolled.
-         * @param {number} resultProp - The result of the roll.
-         */
         function setTempRollSessionStorage(periciaNameProp, diceProp, resultProp) {
             sessionStorage.setItem('tempPericia', periciaNameProp);
             sessionStorage.setItem('tempDice', diceProp);
             sessionStorage.setItem('tempResult', resultProp);
         }
 
-        /**
-         * Verifies the attribute and bonus values.
-         *
-         * @param {number} atr - The attribute value.
-         * @param {number} bonus - The bonus value.
-         * @returns {Array} An array where the first element is a boolean indicating if the sum of atr and bonus is zero,
-         *                  the second element is the attribute value, and the third element is the bonus value.
-         */
         function verifyAttribute(atr, bonus) {
             if ((atr + bonus) === 0) return [true, 2, bonus];
             return [false, atr, bonus];
         }
 
-        /**
-         * Rolls dice based on the attribute and bonus values.
-         *
-         * @param {number} atr - The attribute value used to determine the number of dice rolls.
-         * @param {number} bonus - The bonus value added to the attribute to determine the total number of dice rolls.
-         */
         function rollAttributeDice(atr, bonus) {
             for (let i = 0; i < (atr + bonus); i++) {
                 dice.push(Math.floor(Math.random() * 20) + 1);
             }
         }
 
-        /**
-         * Chooses the best or worst dice result based on the presence of an attribute.
-         *
-         * @param {boolean} noAtr - Indicates whether there is no attribute.
-         *                          If true, the minimum dice result is chosen.
-         *                          If false, the maximum dice result is chosen.
-         */
         function chooseMinOrMax(noAtr) {
-            console.log(noAtr);
             if (!noAtr) {
                 diceResult = Math.max(...dice);
             } else {
@@ -249,11 +189,6 @@ export default function Page3() {
             }
         }
 
-        /**
-         * Adds a bonus to the dice best result.
-         *
-         * @param {number} bonus - The bonus value to be added to the dice best result.
-         */
         function addPericiaBonus(bonus) {
             diceResult += bonus;
         }
@@ -273,21 +208,8 @@ export default function Page3() {
             const periciaName = (e.target.id).slice(7);
             const pericia = getItem(`pericia-${periciaName}`, 0);
             const periciaBonus = getItem(`pericia-${periciaName}-bonus`, 0);
-            let attribute = map(perArray, function (per) {
-                if (per.pericia === periciaName) {
-                    return getItem(`atributo-${per.atr}`, 0);
-                }
-                return null;
-            });
-            let attributeBonus = map(perArray, function (per) {
-                if (per.pericia === periciaName) {
-                    return getItem(`atributo-${per.atr}-bonus`, 0);
-                }
-                return null;
-            });
-
-            attribute = attribute.length > 0 ? attribute[0] : 0;
-            attributeBonus = attributeBonus.length > 0 ? attributeBonus[0] : 0;
+            let attribute = perArray.find(per => per.pericia === periciaName)?.atr || 0;
+            let attributeBonus = getItem(`atributo-${attribute}-bonus`, 0);
 
             [noAttribute, attribute, attributeBonus] = verifyAttribute(attribute, attributeBonus);
             rollAttributeDice(attribute, attributeBonus);
@@ -304,46 +226,44 @@ export default function Page3() {
         }
 
         UpdateTempRoll();
-    }
+    }, [UpdateTempRoll]);
 
-    /**
-     * Handles changes to the status input fields.
-     *
-     * @param {Function} setter - The state setter function for the status.
-     * @returns {Function} - A function that handles the change event for the input field.
-     */
-    const handleStatusChange = (setter) => (event) => {
+    const handleStatusChange = useCallback((setter) => (event) => {
         const value = event.target.value;
         if (event.target.type === 'number') {
             setter(value === '' ? '' : parseFloat(value));
         } else {
             setter(value);
         }
-    };
+    }, []);
 
-    const handleSearchChange = (event) => {
+    const handleSearchChange = useCallback((event) => {
         setSearchTerm(event.target.value.toLowerCase());
-    };
+    }, []);
 
-    const filteredBioMap = bioMap.filter((item) =>
+    const filteredBioMap = useMemo(() => bioMap.filter((item) =>
         item.toLowerCase().includes(searchTerm)
-    );
-    const filteredAtrMap = atrMap.filter((item) =>
+    ), [searchTerm]);
+
+    const filteredAtrMap = useMemo(() => atrMap.filter((item) =>
         item.toLowerCase().includes(searchTerm)
-    );
-    const filteredPerArray = perArray.filter((item) =>
+    ), [searchTerm]);
+
+    const filteredPerArray = useMemo(() => perArray.filter((item) =>
         item.pericia.toLowerCase().includes(searchTerm)
-    );
-    const filteredArcArray = arcArray.filter((item) =>
+    ), [searchTerm]);
+
+    const filteredArcArray = useMemo(() => arcArray.filter((item) =>
         item.art.toLowerCase().includes(searchTerm)
-    );
-    const filteredSubArcArray = subArcArray.filter((item) =>
+    ), [searchTerm]);
+
+    const filteredSubArcArray = useMemo(() => subArcArray.filter((item) =>
         item.subArt.toLowerCase().includes(searchTerm)
-    );
+    ), [searchTerm]);
 
     useEffect(() => {
         updatePoints();
-    },[]);
+    }, [updatePoints]);
 
     useEffect(() => {
         document.documentElement.style.setProperty('--text-length', `${(tempRoll.Dice.length < 31 ? tempRoll.Dice.length : 30)}`);
@@ -373,9 +293,9 @@ export default function Page3() {
                             <i className={isLocked ? "bi bi-lock-fill" : "bi bi-unlock-fill"}/>
                         </button>
                         <button type={"button"}
-                                className={"button-lock recommendations"}
+                                className={"button-lock"}
                                 onClick={() => setRecommendations(!recommendations)}
-                                style={recommendations ? yellowLockedInputStyle() : {}}
+                                style={recommendations ? lockedInputStyle() : {}}
                         >
                             {"Regras "}
                             <i className={recommendations ? "bi bi-exclamation-triangle-fill" : "bi bi-exclamation-triangle"}/>
@@ -483,7 +403,7 @@ export default function Page3() {
                         Subartes: [{subArcPoints}]/[{getItem('pericia-Magia Arcana', 0) * 5}]
                     </h2>
                     <p className={"statusDescription"}>As subartes arcanas são as especializações das artes
-                    arcanas do personagem, aumentando as possibilidades de skills.</p>
+                        arcanas do personagem, aumentando as possibilidades de skills.</p>
                 </div>
                 <SubArtsSection isLocked={isLocked}
                                 handleStatusChange={handleStatusChange}

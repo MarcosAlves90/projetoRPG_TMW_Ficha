@@ -15,11 +15,15 @@ export default function NavBar() {
     const signOut = useSignOut();
 
     function handleMenuToggle() {
-        setCollapsed(!collapsed)
+        setCollapsed(!collapsed);
     }
 
     function handleLoginClick() {
         currentUser ? signOut() : navigate("/login");
+    }
+
+    function handleNavItemClick() {
+        if (!collapsed) setCollapsed(true);
     }
 
     useEffect(() => {
@@ -49,9 +53,8 @@ export default function NavBar() {
     }, []);
 
     return (
-
         <nav className={`navbar ${collapsed ? "" : "show"} navbar-expand-lg navbar-light ${headerBackground || !collapsed ? "custom-theme" : "default-theme"} `}>
-            <Link className={"navbar-brand"} to={"/"}>TMWCSE</Link>
+            <Link className={"navbar-brand"} to={"/"}>{collapsed ? "TMWCSE" : "The Mental World CSE"}</Link>
             <button className={`navbar-toggler ${!collapsed ? "active" : ""} ${location.pathname === "/login" ? "login-themed" : ""}`}
                     onClick={handleMenuToggle} type="button" data-toggle="collapse" data-target="#navbarText"
                     aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
@@ -60,25 +63,28 @@ export default function NavBar() {
             <div className={`collapse navbar-collapse ${collapsed ? "" : "show"}`} id="navbarText">
                 <ul className="navbar-nav mr-auto">
                     <li className={`nav-item ${location.pathname === "/" ? "active" : ""}`}>
-                        <Link className="nav-link" to={"/"}>Início</Link>
+                        <Link className="nav-link" to={"/"} onClick={handleNavItemClick}>Início</Link>
                     </li>
                     <li className={`nav-item ${location.pathname === "/individual" ? "active" : ""}`}>
-                        <Link className="nav-link" to={"/individual"}>Individual</Link>
+                        <Link className="nav-link" to={"/individual"} onClick={handleNavItemClick}>Individual</Link>
                     </li>
                     <li className={`nav-item ${location.pathname === "/caracteristicas" ? "active" : ""}`}>
-                        <Link className="nav-link" to={"/caracteristicas"}>Características</Link>
+                        <Link className="nav-link" to={"/caracteristicas"} onClick={handleNavItemClick}>Características</Link>
                     </li>
                     <li className={`nav-item ${location.pathname === "/status" ? "active" : ""}`}>
-                        <Link className="nav-link" to={"/status"}>Status</Link>
+                        <Link className="nav-link" to={"/status"} onClick={handleNavItemClick}>Status</Link>
                     </li>
                     <li className={`nav-item ${location.pathname === "/skills" ? "active" : ""}`}>
-                        <Link className="nav-link" to={"/skills"}>Skills</Link>
+                        <Link className="nav-link" to={"/skills"} onClick={handleNavItemClick}>Skills</Link>
                     </li>
                     <li className={`nav-item ${location.pathname === "/anotacoes" ? "active" : ""}`}>
-                        <Link className="nav-link" to={"/anotacoes"}>Anotações</Link>
+                        <Link className="nav-link" to={"/anotacoes"} onClick={handleNavItemClick}>Anotações</Link>
+                    </li>
+                    <li className={`nav-item ${location.pathname === "/inventario" ? "active" : ""}`}>
+                        <Link className={"nav-link"} to={"/inventario"} onClick={handleNavItemClick}>Inventário</Link>
                     </li>
                     <li className={`nav-item ${location.pathname === "/configuracoes" ? "active" : ""} config`}>
-                        <Link className="nav-link" to={"/configuracoes"}>⚙️</Link>
+                        <Link className="nav-link" to={"/configuracoes"} onClick={handleNavItemClick}>⚙️</Link>
                     </li>
                     <li className={`nav-item sign-in ${!currentUser ? "login" : "sign-out"} ${location.pathname === "/login" ? "login-themed" : ""}`}
                         onClick={handleLoginClick}>
@@ -87,7 +93,6 @@ export default function NavBar() {
                 </ul>
             </div>
         </nav>
-
     );
 }
 

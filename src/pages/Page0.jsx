@@ -23,7 +23,7 @@ function TitleSection() {
 function FooterSection({ handleGitHubButtonClick }) {
     return (
         <div className={"mainCommon-page-0-section-1-footer"}>
-            <button onClick={handleGitHubButtonClick}>
+            <button className={"footerButton"} onClick={handleGitHubButtonClick}>
                 GitHub
             </button>
         </div>
@@ -57,19 +57,38 @@ export default function Page0() {
         return () => window.removeEventListener('scroll', handleScroll);
     }, []);
 
+    useEffect(() => {
+        const options = {
+            animate: true,
+            patternWidth: 100,
+            patternHeight: 100,
+            grainOpacity: 0.1,
+            grainDensity: 1,
+            grainWidth: 1,
+            grainHeight: 1
+        };
+
+        // eslint-disable-next-line no-undef
+        grained('#grain-background', options);
+    }, []);
+
     return (
         <>
-            <div className={"backgroundCommon"} />
+            <div id={"grain-background"}></div>
+            <div className={"backgroundCommon"}/>
             <main className={"mainCommon page-0 root-style"}>
                 <section className={"mainCommon-page-0-section-0"}>
                     <article className={"mainCommon-page-0-section-0-article"}>
-                        <LogoSection rotation={rotation} />
-                        <TitleSection />
+                        <LogoSection rotation={rotation}/>
+                        <TitleSection/>
                     </article>
                 </section>
                 <section className={"mainCommon-page-0-section-1"}>
-                    <p>An online character sheet project for the virtual tabletop role-playing game &quot;The Mental World&quot;. The project uses technologies such as HTML, CSS, JavaScript, React and Vite for its operation and stylization. The idea is for the user to be able to build their sheet on the platform and download it in JSON format for future use.</p>
-                    <FooterSection handleGitHubButtonClick={handleGitHubButtonClick} />
+                    <p className={"description"}>An online character sheet project for the virtual tabletop role-playing game &quot;The Mental
+                        World&quot;. The project uses technologies such as HTML, CSS, JavaScript, React and Vite for its
+                        operation and stylization. The idea is for the user to be able to build their sheet on the
+                        platform and download it in JSON format for future use.</p>
+                    <FooterSection handleGitHubButtonClick={handleGitHubButtonClick}/>
                 </section>
             </main>
         </>

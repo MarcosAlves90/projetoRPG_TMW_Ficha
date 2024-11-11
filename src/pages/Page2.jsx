@@ -46,7 +46,7 @@ export default function Page2() {
         <main className={"mainCommon page-2"}>
 
             <section className={"section-origem"}>
-                <Collapsible trigger={"origem "}
+                <Collapsible trigger={"Origem"}
                              triggerStyle={{fontSize: "1.5em", color: "rgb(43, 43, 43)"}}
                              transitionTime={100}
                              transitionCloseTime={100}>
@@ -62,7 +62,7 @@ export default function Page2() {
             </section>
 
             <section className={"section-fisico"}>
-                <Collapsible trigger={"aparência."}
+                <Collapsible trigger={"Aparência"}
                              triggerStyle={{fontSize: "1.5em", color: "rgb(43, 43, 43)"}}
                              transitionTime={100}
                              transitionCloseTime={100}>
@@ -78,7 +78,7 @@ export default function Page2() {
             </section>
 
             <section className={"section-ideais"}>
-                <Collapsible trigger={"ideais."}
+                <Collapsible trigger={"Ideais"}
                              triggerStyle={{fontSize: "1.5em", color: "rgb(43, 43, 43)"}}
                              transitionTime={100}
                              transitionCloseTime={100}>
@@ -96,7 +96,7 @@ export default function Page2() {
             <section className={"section-tracos"}>
                 <div className={"textarea-center-container"}>
                     <div className={"textarea-meio"}>
-                        <Collapsible trigger={"traços negativos."}
+                        <Collapsible trigger={"Traços negativos"}
                                      triggerStyle={{fontSize: "1.5em", color: "rgb(43, 43, 43)"}}
                                      transitionTime={100}
                                      transitionCloseTime={100}>
@@ -112,7 +112,7 @@ export default function Page2() {
                         </Collapsible>
                     </div>
                     <div className={"textarea-meio"}>
-                        <Collapsible trigger={"traços positivos."}
+                        <Collapsible trigger={"Traços positivos"}
                                      triggerStyle={{fontSize: "1.5em", color: "rgb(43, 43, 43)"}}
                                      transitionTime={100}
                                      transitionCloseTime={100}>
@@ -131,7 +131,7 @@ export default function Page2() {
             </section>
 
             <section className={"section-origem-forma"}>
-                <Collapsible trigger={"origem da forma."}
+                <Collapsible trigger={"Origem da forma"}
                              triggerStyle={{fontSize: "1.5em", color: "rgb(43, 43, 43)"}}
                              transitionTime={100}
                              transitionCloseTime={100}>
