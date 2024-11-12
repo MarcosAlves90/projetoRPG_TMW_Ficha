@@ -88,18 +88,18 @@ Biotipos.propTypes = {
 };
 
 export function PericiasSection({ isLocked, rollDice, handleStatusChange, updatePoints, perArray }) {
-    function groupPericias(pericias, groupSize) {
-        const grouped = [];
-        for (let i = 0; i < pericias.length; i += groupSize) {
-            grouped.push(pericias.slice(i, i + groupSize));
-        }
-        return grouped;
-    }
+    const groupPericias = (pericias, groupSize) => {
+        return pericias.reduce((acc, curr, index) => {
+            if (index % groupSize === 0) acc.push([]);
+            acc[acc.length - 1].push(curr);
+            return acc;
+        }, []);
+    };
 
     return (
         <>
             {groupPericias(perArray, 4).map((group, index) => (
-                <div className={"input-center justify-center"} key={index}>
+                <div className="input-center justify-center" key={index}>
                     {group.map(({ pericia, atr }) => (
                         <Pericia
                             isLocked={isLocked}
@@ -189,18 +189,6 @@ Pericia.propTypes = {
     updatePoints: PropTypes.func.isRequired,
 };
 
-/**
- * Component for rendering an attribute input field.
- *
- * This component displays an attribute with a label and an input field. The input field is restricted to numeric values
- * and can be locked to prevent user interaction. The component also handles saving and deleting the attribute value
- * in session storage.
- *
- * @param {Object} props - The properties object.
- * @param {string} props.atr - The attribute name.
- * @param {string} props.atributo - The attribute label.
- * @param {boolean} props.isLocked - Flag indicating if the input field is locked.
- */
 export function Attributes(props) {
 
     const [value, setValue] = useState(getItem(`atributo-${props.atr}`, ''));
@@ -343,15 +331,6 @@ ArcaneArts.propTypes = {
     updatePoints: PropTypes.func.isRequired,
 };
 
-/**
- * Component for rendering a section of sub-arcane arts.
- *
- * This component groups sub-arcane arts into rows and displays them. Each sub-arcane art is rendered
- * using the SubArcaneArts component. The number of sub-arcane arts per row is determined by the groupSize parameter.
- *
- * @param {Object} props - The properties object.
- * @param {boolean} props.isLocked - Flag indicating if the input fields are locked.
- */
 export function SubArtsSection({ isLocked, handleStatusChange, updatePoints, subArcArray }) {
     function groupSubArts(arts, groupSize) {
         const grouped = [];

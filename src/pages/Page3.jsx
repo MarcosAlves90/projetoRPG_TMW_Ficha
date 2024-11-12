@@ -72,8 +72,9 @@ export default function Page3() {
             saveItem('isLocked', true);
         } else {
             console.log("Desbloqueando entradas...");
-            deleteItem('isLocked');
+            saveItem('isLocked', false);
         }
+        saveUserData(returnLocalStorageData());
     }, []);
 
     const handleLockChange = useCallback(() => {

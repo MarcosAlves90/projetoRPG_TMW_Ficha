@@ -584,6 +584,42 @@ input[type=number] {
     }
 }
 
+.mainCommon.page-6 {
+    .boxInventory {
+        gap: 1vw;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        align-items: center;
+        .item {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 8rem;
+            height: 8rem;
+            padding: 3rem;
+            background-color: var(--gray-border-color);
+            color: var(--gray-placeholder);
+            border-radius: 20px;
+            transition: var(--common-transition);
+            .bi {
+                transition: var(--common-transition);
+            }
+            &.add {
+                font-size: 2.8rem;
+            }
+            &:hover {
+                cursor: pointer;
+                background-color: var(--gray-placeholder);
+                color: var(--gray-border-color);
+                .bi {
+                    transform: rotate(-90deg);
+                }
+            }
+        }
+    }
+}
+
 .mainCommon.page-4, .mainCommon.page-5 {
     .Collapsible {
         span {
