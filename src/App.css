@@ -1477,9 +1477,9 @@ input[type=number] {
         background-color: rgba(15, 19, 31, 0.84);
     }
     .popup {
-        top: 65%;
+        top: 70%;
         left: 50%;
-        transform: translate(-50%, -65%);
+        transform: translate(-50%, -70%);
         position: relative;
         width: 90vw;
         height: 85vh;
