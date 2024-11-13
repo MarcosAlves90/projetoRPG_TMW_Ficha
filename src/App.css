@@ -1476,12 +1476,13 @@ input[type=number] {
     .popupOverlay {
     }
     .popup {
+        position: fixed;
         top: 0;
         left: 50%;
         transform: translateX(-50%);
-        margin-top: 5rem;
+        margin-top: 5.5rem;
         width: 90vw;
-        height: 80vh;
+        height: 47rem;
         flex-direction: column;
         justify-content: flex-start;
         align-items: flex-start;
@@ -1489,11 +1490,10 @@ input[type=number] {
         gap: 1.3rem;
         padding-top: 0;
         padding-bottom: 4vw;
-        position: fixed;
         .leftBox {
             box-sizing: border-box;
             width: calc(100% - 4vw);
-            height: 40%;
+            height: 30%;
             margin: 0 2vw;
             border-radius: 0 0 20px 20px;
         }
