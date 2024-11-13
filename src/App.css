@@ -1486,7 +1486,7 @@ input[type=number] {
         gap: 1.3rem;
         padding: 0;
         .closeButton {
-            top: 15px;
+            top: 14px;
         }
         .leftBox {
             z-index: -1;
