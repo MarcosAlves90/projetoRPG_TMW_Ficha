@@ -1486,7 +1486,7 @@ input[type=number] {
         gap: 1.3rem;
         padding: 0;
         .closeButton {
-            top: 14px;
+            top: 13px;
         }
         .leftBox {
             z-index: -1;
@@ -1506,7 +1506,7 @@ input[type=number] {
             input, textarea {
                 &.title {
                     font-size: 1.1rem;
-                    padding-right: 2rem;
+                    padding-right: 2.8rem;
                 }
                 &.popup-content, &.popup-image, &.popup-type {
                     font-size: 0.8rem;
