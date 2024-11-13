@@ -287,7 +287,6 @@ input[type=number] {
     align-items: center;
     justify-content: center;
     word-break: break-all;
-    overflow: auto;
     .closeButton {
         right: 10px;
         font-size: 2rem;
@@ -1476,30 +1475,44 @@ input[type=number] {
     .popupOverlay {
     }
     .popup {
-        position: fixed;
+        position: relative;
         top: 0;
         left: 50%;
         transform: translateX(-50%);
         margin-top: 5.5rem;
         width: 90vw;
-        height: 47rem;
+        height: 85vh;
         flex-direction: column;
         justify-content: flex-start;
         align-items: flex-start;
-        overflow: auto;
         gap: 1.3rem;
-        padding-top: 0;
-        padding-bottom: 4vw;
+        padding: 0;
+        z-index: 10;
+        .closeButton {
+            height: 2.4rem;
+            right: unset;
+            top: -40px;
+            left: 12px;
+            border-radius: 20px 20px 0 0;
+            width: 30%;
+            z-index: 5;
+            font-size: 1.6rem;
+        }
         .leftBox {
+            z-index: -1;
+            position: absolute;
             box-sizing: border-box;
-            width: calc(100% - 4vw);
-            height: 30%;
-            margin: 0 2vw;
-            border-radius: 0 0 20px 20px;
+            width: 100%;
+            height: 100%;
+            background-color: transparent;
+            .image {
+                opacity: 0.3;
+            }
         }
         .rightBox {
             width: 100%;
             flex-grow: 1;
+            padding: 4vw 4vw;
             input, textarea {
                 &.title {
                     font-size: 1.1rem;
