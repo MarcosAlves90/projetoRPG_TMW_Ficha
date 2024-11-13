@@ -1486,13 +1486,7 @@ input[type=number] {
         gap: 1.3rem;
         padding: 0;
         .closeButton {
-            height: 2.4rem;
-            right: unset;
-            top: -40px;
-            left: 12px;
-            border-radius: 20px 20px 0 0;
-            width: 30%;
-            font-size: 1.6rem;
+            top: 27px;
         }
         .leftBox {
             z-index: -1;
@@ -1512,12 +1506,13 @@ input[type=number] {
             input, textarea {
                 &.title {
                     font-size: 1.1rem;
+                    padding-right: 2rem;
                 }
                 &.popup-content, &.popup-image, &.popup-type {
                     font-size: 0.8rem;
                 }
                 &:focus {
-                    background-color: rgba(15, 19, 31, 0.76);
+                    background-color: rgba(15, 19, 31, 0.80);
                 }
             }
         }
