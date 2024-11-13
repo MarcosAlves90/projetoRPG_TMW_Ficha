@@ -1481,13 +1481,12 @@ input[type=number] {
         transform: translateX(-50%);
         margin-top: 5.5rem;
         width: 90vw;
-        height: 85vh;
+        height: 85%;
         flex-direction: column;
         justify-content: flex-start;
         align-items: flex-start;
         gap: 1.3rem;
         padding: 0;
-        z-index: 10;
         .closeButton {
             height: 2.4rem;
             right: unset;
@@ -1495,7 +1494,6 @@ input[type=number] {
             left: 12px;
             border-radius: 20px 20px 0 0;
             width: 30%;
-            z-index: 5;
             font-size: 1.6rem;
         }
         .leftBox {
