@@ -1515,6 +1515,9 @@ input[type=number] {
                     background-color: rgba(15, 19, 31, 0.80);
                 }
             }
+            textarea {
+                border-radius: 10px 0 0 10px;
+            }
         }
     }
     .navbar {
