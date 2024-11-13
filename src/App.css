@@ -1476,8 +1476,12 @@ input[type=number] {
     .popupOverlay {
     }
     .popup {
+        top: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        margin-top: 5rem;
         width: 90vw;
-        height: 85vh;
+        height: 80vh;
         flex-direction: column;
         justify-content: flex-start;
         align-items: flex-start;
@@ -1487,7 +1491,7 @@ input[type=number] {
         padding-bottom: 4vw;
         .leftBox {
             box-sizing: border-box;
-            width: calc(100% - 4vw); /* Ajuste a largura para considerar a margem */
+            width: calc(100% - 4vw);
             height: 40%;
             margin: 0 2vw;
             border-radius: 0 0 20px 20px;
@@ -1940,7 +1944,7 @@ input[type=number] {
                 height: 6rem;
                 width: 6rem;
                 &.add {
-
+                    padding: 0;
                 }
                 &:hover {
                     flex-grow: 0;
