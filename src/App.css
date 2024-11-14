@@ -328,13 +328,14 @@ input[type=number] {
             color: var(--common-font-color);
             width: 100%;
             background-color: rgba(15, 19, 31, 0.56);
-            border-radius: 0 0 10px 10px;
             padding: 0.5rem 0.7rem;
             transition: var(--common-transition);
+            border-radius: 10px;
             &.title {
                 font-size: 2rem;
                 font-weight: bolder;
                 text-align: center;
+                border-radius: 0 0 10px 10px;
             }
             &:focus {
                 background-color: rgba(15, 19, 31, 0.80);
@@ -345,6 +346,7 @@ input[type=number] {
             hyphens: auto;
             word-break: break-word;
             height: 100%;
+            border-radius: 10px 0 0 10px;
         }
         .button {
             border-radius: 50px;
@@ -364,7 +366,7 @@ input[type=number] {
             }
         }
         .boxButtons {
-            background-color: rgba(42, 53, 84, 0.32);
+            background-color: var(--gray-border-color);
             border-radius: 20px 20px 0 0;
             padding: 1rem;
         }
@@ -1529,7 +1531,6 @@ input[type=number] {
                 }
             }
             textarea {
-                border-radius: 10px 0 0 10px;
                 min-height: 15rem;
                 height: 20rem;
             }
