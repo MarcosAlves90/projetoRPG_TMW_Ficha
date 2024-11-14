@@ -1484,7 +1484,7 @@ input[type=number] {
     }
     .popup {
         width: 90vw;
-        height: 85lvh;
+        height: calc(85vh - env(safe-area-inset-bottom));
         flex-direction: column;
         justify-content: flex-start;
         align-items: flex-start;
