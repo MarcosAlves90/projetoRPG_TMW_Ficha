@@ -365,7 +365,7 @@ input[type=number] {
         }
         .boxButtons {
             background-color: rgba(42, 53, 84, 0.32);
-            border-radius: 20px;
+            border-radius: 20px 20px 0 0;
             padding: 1rem;
         }
     }
@@ -1487,19 +1487,15 @@ input[type=number] {
         background-color: rgba(15, 19, 31, 0.84);
     }
     .popup {
-        width: unset;
-        height: unset;
-        top: 20px;
-        left: 20px;
-        right: 20px;
-        bottom: 20px;
-        transform: unset;
+        width: 90vw;
+        height: 90vh;
         flex-direction: column;
         justify-content: flex-start;
         align-items: flex-start;
         gap: 1.3rem;
         padding: 0;
         border-radius: 20px 0 0 20px;
+        overflow: auto;
         .leftBox {
             box-sizing: border-box;
             width: calc(100% - 8vw);
@@ -1511,7 +1507,7 @@ input[type=number] {
         .rightBox {
             width: 100%;
             flex-grow: 1;
-            padding: 4vw 4vw;
+            padding: 4vw 4vw 0 4vw;
             justify-content: flex-start;
             input, textarea {
                 &.title {
@@ -1524,8 +1520,10 @@ input[type=number] {
             textarea {
                 border-radius: 10px 0 0 10px;
                 min-height: 15rem;
+                height: 20rem;
             }
         }
+
     }
     .navbar {
         --button-background-color: var(--gray-border-color);
