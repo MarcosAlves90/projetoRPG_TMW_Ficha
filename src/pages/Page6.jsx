@@ -99,8 +99,10 @@ export default function Page6() {
                                    onChange={handleInputChange} placeholder={"Categorias do item, divididas por vírgula."}/>
                             <input value={selectedItem.image} name="image" className="popup-image input"
                                    onChange={handleInputChange} placeholder={"Link para a imagem do item."}/>
-                            <button className={"button delete"} onClick={deleteItem}>Deletar <i
-                                className="bi bi-trash3"></i></button>
+                            <div className={"boxButtons display-flex-center w-100"}>
+                                <button className={"button delete"} onClick={deleteItem}>Deletar <i
+                                    className="bi bi-trash3"></i></button>
+                            </div>
                         </div>
                     </>
                 )}
