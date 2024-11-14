@@ -1481,6 +1481,7 @@ input[type=number] {
     .popupOverlay {
         z-index: 5;
         background-color: rgba(15, 19, 31, 0.84);
+        height: 100vh;
     }
     .popup {
         position: fixed;
