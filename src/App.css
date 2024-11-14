@@ -332,10 +332,15 @@ input[type=number] {
             transition: var(--common-transition);
             border-radius: 10px;
             &.title {
+                color: var(--gray-background);
                 font-size: 2rem;
                 font-weight: bolder;
                 text-align: center;
                 border-radius: 0 0 10px 10px;
+                background-color: var(--gray-border-color);
+                &:focus {
+                    background-color: var(--gray-border-color);
+                }
             }
             &:focus {
                 background-color: rgba(15, 19, 31, 0.80);
@@ -727,7 +732,6 @@ input[type=number] {
                 cursor: pointer;
                 background-color: var(--gray-placeholder);
                 color: var(--gray-border-color);
-                flex-grow: 0.02;
                 .bi {
                     transform: rotate(-90deg);
                 }
@@ -1525,6 +1529,13 @@ input[type=number] {
                 border-radius: 10px;
                 &.title {
                     font-size: 1.1rem;
+                    border-radius: 10px;
+                    background-color: rgba(15, 19, 31, 0.56);
+                    color: var(--gray-background);
+                    color: var(--common-font-color);
+                    &:focus {
+                        background-color: rgba(15, 19, 31, 0.80);
+                    }
                 }
                 &.popup-content, &.popup-image, &.popup-type {
                     font-size: 0.8rem;
