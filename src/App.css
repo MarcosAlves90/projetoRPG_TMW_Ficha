@@ -334,7 +334,6 @@ input[type=number] {
             &.title {
                 color: white;
                 font-size: 2rem;
-                font-weight: bolder;
                 text-align: center;
                 border-radius: 0 0 10px 10px;
                 background-color: var(--gray-border-color);
@@ -1529,6 +1528,7 @@ input[type=number] {
                 &.title {
                     font-size: 1.1rem;
                     border-radius: 10px;
+                    font-weight: bolder;
                     background-color: rgba(15, 19, 31, 0.56);
                     color: var(--common-font-color);
                     &:focus {
