@@ -278,15 +278,19 @@ input[type=number] {
     backdrop-filter: blur(50px);
     background-color: rgba(23, 29, 46, 0.49);
     border: var(--gray-border);
+
     position: absolute;
     height: 80vh;
     width: 70vw;
+
     border-radius: 20px;
     outline: none;
     color: var(--common-font-color);
+
     display: flex;
     align-items: center;
     justify-content: center;
+
     word-break: break-all;
     .closeButton {
         right: 10px;
@@ -1484,13 +1488,8 @@ input[type=number] {
     }
     .popup {
         position: fixed;
-        width: unset;
-        height: unset;
-        top: 20px;
-        left: 20px;
-        right: 20px;
-        bottom: 20px;
-        transform: unset;
+        width: 90vw;
+        height: 140vw;
         flex-direction: column;
         justify-content: flex-start;
         align-items: flex-start;
@@ -1500,7 +1499,7 @@ input[type=number] {
         .leftBox {
             box-sizing: border-box;
             width: calc(100% - 8vw);
-            height: 12rem;
+            height: 27vh;
             margin: 0 4vw;
             border-radius: 0 0 20px 20px;
             flex-shrink: 0;
