@@ -1513,7 +1513,6 @@ input[type=number] {
             flex-grow: 1;
             padding: 4vw 4vw;
             justify-content: flex-start;
-            margin-bottom: 5rem;
             input, textarea {
                 &.title {
                     font-size: 1.1rem;
@@ -1524,7 +1523,7 @@ input[type=number] {
             }
             textarea {
                 border-radius: 10px 0 0 10px;
-                height: 20rem;
+                min-height: 15rem;
             }
         }
     }
