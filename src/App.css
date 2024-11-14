@@ -1486,7 +1486,7 @@ input[type=number] {
     .popup {
         position: fixed;
         width: 90vw;
-        height: 85%;
+        height: 85dvh;
         flex-direction: column;
         justify-content: flex-start;
         align-items: flex-start;
@@ -1510,7 +1510,6 @@ input[type=number] {
             input, textarea {
                 &.title {
                     font-size: 1.1rem;
-                    padding-right: 2.8rem;
                 }
                 &.popup-content, &.popup-image, &.popup-type {
                     font-size: 0.8rem;
