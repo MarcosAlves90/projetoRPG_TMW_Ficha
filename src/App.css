@@ -1483,8 +1483,14 @@ input[type=number] {
         background-color: rgba(15, 19, 31, 0.84);
     }
     .popup {
-        width: 90vw;
-        height: calc(85vh - env(safe-area-inset-bottom));
+        position: absolute;
+        width: unset;
+        height: unset;
+        top: 40px;
+        left: 20px;
+        right: 20px;
+        bottom: 40px;
+        transform: unset;
         flex-direction: column;
         justify-content: flex-start;
         align-items: flex-start;
