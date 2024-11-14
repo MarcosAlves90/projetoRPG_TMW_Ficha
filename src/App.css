@@ -332,7 +332,7 @@ input[type=number] {
             transition: var(--common-transition);
             border-radius: 10px;
             &.title {
-                color: var(--gray-background);
+                color: white;
                 font-size: 2rem;
                 font-weight: bolder;
                 text-align: center;
@@ -737,8 +737,7 @@ input[type=number] {
                 }
                 &.inventory {
                     .image {
-                        width: 150%;
-                        height: 150%;
+                        transform: scale(1.5);
                         transform-origin: center center;
                         object-fit: cover;
                     }
