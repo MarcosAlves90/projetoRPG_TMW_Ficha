@@ -1482,11 +1482,12 @@ input[type=number] {
         z-index: 5;
         background-color: rgba(15, 19, 31, 0.84);
         height: 100vh;
+        position: fixed;
     }
     .popup {
         position: fixed;
         width: 90vw;
-        height: 85dvh;
+        height: 85vh;
         flex-direction: column;
         justify-content: flex-start;
         align-items: flex-start;
