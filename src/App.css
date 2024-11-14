@@ -1483,13 +1483,13 @@ input[type=number] {
         background-color: rgba(15, 19, 31, 0.84);
     }
     .popup {
-        position: absolute;
+        position: fixed;
         width: unset;
         height: unset;
-        top: 40px;
+        top: 20px;
         left: 20px;
         right: 20px;
-        bottom: 40px;
+        bottom: 20px;
         transform: unset;
         flex-direction: column;
         justify-content: flex-start;
