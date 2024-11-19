@@ -1,9 +1,8 @@
-import { useState, useRef, useEffect, useCallback, useMemo } from "react";
-import { saveUserData } from "../firebaseUtils.js";
+import {useCallback, useEffect, useMemo, useRef, useState} from "react";
+import {saveUserData} from "../firebaseUtils.js";
 import {returnLocalStorageData} from "../assets/systems/SaveLoad.jsx";
-import { v4 as uuidv4 } from "uuid";
+import {v4 as uuidv4} from "uuid";
 import ReactModal from 'react-modal';
-import TextareaAutosize from "react-textarea-autosize";
 
 ReactModal.setAppElement('#root');
 
@@ -60,6 +59,27 @@ export default function Page6() {
         closeModal();
     }, [itemsArray, selectedItem, saveItems, closeModal]);
 
+    const copyItemCode = useCallback(async () => {
+        if (selectedItem) {
+            const itemCode = JSON.stringify(selectedItem);
+            await navigator.clipboard.writeText(itemCode);
+            console.log('Código do item copiado para a área de transferência!');
+        }
+    }, [selectedItem]);
+
+    const pasteItemCode = async () => {
+        try {
+            const itemCode = (await navigator.clipboard.readText()).trim();
+            console.log('Código do item da área de transferência:', itemCode);
+            const item = JSON.parse(itemCode);
+            const newItem = { ...item, id: uuidv4() };
+            saveItems([...itemsArray, newItem]);
+            console.log('Item colado com sucesso!');
+        } catch (e) {
+            console.log('Erro ao colar o código do item!', e);
+        }
+    };
+
     const placeHolderImage = "https://pbs.twimg.com/profile_images/1488183450406461452/tH7EIigT_400x400.png";
 
     const memoizedItems = useMemo(() => itemsArray.map((item) => (
@@ -102,6 +122,8 @@ export default function Page6() {
                             <div className={"boxButtons display-flex-center w-100"}>
                                 <button className={"button delete"} onClick={deleteItem}>Deletar <i
                                     className="bi bi-trash3"></i></button>
+                                <button className={"button copy"} onClick={copyItemCode}>Copiar <i
+                                    className="bi bi-clipboard"></i></button>
                             </div>
                         </div>
                     </>
@@ -109,8 +131,11 @@ export default function Page6() {
             </ReactModal>
             <main className="mainCommon page-6">
                 <article className="boxInventory">
-                <div className="item add" onClick={addItem}>
-                        <i className="bi bi-patch-plus-fill"></i>
+                    <div className="item regular" onClick={addItem}>
+                        <i className="bi add bi-patch-plus-fill"></i>
+                    </div>
+                    <div className="item regular" onClick={pasteItemCode}>
+                        <i className="bi bi-clipboard2-fill"></i>
                     </div>
                     {memoizedItems}
                 </article>

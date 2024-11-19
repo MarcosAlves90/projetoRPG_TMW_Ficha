@@ -352,20 +352,34 @@ input[type=number] {
             height: 100%;
             border-radius: 10px 0 0 10px;
         }
-        .button {
-            border-radius: 50px;
-            outline: none;
-            border: none;
-            &.delete {
-                background-color: var(--red-text);
-                color: white;
-                transition: var(--common-transition);
-                .bi {
-                    margin-left: 0.2rem;
+        .boxButtons {
+            gap: 1rem;
+            .button {
+                border-radius: 50px;
+                outline: none;
+                border: none;
+                &.button {
+                    .bi {
+                        margin-left: 0.2rem;
+                    }
                 }
-                &:hover {
-                    color: var(--red-text);
-                    background-color: white;
+                &.delete {
+                    background-color: var(--red-text);
+                    color: white;
+                    transition: var(--common-transition);
+                    &:hover {
+                        color: var(--red-text);
+                        background-color: white;
+                    }
+                }
+                &.copy {
+                    background-color: var(--color-modification);
+                    color: var(--gray-background);
+                    transition: var(--common-transition);
+                    &:hover {
+                        color: var(--color-modification);
+                        background-color: var(--gray-background);
+                    }
                 }
             }
         }
@@ -723,7 +737,7 @@ input[type=number] {
                     padding: 0.5vw;
                 }
             }
-            &.add {
+            &.regular {
                 padding: 3rem;
                 font-size: 2.8rem;
             }
@@ -731,7 +745,7 @@ input[type=number] {
                 cursor: pointer;
                 background-color: var(--gray-placeholder);
                 color: var(--gray-border-color);
-                .bi {
+                .add {
                     transform: rotate(-90deg);
                 }
                 &.inventory {
@@ -1980,14 +1994,11 @@ input[type=number] {
             .item {
                 height: 6rem;
                 width: 6rem;
-                &.add {
+                &.regular {
                     padding: 0;
                 }
                 &:hover {
                     flex-grow: 0;
-                    .bi {
-                        transform: rotate(-90deg);
-                    }
                     &.inventory {
                         .image {
                             width: 100%;
