@@ -353,7 +353,7 @@ input[type=number] {
             border-radius: 10px 0 0 10px;
         }
         .boxButtons {
-            gap: 1rem;
+            gap: 1.3rem;
             .button {
                 border-radius: 50px;
                 outline: none;
@@ -387,6 +387,13 @@ input[type=number] {
             background-color: var(--gray-border-color);
             border-radius: 20px 20px 0 0;
             padding: 1rem;
+        }
+        .inputsSequence {
+            gap: 1.3rem;
+            .popup-quantity {
+                width: 5rem;
+                text-align: center;
+            }
         }
     }
     .leftBox {
@@ -735,6 +742,10 @@ input[type=number] {
                     font-size: 0;
                     word-break: break-word;
                     padding: 0.5vw;
+                    &.qty {
+                        opacity: 1;
+                        font-size: 5vw;
+                    }
                 }
             }
             &.regular {
@@ -757,6 +768,10 @@ input[type=number] {
                     .title {
                         opacity: 1;
                         font-size: 0.9vw;
+                        &.qty {
+                            font-size: 0;
+                            opacity: 0;
+                        }
                     }
                 }
             }
@@ -1549,7 +1564,7 @@ input[type=number] {
                         background-color: rgba(15, 19, 31, 0.80);
                     }
                 }
-                &.popup-content, &.popup-image, &.popup-type {
+                &.popup-content, &.popup-image, &.popup-type, &.popup-quantity {
                     font-size: 0.8rem;
                 }
             }
@@ -1997,6 +2012,11 @@ input[type=number] {
                 &.regular {
                     padding: 0;
                 }
+                &.inventory {
+                    .title.qty {
+                        font-size: 350%;
+                    }
+                }
                 &:hover {
                     flex-grow: 0;
                     &.inventory {
@@ -2006,7 +2026,7 @@ input[type=number] {
                         }
                         .title {
                             opacity: 0;
-                            font-size: 0vw;
+                            font-size: 0;
                         }
                     }
                 }
