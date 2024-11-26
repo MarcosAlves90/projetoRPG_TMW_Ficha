@@ -1,101 +1,66 @@
 import LZString from "lz-string";
+import { auth } from "../../firebase.js";
+import { useCallback } from "react";
+import { useNavigate } from "react-router-dom";
+import { saveUserData } from "../../firebaseUtils.js";
 
-/**
- * Saves a given value under a specified key in localStorage after compressing it.
- * @param {string} key - The key under which the value is stored.
- * @param {*} value - The value to be stored. This value is converted to a string before compression.
- */
+export const compressValue = LZString.compressToUTF16;
+export const decompressValue = LZString.decompressFromUTF16;
+
+const isNumber = (value) => /^[0-9]+(\.[0-9]+)?$/.test(value);
+
 export const saveItem = (key, value) => {
-    const valueAsString = value.toString();
-    const compressed = LZString.compressToUTF16(valueAsString);
-    localStorage.setItem(key, compressed);
+    localStorage.setItem(key, compressValue(value.toString()));
 };
 
-/**
- * Removes a specified item from localStorage.
- * @param {string} key - The key of the item to be removed.
- */
 export const deleteItem = (key) => {
     localStorage.removeItem(key);
 };
 
-/**
- * Decompresses a value from a compressed string.
- * @param {string} compressed - The compressed string to decompress.
- * @returns {*} The decompressed value, converted to the appropriate type.
- */
-function decompressValue(compressed) {
-    const decompressed = LZString.decompressFromUTF16(compressed);
-    if (decompressed === true) return true;
-    if (decompressed === false) return false;
-    return isNaN(parseFloat(decompressed)) ? decompressed : Number(decompressed);
-}
-
-/**
- * Retrieves a value from localStorage by key, decompresses it, and returns it. Returns a default value if the key does not exist.
- * @param {string} key - The key of the item to retrieve.
- * @param {*} defaultValue - The default value to return if the key is not found.
- * @returns {*} The decompressed value if the key exists, otherwise the default value.
- */
 export const getItem = (key, defaultValue) => {
     const compressed = localStorage.getItem(key);
     if (compressed) {
-        return decompressValue(compressed);
+        const decompressed = decompressValue(compressed);
+        return decompressed === null ? null : isNumber(decompressed) ? Number(decompressed) : decompressed;
     }
     return defaultValue;
 };
 
-/**
- * A utility function for handling change events from input elements, updating state accordingly.
- * @param {Function} setter - The state setter function to call with the new value.
- * @returns {Function} A function that takes an event, processes it, and calls the setter with the appropriate value.
- */
 export const handleChange = (setter) => (event) => {
-    const value = event.target.value;
-    if (event.target.type === 'number') {
-        setter(value === '' ? '' : parseFloat(value));
-    } else {
-        setter(value);
-    }
+    const { value, type } = event.target;
+    setter(type === 'number' ? (value === '' ? '' : parseFloat(value)) : value);
 };
 
-/**
- * Saves the current state of localStorage to a file, allowing it to be downloaded.
- */
-export function saveLocalStorageFile() {
-    const dados = {};
-    for (let i = 0; i < localStorage.length; i++) {
-        const chave = localStorage.key(i);
-        dados[chave] = localStorage.getItem(chave);
-    }
-    const blob = new Blob([JSON.stringify(dados)], {type: 'application/json'});
-    const url = URL.createObjectURL(blob);
+const createBlobURL = (data) => {
+    const blob = new Blob([JSON.stringify(data)], { type: 'application/json' });
+    return URL.createObjectURL(blob);
+};
+
+const downloadFile = (url, filename) => {
     const link = document.createElement('a');
     link.href = url;
-    link.download = `TMW - ${getItem('nome', '') !== '' ? getItem('nome', '') : 'Ficha'}.json`;
+    link.download = filename;
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
-}
+};
 
-/**
- * Loads a file selected by the user and replaces the current localStorage data with the contents of the file.
- * @param {Event} event - The event triggered by file selection.
- */
-export function loadLocalStorageFile(event) {
+export const saveLocalStorageFile = () => {
+    const data = Object.fromEntries([...Array(localStorage.length).keys()].map(i => [localStorage.key(i), localStorage.getItem(localStorage.key(i))]));
+    const url = createBlobURL(data);
+    const filename = `TMW - ${getItem('nome', '') || 'Ficha'}.json`;
+    downloadFile(url, filename);
+};
+
+export const loadLocalStorageFile = (event) => {
     const { files } = event.target;
     if (!files.length) return;
 
     const reader = new FileReader();
     reader.onload = ({ target }) => {
-
-        function checkFile(file) {
-            if (!file) throw Error('Missing data')
-        }
-
         try {
             const data = JSON.parse(target.result);
-            checkFile(data);
+            if (!data) throw new Error('Missing data');
             localStorage.clear();
             Object.entries(data).forEach(([key, value]) => localStorage.setItem(key, value));
             location.reload();
@@ -103,6 +68,34 @@ export function loadLocalStorageFile(event) {
             console.error('Error processing the file:', error);
         }
     };
-    reader.onerror = (error) => console.error('Erro ao ler o arquivo:', error);
+    reader.onerror = (error) => console.error('Error reading the file:', error);
     reader.readAsText(files[0]);
-}
+};
+
+export const clearLocalStorage = () => {
+    localStorage.clear();
+};
+
+export const returnLocalStorageData = () => {
+    return Object.fromEntries([...Array(localStorage.length).keys()].map(i => [localStorage.key(i), localStorage.getItem(localStorage.key(i))]));
+};
+
+export const useSignOut = () => {
+    const navigate = useNavigate();
+    return useCallback(async () => {
+        try {
+            await saveUserData(returnLocalStorageData());
+            await auth.signOut();
+            clearLocalStorage();
+            navigate('/login');
+            console.log('Sign-out successful.');
+        } catch (error) {
+            console.error('Error during sign-out:', error);
+        }
+    }, [navigate]);
+};
+
+export const importDatabaseData = (data) => {
+    localStorage.clear();
+    Object.entries(data).forEach(([key, value]) => localStorage.setItem(key, value));
+};

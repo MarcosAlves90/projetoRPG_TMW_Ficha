@@ -9,12 +9,13 @@
 <img src="readme_details/tmw_ficha_image_1.png" alt="Página inicial da plataforma">
 
 > A platform for creating, importing and exporting RPG tokens in JSON format.
+> 
+> Site: [The Mental World Character Sheet Editor](https://tmwcse.vercel.app)
 
 ### Adjustments and improvements
 
 The project is still under development and the next updates will focus on the following tasks:
 
+- [ ] Add chromes page
 - [ ] Add energy page
-- [ ] Add inventory page
 - [ ] Add pets page
-- [ ] Make compatible with mobile devices

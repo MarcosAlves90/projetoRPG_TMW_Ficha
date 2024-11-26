@@ -1,15 +1,17 @@
-import { useState, useEffect } from "react";
+import {useState, useEffect} from "react";
 import TextareaAutosize from "react-textarea-autosize";
 import Collapsible from "react-collapsible";
-import {saveItem} from "../assets/systems/SaveLoad.jsx";
+import {returnLocalStorageData, saveItem} from "../assets/systems/SaveLoad.jsx";
+import {v4 as uuidv4} from 'uuid';
+import {saveUserData} from "../firebaseUtils.js";
 
 const CreateAnnotations = ({ array, handleContentChange, handleDelete }) => {
-    return array.length > 0 && array.map((annotation, index) => (
+    return array.length > 0 && array.map((annotation) => (
         <Collapsible
             className={"note"}
             openedClassName={"note"}
             trigger={annotation.title}
-            triggerStyle={{fontSize: "1.5em", color: "rgb(43, 43, 43)"}}
+            triggerStyle={{ fontSize: "1.5em", color: "rgb(43, 43, 43)" }}
             transitionTime={100}
             transitionCloseTime={100}
             key={annotation.id}
@@ -17,16 +19,17 @@ const CreateAnnotations = ({ array, handleContentChange, handleDelete }) => {
             <div className="container-textarea-annotation">
                 <TextareaAutosize
                     className="form-control textarea-sheet"
-                    id={`textarea-${annotation.id}`} // Usar ID único aqui também
+                    id={`textarea-${annotation.id}`}
                     value={annotation.content}
-                    onChange={(event) => handleContentChange(event, index)}
+                    onChange={(event) => handleContentChange(event, annotation.id)}
                     minRows="4"
                     placeholder="Escreva suas anotações."
-                 />
+                />
                 <div className={"delete-button"}>
-                    <button className={"button-header active clear"} onClick={() => handleDelete(index)}>
+                    <button className={"button-header active clear"} onClick={() => handleDelete(annotation.id)}>
                         {"Excluir "}
-                        <i className="bi bi-trash3-fill" /></button>
+                        <i className="bi bi-trash3-fill" />
+                    </button>
                 </div>
             </div>
         </Collapsible>
@@ -40,26 +43,25 @@ export default function Page5() {
 
     useEffect(() => {
         const savedAnnotations = JSON.parse(localStorage.getItem('annotationsArray'));
-        if (savedAnnotations) {
-            setAnnotationsArray(savedAnnotations);
-        }
+        if (savedAnnotations) setAnnotationsArray(savedAnnotations);
     }, []);
 
     const saveAnnotations = (newAnnotations) => {
         setAnnotationsArray(newAnnotations);
         saveItem('annotationsArray', newAnnotations);
         localStorage.setItem('annotationsArray', JSON.stringify(newAnnotations));
+        saveUserData(returnLocalStorageData());
     };
 
-    const handleContentChange = (event, index) => {
-        const updatedAnnotations = annotationsArray.map((annotation, i) =>
-            i === index ? { ...annotation, content: event.target.value } : annotation
+    const handleContentChange = (event, id) => {
+        const updatedAnnotations = annotationsArray.map((annotation) =>
+            annotation.id === id ? { ...annotation, content: event.target.value } : annotation
         );
         saveAnnotations(updatedAnnotations);
     };
 
-    const handleDelete = (index) => {
-        const updatedAnnotations = annotationsArray.filter((_, i) => i !== index);
+    const handleDelete = (id) => {
+        const updatedAnnotations = annotationsArray.filter(annotation => annotation.id !== id);
         saveAnnotations(updatedAnnotations);
     };
 
@@ -69,8 +71,7 @@ export default function Page5() {
     );
 
     return (
-
-        <main className="mainCommon">
+        <main className="mainCommon page-5">
             <div className="create-annotation">
                 <div className="create-annotation input">
                     <input
@@ -84,6 +85,7 @@ export default function Page5() {
                     <button
                         className="button-header active create"
                         onClick={() => (createTitle.trim()) ? saveAnnotations([...annotationsArray, {
+                            id: uuidv4(),
                             title: createTitle,
                             content: ''
                         }]) : null}
@@ -109,6 +111,5 @@ export default function Page5() {
                 />
             </section>
         </main>
-
     );
 }

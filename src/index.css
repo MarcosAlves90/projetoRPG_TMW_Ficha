@@ -22,7 +22,71 @@ a:hover {
 }
 
 body {
-  background-color: black;
+
+  --yellow-des: #ffff00;
+  --red-for: #c00000;
+  --blue-int: #0070c0;
+  --purple-pre: #502ba8;
+  --green-vig: #00b050;
+  --color-life: #F39F5A;
+  --color-energy: #AE445A;
+  --color-per: #662549;
+  --color-cromo: #451952;
+  --color-destruction: #505050;
+  --color-levitation: #ffffff;
+  --color-release: #ff3a3a;
+  --color-manipulation: #39dcff;
+  --color-imagination: #cc66ff;
+  --color-modification: #ffcb3c;
+  --color-creation: #33ff5c;
+
+  --common-font-color: #8089ae;
+
+  --login-themed-background: var(--gray-placeholder);
+
+  --gray-placeholder: #646b88;
+  --gray-background: #0f131f;
+  --dark-gray-background: #101524;
+  --gray-border-color : #2a3554;
+  --gray-border: #2a3554 3px solid;
+  --focus-gray-border: var(--gray-placeholder) 3px solid;
+
+  --green-background: #001300;
+  --green-border: #339c33 3px solid;
+  --green-text: #339c33;
+
+  --blue-background: #000c13;
+  --blue-border: #00adcc 3px solid;
+  --blue-text: #00adcc;
+
+  --yellow-border: #ffcc00 3px solid;
+  --yellow-background: #231d03;
+  --yellow-text: #ffcc00;
+
+  --purple-border: #8537ba 3px solid;
+  --purple-background: #1a0b25;
+  --purple-text: #8537ba;
+
+  --identity-inside-background: #e3e0d2;
+  --identity-outside-background: #467d70;
+
+  --red-background: #1c0000;
+  --red-border: #800000 3px solid;
+  --red-text: #ff3333;
+
+  --nav-link-background: rgba(255, 255, 255, 0.15);
+
+  --gray-card-background: #171d2e;
+
+  --common-transition: all 0.3s ease-in-out;
+  --common-font-family: "Cascadia Mono";
+  --common-input-padding: 0.5vw;
+  --common-button-font-size: 0.833vw;
+  --common-textarea-font-size: 0.9vw;
+  --common-header-font-size: 0.833vw;
+  --common-status-input-padding: 1.5vw;
+
+  background-color: #101524;
   margin: 0;
   display: flex;
   place-items: center;

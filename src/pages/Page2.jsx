@@ -1,8 +1,14 @@
 import {useState, useEffect} from "react";
-import {getItem, saveItem, handleChange, deleteItem} from "../assets/systems/SaveLoad.jsx";
+import {
+    getItem,
+    saveItem,
+    handleChange,
+    deleteItem, returnLocalStorageData,
+} from "../assets/systems/SaveLoad.jsx";
 import TextareaAutosize from 'react-textarea-autosize';
 import Collapsible from "react-collapsible";
 import 'bootstrap-icons/font/bootstrap-icons.css';
+import {saveUserData} from "../firebaseUtils.js";
 
 export default function Page2() {
 
@@ -13,15 +19,14 @@ export default function Page2() {
     const [origem, setOrigem] = useState(getItem('origem', ''));
     const [origemForma, setOrigemForma] = useState(getItem('origemForma', ''));
 
-
     useEffect(() => {
         const stateMap = {
-            'ideais': ideais,
-            'tracosNegativos': tracosNegativos,
-            'tracosPositivos': tracosPositivos,
-            'origem': origem,
-            'origemForma': origemForma,
-            'fisico': fisico,
+            ideais,
+            tracosNegativos,
+            tracosPositivos,
+            origem,
+            origemForma,
+            fisico,
         };
 
         Object.keys(stateMap).forEach((key) => {
@@ -32,14 +37,16 @@ export default function Page2() {
             }
         });
 
+        saveUserData(returnLocalStorageData());
+
     }, [ideais, tracosNegativos, tracosPositivos, origem, origemForma, fisico]);
 
     return (
 
-        <main className={"mainCommon"}>
+        <main className={"mainCommon page-2"}>
 
             <section className={"section-origem"}>
-                <Collapsible trigger={"origem "}
+                <Collapsible trigger={"Origem"}
                              triggerStyle={{fontSize: "1.5em", color: "rgb(43, 43, 43)"}}
                              transitionTime={100}
                              transitionCloseTime={100}>
@@ -55,7 +62,7 @@ export default function Page2() {
             </section>
 
             <section className={"section-fisico"}>
-                <Collapsible trigger={"aparência."}
+                <Collapsible trigger={"Aparência"}
                              triggerStyle={{fontSize: "1.5em", color: "rgb(43, 43, 43)"}}
                              transitionTime={100}
                              transitionCloseTime={100}>
@@ -71,7 +78,7 @@ export default function Page2() {
             </section>
 
             <section className={"section-ideais"}>
-                <Collapsible trigger={"ideais."}
+                <Collapsible trigger={"Ideais"}
                              triggerStyle={{fontSize: "1.5em", color: "rgb(43, 43, 43)"}}
                              transitionTime={100}
                              transitionCloseTime={100}>
@@ -89,7 +96,7 @@ export default function Page2() {
             <section className={"section-tracos"}>
                 <div className={"textarea-center-container"}>
                     <div className={"textarea-meio"}>
-                        <Collapsible trigger={"traços negativos."}
+                        <Collapsible trigger={"Traços negativos"}
                                      triggerStyle={{fontSize: "1.5em", color: "rgb(43, 43, 43)"}}
                                      transitionTime={100}
                                      transitionCloseTime={100}>
@@ -105,7 +112,7 @@ export default function Page2() {
                         </Collapsible>
                     </div>
                     <div className={"textarea-meio"}>
-                        <Collapsible trigger={"traços positivos."}
+                        <Collapsible trigger={"Traços positivos"}
                                      triggerStyle={{fontSize: "1.5em", color: "rgb(43, 43, 43)"}}
                                      transitionTime={100}
                                      transitionCloseTime={100}>
@@ -124,7 +131,7 @@ export default function Page2() {
             </section>
 
             <section className={"section-origem-forma"}>
-                <Collapsible trigger={"origem da forma."}
+                <Collapsible trigger={"Origem da forma"}
                              triggerStyle={{fontSize: "1.5em", color: "rgb(43, 43, 43)"}}
                              transitionTime={100}
                              transitionCloseTime={100}>
