@@ -62,7 +62,8 @@ export default function Page6() {
         }
     }, [selectedItem]);
 
-    const pasteItemCode = async () => {
+    const pasteItemCode = useCallback(async (e) => {
+        e.preventDefault();
         try {
             const itemCode = (await navigator.clipboard.readText()).trim();
             const item = JSON.parse(itemCode);
@@ -71,7 +72,25 @@ export default function Page6() {
         } catch (e) {
             console.log('Erro ao colar o código do item!', e);
         }
-    };
+    }, [itemsArray, saveItems]);
+
+    useEffect(() => {
+        const handlePaste = async (event) => {
+            try {
+                const itemCode = (await navigator.clipboard.readText()).trim();
+                const item = JSON.parse(itemCode);
+                saveItems([...itemsArray, { ...item, id: uuidv4() }]);
+                console.log('Item colado com sucesso!');
+            } catch (e) {
+                console.log('Erro ao colar o código do item!', e);
+            }
+        };
+
+        window.addEventListener('paste', handlePaste);
+        return () => {
+            window.removeEventListener('paste', handlePaste);
+        };
+    }, [itemsArray, saveItems]);
 
     const placeHolderImage = "https://pbs.twimg.com/profile_images/1488183450406461452/tH7EIigT_400x400.png";
 

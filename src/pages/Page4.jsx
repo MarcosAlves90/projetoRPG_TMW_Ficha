@@ -226,7 +226,29 @@ export default function Page4() {
     useEffect(() => {
         const savedSkills = JSON.parse(localStorage.getItem('skillsArray'));
         if (savedSkills) {
-            setSkillsArray(savedSkills);
+            const updatedSkills = savedSkills.map((skill) => {
+                if (typeof skill.id === 'number') {
+                    skill.id = uuidv4();
+                }
+                return {
+                    id: skill.id || uuidv4(),
+                    title: skill.title || '',
+                    domain: skill.domain || '',
+                    content: skill.content || '',
+                    circle: skill.circle || 1,
+                    type: skill.type || 1,
+                    art: skill.art || '',
+                    execution: skill.execution || 1,
+                    range: skill.range || 1,
+                    target: skill.target || '',
+                    duration: skill.duration || '',
+                    resistance: skill.resistance || '',
+                    area: skill.area || '',
+                    spent: skill.spent || ''
+                };
+            });
+            setSkillsArray(updatedSkills);
+            localStorage.setItem('skillsArray', JSON.stringify(updatedSkills));
         }
     }, []);
 
@@ -373,7 +395,7 @@ export default function Page4() {
                               ${isReflex ? "reflex" : ""}`}
                               onClick={() => searchByDomain(domain)}>
                                 <i className="bi bi-stars"></i>
-                                {domain}
+                            {domain}
                         </span>
                     );
                 })}

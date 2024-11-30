@@ -63,7 +63,6 @@ export const loadLocalStorageFile = (event) => {
             if (!data) throw new Error('Missing data');
             localStorage.clear();
             Object.entries(data).forEach(([key, value]) => localStorage.setItem(key, value));
-            location.reload();
         } catch (error) {
             console.error('Error processing the file:', error);
         }
