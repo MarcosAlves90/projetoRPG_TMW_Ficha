@@ -195,7 +195,6 @@ function CreateSkills({ array, handleContentChange, handleDelete, handleCopy }) 
                             onChange={(e) => handleContentChange(e, skill.id)}
                         />
                     </div>
-                    <button className={"buttonCopy"} onClick={() => handleCopy(skill)}>Copiar</button>
                 </article>
             </div>
             <div className="container-textarea-annotation">
@@ -204,13 +203,18 @@ function CreateSkills({ array, handleContentChange, handleDelete, handleCopy }) 
                     id={`textarea-${skill.id}`}
                     value={skill.content}
                     onChange={(e) => handleContentChange(e, skill.id)}
-                    minRows="4"
+                    minRows="5"
                     placeholder="Descrição da Skill."
                 />
-                <div className={"delete-button"}>
-                    <button className={"button-header active clear"} onClick={() => handleDelete(skill.id)}>
-                        {"Excluir "}
-                        <i className="bi bi-trash3-fill" /></button>
+                <div className={"box"}>
+                    <div className={"delete-button"}>
+                        <button className={"button-header active clear w-100"} onClick={() => handleDelete(skill.id)}>
+                            {"Excluir "}
+                            <i className="bi bi-trash3-fill"/></button>
+                    </div>
+                    <button className={"buttonCopy"} onClick={() => handleCopy(skill)}>
+                        {"Copiar "}
+                        <i className="bi bi-clipboard2-fill"></i></button>
                 </div>
             </div>
         </Collapsible>

@@ -84,18 +84,6 @@ input[type=number] {
     margin: 0.625vw 0.625vw 0;
     padding: 0.5vw 0.7vw;
     width: 40%;
-    .buttonCopy {
-        width: 100%;
-        border-radius: 100px;
-        background-color: var(--gray-border-color);
-        outline: none;
-        border: none;
-        transition: var(--common-transition);
-        padding: 0.4rem;
-        &:hover {
-            background-color: var(--gray-placeholder);
-        }
-    }
 }
 
 .container-skill-selectors {
@@ -127,6 +115,34 @@ input[type=number] {
     display: flex;
     align-items: center;
     justify-content: center;
+    .box {
+        display: flex;
+        flex-direction: column;
+        margin: 0 12px 0 12px;
+        width: 20%;
+        gap: 0.7em;
+        .buttonCopy {
+            width: 100%;
+            border-radius: 100px;
+            background-color: var(--gray-border-color);
+            outline: none;
+            transition: var(--common-transition);
+            padding: 0.6em 1.2em;
+            font-size: var(--common-button-font-size);
+            border: none;
+            &:hover {
+                border: none !important;
+                background-color: var(--gray-placeholder);
+                border: var(--focus-gray-border);
+            }
+        }
+        .delete-button {
+            width: 100%;
+            button {
+                margin: 0;
+            }
+        }
+    }
 }
 
 .delete-button {
@@ -228,8 +244,7 @@ input[type=number] {
 .mainCommon input:focus,
 .mainCommon .custom-select:hover,
 .mainCommon .textarea-sheet:focus,
-.button-header.active:hover,
-.button-header.active.clear:hover {
+.button-header.active:hover {
     border: var(--focus-gray-border) !important;
     cursor: pointer;
 }
@@ -248,11 +263,17 @@ input[type=number] {
         border: var(--gray-border);
     }
     &.active.clear {
-        background-color: var(--red-background);
-        border: var(--red-border);
-        color: var(--red-text);
+        background-color: var(--color-release);
+        border: none;
+        color: white;
         width: 100%;
         justify-content: center;
+        transition: var(--common-transition);
+        &:hover {
+            border: none !important;
+            background-color: var(--red-background);
+            border-color: var(--red-background) !important;
+        }
     }
     &.active.up {
         margin-bottom: 1rem;
@@ -2021,11 +2042,19 @@ input[type=number] {
                 .delete-button {
                     margin: 2vw 0 1vw 0;
                     width: 100%;
-                    button {
-                        padding: 0;
-                        font-size: var(--common-input-font-size);
-                        height: calc(8.5vw);
-                        width: 100%;
+                }
+                .delete-button button, .buttonCopy {
+                    padding: 0;
+                    font-size: var(--common-input-font-size);
+                    height: calc(8.5vw);
+                    width: 100%;
+                    margin: 0;
+                }
+                .box {
+                    margin: 2vw 0 1vw 0;
+                    width: 100%;
+                    gap: 2vw;
+                    .delete-button {
                         margin: 0;
                     }
                 }
