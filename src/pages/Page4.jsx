@@ -5,7 +5,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { saveUserData } from "../firebaseUtils.js";
 import { returnLocalStorageData } from "../assets/systems/SaveLoad.jsx";
 
-function CreateSkills({ array, handleContentChange, handleDelete }) {
+function CreateSkills({ array, handleContentChange, handleDelete, handleCopy }) {
     return array.length > 0 && array.map((skill) => (
         <Collapsible
             className={"skill"}
@@ -195,7 +195,7 @@ function CreateSkills({ array, handleContentChange, handleDelete }) {
                             onChange={(e) => handleContentChange(e, skill.id)}
                         />
                     </div>
-
+                    <button className={"buttonCopy"} onClick={() => handleCopy(skill)}>Copiar</button>
                 </article>
             </div>
             <div className="container-textarea-annotation">
@@ -226,29 +226,7 @@ export default function Page4() {
     useEffect(() => {
         const savedSkills = JSON.parse(localStorage.getItem('skillsArray'));
         if (savedSkills) {
-            const updatedSkills = savedSkills.map((skill) => {
-                if (typeof skill.id === 'number') {
-                    skill.id = uuidv4();
-                }
-                return {
-                    id: skill.id || uuidv4(),
-                    title: skill.title || '',
-                    domain: skill.domain || '',
-                    content: skill.content || '',
-                    circle: skill.circle || 1,
-                    type: skill.type || 1,
-                    art: skill.art || '',
-                    execution: skill.execution || 1,
-                    range: skill.range || 1,
-                    target: skill.target || '',
-                    duration: skill.duration || '',
-                    resistance: skill.resistance || '',
-                    area: skill.area || '',
-                    spent: skill.spent || ''
-                };
-            });
-            setSkillsArray(updatedSkills);
-            localStorage.setItem('skillsArray', JSON.stringify(updatedSkills));
+            setSkillsArray(savedSkills);
         }
     }, []);
 
@@ -303,6 +281,25 @@ export default function Page4() {
     const handleDelete = (id) => {
         const updatedSkills = skillsArray.filter((skill) => skill.id !== id);
         saveSkills(updatedSkills);
+    };
+
+    const handleCopy = async (skill) => {
+        try {
+            await navigator.clipboard.writeText(JSON.stringify(skill));
+        } catch (err) {
+            console.error("Falha ao copiar a skill: ", err);
+        }
+    };
+
+    const handlePaste = async () => {
+        try {
+            const text = await navigator.clipboard.readText();
+            const skill = JSON.parse(text);
+            const newSkill = { ...skill, id: uuidv4() };
+            saveSkills([...skillsArray, newSkill]);
+        } catch (err) {
+            console.error("Falha ao colar a skill: ", err);
+        }
     };
 
     const clearInput = () => {
@@ -372,6 +369,12 @@ export default function Page4() {
                     >
                         Criar Skill
                     </button>
+                    <button
+                        className="button-header active create"
+                        onClick={handlePaste}
+                    >
+                        Colar Skill
+                    </button>
                 </div>
                 <div className={"search"}>
                     <input
@@ -405,6 +408,7 @@ export default function Page4() {
                 array={filteredSkills}
                 handleContentChange={handleContentChange}
                 handleDelete={handleDelete}
+                handleCopy={handleCopy}
             />
         </main>
     );

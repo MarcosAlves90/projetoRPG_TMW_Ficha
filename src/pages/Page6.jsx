@@ -75,7 +75,7 @@ export default function Page6() {
     }, [itemsArray, saveItems]);
 
     useEffect(() => {
-        const handlePaste = async (event) => {
+        const handlePaste = async () => {
             try {
                 const itemCode = (await navigator.clipboard.readText()).trim();
                 const item = JSON.parse(itemCode);
