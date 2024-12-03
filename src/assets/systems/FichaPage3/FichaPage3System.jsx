@@ -1,7 +1,7 @@
 import PropTypes from "prop-types";
-import {useEffect, useState} from "react";
-import {deleteItem, getItem, saveItem} from "../SaveLoad.jsx";
-import {arcColors, atrColors, bioColors} from "../../styles/CommonStyles.jsx";
+import { useEffect, useState, useMemo, useCallback } from "react";
+import { deleteItem, getItem, saveItem } from "../SaveLoad.jsx";
+import { arcColors, atrColors, bioColors } from "../../styles/CommonStyles.jsx";
 
 const perArrayPropType = PropTypes.arrayOf(
     PropTypes.shape({
@@ -23,61 +23,45 @@ const subArcArrayPropType = PropTypes.arrayOf(
     })
 );
 
-/**
- * Handles key press events on input fields to restrict input to numeric values and control commands.
- *
- * This function is designed to be attached to the `onKeyDownCapture` event of input elements. It allows
- * numeric inputs, backspace, delete, arrow keys, and tab for navigation. Additionally, it permits the use
- * of 'Control + A' and 'Control + C' for select all and copy operations, respectively. Any other key press
- * is prevented from affecting the input field, ensuring that only numeric values can be entered.
- *
- * @param {Object} event - The event object provided by the onKeyDownCapture event.
- */
 function handleKeyPress(event) {
-    if (event.ctrlKey && (event.key === 'a' || event.key === 'c')) {
-        return;
-    }
-
+    if (event.ctrlKey && (event.key === 'a' || event.key === 'c')) return;
     if (!/[0-9]/.test(event.key) && !['Backspace', 'ArrowLeft', 'ArrowRight', 'Delete', 'Tab', 'ArrowUp', 'ArrowDown'].includes(event.key)) {
         event.preventDefault();
     }
 }
 
-export function Biotipos(props) {
-
-    const [value, setValue] = useState(getItem(`biotipo-${props.biotipo}`, ''));
+export function Biotipos({ biotipo, isLocked, handleStatusChange, updatePoints }) {
+    const [value, setValue] = useState(getItem(`biotipo-${biotipo}`, ''));
 
     useEffect(() => {
         const action = value === '' ? deleteItem : saveItem;
-        action(`biotipo-${props.biotipo}`, parseInt(value, 10) || 0);
-        props.updatePoints();
-    }, [value, props.biotipo]);
+        action(`biotipo-${biotipo}`, parseInt(value, 10) || 0);
+        updatePoints();
+    }, [value, biotipo]);
 
     return (
-        <div className={"input-group mb-3"}>
-
-            <div className={"text-div"}>
-                <span className={`input-group-text-left defined ${props.isLocked ? "locked" : ""}`}
+        <div className="input-group mb-3">
+            <div className="text-div">
+                <span className={`input-group-text-left defined ${isLocked ? "locked" : ""}`}
                       style={{
-                          backgroundColor: bioColors[props.biotipo].background,
-                          color: bioColors[props.biotipo].color, border: `${bioColors[props.biotipo].background} 2px solid`
-                      }}>{props.biotipo}</span>
+                          backgroundColor: bioColors[biotipo].background,
+                          color: bioColors[biotipo].color, border: `${bioColors[biotipo].background} 2px solid`
+                      }}>{biotipo}</span>
             </div>
-            <input type={"number"}
+            <input type="number"
                    step={1}
                    min={0}
                    className="form-control input-status"
                    placeholder="0"
                    value={value}
-                   onChange={props.handleStatusChange(setValue)}
+                   onChange={handleStatusChange(setValue)}
                    onKeyDownCapture={handleKeyPress}
-                   style={props.isLocked ? {borderColor: bioColors[props.biotipo].background} : {}}
-                   id={`label-${props.biotipo}`}
-                   disabled={props.isLocked}
+                   style={isLocked ? { borderColor: bioColors[biotipo].background } : {}}
+                   id={`label-${biotipo}`}
+                   disabled={isLocked}
             />
         </div>
-    )
-
+    );
 }
 
 Biotipos.propTypes = {
@@ -88,17 +72,17 @@ Biotipos.propTypes = {
 };
 
 export function PericiasSection({ isLocked, rollDice, handleStatusChange, updatePoints, perArray }) {
-    const groupPericias = (pericias, groupSize) => {
-        return pericias.reduce((acc, curr, index) => {
-            if (index % groupSize === 0) acc.push([]);
-            acc[acc.length - 1].push(curr);
-            return acc;
-        }, []);
-    };
+    const groupPericias = useCallback((pericias, groupSize) => pericias.reduce((acc, curr, index) => {
+        if (index % groupSize === 0) acc.push([]);
+        acc[acc.length - 1].push(curr);
+        return acc;
+    }, []), []);
+
+    const groupedPericias = useMemo(() => groupPericias(perArray, 4), [perArray, groupPericias]);
 
     return (
         <>
-            {groupPericias(perArray, 4).map((group, index) => (
+            {groupedPericias.map((group, index) => (
                 <div className="input-center justify-center" key={index}>
                     {group.map(({ pericia, atr }) => (
                         <Pericia
@@ -123,61 +107,60 @@ PericiasSection.propTypes = {
     handleStatusChange: PropTypes.func.isRequired,
     updatePoints: PropTypes.func.isRequired,
     perArray: perArrayPropType.isRequired,
-}
+};
 
-function Pericia(props) {
-
-    const [value, setValue] = useState(getItem(`pericia-${props.pericia}`, ''));
-    const [bonus, setBonus] = useState(getItem(`pericia-${props.pericia}-bonus`, ''));
+function Pericia({ pericia, atr, isLocked, handleStatusChange, rollDice, updatePoints }) {
+    const [value, setValue] = useState(getItem(`pericia-${pericia}`, ''));
+    const [bonus, setBonus] = useState(getItem(`pericia-${pericia}-bonus`, ''));
 
     useEffect(() => {
         const action = value === '' ? deleteItem : saveItem;
-        action(`pericia-${props.pericia}`, value === '' ? 0 : parseInt(value, 10));
+        action(`pericia-${pericia}`, value === '' ? 0 : parseInt(value, 10));
 
         const bonusAction = bonus === '' ? deleteItem : saveItem;
-        bonusAction(`pericia-${props.pericia}-bonus`, bonus === '' ? 0 : parseInt(bonus, 10));
+        bonusAction(`pericia-${pericia}-bonus`, bonus === '' ? 0 : parseInt(bonus, 10));
 
-        props.updatePoints();
-    }, [value, bonus, props.pericia]);
+        updatePoints();
+    }, [value, bonus, pericia]);
 
     return (
-        <div className={"input-group mb-3"}>
-            <span className={"input-group-text-left"}
+        <div className="input-group mb-3">
+            <span className="input-group-text-left"
                   style={{
-                      backgroundColor: atrColors[props.atr].background,
-                      color: atrColors[props.atr].color
-                  }}>{props.atr}</span>
-            <span className={"input-group-text-center pericia"}
-                  id={`button-${props.pericia}`}
-                  onClick={props.rollDice}
-                  style={props.isLocked ? {borderColor: `${atrColors[props.atr].background}`} : {}}>
-                {props.pericia}</span>
-            <input type={"number"}
+                      backgroundColor: atrColors[atr].background,
+                      color: atrColors[atr].color
+                  }}>{atr}</span>
+            <span className="input-group-text-center pericia"
+                  id={`button-${pericia}`}
+                  onClick={rollDice}
+                  style={isLocked ? { borderColor: `${atrColors[atr].background}` } : {}}>
+                {pericia}</span>
+            <input type="number"
                    step={1}
                    min={0}
                    className="form-control input-status border-right-none"
                    placeholder="0"
                    value={value}
-                   onChange={props.handleStatusChange(setValue)}
+                   onChange={handleStatusChange(setValue)}
                    onKeyDownCapture={handleKeyPress}
-                   id={`label-${props.pericia}`}
-                   disabled={props.isLocked}
-                   style={props.isLocked ? {borderColor: `${atrColors[props.atr].background}`} : {}}
+                   id={`label-${pericia}`}
+                   disabled={isLocked}
+                   style={isLocked ? { borderColor: `${atrColors[atr].background}` } : {}}
             />
-            <input type={"number"}
+            <input type="number"
                    step={1}
                    min={0}
                    className="form-control input-status input-bonus"
                    placeholder="0"
                    value={bonus}
-                   onChange={props.handleStatusChange(setBonus)}
+                   onChange={handleStatusChange(setBonus)}
                    onKeyDownCapture={handleKeyPress}
-                   id={`label-${props.pericia}-bonus`}
-                   disabled={props.isLocked}
-                   style={props.isLocked ? {borderColor: `${atrColors[props.atr].background}`} : {}}
+                   id={`label-${pericia}-bonus`}
+                   disabled={isLocked}
+                   style={isLocked ? { borderColor: `${atrColors[atr].background}` } : {}}
             />
         </div>
-    )
+    );
 }
 
 Pericia.propTypes = {
@@ -189,60 +172,57 @@ Pericia.propTypes = {
     updatePoints: PropTypes.func.isRequired,
 };
 
-export function Attributes(props) {
-
-    const [value, setValue] = useState(getItem(`atributo-${props.atr}`, ''));
-    const [bonus, setBonus] = useState(getItem(`atributo-${props.atr}-bonus`, ''));
+export function Attributes({ atributo, atr, isLocked, handleStatusChange, updatePoints, rollDice }) {
+    const [value, setValue] = useState(getItem(`atributo-${atr}`, ''));
+    const [bonus, setBonus] = useState(getItem(`atributo-${atr}-bonus`, ''));
 
     useEffect(() => {
         const action = value === '' ? deleteItem : saveItem;
-        action(`atributo-${props.atr}`, parseInt(value, 10) || 0);
+        action(`atributo-${atr}`, parseInt(value, 10) || 0);
 
         const bonusAction = bonus === '' ? deleteItem : saveItem;
-        bonusAction(`atributo-${props.atr}-bonus`, parseInt(bonus, 10) || 0);
+        bonusAction(`atributo-${atr}-bonus`, parseInt(bonus, 10) || 0);
 
-        props.updatePoints();
-    }, [value, bonus, props.atr]);
+        updatePoints();
+    }, [value, bonus, atr]);
 
     return (
-        <div className={"input-group mb-3"}>
-
-            <div className={"text-div"}>
-                <span className={`input-group-text-left defined attribute ${props.isLocked ? "locked" : ""}`}
-                      id={`button-${props.atributo}`}
-                      onClick={props.rollDice}
+        <div className="input-group mb-3">
+            <div className="text-div">
+                <span className={`input-group-text-left defined attribute ${isLocked ? "locked" : ""}`}
+                      id={`button-${atributo}`}
+                      onClick={rollDice}
                       style={{
-                          backgroundColor: atrColors[props.atr].background,
-                          color: atrColors[props.atr].color, border: `${atrColors[props.atr].background} 2px solid`
-                      }}>{props.atributo}</span>
+                          backgroundColor: atrColors[atr].background,
+                          color: atrColors[atr].color, border: `${atrColors[atr].background} 2px solid`
+                      }}>{atributo}</span>
             </div>
-            <input type={"number"}
+            <input type="number"
                    step={1}
                    min={0}
                    className="form-control input-status border-right-none"
                    placeholder="0"
                    value={value}
-                   onChange={props.handleStatusChange(setValue)}
+                   onChange={handleStatusChange(setValue)}
                    onKeyDownCapture={handleKeyPress}
-                   style={props.isLocked ? {borderColor: atrColors[props.atr].background} : {}}
-                   id={`label-${props.atributo}`}
-                   disabled={props.isLocked}
+                   style={isLocked ? { borderColor: atrColors[atr].background } : {}}
+                   id={`label-${atributo}`}
+                   disabled={isLocked}
             />
-            <input type={"number"}
+            <input type="number"
                    step={1}
                    min={0}
                    className="form-control input-status input-bonus"
                    placeholder="0"
                    value={bonus}
-                   onChange={props.handleStatusChange(setBonus)}
+                   onChange={handleStatusChange(setBonus)}
                    onKeyDownCapture={handleKeyPress}
-                   style={props.isLocked ? {borderColor: atrColors[props.atr].background} : {}}
-                   id={`label-${props.atributo}-bonus`}
-                   disabled={props.isLocked}
+                   style={isLocked ? { borderColor: atrColors[atr].background } : {}}
+                   id={`label-${atributo}-bonus`}
+                   disabled={isLocked}
             />
         </div>
-    )
-
+    );
 }
 
 Attributes.propTypes = {
@@ -255,18 +235,20 @@ Attributes.propTypes = {
 };
 
 export function ArtsSection({ isLocked, handleStatusChange, updatePoints, arcArray }) {
-    function groupArts(arts, groupSize) {
+    const groupArts = useCallback((arts, groupSize) => {
         const grouped = [];
         for (let i = 0; i < arts.length; i += groupSize) {
             grouped.push(arts.slice(i, i + groupSize));
         }
         return grouped;
-    }
+    }, []);
+
+    const groupedArts = useMemo(() => groupArts(arcArray, 4), [arcArray, groupArts]);
 
     return (
         <>
-            {groupArts(arcArray, 4).map((group, index) => (
-                <div className={"input-center justify-center"} key={index}>
+            {groupedArts.map((group, index) => (
+                <div className="input-center justify-center" key={index}>
                     {group.map(({ art }) => (
                         <ArcaneArts
                             isLocked={isLocked}
@@ -289,39 +271,38 @@ ArtsSection.propTypes = {
     arcArray: arcArrayPropType.isRequired,
 };
 
-export function ArcaneArts(props) {
-    const [value, setValue] = useState(getItem(`art-${props.art}`, ''));
+export function ArcaneArts({ art, isLocked, handleStatusChange, updatePoints }) {
+    const [value, setValue] = useState(getItem(`art-${art}`, ''));
 
     useEffect(() => {
         const action = value === '' ? deleteItem : saveItem;
-        action(`art-${props.art}`, parseInt(value, 10) || 0);
-        props.updatePoints();
-    }, [value, props.art]);
+        action(`art-${art}`, parseInt(value, 10) || 0);
+        updatePoints();
+    }, [value, art]);
 
     return (
-        <div className={"input-group mb-3"}>
-
-            <div className={"text-div"}>
-                <span className={`input-group-text-left defined ${props.isLocked ? "locked" : ""}`}
+        <div className="input-group mb-3">
+            <div className="text-div">
+                <span className={`input-group-text-left defined ${isLocked ? "locked" : ""}`}
                       style={{
-                          backgroundColor: arcColors[props.art].background,
-                          color: arcColors[props.art].color, border: `${arcColors[props.art].background} 2px solid`
-                      }}>{props.art}</span>
+                          backgroundColor: arcColors[art].background,
+                          color: arcColors[art].color, border: `${arcColors[art].background} 2px solid`
+                      }}>{art}</span>
             </div>
-            <input type={"number"}
+            <input type="number"
                    step={1}
                    min={0}
                    className="form-control input-status"
                    placeholder="0"
                    value={value}
-                   onChange={props.handleStatusChange(setValue)}
+                   onChange={handleStatusChange(setValue)}
                    onKeyDownCapture={handleKeyPress}
-                   style={props.isLocked ? {borderColor: arcColors[props.art].background} : {}}
-                   id={`label-${props.art}`}
-                   disabled={props.isLocked}
+                   style={isLocked ? { borderColor: arcColors[art].background } : {}}
+                   id={`label-${art}`}
+                   disabled={isLocked}
             />
         </div>
-    )
+    );
 }
 
 ArcaneArts.propTypes = {
@@ -332,18 +313,20 @@ ArcaneArts.propTypes = {
 };
 
 export function SubArtsSection({ isLocked, handleStatusChange, updatePoints, subArcArray }) {
-    function groupSubArts(arts, groupSize) {
+    const groupSubArts = useCallback((arts, groupSize) => {
         const grouped = [];
         for (let i = 0; i < arts.length; i += groupSize) {
             grouped.push(arts.slice(i, i + groupSize));
         }
         return grouped;
-    }
+    }, []);
+
+    const groupedSubArts = useMemo(() => groupSubArts(subArcArray, 4), [subArcArray, groupSubArts]);
 
     return (
         <>
-            {groupSubArts(subArcArray, 4).map((group, index) => (
-                <div className={"input-center justify-center"} key={index}>
+            {groupedSubArts.map((group, index) => (
+                <div className="input-center justify-center" key={index}>
                     {group.map(({ subArt, art }) => (
                         <SubArcaneArts
                             isLocked={isLocked}
@@ -367,37 +350,36 @@ SubArtsSection.propTypes = {
     subArcArray: subArcArrayPropType.isRequired,
 };
 
-export function SubArcaneArts(props) {
-    const [value, setValue] = useState(getItem(`subArt-${props.subArt}`, ''));
+export function SubArcaneArts({ subArt, art, isLocked, handleStatusChange, updatePoints }) {
+    const [value, setValue] = useState(getItem(`subArt-${subArt}`, ''));
 
     useEffect(() => {
         const action = value === '' ? deleteItem : saveItem;
-        action(`subArt-${props.subArt}`, value === '' ? 0 : parseInt(value, 10));
-        props.updatePoints();
-    }, [value, props.subArt]);
+        action(`subArt-${subArt}`, value === '' ? 0 : parseInt(value, 10));
+        updatePoints();
+    }, [value, subArt]);
 
     return (
-        <div className={"input-group mb-3"}>
-            <span className={"input-group-text-left"}
-                  style={{backgroundColor: arcColors[props.art].background,
-                      color: arcColors[props.art].color}}>{props.art}</span>
-            <span className={"input-group-text-center"}
-                  style={props.isLocked ? {borderColor: `${arcColors[props.art].background}`} : {}}>
-                {props.subArt}</span>
-            <input type={"number"}
+        <div className="input-group mb-3">
+            <span className="input-group-text-left"
+                  style={{ backgroundColor: arcColors[art].background, color: arcColors[art].color }}>{art}</span>
+            <span className="input-group-text-center"
+                  style={isLocked ? { borderColor: `${arcColors[art].background}` } : {}}>
+                {subArt}</span>
+            <input type="number"
                    step={1}
                    min={0}
                    className="form-control input-status"
                    placeholder="0"
                    value={value}
-                   onChange={props.handleStatusChange(setValue)}
+                   onChange={handleStatusChange(setValue)}
                    onKeyDownCapture={handleKeyPress}
-                   id={`label-${props.subArt}`}
-                   disabled={props.isLocked}
-                   style={props.isLocked ? {borderColor: `${arcColors[props.art].background}`} : {}}
+                   id={`label-${subArt}`}
+                   disabled={isLocked}
+                   style={isLocked ? { borderColor: `${arcColors[art].background}` } : {}}
             />
         </div>
-    )
+    );
 }
 
 SubArcaneArts.propTypes = {

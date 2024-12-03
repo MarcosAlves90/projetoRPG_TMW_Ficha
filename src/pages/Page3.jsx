@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState, useMemo } from "react";
-import { deleteItem, getItem, returnLocalStorageData, saveItem } from "../assets/systems/SaveLoad.jsx";
+import { getItem, returnLocalStorageData, saveItem } from "../assets/systems/SaveLoad.jsx";
 import { lockedInputStyle } from "../assets/styles/CommonStyles.jsx";
 import {
     ArtsSection,
