@@ -287,6 +287,27 @@ export default function Page4() {
         saveSkills(updatedSkills);
     };
 
+    useEffect(() => {
+        const handlePasteEvent = async (event) => {
+            if (event.clipboardData) {
+                const text = event.clipboardData.getData('text');
+                try {
+                    const skill = JSON.parse(text);
+                    if (skill && skill.title && skill.id) {
+                        const newSkill = { ...skill, id: uuidv4() };
+                        saveSkills([...skillsArray, newSkill]);
+                        event.preventDefault();
+                    }
+                } catch (err) { /* empty */ }
+            }
+        };
+
+        document.addEventListener('paste', handlePasteEvent);
+        return () => {
+            document.removeEventListener('paste', handlePasteEvent);
+        };
+    }, [skillsArray]);
+
     const handleCopy = async (skill) => {
         try {
             await navigator.clipboard.writeText(JSON.stringify(skill));
