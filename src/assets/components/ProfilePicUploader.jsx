@@ -1,12 +1,14 @@
 import { useEffect, useState } from "react";
-import { deleteItem, getItem, saveItem } from "../systems/SaveLoad.jsx";
+import {deleteItem, getItem, returnLocalStorageData, saveItem} from "../systems/SaveLoad.jsx";
 import imageCompression from 'browser-image-compression';
+import {saveUserData} from "../../firebaseUtils.js";
 
 export default function ProfilePicUploader() {
     const [profilePic, setProfilePic] = useState(getItem('profilePic', ''));
 
     useEffect(() => {
         profilePic ? saveItem('profilePic', profilePic) : deleteItem('profilePic');
+        saveUserData(returnLocalStorageData());
     }, [profilePic]);
 
     useEffect(() => {

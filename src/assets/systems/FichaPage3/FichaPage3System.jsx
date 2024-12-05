@@ -37,28 +37,29 @@ export function Biotipos({ biotipo, isLocked, handleStatusChange, updatePoints }
         const action = value === '' ? deleteItem : saveItem;
         action(`biotipo-${biotipo}`, parseInt(value, 10) || 0);
         updatePoints();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [value, biotipo]);
 
     return (
         <div className="input-group mb-3">
             <div className="text-div">
                 <span className={`input-group-text-left defined ${isLocked ? "locked" : ""}`}
-                      style={{
-                          backgroundColor: bioColors[biotipo].background,
-                          color: bioColors[biotipo].color, border: `${bioColors[biotipo].background} 2px solid`
-                      }}>{biotipo}</span>
+                    style={{
+                        backgroundColor: bioColors[biotipo].background,
+                        color: bioColors[biotipo].color, border: `${bioColors[biotipo].background} 2px solid`
+                    }}>{biotipo}</span>
             </div>
             <input type="number"
-                   step={1}
-                   min={0}
-                   className="form-control input-status"
-                   placeholder="0"
-                   value={value}
-                   onChange={handleStatusChange(setValue)}
-                   onKeyDownCapture={handleKeyPress}
-                   style={isLocked ? { borderColor: bioColors[biotipo].background } : {}}
-                   id={`label-${biotipo}`}
-                   disabled={isLocked}
+                step={1}
+                min={0}
+                className="form-control input-status"
+                placeholder="0"
+                value={value}
+                onChange={handleStatusChange(setValue)}
+                onKeyDownCapture={handleKeyPress}
+                style={isLocked ? { borderColor: bioColors[biotipo].background } : {}}
+                id={`label-${biotipo}`}
+                disabled={isLocked}
             />
         </div>
     );
@@ -121,43 +122,44 @@ function Pericia({ pericia, atr, isLocked, handleStatusChange, rollDice, updateP
         bonusAction(`pericia-${pericia}-bonus`, bonus === '' ? 0 : parseInt(bonus, 10));
 
         updatePoints();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [value, bonus, pericia]);
 
     return (
         <div className="input-group mb-3">
             <span className="input-group-text-left"
-                  style={{
-                      backgroundColor: atrColors[atr].background,
-                      color: atrColors[atr].color
-                  }}>{atr}</span>
+                style={{
+                    backgroundColor: atrColors[atr].background,
+                    color: atrColors[atr].color
+                }}>{atr}</span>
             <span className="input-group-text-center pericia"
-                  id={`button-${pericia}`}
-                  onClick={rollDice}
-                  style={isLocked ? { borderColor: `${atrColors[atr].background}` } : {}}>
+                id={`button-${pericia}`}
+                onClick={rollDice}
+                style={isLocked ? { borderColor: `${atrColors[atr].background}` } : {}}>
                 {pericia}</span>
             <input type="number"
-                   step={1}
-                   min={0}
-                   className="form-control input-status border-right-none"
-                   placeholder="0"
-                   value={value}
-                   onChange={handleStatusChange(setValue)}
-                   onKeyDownCapture={handleKeyPress}
-                   id={`label-${pericia}`}
-                   disabled={isLocked}
-                   style={isLocked ? { borderColor: `${atrColors[atr].background}` } : {}}
+                step={1}
+                min={0}
+                className="form-control input-status border-right-none"
+                placeholder="0"
+                value={value}
+                onChange={handleStatusChange(setValue)}
+                onKeyDownCapture={handleKeyPress}
+                id={`label-${pericia}`}
+                disabled={isLocked}
+                style={isLocked ? { borderColor: `${atrColors[atr].background}` } : {}}
             />
             <input type="number"
-                   step={1}
-                   min={0}
-                   className="form-control input-status input-bonus"
-                   placeholder="0"
-                   value={bonus}
-                   onChange={handleStatusChange(setBonus)}
-                   onKeyDownCapture={handleKeyPress}
-                   id={`label-${pericia}-bonus`}
-                   disabled={isLocked}
-                   style={isLocked ? { borderColor: `${atrColors[atr].background}` } : {}}
+                step={1}
+                min={0}
+                className="form-control input-status input-bonus"
+                placeholder="0"
+                value={bonus}
+                onChange={handleStatusChange(setBonus)}
+                onKeyDownCapture={handleKeyPress}
+                id={`label-${pericia}-bonus`}
+                disabled={isLocked}
+                style={isLocked ? { borderColor: `${atrColors[atr].background}` } : {}}
             />
         </div>
     );
@@ -184,42 +186,43 @@ export function Attributes({ atributo, atr, isLocked, handleStatusChange, update
         bonusAction(`atributo-${atr}-bonus`, parseInt(bonus, 10) || 0);
 
         updatePoints();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [value, bonus, atr]);
 
     return (
         <div className="input-group mb-3">
             <div className="text-div">
                 <span className={`input-group-text-left defined attribute ${isLocked ? "locked" : ""}`}
-                      id={`button-${atributo}`}
-                      onClick={rollDice}
-                      style={{
-                          backgroundColor: atrColors[atr].background,
-                          color: atrColors[atr].color, border: `${atrColors[atr].background} 2px solid`
-                      }}>{atributo}</span>
+                    id={`button-${atributo}`}
+                    onClick={rollDice}
+                    style={{
+                        backgroundColor: atrColors[atr].background,
+                        color: atrColors[atr].color, border: `${atrColors[atr].background} 2px solid`
+                    }}>{atributo}</span>
             </div>
             <input type="number"
-                   step={1}
-                   min={0}
-                   className="form-control input-status border-right-none"
-                   placeholder="0"
-                   value={value}
-                   onChange={handleStatusChange(setValue)}
-                   onKeyDownCapture={handleKeyPress}
-                   style={isLocked ? { borderColor: atrColors[atr].background } : {}}
-                   id={`label-${atributo}`}
-                   disabled={isLocked}
+                step={1}
+                min={0}
+                className="form-control input-status border-right-none"
+                placeholder="0"
+                value={value}
+                onChange={handleStatusChange(setValue)}
+                onKeyDownCapture={handleKeyPress}
+                style={isLocked ? { borderColor: atrColors[atr].background } : {}}
+                id={`label-${atributo}`}
+                disabled={isLocked}
             />
             <input type="number"
-                   step={1}
-                   min={0}
-                   className="form-control input-status input-bonus"
-                   placeholder="0"
-                   value={bonus}
-                   onChange={handleStatusChange(setBonus)}
-                   onKeyDownCapture={handleKeyPress}
-                   style={isLocked ? { borderColor: atrColors[atr].background } : {}}
-                   id={`label-${atributo}-bonus`}
-                   disabled={isLocked}
+                step={1}
+                min={0}
+                className="form-control input-status input-bonus"
+                placeholder="0"
+                value={bonus}
+                onChange={handleStatusChange(setBonus)}
+                onKeyDownCapture={handleKeyPress}
+                style={isLocked ? { borderColor: atrColors[atr].background } : {}}
+                id={`label-${atributo}-bonus`}
+                disabled={isLocked}
             />
         </div>
     );
@@ -278,28 +281,29 @@ export function ArcaneArts({ art, isLocked, handleStatusChange, updatePoints }) 
         const action = value === '' ? deleteItem : saveItem;
         action(`art-${art}`, parseInt(value, 10) || 0);
         updatePoints();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [value, art]);
 
     return (
         <div className="input-group mb-3">
             <div className="text-div">
                 <span className={`input-group-text-left defined ${isLocked ? "locked" : ""}`}
-                      style={{
-                          backgroundColor: arcColors[art].background,
-                          color: arcColors[art].color, border: `${arcColors[art].background} 2px solid`
-                      }}>{art}</span>
+                    style={{
+                        backgroundColor: arcColors[art].background,
+                        color: arcColors[art].color, border: `${arcColors[art].background} 2px solid`
+                    }}>{art}</span>
             </div>
             <input type="number"
-                   step={1}
-                   min={0}
-                   className="form-control input-status"
-                   placeholder="0"
-                   value={value}
-                   onChange={handleStatusChange(setValue)}
-                   onKeyDownCapture={handleKeyPress}
-                   style={isLocked ? { borderColor: arcColors[art].background } : {}}
-                   id={`label-${art}`}
-                   disabled={isLocked}
+                step={1}
+                min={0}
+                className="form-control input-status"
+                placeholder="0"
+                value={value}
+                onChange={handleStatusChange(setValue)}
+                onKeyDownCapture={handleKeyPress}
+                style={isLocked ? { borderColor: arcColors[art].background } : {}}
+                id={`label-${art}`}
+                disabled={isLocked}
             />
         </div>
     );
@@ -357,26 +361,27 @@ export function SubArcaneArts({ subArt, art, isLocked, handleStatusChange, updat
         const action = value === '' ? deleteItem : saveItem;
         action(`subArt-${subArt}`, value === '' ? 0 : parseInt(value, 10));
         updatePoints();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [value, subArt]);
 
     return (
         <div className="input-group mb-3">
             <span className="input-group-text-left"
-                  style={{ backgroundColor: arcColors[art].background, color: arcColors[art].color }}>{art}</span>
+                style={{ backgroundColor: arcColors[art].background, color: arcColors[art].color }}>{art}</span>
             <span className="input-group-text-center"
-                  style={isLocked ? { borderColor: `${arcColors[art].background}` } : {}}>
+                style={isLocked ? { borderColor: `${arcColors[art].background}` } : {}}>
                 {subArt}</span>
             <input type="number"
-                   step={1}
-                   min={0}
-                   className="form-control input-status"
-                   placeholder="0"
-                   value={value}
-                   onChange={handleStatusChange(setValue)}
-                   onKeyDownCapture={handleKeyPress}
-                   id={`label-${subArt}`}
-                   disabled={isLocked}
-                   style={isLocked ? { borderColor: `${arcColors[art].background}` } : {}}
+                step={1}
+                min={0}
+                className="form-control input-status"
+                placeholder="0"
+                value={value}
+                onChange={handleStatusChange(setValue)}
+                onKeyDownCapture={handleKeyPress}
+                id={`label-${subArt}`}
+                disabled={isLocked}
+                style={isLocked ? { borderColor: `${arcColors[art].background}` } : {}}
             />
         </div>
     );
