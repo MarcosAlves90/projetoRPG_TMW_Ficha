@@ -73,32 +73,22 @@ Biotipos.propTypes = {
 };
 
 export function PericiasSection({ isLocked, rollDice, handleStatusChange, updatePoints, perArray }) {
-    const groupPericias = useCallback((pericias, groupSize) => pericias.reduce((acc, curr, index) => {
-        if (index % groupSize === 0) acc.push([]);
-        acc[acc.length - 1].push(curr);
-        return acc;
-    }, []), []);
-
-    const groupedPericias = useMemo(() => groupPericias(perArray, 4), [perArray, groupPericias]);
-
     return (
-        <>
-            {groupedPericias.map((group, index) => (
+        <div className={"input-center justify-center min"}>
+            {perArray.map(({pericia, atr}, index) => (
                 <div className="input-center justify-center" key={index}>
-                    {group.map(({ pericia, atr }) => (
-                        <Pericia
-                            isLocked={isLocked}
-                            pericia={pericia}
-                            atr={atr}
-                            key={pericia}
-                            rollDice={rollDice}
-                            handleStatusChange={handleStatusChange}
-                            updatePoints={updatePoints}
-                        />
-                    ))}
+                    <Pericia
+                        isLocked={isLocked}
+                        pericia={pericia}
+                        atr={atr}
+                        key={pericia}
+                        rollDice={rollDice}
+                        handleStatusChange={handleStatusChange}
+                        updatePoints={updatePoints}
+                    />
                 </div>
             ))}
-        </>
+        </div>
     );
 }
 
@@ -110,7 +100,7 @@ PericiasSection.propTypes = {
     perArray: perArrayPropType.isRequired,
 };
 
-function Pericia({ pericia, atr, isLocked, handleStatusChange, rollDice, updatePoints }) {
+function Pericia({pericia, atr, isLocked, handleStatusChange, rollDice, updatePoints}) {
     const [value, setValue] = useState(getItem(`pericia-${pericia}`, ''));
     const [bonus, setBonus] = useState(getItem(`pericia-${pericia}-bonus`, ''));
 
@@ -238,32 +228,20 @@ Attributes.propTypes = {
 };
 
 export function ArtsSection({ isLocked, handleStatusChange, updatePoints, arcArray }) {
-    const groupArts = useCallback((arts, groupSize) => {
-        const grouped = [];
-        for (let i = 0; i < arts.length; i += groupSize) {
-            grouped.push(arts.slice(i, i + groupSize));
-        }
-        return grouped;
-    }, []);
-
-    const groupedArts = useMemo(() => groupArts(arcArray, 4), [arcArray, groupArts]);
-
     return (
-        <>
-            {groupedArts.map((group, index) => (
-                <div className="input-center justify-center" key={index}>
-                    {group.map(({ art }) => (
-                        <ArcaneArts
-                            isLocked={isLocked}
-                            art={art}
-                            key={art}
-                            handleStatusChange={handleStatusChange}
-                            updatePoints={updatePoints}
-                        />
-                    ))}
-                </div>
-            ))}
-        </>
+        <div className={"input-center justify-center min"}>
+            <div className="input-center justify-center">
+                {arcArray.map(({art}) => (
+                    <ArcaneArts
+                        isLocked={isLocked}
+                        art={art}
+                        key={art}
+                        handleStatusChange={handleStatusChange}
+                        updatePoints={updatePoints}
+                    />
+                ))}
+            </div>
+        </div>
     );
 }
 
@@ -274,14 +252,14 @@ ArtsSection.propTypes = {
     arcArray: arcArrayPropType.isRequired,
 };
 
-export function ArcaneArts({ art, isLocked, handleStatusChange, updatePoints }) {
+export function ArcaneArts({art, isLocked, handleStatusChange, updatePoints}) {
     const [value, setValue] = useState(getItem(`art-${art}`, ''));
 
     useEffect(() => {
         const action = value === '' ? deleteItem : saveItem;
         action(`art-${art}`, parseInt(value, 10) || 0);
         updatePoints();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [value, art]);
 
     return (
@@ -317,33 +295,20 @@ ArcaneArts.propTypes = {
 };
 
 export function SubArtsSection({ isLocked, handleStatusChange, updatePoints, subArcArray }) {
-    const groupSubArts = useCallback((arts, groupSize) => {
-        const grouped = [];
-        for (let i = 0; i < arts.length; i += groupSize) {
-            grouped.push(arts.slice(i, i + groupSize));
-        }
-        return grouped;
-    }, []);
-
-    const groupedSubArts = useMemo(() => groupSubArts(subArcArray, 4), [subArcArray, groupSubArts]);
-
     return (
-        <>
-            {groupedSubArts.map((group, index) => (
-                <div className="input-center justify-center" key={index}>
-                    {group.map(({ subArt, art }) => (
-                        <SubArcaneArts
-                            isLocked={isLocked}
-                            subArt={subArt}
-                            key={subArt}
-                            art={art}
-                            handleStatusChange={handleStatusChange}
-                            updatePoints={updatePoints}
-                        />
-                    ))}
+        <div className={"input-center justify-center min"}>
+            {subArcArray.map(({ subArt, art }) => (
+                <div className="input-center justify-center" key={subArt}>
+                    <SubArcaneArts
+                        isLocked={isLocked}
+                        subArt={subArt}
+                        art={art}
+                        handleStatusChange={handleStatusChange}
+                        updatePoints={updatePoints}
+                    />
                 </div>
             ))}
-        </>
+        </div>
     );
 }
 
