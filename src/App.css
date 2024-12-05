@@ -1086,9 +1086,6 @@ input[type=number] {
             .input-center {
                 flex-wrap: wrap;
             }
-            .input-center > *, .input-center {
-                flex-grow: 1;
-            }
 
             .input-group-text-center {
                 min-width: 50%;
