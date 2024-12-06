@@ -164,6 +164,14 @@ Pericia.propTypes = {
     updatePoints: PropTypes.func.isRequired,
 };
 
+const getTruAttrName = {
+    'DES': 'Destreza',
+    'FOR': 'Força',
+    'INT': 'Inteligência',
+    'PRE': 'Presença',
+    'VIG': 'Vigor',
+}
+
 export function Attributes({ atributo, atr, isLocked, handleStatusChange, updatePoints, rollDice }) {
     const [value, setValue] = useState(getItem(`atributo-${atr}`, ''));
     const [bonus, setBonus] = useState(getItem(`atributo-${atr}-bonus`, ''));
@@ -188,7 +196,7 @@ export function Attributes({ atributo, atr, isLocked, handleStatusChange, update
                     style={{
                         backgroundColor: atrColors[atr].background,
                         color: atrColors[atr].color, border: `${atrColors[atr].background} 2px solid`
-                    }}>{atributo}</span>
+                    }}>{getTruAttrName[atributo]}</span>
             </div>
             <input type="number"
                 step={1}
@@ -252,6 +260,16 @@ ArtsSection.propTypes = {
     arcArray: arcArrayPropType.isRequired,
 };
 
+const getTruArcName = {
+    'DES': 'Destruição',
+    'LEV': 'Levitação',
+    'LIB': 'Liberação',
+    'MAN': 'Manipulação',
+    'IMA': 'Imaginação',
+    'MOD': 'Modificação',
+    'CRI': 'Criação',
+}
+
 export function ArcaneArts({art, isLocked, handleStatusChange, updatePoints}) {
     const [value, setValue] = useState(getItem(`art-${art}`, ''));
 
@@ -269,7 +287,7 @@ export function ArcaneArts({art, isLocked, handleStatusChange, updatePoints}) {
                     style={{
                         backgroundColor: arcColors[art].background,
                         color: arcColors[art].color, border: `${arcColors[art].background} 2px solid`
-                    }}>{art}</span>
+                    }}>{getTruArcName[art]}</span>
             </div>
             <input type="number"
                 step={1}
