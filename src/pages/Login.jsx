@@ -1,9 +1,9 @@
-import { useState, useEffect } from 'react';
+import { useEffect, useCallback, useContext, useState } from "react";
+import { UserContext } from "../UserContext.jsx";
 import { auth } from '../firebase.js';
 import { signInWithEmailAndPassword } from 'firebase/auth';
 import { getUserData, saveUserData } from '../firebaseUtils.js';
 import { useNavigate } from 'react-router-dom';
-import {importDatabaseData} from "../assets/systems/SaveLoad.jsx";
 import validator from 'validator';
 
 const validateEmail = (email) => {
@@ -14,17 +14,12 @@ const validatePassword = (password) => {
     return password.length >= 6;
 };
 
-const sanitizeInput = (input) => {
-    const element = document.createElement('div');
-    element.innerText = input;
-    return element.innerHTML;
-};
-
 export default function Login() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [errorMessage, setErrorMessage] = useState('');
     const navigate = useNavigate();
+    const { setUserData } = useContext(UserContext);
 
     useEffect(() => {
         const unsubscribe = auth.onAuthStateChanged((user) => {
@@ -35,34 +30,33 @@ export default function Login() {
             }
         });
 
-        return () => unsubscribe();
+        return () => {
+            unsubscribe();
+        };
     }, [navigate]);
 
-    const handleLogin = async (e) => {
+    const handleLogin = useCallback(async (e) => {
         e.preventDefault();
         console.log("Tentando logar...");
 
         if (!validateEmail(email)) {
             setErrorMessage('Email inválido.');
-            setTimeout(() => console.error('Email inválido.'), 0);
+            setTimeout(() => console.warn('Email inválido.'), 0);
             return;
         }
         if (!validatePassword(password)) {
             setErrorMessage('A Senha deve ter pelo menos 6 caracteres.');
-            setTimeout(() => console.error('A Senha deve ter pelo menos 6 caracteres.'), 0);
+            setTimeout(() => console.warn('A Senha deve ter pelo menos 6 caracteres.'), 0);
             return;
         }
 
-        const sanitizedEmail = sanitizeInput(email);
-        const sanitizedPassword = sanitizeInput(password);
-
         try {
-            await signInWithEmailAndPassword(auth, sanitizedEmail, sanitizedPassword);
+            await signInWithEmailAndPassword(auth, email, password);
 
             const userData = await getUserData("data");
             if (userData) {
                 console.log('Dados encontrados. Redirecionando...');
-                importDatabaseData(userData);
+                setUserData(userData);
             } else {
                 console.log('Nenhum dado encontrado. Salvando dados...');
                 await saveUserData('');
@@ -74,7 +68,7 @@ export default function Login() {
             setErrorMessage(`Erro ao tentar fazer login: ${error.message}`);
             console.error("Erro de login:", error);
         }
-    };
+    }, [email, password]);
 
     useEffect(() => {
         const options = {

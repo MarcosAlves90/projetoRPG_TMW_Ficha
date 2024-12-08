@@ -1,40 +1,60 @@
-import { doc, getDoc, setDoc } from "firebase/firestore";
+import { doc, getDoc, setDoc, deleteDoc } from "firebase/firestore";
 import { auth, db } from './firebase';
 
-export const getUserData = async (type) => {
+const getAuthenticatedUserId = () => {
     const user = auth.currentUser;
     if (!user) {
-        console.error('Usuário não autenticado');
+        console.warn('getUserData: Usuário não autenticado');
         return null;
     }
-    const userId = user.uid;
+    return user.uid;
+};
+
+const handleError = (message, error) => {
+    console.error(message, error);
+};
+
+export const getUserData = async (type) => {
+    const userId = getAuthenticatedUserId();
+    if (!userId) return null;
+
     try {
         const userDoc = doc(db, 'userData', userId);
         const docSnap = await getDoc(userDoc);
 
         if (docSnap.exists()) {
-            console.log('Dados recuperados!');
+            console.info('getUserData: Dados recuperados!');
 
             if (type === 'data') return docSnap.data().data;
             if (type === 'sheets') return docSnap.data().sheets;
 
         } else {
-            console.log('Nenhum dado encontrado!');
+            console.info('getUserData: Nenhum dado encontrado!');
             return null;
         }
     } catch (error) {
-        console.error('Erro ao recuperar dados:', error);
+        handleError('getUserData: Erro ao recuperar dados:', error);
     }
     return null;
 };
 
-export const saveUserData = async (data) => {
-    const user = auth.currentUser;
-    if (!user) {
-        console.error('Usuário não autenticado');
-        return;
+export const deleteUserData = async () => {
+    const userId = getAuthenticatedUserId();
+    if (!userId) return;
+
+    try {
+        const userDoc = doc(db, 'userData', userId);
+        await deleteDoc(userDoc);
+        console.info('deleteUserData: Dados deletados com sucesso!');
+    } catch (error) {
+        handleError('deleteUserData: Erro ao deletar dados:', error);
     }
-    const userId = user.uid;
+};
+
+export const saveUserData = async (data) => {
+    const userId = getAuthenticatedUserId();
+    if (!userId) return;
+
     try {
         const userDoc = doc(db, 'userData', userId);
         await setDoc(userDoc, { data }, { merge: true });
@@ -45,33 +65,14 @@ export const saveUserData = async (data) => {
 };
 
 export const saveUserSheets = async (sheets) => {
-    const user = auth.currentUser;
-    if (!user) {
-        console.error('Usuário não autenticado');
-        return;
-    }
-    const userId = user.uid;
+    const userId = getAuthenticatedUserId();
+    if (!userId) return;
+
     try {
         const userDoc = doc(db, 'userData', userId);
         await setDoc(userDoc, { sheets }, { merge: true });
         console.log('Fichas salvas com sucesso!');
     } catch (error) {
         console.error('Erro ao salvar fichas:', error);
-    }
-}
-
-export const deleteUserData = async () => {
-    const user = auth.currentUser;
-    if (!user) {
-        console.error('Usuário não autenticado');
-        return;
-    }
-    const userId = user.uid;
-    try {
-        const userDoc = doc(db, 'userData', userId);
-        await setDoc(userDoc, { data: '' }, { merge: true });
-        console.log('Dados deletados com sucesso!');
-    } catch (error) {
-        console.error('Erro ao deletar dados:', error);
     }
 }

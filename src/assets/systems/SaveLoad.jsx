@@ -2,7 +2,6 @@ import LZString from "lz-string";
 import { auth } from "../../firebase.js";
 import { useCallback } from "react";
 import { useNavigate } from "react-router-dom";
-import { saveUserData } from "../../firebaseUtils.js";
 
 export const compressValue = LZString.compressToUTF16;
 export const decompressValue = LZString.decompressFromUTF16;
@@ -41,8 +40,11 @@ const downloadFile = (url, filename) => {
     link.href = url;
     link.download = filename;
     document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
+    try {
+        link.click();
+    } finally {
+        document.body.removeChild(link);
+    }
 };
 
 export const saveLocalStorageFile = () => {
@@ -60,7 +62,9 @@ export const loadLocalStorageFile = (event) => {
     reader.onload = ({ target }) => {
         try {
             const data = JSON.parse(target.result);
-            if (!data) throw new Error('Missing data');
+            if (!data || typeof data !== 'object' || Array.isArray(data)) {
+                throw new Error('Invalid data format');
+            }
             localStorage.clear();
             Object.entries(data).forEach(([key, value]) => localStorage.setItem(key, value));
         } catch (error) {
@@ -83,13 +87,13 @@ export const useSignOut = () => {
     const navigate = useNavigate();
     return useCallback(async () => {
         try {
-            await saveUserData(returnLocalStorageData());
             await auth.signOut();
             clearLocalStorage();
-            navigate('/login');
             console.log('Sign-out successful.');
         } catch (error) {
             console.error('Error during sign-out:', error);
+        } finally {
+            navigate('/login');
         }
     }, [navigate]);
 };
