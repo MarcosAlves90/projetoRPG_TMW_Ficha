@@ -1,5 +1,4 @@
 import { useEffect, useRef, useCallback, useContext } from "react";
-import { getItem } from "../assets/systems/SaveLoad.jsx";
 import ProfilePicUploader from "../assets/components/ProfilePicUploader.jsx";
 import { saveUserData } from "../firebaseUtils.js";
 import { UserContext } from "../UserContext.jsx";
@@ -137,7 +136,7 @@ export default function Page1() {
                             <h2 className="mainCommon title-2">Estresse</h2>
                         </div>
                         <div className="container-recurso-inputs">
-                            <input className="input-left disabled" type="number" value={((getItem('pericia-Foco', 0) / 2) * 10) || 0} min={0} placeholder="pontos de estresse" disabled />
+                            <input className="input-left disabled" type="number" value={(((userData['pericia-Foco'] || 0) / 2) * 10)} min={0} placeholder="pontos de estresse" disabled />
                             <input className="input-right" type="number" value={userData.estresseGasto || ''} onChange={handleInputChange('estresseGasto')} min={0} placeholder="estresse atual" />
                         </div>
                     </div>
@@ -157,7 +156,7 @@ export default function Page1() {
                             <h2 className="mainCommon title-2">Sanidade</h2>
                         </div>
                         <div className="container-recurso-inputs">
-                            <input className="input-left disabled" type="number" value={((getItem('pericia-Foco', 0) / 2) * 10) || 0} min={0} placeholder="pontos de sanidade" disabled />
+                            <input className="input-left disabled" type="number" value={(((userData['pericia-Foco'] || 0) / 2) * 10)} min={0} placeholder="pontos de sanidade" disabled />
                             <input className="input-right" type="number" value={userData.sanidadeGasta || ''} onChange={handleInputChange('sanidadeGasta')} min={0} placeholder="sanidade atual" />
                         </div>
                     </div>
@@ -171,7 +170,7 @@ export default function Page1() {
                             <h2 className="mainCommon title-2">Defesa</h2>
                         </div>
                         <div>
-                            <input className="input-left disabled" type="number" value={10 + getItem('atributo-DES', 0) + getItem('atributo-DES-bonus', 0) + userData.nivel} min={0} placeholder="pontos de defesa" disabled />
+                            <input className="input-left disabled" type="number" value={10 + (userData['atributo-DES'] || 0) + (userData['atributo-DES-bonus'] || 0) + userData.nivel} min={0} placeholder="pontos de defesa" disabled />
                         </div>
                     </div>
                     <div className="display-block-center">
@@ -211,7 +210,7 @@ export default function Page1() {
                     </div>
                     <fieldset className="page-1">
                         <div className="static-container display-flex-center">
-                            <input className="static-status disabled" type="number" value={10 + getItem('atributo-PRE', 0) + getItem('atributo-PRE-bonus', 0) + userData.nivel} min={0} placeholder="pontos de defesa" disabled />
+                            <input className="static-status disabled" type="number" value={10 + (userData['atributo-PRE'] || 0) + (userData['atributo-PRE-bonus'] || 0) + userData.nivel} min={0} placeholder="pontos de defesa" disabled />
                         </div>
                     </fieldset>
                 </div>

@@ -1,26 +1,17 @@
 import {useState, useEffect, useContext} from "react";
-import {deleteUserData, getUserData, saveUserData, saveUserSheets} from "../firebaseUtils.js";
+import {getUserData, saveUserSheets, saveUserData} from "../firebaseUtils.js";
 import { auth } from "../firebase.js";
-import {
-    compressValue,
-    decompressValue,
-    importDatabaseData,
-    returnLocalStorageData
-} from "../assets/systems/SaveLoad.jsx";
 import {v4 as uuidv4} from 'uuid';
 import {UserContext} from "../UserContext.jsx";
 import {useNavigate} from "react-router-dom";
-
-async function getUserSheets() {
-    return await getUserData("sheets") || [];
-}
+import { decompressData } from '../assets/systems/SaveLoad.jsx';
 
 export default function SheetSelectionPage() {
     const [sheets, setSheets] = useState([]);
     const [newSheetName, setNewSheetName] = useState("");
     const [loading, setLoading] = useState(true);
 
-    const { sheetCode, setSheetCode } = useContext(UserContext);
+    const { userData, setUserData } = useContext(UserContext);
 
     const navigate = useNavigate();
 
@@ -29,68 +20,67 @@ export default function SheetSelectionPage() {
     }
 
     useEffect(() => {
-        if (localStorage.getItem('sheetCode') === null) {
-            const key = uuidv4();
-            setSheetCode(key);
-            localStorage.setItem('sheetCode', key);
-        }
-    }, []);
-
-    useEffect(() => {
         const fetchSheets = async () => {
             if (auth.currentUser) {
-                const sheetsData = await getUserSheets();
+                let sheetsData = await getUserData('sheets') || [];
                 console.log(sheetsData.length > 0 ? 'Fichas encontradas. Carregando...' : 'Nenhuma ficha encontrada.');
+    
                 if (sheetsData.length > 0) {
+                    sheetsData = sheetsData.map(sheet => {
+                        if (sheet.sheetCode === userData.sheetCode) {
+                            sheet.sheetCode = uuidv4();
+                        }
+                        if (sheet.nome === userData.nome) {
+                            sheet.nome += " [Erro]";
+                        }
+                        return sheet;
+                    });
                     setSheets(sheetsData);
+                    saveUserSheets(sheetsData);
                 }
-                updateSheets(sheetsData);
             }
             setLoading(false);
         };
         fetchSheets();
-    }, [auth.currentUser]);
-
-    function updateSheets(sheetsParam) {
-        const key = sheetCode;
-        const newSheet = returnLocalStorageData();
-        let updatedSheets = sheetsParam.map(sheet =>
-            sheet.sheetCode === key ? newSheet : sheet
-        );
-
-        if (!updatedSheets.some(sheet => sheet.sheetCode === key)) {
-            updatedSheets.push(newSheet);
-        }
-
-        updatedSheets = updatedSheets.filter((sheet, index, self) =>
-            index === self.findIndex((s) => s.sheetCode === sheet.sheetCode)
-        );
-
-        setSheets(updatedSheets);
-        saveUserSheets(updatedSheets);
-    }
+    }, [userData]);
 
     function addSheet() {
-        const newSheet = { sheetCode: uuidv4(), nome: compressValue(newSheetName) };
+        if (!newSheetName.trim() || sheets.some(sheet => sheet.nome === newSheetName)) {
+            console.error("O nome da ficha está vazio ou é igual ao nome de outra ficha.");
+            return;
+        }
+        const newSheet = { sheetCode: uuidv4(), nome: newSheetName };
         const updatedSheets = [...sheets, newSheet];
-        setSheets(updatedSheets);
-        saveUserSheets(updatedSheets);
+        try {
+            saveUserSheets(updatedSheets);
+            setSheets(updatedSheets);
+        } catch (err) {
+            console.error("Falha ao salvar fichas:", err);
+        }
         setNewSheetName("");
     }
 
     function deleteSheet(sheetCode) {
-        const updatedSheets = sheets.filter(sheet => sheet.sheetCode !== sheetCode);
-        setSheets(updatedSheets);
-        saveUserSheets(updatedSheets);
+        if (window.confirm("Quer mesmo deletar essa ficha? Esse processo é irreversível.")) {
+            const updatedSheets = sheets.filter(sheet => sheet.sheetCode !== sheetCode);
+            try {
+                saveUserSheets(updatedSheets);
+                setSheets(updatedSheets);
+            } catch (err) {
+                console.error("Falha ao salvar fichas:", err);
+            }
+        }
     }
 
     function switchSheet(sheetCode) {
-        const selectedSheet = sheets.find(sheet => sheet.sheetCode === sheetCode);
+        let selectedSheet = sheets.find(sheet => sheet.sheetCode === sheetCode);
         if (selectedSheet) {
-            importDatabaseData(selectedSheet);
-            deleteUserData();
+            let updatedSheets = sheets.filter(sheet => sheet.sheetCode !== sheetCode);
+            updatedSheets = [...updatedSheets, userData];
+            saveUserSheets(updatedSheets);
+            selectedSheet = decompressData(selectedSheet);
             saveUserData(selectedSheet);
-            setSheetCode(selectedSheet.sheetCode);
+            setUserData(selectedSheet);
             navigate("/individual");
         }
     }
@@ -103,8 +93,8 @@ export default function SheetSelectionPage() {
                 ) : (
                     <>
                         <div className={"container-buttons display-flex-center"}>
-                            <button className={"button-header active light back"} onClick={goToSettings}>Voltar&nbsp; <i
-                                className="bi bi-arrow-up-circle"></i>
+                            <button className={"button-header active light back"} onClick={goToSettings}>Voltar&nbsp; 
+                                <i className="bi bi-arrow-up-circle"></i>
                             </button>
                             <input
                                 type="text"
@@ -119,8 +109,8 @@ export default function SheetSelectionPage() {
                         <div className={"sheet-list"}>
                             {sheets.map(sheet => (
                                 <div
-                                    className={`sheet display-flex-center ${sheet.sheetCode === sheetCode ? "active" : ""}`} key={sheet.sheetCode}>
-                                    <p className={"p-name"} onClick={() => switchSheet(sheet.sheetCode)}>{decompressValue(sheet.nome)}</p>
+                                    className={`sheet display-flex-center`} key={sheet.sheetCode}>
+                                    <p className={"p-name"} onClick={() => switchSheet(sheet.sheetCode)}>{sheet.nome || sheet.sheetCode}</p>
                                     <i className="bi bi-trash3" onClick={() => deleteSheet(sheet.sheetCode)}></i>
                                 </div>
                             ))}

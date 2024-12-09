@@ -1,11 +1,12 @@
-import { useState, useEffect } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState, useContext } from "react";
 import TextareaAutosize from "react-textarea-autosize";
 import Collapsible from "react-collapsible";
 import { v4 as uuidv4 } from 'uuid';
 import { saveUserData } from "../firebaseUtils.js";
-import { returnLocalStorageData } from "../assets/systems/SaveLoad.jsx";
+import { UserContext } from "../UserContext";
 
 function CreateSkills({ array, handleContentChange, handleDelete, handleCopy }) {
+
     return array.length > 0 && array.map((skill) => (
         <Collapsible
             className={"skill"}
@@ -22,9 +23,9 @@ function CreateSkills({ array, handleContentChange, handleDelete, handleCopy }) 
                         <div className={"container-skill-select"}>
                             <p>Círculo: </p>
                             <select className={"form-select custom-select margin circle-skill"}
-                                    onChange={(e) => handleContentChange(e, skill.id)}
-                                    value={skill.circle}
-                                    id={`select-${skill.id}`}>
+                                onChange={(e) => handleContentChange(e, skill.id)}
+                                value={skill.circle}
+                                id={`select-${skill.id}`}>
                                 <option value={1}>
                                     1° Círculo
                                 </option>
@@ -39,9 +40,9 @@ function CreateSkills({ array, handleContentChange, handleDelete, handleCopy }) 
                         <div className={"container-skill-select"}>
                             <p>Categoria: </p>
                             <select className={"form-select custom-select margin type-skill"}
-                                    onChange={(e) => handleContentChange(e, skill.id)}
-                                    value={skill.type}
-                                    id={`select-type-${skill.id}`}>
+                                onChange={(e) => handleContentChange(e, skill.id)}
+                                value={skill.type}
+                                id={`select-type-${skill.id}`}>
                                 <option value={1}>
                                     Ativa
                                 </option>
@@ -75,9 +76,9 @@ function CreateSkills({ array, handleContentChange, handleDelete, handleCopy }) 
                         <div className={"container-skill-select last-select"}>
                             <p>Execução: </p>
                             <select className={"form-select custom-select margin execution-skill"}
-                                    onChange={(e) => handleContentChange(e, skill.id)}
-                                    value={skill.execution}
-                                    id={`select-execution-${skill.id}`}>
+                                onChange={(e) => handleContentChange(e, skill.id)}
+                                value={skill.execution}
+                                id={`select-execution-${skill.id}`}>
                                 <option value={1}>
                                     Padrão
                                 </option>
@@ -103,9 +104,9 @@ function CreateSkills({ array, handleContentChange, handleDelete, handleCopy }) 
                         <div className={"container-skill-select"}>
                             <p>Alcance: </p>
                             <select className={"form-select custom-select margin range-skill"}
-                                    onChange={(e) => handleContentChange(e, skill.id)}
-                                    value={skill.range}
-                                    id={`select-range-${skill.id}`}>
+                                onChange={(e) => handleContentChange(e, skill.id)}
+                                value={skill.range}
+                                id={`select-range-${skill.id}`}>
                                 <option value={1}>
                                     Pessoal
                                 </option>
@@ -210,7 +211,7 @@ function CreateSkills({ array, handleContentChange, handleDelete, handleCopy }) 
                     <div className={"delete-button"}>
                         <button className={"button-header active clear w-100"} onClick={() => handleDelete(skill.id)}>
                             {"Excluir "}
-                            <i className="bi bi-trash3-fill"/></button>
+                            <i className="bi bi-trash3-fill" /></button>
                     </div>
                     <button className={"buttonCopy"} onClick={() => handleCopy(skill)}>
                         {"Copiar "}
@@ -223,67 +224,71 @@ function CreateSkills({ array, handleContentChange, handleDelete, handleCopy }) 
 
 export default function Page4() {
     const [createSkill, setCreateSkill] = useState("");
-    const [skillsArray, setSkillsArray] = useState([]);
     const [searchTerm, setSearchTerm] = useState("");
     const [activeDomains, setActiveDomains] = useState([]);
 
-    useEffect(() => {
-        const savedSkills = JSON.parse(localStorage.getItem('skillsArray'));
-        if (savedSkills) {
-            setSkillsArray(savedSkills);
+    const { userData, setUserData, user } = useContext(UserContext);
+    const debounceTimeout = useRef(null);
+
+    const saveDataDebounced = useCallback((data) => {
+        if (debounceTimeout.current) {
+            clearTimeout(debounceTimeout.current);
         }
-    }, []);
+        debounceTimeout.current = setTimeout(() => {
+            if (user) {
+                saveUserData(data);
+            }
+        }, 500);
+    }, [user]);
+
+    useEffect(() => {
+        saveDataDebounced(userData);
+    }, [userData, saveDataDebounced]);
+
+    const handleElementChange = (key) => (value) => {
+        setUserData((prevUserData) => ({
+            ...prevUserData,
+            [key]: value,
+        }));
+    };
 
     const saveSkills = (newSkills) => {
-        setSkillsArray(newSkills);
-        localStorage.setItem('skillsArray', JSON.stringify(newSkills));
-        saveUserData(returnLocalStorageData());
+        handleElementChange("skillsArray")(newSkills);
     };
 
     function handleContentChange(e, id) {
-        const updatedSkills = skillsArray.map((skill) => {
+        const fieldMap = {
+            'circle-skill': 'circle',
+            'content-skill': 'content',
+            'type-skill': 'type',
+            'art-skill': 'art',
+            'execution-skill': 'execution',
+            'range-skill': 'range',
+            'target-skill': 'target',
+            'duration-skill': 'duration',
+            'resistance-skill': 'resistance',
+            'area-skill': 'area',
+            'spent-skill': 'spent',
+            'skill-title': 'title',
+            'skill-domain': 'domain'
+        };
+
+        const updatedSkills = userData.skillsArray.map((skill) => {
             if (skill.id === id) {
-                if (e.target.classList.contains('circle-skill')) {
-                    return { ...skill, circle: parseInt(e.target.value) };
-                } else if (e.target.classList.contains('content-skill')) {
-                    return { ...skill, content: e.target.value };
-                } else if (e.target.classList.contains('type-skill')) {
-                    return { ...skill, type: parseInt(e.target.value) };
-                } else if (e.target.classList.contains('art-skill')) {
-                    return { ...skill, art: e.target.value };
-                } else if (e.target.classList.contains('execution-skill')) {
-                    return { ...skill, execution: parseInt(e.target.value) };
-                } else if (e.target.classList.contains('range-skill')) {
-                    return { ...skill, range: parseInt(e.target.value) }
-                } else if (e.target.classList.contains('target-skill')) {
-                    return { ...skill, target: e.target.value };
-                } else if (e.target.classList.contains('duration-skill')) {
-                    return { ...skill, duration: e.target.value };
-                } else if (e.target.classList.contains('resistance-skill')) {
-                    return { ...skill, resistance: e.target.value };
-                } else if (e.target.classList.contains('area-skill')) {
-                    return { ...skill, area: e.target.value };
-                } else if (e.target.classList.contains('spent-skill')) {
-                    return { ...skill, spent: e.target.value };
-                } else if (e.target.id.includes('skill-title')) {
-                    return { ...skill, title: e.target.value };
-                } else if (e.target.id.includes('skill-domain')) {
-                    return { ...skill, domain: e.target.value };
+                for (const [className, field] of Object.entries(fieldMap)) {
+                    if (e.target.classList.contains(className) || e.target.id.includes(className)) {
+                        const value = className.includes('skill') ? e.target.value : parseInt(e.target.value);
+                        return { ...skill, [field]: value };
+                    }
                 }
             }
             return skill;
         });
-
         saveSkills(updatedSkills);
-
-        const updatedActiveDomains = activeDomains.filter(domain =>
-            updatedSkills.some(skill => skill.domain === domain)
-        );
-        setActiveDomains(updatedActiveDomains);
     }
 
     const handleDelete = (id) => {
-        const updatedSkills = skillsArray.filter((skill) => skill.id !== id);
+        const updatedSkills = userData.skillsArray.filter((skill) => skill.id !== id);
         saveSkills(updatedSkills);
     };
 
@@ -295,18 +300,25 @@ export default function Page4() {
                     const skill = JSON.parse(text);
                     if (skill && skill.title && skill.id) {
                         const newSkill = { ...skill, id: uuidv4() };
-                        saveSkills([...skillsArray, newSkill]);
+                        setUserData((prevUserData) => {
+                            const updatedSkills = [...prevUserData.skillsArray, newSkill];
+                            saveSkills(updatedSkills);
+                            return { ...prevUserData, skillsArray: updatedSkills };
+                        });
                         event.preventDefault();
                     }
-                } catch (err) { /* empty */ }
+                } catch (err) {
+                    console.error("Invalid JSON data: ", err);
+                }
             }
         };
 
-        document.addEventListener('paste', handlePasteEvent);
+        const element = document.querySelector('.mainCommon.page-4');
+        element.addEventListener('paste', handlePasteEvent);
         return () => {
-            document.removeEventListener('paste', handlePasteEvent);
+            element.removeEventListener('paste', handlePasteEvent);
         };
-    }, [skillsArray]);
+    }, []);
 
     const handleCopy = async (skill) => {
         try {
@@ -321,7 +333,7 @@ export default function Page4() {
             const text = await navigator.clipboard.readText();
             const skill = JSON.parse(text);
             const newSkill = { ...skill, id: uuidv4() };
-            saveSkills([...skillsArray, newSkill]);
+            saveSkills([...userData.skillsArray, newSkill]);
         } catch (err) {
             console.error("Falha ao colar a skill: ", err);
         }
@@ -331,19 +343,19 @@ export default function Page4() {
         setCreateSkill("");
     };
 
-    const uniqueDomains = Array.from(new Set(
-        skillsArray
+    const uniqueDomains = useMemo(() => Array.from(new Set(
+        (userData.skillsArray || [])
             .filter(skill => skill.domain && skill.domain.trim() !== "")
             .map(skill => skill.domain)
-    ));
+    )), [userData.skillsArray]);
 
-    const filteredSkills = skillsArray.filter(skill => {
+    const filteredSkills = useMemo(() => (userData.skillsArray || []).filter(skill => {
         const matchesSearchTerm = searchTerm === "" || Object.values(skill).some(value =>
             value.toString().toLowerCase().includes(searchTerm.toLowerCase())
         );
         const matchesDomain = activeDomains.length === 0 || activeDomains.includes(skill.domain);
         return matchesSearchTerm && matchesDomain;
-    });
+    }), [userData.skillsArray, searchTerm, activeDomains]);
 
     function searchByDomain(domain) {
         const updatedDomains = activeDomains.includes(domain)
@@ -372,22 +384,25 @@ export default function Page4() {
                         className="button-header active create"
                         onClick={() => {
                             if (createSkill.trim()) {
-                                saveSkills([...skillsArray, {
-                                    title: createSkill,
-                                    domain: '',
-                                    content: '',
-                                    circle: 1,
-                                    type: 1,
-                                    art: '',
-                                    execution: 1,
-                                    range: 1,
-                                    target: '',
-                                    duration: '',
-                                    resistance: '',
-                                    area: '',
-                                    spent: '',
-                                    id: uuidv4()
-                                }]);
+                                saveSkills([
+                                    ...(userData.skillsArray || []),
+                                    {
+                                        title: createSkill,
+                                        domain: '',
+                                        content: '',
+                                        circle: 1,
+                                        type: 1,
+                                        art: '',
+                                        execution: 1,
+                                        range: 1,
+                                        target: '',
+                                        duration: '',
+                                        resistance: '',
+                                        area: '',
+                                        spent: '',
+                                        id: uuidv4()
+                                    }
+                                ]);
                                 clearInput();
                             }
                         }}
@@ -418,11 +433,11 @@ export default function Page4() {
                     const isReflex = domain.toLowerCase() === "reflexo";
                     return (
                         <span key={domain}
-                              className={`tag 
-                              ${activeDomains.includes(domain) ? "active" : ""} ${isLinked ? "linked" : ""} 
-                              ${isReflex ? "reflex" : ""}`}
-                              onClick={() => searchByDomain(domain)}>
-                                <i className="bi bi-stars"></i>
+                            className={`tag 
+                            ${activeDomains.includes(domain) ? "active" : ""} ${isLinked ? "linked" : ""} 
+                            ${isReflex ? "reflex" : ""}`}
+                            onClick={() => searchByDomain(domain)}>
+                            <i className="bi bi-stars"></i>
                             {domain}
                         </span>
                     );

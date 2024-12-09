@@ -1,15 +1,16 @@
-import { useEffect, useState } from "react";
-import {deleteItem, getItem, returnLocalStorageData, saveItem} from "../systems/SaveLoad.jsx";
+import { useEffect, useContext } from "react";
 import imageCompression from 'browser-image-compression';
-import {saveUserData} from "../../firebaseUtils.js";
+import { UserContext } from "../../UserContext.jsx";
 
 export default function ProfilePicUploader() {
-    const [profilePic, setProfilePic] = useState(getItem('profilePic', ''));
+    const { userData, setUserData } = useContext(UserContext);
 
-    useEffect(() => {
-        profilePic ? saveItem('profilePic', profilePic) : deleteItem('profilePic');
-        saveUserData(returnLocalStorageData());
-    }, [profilePic]);
+    const handleElementChange = (key) => (value) => {
+        setUserData((prevUserData) => ({
+            ...prevUserData,
+            [key]: value,
+        }));
+    };
 
     useEffect(() => {
         const handlePaste = async (event) => {
@@ -30,8 +31,7 @@ export default function ProfilePicUploader() {
                         if (compressedFile) {
                             const reader = new FileReader();
                             reader.onload = (e) => {
-                                setProfilePic(e.target.result);
-                                saveItem('profilePic', e.target.result);
+                                handleElementChange('profilePic')(e.target.result);
                             };
                             reader.readAsDataURL(compressedFile);
                         } else {
@@ -66,8 +66,7 @@ export default function ProfilePicUploader() {
                 if (compressedFile) {
                     const reader = new FileReader();
                     reader.onload = (e) => {
-                        setProfilePic(e.target.result);
-                        saveItem('profilePic', e.target.result);
+                        handleElementChange('profilePic')(e.target.result);
                     };
                     reader.readAsDataURL(compressedFile);
                 } else {
@@ -83,9 +82,9 @@ export default function ProfilePicUploader() {
         <div className="profile-pic-image">
             <label htmlFor="file-upload" className="custom-file-upload">
                 <img
-                    src={profilePic || './images/rgPlaceholder.jpg'}
+                    src={userData.profilePic || './images/rgPlaceholder.jpg'}
                     alt="Profile"
-                    className={`image-profile ${profilePic ? 'active' : ''}`}
+                    className={`image-profile ${userData.profilePic ? 'active' : ''}`}
                     style={{ cursor: 'pointer' }}
                 />
             </label>

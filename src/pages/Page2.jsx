@@ -44,10 +44,10 @@ export default function Page2() {
                     transitionCloseTime={100}>
                     <article className={"textarea-container"}>
                         <TextareaAutosize className="form-control textarea-sheet"
-                            id="exampleFormControlTextarea1"
+                            id="textarea-origem"
                             value={userData.origem}
                             onChange={handleInputChange('origem')}
-                            minRows="7"
+                            minRows={7}
                             placeholder={"Escreva a sua origem."} />
                     </article>
                 </Collapsible>
@@ -60,10 +60,10 @@ export default function Page2() {
                     transitionCloseTime={100}>
                     <div className={"textarea-container"}>
                         <TextareaAutosize className="form-control textarea-sheet"
-                            id="exampleFormControlTextarea1"
+                            id="textarea-fisico"
                             value={userData.fisico}
                             onChange={handleInputChange('fisico')}
-                            minRows="4"
+                            minRows={4}
                             placeholder={"Descreva sua aparência."} />
                     </div>
                 </Collapsible>
@@ -76,10 +76,10 @@ export default function Page2() {
                     transitionCloseTime={100}>
                     <div className={"textarea-container"}>
                         <TextareaAutosize className="form-control textarea-sheet"
-                            id="exampleFormControlTextarea1"
+                            id="textarea-ideais"
                             value={userData.ideais}
                             onChange={handleInputChange('ideais')}
-                            minRows="4"
+                            minRows={4}
                             placeholder={"- Escreva um ou mais ideais."} />
                     </div>
                 </Collapsible>
@@ -94,10 +94,10 @@ export default function Page2() {
                             transitionCloseTime={100}>
                             <div className={"textarea-container"}>
                                 <TextareaAutosize className="form-control textarea-sheet"
-                                    id="exampleFormControlTextarea1"
+                                    id="textarea-tracosNegativos"
                                     value={userData.tracosNegativos}
                                     onChange={handleInputChange('tracosNegativos')}
-                                    minRows="4"
+                                    minRows={4}
                                     placeholder={"- Escreva um ou mais traços negativos.\n" +
                                         "- Os traços podem ser físicos ou mentais."} />
                             </div>
@@ -110,10 +110,10 @@ export default function Page2() {
                             transitionCloseTime={100}>
                             <div className={"textarea-container"}>
                                 <TextareaAutosize className="form-control textarea-sheet"
-                                    id="exampleFormControlTextarea1"
+                                    id="textarea-tracosPositivos"
                                     value={userData.tracosPositivos}
                                     onChange={handleInputChange('tracosPositivos')}
-                                    minRows="4"
+                                    minRows={4}
                                     placeholder={"- Escreva um ou mais traços positivos.\n" +
                                         "- Os traços podem ser físicos ou mentais."} />
                             </div>
@@ -129,10 +129,10 @@ export default function Page2() {
                     transitionCloseTime={100}>
                     <div className={"textarea-container"}>
                         <TextareaAutosize className="form-control textarea-sheet"
-                            id="exampleFormControlTextarea1"
+                            id="textarea-origemForma"
                             value={userData.origemForma}
                             onChange={handleInputChange('origemForma')}
-                            minRows="7"
+                            minRows={7}
                             placeholder={"Escreva a origem da sua forma."} />
                     </div>
                 </Collapsible>

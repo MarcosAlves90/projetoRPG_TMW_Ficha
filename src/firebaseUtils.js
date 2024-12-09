@@ -1,4 +1,4 @@
-import { doc, getDoc, setDoc, deleteDoc } from "firebase/firestore";
+import { doc, getDoc, updateDoc } from "firebase/firestore";
 import { auth, db } from './firebase';
 
 const getAuthenticatedUserId = () => {
@@ -11,14 +11,28 @@ const getAuthenticatedUserId = () => {
 };
 
 const handleError = (message, error) => {
-    console.error(message, error);
+    console.error('%s %O', message, error);
+};
+
+const executeWithHandling = async (fn, errorMessage) => {
+    try {
+        return await fn();
+    } catch (error) {
+        handleError(errorMessage, error);
+        return null;
+    }
 };
 
 export const getUserData = async (type) => {
     const userId = getAuthenticatedUserId();
     if (!userId) return null;
 
-    try {
+    if (type !== 'data' && type !== 'sheets') {
+        console.warn('getUserData: Tipo inválido fornecido');
+        return null;
+    }
+
+    return executeWithHandling(async () => {
         const userDoc = doc(db, 'userData', userId);
         const docSnap = await getDoc(userDoc);
 
@@ -27,52 +41,31 @@ export const getUserData = async (type) => {
 
             if (type === 'data') return docSnap.data().data;
             if (type === 'sheets') return docSnap.data().sheets;
-
         } else {
             console.info('getUserData: Nenhum dado encontrado!');
             return null;
         }
-    } catch (error) {
-        handleError('getUserData: Erro ao recuperar dados:', error);
-    }
-    return null;
-};
-
-export const deleteUserData = async () => {
-    const userId = getAuthenticatedUserId();
-    if (!userId) return;
-
-    try {
-        const userDoc = doc(db, 'userData', userId);
-        await deleteDoc(userDoc);
-        console.info('deleteUserData: Dados deletados com sucesso!');
-    } catch (error) {
-        handleError('deleteUserData: Erro ao deletar dados:', error);
-    }
+    }, 'getUserData: Erro ao recuperar dados:');
 };
 
 export const saveUserData = async (data) => {
     const userId = getAuthenticatedUserId();
     if (!userId) return;
 
-    try {
+    executeWithHandling(async () => {
         const userDoc = doc(db, 'userData', userId);
-        await setDoc(userDoc, { data }, { merge: true });
+        await updateDoc(userDoc, { data });
         console.log('Dados salvos com sucesso!');
-    } catch (error) {
-        console.error('Erro ao salvar dados:', error);
-    }
+    }, 'Erro ao salvar dados:');
 };
 
 export const saveUserSheets = async (sheets) => {
     const userId = getAuthenticatedUserId();
     if (!userId) return;
 
-    try {
+    executeWithHandling(async () => {
         const userDoc = doc(db, 'userData', userId);
-        await setDoc(userDoc, { sheets }, { merge: true });
+        await updateDoc(userDoc, { sheets });
         console.log('Fichas salvas com sucesso!');
-    } catch (error) {
-        console.error('Erro ao salvar fichas:', error);
-    }
-}
+    }, 'Erro ao salvar fichas:');
+};

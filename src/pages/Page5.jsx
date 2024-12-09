@@ -1,9 +1,9 @@
-import {useState, useEffect} from "react";
+import { useState, useEffect, useCallback, useRef, useContext } from "react";
 import TextareaAutosize from "react-textarea-autosize";
 import Collapsible from "react-collapsible";
-import {returnLocalStorageData, saveItem} from "../assets/systems/SaveLoad.jsx";
-import {v4 as uuidv4} from 'uuid';
-import {saveUserData} from "../firebaseUtils.js";
+import { v4 as uuidv4 } from 'uuid';
+import { saveUserData } from "../firebaseUtils.js";
+import { UserContext } from "../UserContext.jsx";
 
 const CreateAnnotations = ({ array, handleContentChange, handleDelete }) => {
     return array.length > 0 && array.map((annotation) => (
@@ -38,34 +38,50 @@ const CreateAnnotations = ({ array, handleContentChange, handleDelete }) => {
 
 export default function Page5() {
     const [createTitle, setCreateTitle] = useState("");
-    const [annotationsArray, setAnnotationsArray] = useState([]);
     const [searchTerm, setSearchTerm] = useState("");
 
+    const { userData, setUserData, user } = useContext(UserContext);
+    const debounceTimeout = useRef(null);
+
+    const saveDataDebounced = useCallback((data) => {
+        if (debounceTimeout.current) {
+            clearTimeout(debounceTimeout.current);
+        }
+        debounceTimeout.current = setTimeout(() => {
+            if (user) {
+                saveUserData(data);
+            }
+        }, 500);
+    }, [user]);
+
     useEffect(() => {
-        const savedAnnotations = JSON.parse(localStorage.getItem('annotationsArray'));
-        if (savedAnnotations) setAnnotationsArray(savedAnnotations);
-    }, []);
+        saveDataDebounced(userData);
+    }, [userData, saveDataDebounced]);
+
+    const handleElementChange = (key) => (value) => {
+        setUserData((prevUserData) => ({
+            ...prevUserData,
+            [key]: value,
+        }));
+    };
 
     const saveAnnotations = (newAnnotations) => {
-        setAnnotationsArray(newAnnotations);
-        saveItem('annotationsArray', newAnnotations);
-        localStorage.setItem('annotationsArray', JSON.stringify(newAnnotations));
-        saveUserData(returnLocalStorageData());
+        handleElementChange('annotationsArray')(newAnnotations);
     };
 
     const handleContentChange = (event, id) => {
-        const updatedAnnotations = annotationsArray.map((annotation) =>
+        const updatedAnnotations = userData.annotationsArray.map((annotation) =>
             annotation.id === id ? { ...annotation, content: event.target.value } : annotation
         );
         saveAnnotations(updatedAnnotations);
     };
 
     const handleDelete = (id) => {
-        const updatedAnnotations = annotationsArray.filter(annotation => annotation.id !== id);
+        const updatedAnnotations = userData.annotationsArray.filter(annotation => annotation.id !== id);
         saveAnnotations(updatedAnnotations);
     };
 
-    const filteredAnnotations = annotationsArray.filter(annotation =>
+    const filteredAnnotations = (userData.annotationsArray || []).filter(annotation =>
         annotation.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
         annotation.content.toLowerCase().includes(searchTerm.toLowerCase())
     );
@@ -84,11 +100,19 @@ export default function Page5() {
                 <div className="create-annotation button">
                     <button
                         className="button-header active create"
-                        onClick={() => (createTitle.trim()) ? saveAnnotations([...annotationsArray, {
-                            id: uuidv4(),
-                            title: createTitle,
-                            content: ''
-                        }]) : null}
+                        onClick={() => {
+                            if (createTitle.trim()) {
+                                const annotationsArray = userData.annotationsArray || [];
+                                saveAnnotations([
+                                    ...annotationsArray,
+                                    {
+                                        id: uuidv4(),
+                                        title: createTitle,
+                                        content: ''
+                                    }
+                                ]);
+                            }
+                        }}
                     >
                         Criar Anotação
                     </button>

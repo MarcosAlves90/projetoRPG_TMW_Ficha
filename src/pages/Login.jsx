@@ -5,6 +5,7 @@ import { signInWithEmailAndPassword } from 'firebase/auth';
 import { getUserData, saveUserData } from '../firebaseUtils.js';
 import { useNavigate } from 'react-router-dom';
 import validator from 'validator';
+import { decompressData } from "../assets/systems/SaveLoad.jsx";
 
 const validateEmail = (email) => {
     return validator.isEmail(email);
@@ -53,9 +54,10 @@ export default function Login() {
         try {
             await signInWithEmailAndPassword(auth, email, password);
 
-            const userData = await getUserData("data");
+            let userData = await getUserData("data");
             if (userData) {
                 console.log('Dados encontrados. Redirecionando...');
+                userData = decompressData(userData);
                 setUserData(userData);
             } else {
                 console.log('Nenhum dado encontrado. Salvando dados...');

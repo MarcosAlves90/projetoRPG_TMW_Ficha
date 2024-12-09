@@ -1,17 +1,15 @@
-import {
-    clearLocalStorage, getItem,
-    loadLocalStorageFile,
-    returnLocalStorageData,
-    saveLocalStorageFile
-} from "../assets/systems/SaveLoad.jsx";
 import { saveUserData } from "../firebaseUtils.js";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { auth } from "../firebase.js";
+import { UserContext } from "../UserContext";
+import { v4 as uuidv4 } from 'uuid';
+import { decompressData } from '../assets/systems/SaveLoad.jsx';
+
 
 export default function Config() {
     const [unlockedStates, setUnlockedStates] = useState({ Delete: false, CloudSave: false });
-    const [sheetName, setSheetName] = useState(getItem("nome", "Indefinido"));
+    const { userData, setUserData, user } = useContext(UserContext);
 
     const navigate = useNavigate();
 
@@ -19,15 +17,21 @@ export default function Config() {
         const handleFileLoad = (event) => {
             const { files } = event.target;
             if (!files.length) return;
+            const sheetCode = userData.sheetCode || uuidv4();
 
             const reader = new FileReader();
             reader.onload = ({ target }) => {
                 try {
-                    const data = JSON.parse(target.result);
+                    let data = JSON.parse(target.result);
                     if (!data) throw new Error('Missing data');
-                    localStorage.clear();
-                    Object.entries(data).forEach(([key, value]) => localStorage.setItem(key, value));
-                    setSheetName(getItem("nome", "Indefinido"));
+                    data = decompressData(data);
+                    if (!data.sheetCode || user !== null) {
+                        data.sheetCode = sheetCode
+                    }
+                    setUserData(data);
+                    if (user) {
+                        saveUserData(data);
+                    }
                 } catch (error) {
                     console.error('Error processing the file:', error);
                 }
@@ -48,11 +52,10 @@ export default function Config() {
         if (!unlockedStates.Delete) {
             setUnlockedStates({ ...unlockedStates, Delete: true });
         } else {
-            console.log("Limpando dados...");
-            clearLocalStorage();
+            const sheetCode = userData.sheetCode || uuidv4();
+            setUserData({nivel: 0, sheetCode: sheetCode});
+            saveUserData({nivel: 0, sheetCode: sheetCode});
             setUnlockedStates({ ...unlockedStates, Delete: false });
-            setSheetName("Indefinido");
-            console.log("Dados limpos.");
         }
     }
 
@@ -60,7 +63,7 @@ export default function Config() {
         if (!unlockedStates.CloudSave) {
             setUnlockedStates({ ...unlockedStates, CloudSave: true });
         } else {
-            saveUserData(returnLocalStorageData());
+            saveUserData(userData);
             setUnlockedStates({ ...unlockedStates, CloudSave: false });
         }
     }
@@ -69,13 +72,38 @@ export default function Config() {
         navigate("/fichas");
     }
 
+    const createBlobURL = (data) => {
+        const blob = new Blob([JSON.stringify(data)], { type: 'application/json' });
+        return URL.createObjectURL(blob);
+    };
+
+    const downloadFile = (url, filename) => {
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = filename;
+        document.body.appendChild(link);
+        try {
+            link.click();
+        } finally {
+            document.body.removeChild(link);
+        }
+    };
+
+    const saveSheetFile = () => {
+        const data = userData;
+        const url = createBlobURL(data);
+        const filename = `TMW - ${userData.nome || 'Ficha'}.json`;
+        downloadFile(url, filename);
+    };
+
     return (
         <main className={"mainCommon page-config"}>
             <section className={"section-files"}>
                 <p>Configurações</p>
-                <p className={"sheet"}>{`Ficha atual: ${sheetName}`}</p>
+                <p className={"sheet"}>{`Ficha atual: ${userData.nome || "Indefinido"}`}</p>
+                <p className={"sheet"}>{`Código: ${userData.sheetCode || "Indefinido"}`}</p>
                 <input className="form-control dark" type="file" id="formFile"
-                       style={{ display: 'none' }} />
+                    style={{ display: 'none' }} />
                 <button className="button-header active light file"
                         onClick={() => document.getElementById('formFile').click()}>
                     <label htmlFor="formFile" style={{ width: "100%" }} className="file-selector">
@@ -83,7 +111,7 @@ export default function Config() {
                         <i className="bi bi-arrow-down-circle" />
                     </label>
                 </button>
-                <button className="button-header active light save" onClick={saveLocalStorageFile}>
+                <button className="button-header active light save" onClick={saveSheetFile}>
                     {"Baixar "}
                     <i className="bi bi-arrow-up-circle" />
                 </button>
