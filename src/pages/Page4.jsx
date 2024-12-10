@@ -301,7 +301,7 @@ export default function Page4() {
                     if (skill && skill.title && skill.id) {
                         const newSkill = { ...skill, id: uuidv4() };
                         setUserData((prevUserData) => {
-                            const updatedSkills = [...prevUserData.skillsArray, newSkill];
+                            const updatedSkills = [...(prevUserData.skillsArray || []), newSkill];
                             saveSkills(updatedSkills);
                             return { ...prevUserData, skillsArray: updatedSkills };
                         });
@@ -312,14 +312,13 @@ export default function Page4() {
                 }
             }
         };
-
+    
         const element = document.querySelector('.mainCommon.page-4');
         element.addEventListener('paste', handlePasteEvent);
         return () => {
             element.removeEventListener('paste', handlePasteEvent);
         };
     }, []);
-
     const handleCopy = async (skill) => {
         try {
             await navigator.clipboard.writeText(JSON.stringify(skill));
