@@ -8,6 +8,18 @@ import { auth } from "./firebase.js";
 import { UserContext } from "./UserContext.jsx";
 import { v4 as uuidv4 } from 'uuid';
 import { decompressData } from './assets/systems/SaveLoad.jsx';
+import { ThemeProvider, createTheme } from '@mui/material/styles';
+import CssBaseline from '@mui/material/CssBaseline';
+
+const darkTheme = createTheme({
+    palette: {
+        mode: 'dark',
+        background: {
+            default: '#101524',
+            paper: '#101524',
+        },
+    },
+});
 
 // Lazy load components
 const Page0 = lazy(() => import('./pages/Page0.jsx'));
@@ -79,19 +91,22 @@ function App() {
     }
 
     return (
-        <main className="appMain display-flex">
-            {location.pathname !== "/fichas" && <NavBar />}
-            <Suspense fallback={
-                <div id="loader">
-                    <div className="loader" />
-                </div>}>
-                <Routes>
-                    {routes.map((route, index) => (
-                        <Route key={index} path={route.path} element={route.element} />
-                    ))}
-                </Routes>
-            </Suspense>
-        </main>
+        <ThemeProvider theme={darkTheme}>
+            <CssBaseline />
+            <main className="appMain display-flex">
+                {location.pathname !== "/fichas" && <NavBar />}
+                <Suspense fallback={
+                    <div id="loader">
+                        <div className="loader" />
+                    </div>}>
+                    <Routes>
+                        {routes.map((route, index) => (
+                            <Route key={index} path={route.path} element={route.element} />
+                        ))}
+                    </Routes>
+                </Suspense>
+            </main>
+        </ThemeProvider>
     );
 }
 

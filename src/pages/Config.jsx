@@ -1,26 +1,62 @@
-import { saveUserData } from "../firebaseUtils.js";
-import { useState, useEffect, useContext } from "react";
-import { useNavigate } from "react-router-dom";
-import { auth } from "../firebase.js";
-import { UserContext } from "../UserContext";
-import { v4 as uuidv4 } from 'uuid';
-import { decompressData } from '../assets/systems/SaveLoad.jsx';
+import {saveUserData} from "../firebaseUtils.js";
+import {useState, useEffect, useContext} from "react";
+import {useNavigate} from "react-router-dom";
+import {auth} from "../firebase.js";
+import {UserContext} from "../UserContext";
+import {v4 as uuidv4} from 'uuid';
+import {decompressData} from '../assets/systems/SaveLoad.jsx';
+import styled from 'styled-components';
+import {Button} from '@mui/material';
+
+const StyledButton = styled(Button)`
+    width: 100%;
+    padding: 0.4rem;
+    border-radius: 3px;
+    font-weight: bold;
+    font-size: 1rem;
+    color: var(--background);
+    font-family: var(--common-font-family), sans-serif !important;
+
+    &.confirmation, &.delete.confirmation {
+        background-color: var(--warn);
+
+        &:hover {
+            background-color: var(--warn-hover);
+        }
+    }
+
+    &.delete {
+        background-color: var(--danger);
+
+        &:hover {
+            background-color: var(--danger-hover);
+        }
+    }
+
+    @media (max-width: 991px) {
+        font-size: 4vw;
+        &.save, &.delete {
+            grid-column: span 2;
+        }
+    }
+`;
+
 
 
 export default function Config() {
-    const [unlockedStates, setUnlockedStates] = useState({ Delete: false, CloudSave: false });
-    const { userData, setUserData, user } = useContext(UserContext);
+    const [unlockedStates, setUnlockedStates] = useState({Delete: false, CloudSave: false});
+    const {userData, setUserData, user} = useContext(UserContext);
 
     const navigate = useNavigate();
 
     useEffect(() => {
         const handleFileLoad = (event) => {
-            const { files } = event.target;
+            const {files} = event.target;
             if (!files.length) return;
             const sheetCode = userData.sheetCode || uuidv4();
 
             const reader = new FileReader();
-            reader.onload = ({ target }) => {
+            reader.onload = ({target}) => {
                 try {
                     let data = JSON.parse(target.result);
                     if (!data) throw new Error('Missing data');
@@ -50,21 +86,21 @@ export default function Config() {
 
     function verifyDeleteUnlock() {
         if (!unlockedStates.Delete) {
-            setUnlockedStates({ ...unlockedStates, Delete: true });
+            setUnlockedStates({...unlockedStates, Delete: true});
         } else {
             const sheetCode = userData.sheetCode || uuidv4();
             setUserData({nivel: 0, sheetCode: sheetCode});
             saveUserData({nivel: 0, sheetCode: sheetCode});
-            setUnlockedStates({ ...unlockedStates, Delete: false });
+            setUnlockedStates({...unlockedStates, Delete: false});
         }
     }
 
     function verifyCloudSaveUnlock() {
         if (!unlockedStates.CloudSave) {
-            setUnlockedStates({ ...unlockedStates, CloudSave: true });
+            setUnlockedStates({...unlockedStates, CloudSave: true});
         } else {
             saveUserData(userData);
-            setUnlockedStates({ ...unlockedStates, CloudSave: false });
+            setUnlockedStates({...unlockedStates, CloudSave: false});
         }
     }
 
@@ -73,7 +109,7 @@ export default function Config() {
     }
 
     const createBlobURL = (data) => {
-        const blob = new Blob([JSON.stringify(data)], { type: 'application/json' });
+        const blob = new Blob([JSON.stringify(data)], {type: 'application/json'});
         return URL.createObjectURL(blob);
     };
 
@@ -103,32 +139,34 @@ export default function Config() {
                 <p className={"sheet"}>{`Ficha atual: ${userData.nome || "Indefinido"}`}</p>
                 <p className={"sheet"}>{`Código: ${userData.sheetCode || "Indefinido"}`}</p>
                 <input className="form-control dark" type="file" id="formFile"
-                    style={{ display: 'none' }} />
-                <button className="button-header active light file"
+                       style={{display: 'none'}}/>
+                <StyledButton variant="contained" color="primary"
                         onClick={() => document.getElementById('formFile').click()}>
-                    <label htmlFor="formFile" style={{ width: "100%" }} className="file-selector">
-                        {"Importar "}
-                        <i className="bi bi-arrow-down-circle" />
+                    <label htmlFor="formFile" style={{width: "100%", cursor: "pointer"}} className="file-selector">
+                        {"Importar"}
+                        <i className="bi bi-arrow-down-circle"/>
                     </label>
-                </button>
-                <button className="button-header active light save" onClick={saveSheetFile}>
-                    {"Baixar "}
-                    <i className="bi bi-arrow-up-circle" />
-                </button>
-                <button className={`button-header active dark cloud-save ${!unlockedStates.CloudSave ? "" : "confirmation"}`}
-                        onClick={() => verifyCloudSaveUnlock()}>
-                    {!unlockedStates.CloudSave ? "Salvar na nuvem " : "Tem certeza? "}
-                    <i className="bi bi-cloud-arrow-down-fill" />
-                </button>
-                <button className={`button-header active dark clear-delete ${!unlockedStates.Delete ? "" : "confirmation"}`}
-                        onClick={() => verifyDeleteUnlock()}>
-                    {!unlockedStates.Delete ? "Limpar " : "Tem certeza? "}
-                    <i className="bi bi-trash3-fill" />
-                </button>
+                </StyledButton>
+                <StyledButton variant="contained" color="primary" onClick={saveSheetFile}>
+                    {"Baixar"}
+                    <i className="bi bi-arrow-up-circle"/>
+                </StyledButton>
+                <StyledButton variant="contained" color="primary"
+                    className={`save ${!unlockedStates.CloudSave ? "" : "confirmation"}`}
+                    onClick={() => verifyCloudSaveUnlock()}>
+                    {!unlockedStates.CloudSave ? "Salvar na nuvem" : "Tem certeza?"}
+                    <i className="bi bi-cloud-arrow-down-fill"/>
+                </StyledButton>
+                <StyledButton variant="contained"
+                    className={`delete ${!unlockedStates.Delete ? "" : "confirmation"}`}
+                    onClick={() => verifyDeleteUnlock()}>
+                    {!unlockedStates.Delete ? "Limpar" : "Tem certeza?"}
+                    <i className="bi bi-trash3-fill"/>
+                </StyledButton>
                 {auth.currentUser && (
                     <button className={`button-header active light sheets`}
                             onClick={() => handleSheetsButtonClick()}>
-                        {"Trocar ficha "}
+                        {"Trocar ficha"}
                         <i className="bi bi-file-spreadsheet-fill"></i>
                     </button>
                 )}

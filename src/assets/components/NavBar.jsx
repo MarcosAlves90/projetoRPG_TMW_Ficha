@@ -5,6 +5,11 @@ import {onAuthStateChanged} from "firebase/auth";
 import { auth } from "../../firebase";
 import { UserContext } from "../../UserContext.jsx";
 import { saveUserData } from "../../firebaseUtils.js";
+import styled from 'styled-components';
+
+const Title = styled(Link)`
+    font-family: 'Brevis', sans-serif;
+`;
 
 export default function NavBar() {
     const [headerBackground, setHeaderBackground] = useState(false);
@@ -63,7 +68,7 @@ export default function NavBar() {
 
     return (
         <nav className={`navbar ${collapsed ? "" : "show"} navbar-expand-lg navbar-light ${headerBackground || !collapsed ? "custom-theme" : "default-theme"} `}>
-            <Link className={"navbar-brand"} to={"/"}>{collapsed ? "TMWCSE" : "The Mental World CSE"}</Link>
+            <Title className={"navbar-brand"} to={"/"}>MidNight</Title>
             <button className={`navbar-toggler ${!collapsed ? "active" : ""} ${location.pathname === "/login" ? "login-themed" : ""}`}
                     onClick={handleMenuToggle} type="button" data-toggle="collapse" data-target="#navbarText"
                     aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">

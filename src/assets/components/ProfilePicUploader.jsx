@@ -1,9 +1,48 @@
-import { useEffect, useContext } from "react";
+import {useEffect, useContext} from "react";
 import imageCompression from 'browser-image-compression';
-import { UserContext } from "../../UserContext.jsx";
+import {UserContext} from "../../UserContext.jsx";
+import {FileUpload} from '@mui/icons-material';
+import styled from 'styled-components';
+import {Box} from "@mui/material";
+
+const StyledLabel = styled.label`
+    position: relative;
+
+    .filter {
+        transition: all 0.2s ease-in-out;
+        border-radius: 10px 0 0 10px;
+        border: 4px solid transparent;
+        opacity: 0;
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        background-color: rgba(23, 29, 46, 0.29);
+    }
+
+    .uploadIcon {
+        transition: all 0.2s ease-in-out;
+        opacity: 0;
+        width: 6rem;
+        height: 6rem;
+        position: absolute;
+        pointer-events: none;
+        fill: white;
+        z-index: 5;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+    }
+
+    &:hover {
+        .uploadIcon, .filter {
+            opacity: 1;
+        }
+    }
+`;
 
 export default function ProfilePicUploader() {
-    const { userData, setUserData } = useContext(UserContext);
+    const {userData, setUserData} = useContext(UserContext);
 
     const handleElementChange = (key) => (value) => {
         setUserData((prevUserData) => ({
@@ -80,19 +119,21 @@ export default function ProfilePicUploader() {
 
     return (
         <div className="profile-pic-image">
-            <label htmlFor="file-upload" className="custom-file-upload">
+            <StyledLabel htmlFor="file-upload" className="custom-file-upload">
+                <FileUpload className={"uploadIcon"}/>
+                <Box className={"filter"}/>
                 <img
                     src={userData.profilePic || './images/rgPlaceholder.jpg'}
                     alt="Profile"
                     className={`image-profile ${userData.profilePic ? 'active' : ''}`}
-                    style={{ cursor: 'pointer' }}
+                    style={{cursor: 'pointer'}}
                 />
-            </label>
+            </StyledLabel>
             <input
                 id="file-upload"
                 type="file"
                 className="file-upload"
-                style={{ display: 'none' }}
+                style={{display: 'none'}}
                 onChange={handleFileChange}
                 accept="image/*"
             />

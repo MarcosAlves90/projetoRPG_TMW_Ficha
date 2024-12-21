@@ -1,9 +1,40 @@
 import { useEffect, useContext, useRef, useCallback } from "react";
-import TextareaAutosize from 'react-textarea-autosize';
 import Collapsible from "react-collapsible";
 import 'bootstrap-icons/font/bootstrap-icons.css';
 import { saveUserData } from "../firebaseUtils.js";
 import { UserContext } from "../UserContext";
+import {TextField} from "@mui/material";
+import styled from "styled-components";
+
+const StyledTextField = styled(TextField)`
+    margin-bottom: 2rem;
+    margin-top: 0;
+    width: 100%;
+    background-color: var(--background);
+
+    .MuiInputLabel-root, .MuiInputBase-input {
+        font-family: var(--common-font-family), sans-serif !important;
+    }
+
+    & .MuiOutlinedInput-root {
+        & fieldset {
+            border: var(--gray-border);
+            transition: var(--common-transition);
+        }
+        &:hover fieldset {
+            border: var(--focus-gray-border);
+        }
+        &.Mui-focused fieldset {
+            border: var(--focus-gray-border);
+        }
+    }
+
+    @media (max-width: 991px) {
+        & .MuiInputBase-input, .MuiInputLabel-root {
+            font-size: 3vw;
+        }
+    }
+`;
 
 export default function Page2() {
 
@@ -43,12 +74,15 @@ export default function Page2() {
                     transitionTime={100}
                     transitionCloseTime={100}>
                     <article className={"textarea-container"}>
-                        <TextareaAutosize className="form-control textarea-sheet"
-                            id="textarea-origem"
+                        <StyledTextField
+                            id="outlined-multiline-static"
+                            placeholder="Escreva a sua origem"
                             value={userData.origem}
                             onChange={handleInputChange('origem')}
-                            minRows={7}
-                            placeholder={"Escreva a sua origem."} />
+                            multiline
+                            variant={"outlined"}
+                            minRows={6}
+                        />
                     </article>
                 </Collapsible>
             </section>
@@ -59,12 +93,15 @@ export default function Page2() {
                     transitionTime={100}
                     transitionCloseTime={100}>
                     <div className={"textarea-container"}>
-                        <TextareaAutosize className="form-control textarea-sheet"
-                            id="textarea-fisico"
+                        <StyledTextField
+                            id="outlined-multiline-static"
+                            placeholder="Descreva a sua aparência"
                             value={userData.fisico}
                             onChange={handleInputChange('fisico')}
+                            multiline
+                            variant={"outlined"}
                             minRows={4}
-                            placeholder={"Descreva sua aparência."} />
+                        />
                     </div>
                 </Collapsible>
             </section>
@@ -75,12 +112,14 @@ export default function Page2() {
                     transitionTime={100}
                     transitionCloseTime={100}>
                     <div className={"textarea-container"}>
-                        <TextareaAutosize className="form-control textarea-sheet"
-                            id="textarea-ideais"
+                        <StyledTextField
+                            id="outlined-multiline-static"
+                            placeholder={"Escreva um ou mais ideais"}
                             value={userData.ideais}
                             onChange={handleInputChange('ideais')}
-                            minRows={4}
-                            placeholder={"- Escreva um ou mais ideais."} />
+                            multiline
+                            variant={"outlined"}
+                            minRows={4}/>
                     </div>
                 </Collapsible>
             </section>
@@ -93,10 +132,12 @@ export default function Page2() {
                             transitionTime={100}
                             transitionCloseTime={100}>
                             <div className={"textarea-container"}>
-                                <TextareaAutosize className="form-control textarea-sheet"
-                                    id="textarea-tracosNegativos"
+                                <StyledTextField
+                                    id="outlined-multiline-static"
                                     value={userData.tracosNegativos}
                                     onChange={handleInputChange('tracosNegativos')}
+                                    multiline
+                                    variant={"outlined"}
                                     minRows={4}
                                     placeholder={"- Escreva um ou mais traços negativos.\n" +
                                         "- Os traços podem ser físicos ou mentais."} />
@@ -109,10 +150,12 @@ export default function Page2() {
                             transitionTime={100}
                             transitionCloseTime={100}>
                             <div className={"textarea-container"}>
-                                <TextareaAutosize className="form-control textarea-sheet"
-                                    id="textarea-tracosPositivos"
+                                <StyledTextField
+                                    id="outlined-multiline-static"
                                     value={userData.tracosPositivos}
                                     onChange={handleInputChange('tracosPositivos')}
+                                    multiline
+                                    variant={"outlined"}
                                     minRows={4}
                                     placeholder={"- Escreva um ou mais traços positivos.\n" +
                                         "- Os traços podem ser físicos ou mentais."} />
@@ -128,10 +171,12 @@ export default function Page2() {
                     transitionTime={100}
                     transitionCloseTime={100}>
                     <div className={"textarea-container"}>
-                        <TextareaAutosize className="form-control textarea-sheet"
+                        <StyledTextField
                             id="textarea-origemForma"
                             value={userData.origemForma}
                             onChange={handleInputChange('origemForma')}
+                            multiline
+                            variant={"outlined"}
                             minRows={7}
                             placeholder={"Escreva a origem da sua forma."} />
                     </div>
