@@ -66,7 +66,7 @@ input[type=number] {
 
     p {
         margin-bottom: 0;
-        margin-right: 1vw;
+        margin-right: 1rem;
     }
 
     &.last-select {
@@ -92,11 +92,10 @@ input[type=number] {
 .container-textarea-skill-left {
     margin: 0.625vw 0.625vw 0;
     padding: 0.5vw 0.7vw;
-    width: 60%;
     display: flex;
 
     background-color: var(--background);
-    border-radius: 0.7vw;
+    border-radius: 5px;
     border: var(--gray-border);
 
     .section-skill-selectors {
@@ -110,7 +109,7 @@ input[type=number] {
 }
 
 .container-textarea-annotation {
-    margin: 12px;
+    margin: 0.625vw 0.625vw 0;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -118,29 +117,7 @@ input[type=number] {
         display: flex;
         flex-direction: column;
         margin: 0 12px 0 12px;
-        width: 20%;
         gap: 0.7em;
-        .buttonCopy {
-            width: 100%;
-            border-radius: 100px;
-            background-color: var(--gray-border-color);
-            outline: none;
-            transition: var(--common-transition);
-            padding: 0.6em 1.2em;
-            font-size: var(--common-button-font-size);
-            border: none;
-            &:hover {
-                border: none !important;
-                background-color: var(--gray-placeholder);
-                border: var(--focus-gray-border);
-            }
-        }
-        .delete-button {
-            width: 100%;
-            button {
-                margin: 0;
-            }
-        }
     }
 }
 
@@ -315,7 +292,7 @@ input[type=number] {
     height: 80vh;
     width: 70vw;
 
-    border-radius: 20px;
+    border-radius: 5px;
     outline: none;
     color: var(--common-font-color);
 
@@ -332,7 +309,7 @@ input[type=number] {
         z-index: 2;
         top: 0;
         background-color: var(--gray-border-color);
-        border-radius: 0 0 0 20px;
+        border-radius: 0 0 0 5px;
         height: 3rem;
         width: 3rem;
         display: flex;
@@ -367,7 +344,7 @@ input[type=number] {
                 color: white;
                 font-size: 2rem;
                 text-align: center;
-                border-radius: 0 0 10px 10px;
+                border-radius: 0 0 5px 5px;
                 background-color: var(--gray-border-color);
                 &:focus {
                     background-color: var(--gray-border-color);
@@ -387,7 +364,7 @@ input[type=number] {
         .boxButtons {
             gap: 1.3rem;
             .button {
-                border-radius: 50px;
+                border-radius: 5px;
                 outline: none;
                 border: none;
                 &.button {
@@ -417,7 +394,7 @@ input[type=number] {
         }
         .boxButtons {
             background-color: var(--gray-border-color);
-            border-radius: 20px 20px 0 0;
+            border-radius: 5px 5px 0 0;
             padding: 1rem;
         }
         .inputsSequence {
@@ -432,7 +409,7 @@ input[type=number] {
         width: 40%;
         height: calc(100% - 4vw);
         background-color: rgba(42, 53, 84, 0.32);
-        border-radius: 20px;
+        border-radius: 5px;
         display: flex;
         align-items: center;
         justify-content: center;
@@ -714,7 +691,7 @@ input[type=number] {
                 height: 8rem;
                 background-color: var(--background);
                 color: var(--gray-border-color);
-                border-radius: 20px;
+                border-radius: 5px;
                 transition: var(--common-transition);
                 border: var(--gray-border);
                 .bi {
@@ -794,50 +771,10 @@ input[type=number] {
 
     &.page-4, &.page-5 {
         .Collapsible {
-            span {
+            .Collapsible__trigger {
                 padding-right: 2rem;
                 padding-left: 2rem;
                 color: var(--common-font-color) !important;
-            }
-        }
-        .create-annotation {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            .search {
-                font-size: 0.9vw;
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                width: 45%;
-                margin-left: 3vw;
-                .search.skill {
-                    padding: var(--common-input-padding);
-                    width: 100%;
-                }
-            }
-        }
-        .create-annotation.input {
-            width: 40%;
-            .create-annotation-title {
-                width: 100%;
-                font-size: 0.9vw;
-                padding: var(--common-input-padding);
-                margin: 0.625vw;
-            }
-        }
-        .create-annotation.button {
-            height: 100%;
-            min-width: 15%;
-            .create {
-                font-size: 0.9vw;
-                width: 100%;
-                padding: var(--common-input-padding);
-                margin: 0.625vw;
-                background-color: var(--gray-border-color);
-                &:hover {
-                    background-color: var(--gray-placeholder);
-                }
             }
         }
         .tag-cloud {
@@ -851,11 +788,16 @@ input[type=number] {
                 margin: 0;
                 font-size: 0.9vw;
                 padding: var(--common-input-padding);
-                border-radius: 10px;
+                border-radius: 5px;
                 background-color: var(--gray-border-color);
                 color: var(--common-font-color);
                 transition: var(--common-transition);
                 border: var(--gray-border);
+                &.qty {
+                    background-color: var(--identity-outside-background);
+                    border-color: var(--identity-outside-background);
+                    color: var(--identity-inside-background);
+                }
                 &.active {
                     background-color: var(--common-font-color);
                     color: var(--gray-border-color);
@@ -931,7 +873,6 @@ input[type=number] {
         }
         .section-dice {
             div h2 {
-                font-size: 2vw;
                 margin: 0;
             }
             div .dice {
@@ -939,7 +880,7 @@ input[type=number] {
                 min-width: 21.354vw;
                 height: 4vw;
                 .dice-background {
-                    background-color: var(--card-background);
+                    background-color: rgba(23, 29, 46, 0.49);
                 }
                 .dice-font {
                     font-size: calc(var(--common-button-font-size) + 0.4vw);
@@ -950,12 +891,12 @@ input[type=number] {
                 .dice-font.left {
                     height: 100%;
                     width: 100%;
-                    border-radius: 20px 0 0 20px;
+                    border-radius: 5px 0 0 5px;
                 }
                 .dice-font.right {
                     height: 100%;
                     width: 100%;
-                    border-radius: 0 20px 20px 0;
+                    border-radius: 0 5px 5px 0;
                 }
                 .dice-font.center {
                     font-size: calc(1.2333vw - 0.01vw * var(--text-length));
@@ -1003,7 +944,7 @@ input[type=number] {
                 color: var(--gray-placeholder);
                 background-color: var(--background);
                 width: 100%;
-                margin-bottom: 2rem;
+                margin-bottom: 1rem;
 
                 .last-p {
                     margin-bottom: 0;
@@ -1013,9 +954,9 @@ input[type=number] {
         }
         .section-status {
             border: var(--gray-border);
-            background-color: var(--card-background);
-            border-radius: 1vw;
-            margin-bottom: 1vw;
+            background-color: rgba(23, 29, 46, 0.49);
+            border-radius: 5px;
+            margin-bottom: 1rem;
 
             .form-control {
                 background-color: var(--background);
@@ -1081,7 +1022,7 @@ input[type=number] {
             .input-group-text-left {
                 font-size: 0.8vw;
                 min-width: 1.667vw;
-                border-radius: 10px 0 0 10px;
+                border-radius: 5px 0 0 5px;
                 &.defined {
                     transition: var(--common-transition);
                     width: 100%;
@@ -1091,7 +1032,7 @@ input[type=number] {
             }
 
             input {
-                border-radius: 10px;
+                border-radius: 5px;
             }
         }
 
@@ -1418,7 +1359,7 @@ input[type=number] {
 
 @media (max-width: 991px) {
     .popupOverlay {
-        z-index: 5;
+        z-index: 11;
         background-color: rgba(15, 19, 31, 0.84);
     }
     .popup {
@@ -1434,19 +1375,19 @@ input[type=number] {
         align-items: flex-start;
         gap: 1.3rem;
         padding: 0;
-        border-radius: 20px 0 0 20px;
+        border-radius: 5px;
         overflow: auto;
         .closeButton {
             right: 10px;
             top: 10px;
-            border-radius: 50px;
+            border-radius: 5px;
         }
         .leftBox {
             box-sizing: border-box;
             width: calc(100% - 8vw);
             height: 27vh;
             margin: 0 4vw;
-            border-radius: 0 0 20px 20px;
+            border-radius: 0 0 5px 5px;
             flex-shrink: 0;
         }
         .rightBox {
@@ -1613,7 +1554,7 @@ input[type=number] {
         }
         .section-dice {
             .title-2 {
-                font-size: calc(5vw);
+                font-size: calc(4vw);
             }
             .display-flex-center.dice {
                 width: 100%;
@@ -1649,10 +1590,9 @@ input[type=number] {
                 display: flex;
                 justify-content: center;
                 align-items: center;
-                border: var(--focus-gray-border);
+                border: 3px solid var(--gray-placeholder);
                 padding: 3vw 0 3vw 0;
-                border-radius: 20px;
-                margin-bottom: 2vw;
+                border-radius: 5px;
                 .alert-box-message {
                     text-align: center;
                     font-size: calc(3.5vw);
@@ -1663,10 +1603,9 @@ input[type=number] {
             margin: 1vw 0 1vw 0;
         }
         .section-status {
-            border-radius: 20px;
             margin-bottom: 2vw;
             .mainCommon.title-2 {
-                font-size: calc(5vw);
+                font-size: calc(4vw);
             }
             .statusDescription {
                 display: none;
@@ -1739,7 +1678,6 @@ input[type=number] {
                         align-items: start;
                         flex-direction: column;
                         input, .custom-select {
-                            height: calc(8.5vw);
                             font-size: calc(3vw);
                         }
                         .container-skill-select {
@@ -1764,7 +1702,6 @@ input[type=number] {
                         margin: 1vw 0 1vw 0;
                         width: 100%;
                         input {
-                            height: calc(8.5vw);
                             font-size: calc(3vw);
                         }
                     }

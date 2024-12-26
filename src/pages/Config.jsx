@@ -16,6 +16,10 @@ const StyledButton = styled(Button)`
     font-size: 1rem;
     color: var(--background);
     font-family: var(--common-font-family), sans-serif !important;
+    
+    &.full {
+        grid-column: span 2;
+    }
 
     &.confirmation, &.delete.confirmation {
         background-color: var(--warn);
@@ -164,11 +168,12 @@ export default function Config() {
                     <i className="bi bi-trash3-fill"/>
                 </StyledButton>
                 {auth.currentUser && (
-                    <button className={`button-header active light sheets`}
+                    <StyledButton variant="contained"
+                                  className={"full"}
                             onClick={() => handleSheetsButtonClick()}>
                         {"Trocar ficha"}
                         <i className="bi bi-file-spreadsheet-fill"></i>
-                    </button>
+                    </StyledButton>
                 )}
             </section>
         </main>

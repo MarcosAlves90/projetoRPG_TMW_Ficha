@@ -1,5 +1,4 @@
-import { useCallback, useEffect, useState, useMemo, useContext, useRef } from "react";
-import { lockedInputStyle } from "../assets/styles/CommonStyles.jsx";
+import {useCallback, useEffect, useState, useMemo, useContext, useRef} from "react";
 import {
     ArtsSection,
     Attributes,
@@ -7,12 +6,92 @@ import {
     PericiasSection,
     SubArtsSection
 } from "../assets/systems/FichaPage3/FichaPage3System.jsx";
-import { arcArray, atrMap, bioMap, perArray, subArcArray } from "../assets/systems/FichaPage3/FichaPage3Arrays.jsx";
-import { saveUserData } from "../firebaseUtils.js";
-import { ToastContainer, toast } from 'react-toastify';
+import {arcArray, atrMap, bioMap, perArray, subArcArray} from "../assets/systems/FichaPage3/FichaPage3Arrays.jsx";
+import {saveUserData} from "../firebaseUtils.js";
+import {ToastContainer, toast} from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { map } from "jquery";
-import { UserContext } from "../UserContext.jsx";
+import {map} from "jquery";
+import {UserContext} from "../UserContext.jsx";
+import styled from "styled-components";
+import {Box, Button, InputAdornment, TextField} from "@mui/material";
+import {Search, ReportGmailerrorred, Report, Lock, LockOpen} from "@mui/icons-material";
+
+const StyledTextField = styled(TextField)`
+    margin-top: 0;
+    background-color: var(--background);
+    height: fit-content;
+
+    .MuiInputLabel-root, .MuiInputBase-input {
+        font-family: var(--common-font-family), sans-serif !important;
+    }
+
+    & .MuiOutlinedInput-root {
+        & fieldset {
+            border: var(--gray-border);
+            transition: var(--common-transition);
+        }
+
+        &:hover fieldset {
+            border: var(--focus-gray-border);
+        }
+
+        &.Mui-focused fieldset {
+            border: var(--focus-gray-border);
+        }
+    }
+
+    @media (max-width: 991px) {
+        & .MuiInputBase-input, .MuiInputLabel-root {
+            font-size: 3vw;
+        }
+    }
+`;
+
+const StyledInputsBox = styled(Box)`
+    display: flex;
+    gap: 1rem;
+    margin: 1rem 0;
+
+    .buttonsBox {
+        display: flex;
+        gap: 1rem;
+    }
+
+    @media (max-width: 991px) {
+        flex-direction: column;
+        gap: 2vw;
+        margin: 2vw 0;
+        .buttonsBox {
+            gap: 2vw;
+
+            button {
+                width: 100%;
+            }
+        }
+    }
+`;
+
+const StyledButton = styled(Button)`
+    width: 13rem;
+    padding: 0.4rem;
+    border-radius: 3px;
+    font-weight: bold;
+    font-size: 1rem;
+    color: var(--background);
+    font-family: var(--common-font-family), sans-serif !important;
+
+    &.locked {
+        background-color: var(--common-font-color);
+
+        &:hover {
+            background-color: var(--gray-placeholder);
+        }
+    }
+
+    @media (max-width: 991px) {
+        font-size: 3vw;
+    }
+`;
 
 export default function Page3() {
     const [totalPoints, setTotalPoints] = useState({
@@ -31,7 +110,7 @@ export default function Page3() {
     });
 
     const [searchTerm, setSearchTerm] = useState('');
-    const { userData, setUserData, user } = useContext(UserContext);
+    const {userData, setUserData, user} = useContext(UserContext);
     const debounceTimeout = useRef(null);
 
     const saveDataDebounced = useCallback((data) => {
@@ -53,11 +132,11 @@ export default function Page3() {
             arcPoints: 0,
             subArcPoints: 0
         };
-    
+
         Object.keys(userData).forEach(key => {
             const value = parseFloat(userData[key]);
             const validValue = isNaN(value) ? 0 : value;
-    
+
             if (!key.includes('Points') && !key.endsWith('-bonus')) {
                 if (key.startsWith('biotipo-')) {
                     newTotalPoints.bioPoints += validValue;
@@ -72,7 +151,7 @@ export default function Page3() {
                 }
             }
         });
-    
+
         setTotalPoints(newTotalPoints);
     };
 
@@ -82,7 +161,7 @@ export default function Page3() {
     }, [userData, saveDataDebounced]);
 
     const handleInputChange = (key) => (event) => {
-        const { value, type } = event.target;
+        const {value, type} = event.target;
         setUserData((prevUserData) => ({
             ...prevUserData,
             [key]: type === 'number' ? (value === '' ? '' : parseFloat(value)) : value,
@@ -312,46 +391,60 @@ export default function Page3() {
     return (
         <main className={"mainCommon page-3"}>
 
-            <ToastContainer limit={5} closeOnClick />
+            <ToastContainer limit={5} closeOnClick/>
             <section className={"section-dice"}>
                 <div className={"display-flex-center"}>
                     <h2 className={"title-2"}>Rolagem:</h2>
                     <article className={"display-flex-center dice"}>
-                        <div className={"dice-background dice-font left"}>{tempRoll.Pericia ? tempRoll.Pericia : "Nenhum"}</div>
-                        <div className={"dice-background dice-font center display-flex-center"}><p>{tempRoll.Dice.length < 31 ? `[${tempRoll.Dice}]` : tempRoll.Dice.length >= 31 ? `[${tempRoll.Dice.slice(0, 30)}...]` : "0"}</p></div>
+                        <div
+                            className={"dice-background dice-font left"}>{tempRoll.Pericia ? tempRoll.Pericia : "Nenhum"}</div>
+                        <div className={"dice-background dice-font center display-flex-center"}>
+                            <p>{tempRoll.Dice.length < 31 ? `[${tempRoll.Dice}]` : tempRoll.Dice.length >= 31 ? `[${tempRoll.Dice.slice(0, 30)}...]` : "0"}</p>
+                        </div>
                         <div className={"dice-background dice-font right"}>{tempRoll.Result ? tempRoll.Result : 0}</div>
                     </article>
                 </div>
             </section>
             <section className={"section-options"}>
-                <div className={"display-flex-center buttons"}>
-                    <article className={"options-buttons display-flex-center"}>
-                        <button type="button"
-                            className="button-lock"
-                            onClick={handleLockChange}
-                            style={userData.isLocked ? lockedInputStyle() : {}}>
-                            {userData.isLocked ? "Entradas bloqueadas " : "Entradas desbloqueadas "}
-                            <i className={userData.isLocked ? "bi bi-lock-fill" : "bi bi-unlock-fill"} />
-                        </button>
-                        <button type={"button"}
-                            className={"button-lock"}
-                            onClick={() => setRecommendations(!recommendations)}
-                            style={recommendations ? lockedInputStyle() : {}}
+                <StyledInputsBox>
+                    <Box className={"buttonsBox"}>
+                        <StyledButton type="button"
+                                      variant="contained" color="primary"
+                                      className={`${userData.isLocked ? "locked" : ""}`}
+                                      onClick={handleLockChange}
+                                      endIcon={userData.isLocked ? <Lock/> : <LockOpen/>}
                         >
-                            {"Regras "}
-                            <i className={recommendations ? "bi bi-exclamation-triangle-fill" : "bi bi-exclamation-triangle"} />
-                        </button>
-                    </article>
-                    <input
-                        className={"search status"}
+                            {userData.isLocked ? "Bloqueado" : "Desbloqueado"}
+                        </StyledButton>
+                        <StyledButton type={"button"}
+                                      variant="contained" color="primary"
+                                      className={`${recommendations ? "locked" : ""}`}
+                                      onClick={() => setRecommendations(!recommendations)}
+                                      endIcon={recommendations ? <Report/> : <ReportGmailerrorred/>}
+                        >
+                            {"Regras"}
+                        </StyledButton>
+                    </Box>
+                    <StyledTextField
                         type="text"
-                        placeholder="pesquisar status..."
+                        variant="outlined"
+                        placeholder="Pesquisar status..."
                         value={searchTerm}
                         onChange={handleSearchChange}
+                        fullWidth
+                        slotProps={{
+                            input: {
+                                startAdornment: (
+                                    <InputAdornment position="start">
+                                        <Search/>
+                                    </InputAdornment>
+                                ),
+                            },
+                        }}
                     />
-                </div>
+                </StyledInputsBox>
                 <div className={"display-flex-center"}>
-                    <div className={"alert-box-collapsible"} style={recommendations ? null : { display: "none" }}>
+                    <div className={"alert-box-collapsible"} style={recommendations ? null : {display: "none"}}>
                         <div className={"alert-box"}>
                             <div className={"alert-box-message"}>
                                 <p>Máximo de pontos em cada categoria:</p>
@@ -384,7 +477,8 @@ export default function Page3() {
 
             <section className={`section-atributos section-status ${filteredAtrMap.length < 1 ? "display-none" : ""}`}>
                 <div className={"display-flex-center column"}>
-                    <h2 className={"mainCommon title-2"}>Atributos: [{totalPoints.atrPoints}]/[{CalculateAttributesPoints()}]</h2>
+                    <h2 className={"mainCommon title-2"}>Atributos:
+                        [{totalPoints.atrPoints}]/[{CalculateAttributesPoints()}]</h2>
                     <p className={"statusDescription"}>Os atributos são os status principais do personagem.
                         Eles guiam as perícias e as (sub)artes arcanas.</p>
                 </div>
@@ -403,8 +497,9 @@ export default function Page3() {
             <section className={`section-perArray section-status ${filteredPerArray.length < 1 ? "display-none" : ""}`}>
                 <div className={"display-flex-center column"}>
                     <h2 className={"mainCommon title-2"}>
-                        Perícias: [{totalPoints.perPoints}]/[{!userData.nivel || userData.nivel === "" || isNaN(userData.nivel) ? "Verifique seu nível" :
-                            CalculatePericiasPoints() > 0 ? CalculatePericiasPoints() :
+                        Perícias:
+                        [{totalPoints.perPoints}]/[{!userData.nivel || userData.nivel === "" || isNaN(userData.nivel) ? "Verifique seu nível" :
+                        CalculatePericiasPoints() > 0 ? CalculatePericiasPoints() :
                             CalculatePericiasPoints() === 0 ? "Preencha o Biotipo e Atributos" : "Biotipo maior do que o esperado"}]
                     </h2>
                     <p className={"statusDescription"}>As perícias são os conhecimentos e habilidades naturais do
@@ -431,7 +526,8 @@ export default function Page3() {
                 />
             </section>
 
-            <section className={`section-subArts section-status ${filteredSubArcArray.length < 1 ? "display-none" : ""}`}>
+            <section
+                className={`section-subArts section-status ${filteredSubArcArray.length < 1 ? "display-none" : ""}`}>
                 <div className={"display-flex-center column"}>
                     <h2 className={"mainCommon title-2"}>
                         Subartes: [{totalPoints.subArcPoints}]/[{(userData['pericia-Magia Arcana'] || 0) * 5}]

@@ -2,6 +2,20 @@ import PropTypes from "prop-types";
 import { useContext} from "react";
 import { arcColors, atrColors, bioColors } from "../../styles/CommonStyles.jsx";
 import { UserContext } from "../../../UserContext.jsx";
+import styled from "styled-components";
+
+const StatusTextField = styled.input`
+    border-width: 3px;
+    text-align: center;
+    border-color: var(--gray-border-color);
+    &:hover, &:focus {
+        border-color: var(--gray-border-color);
+    }
+`;
+
+const BonusStatusTextField = styled.input`
+    text-align: center;
+`;
 
 const perArrayPropType = PropTypes.arrayOf(
     PropTypes.shape({
@@ -42,7 +56,7 @@ export function Biotipos({ biotipo, handleInputChange }) {
                         color: bioColors[biotipo].color, border: `${bioColors[biotipo].background} 2px solid`
                     }}>{biotipo}</span>
             </div>
-            <input type="number"
+            <StatusTextField type="number"
                 step={1}
                 min={0}
                 className="form-control input-status"
@@ -61,6 +75,63 @@ export function Biotipos({ biotipo, handleInputChange }) {
 Biotipos.propTypes = {
     biotipo: PropTypes.string.isRequired,
     handleInputChange: PropTypes.func.isRequired,
+};
+
+const getTruAttrName = {
+    'DES': 'Destreza',
+    'FOR': 'Força',
+    'INT': 'Inteligência',
+    'PRE': 'Presença',
+    'VIG': 'Vigor',
+}
+
+export function Attributes({ atributo, atr, handleInputChange, rollDice }) {
+    const { userData } = useContext(UserContext);
+
+    return (
+        <div className="input-group mb-3">
+            <div className="text-div">
+                <span className={`input-group-text-left defined attribute ${userData.isLocked ? "locked" : ""}`}
+                      id={`button-${atributo}`}
+                      onClick={rollDice}
+                      style={{
+                          backgroundColor: atrColors[atr].background,
+                          color: atrColors[atr].color, border: `${atrColors[atr].background} 2px solid`
+                      }}>{getTruAttrName[atributo]}</span>
+            </div>
+            <StatusTextField type="number"
+                             step={1}
+                             min={0}
+                             className="form-control input-status border-right-none"
+                             placeholder="0"
+                             value={userData[`atributo-${atr}`] || ''}
+                             onChange={handleInputChange(`atributo-${atr}`)}
+                             onKeyDownCapture={handleKeyPress}
+                             style={userData.isLocked ? { borderColor: atrColors[atr].background } : {}}
+                             id={`label-${atributo}`}
+                             disabled={userData.isLocked}
+            />
+            <BonusStatusTextField type="number"
+                   step={1}
+                   min={0}
+                   className="form-control input-status input-bonus"
+                   placeholder="0"
+                   value={userData[`atributo-${atr}-bonus`] || ''}
+                   onChange={handleInputChange(`atributo-${atr}-bonus`)}
+                   onKeyDownCapture={handleKeyPress}
+                   style={userData.isLocked ? { borderColor: atrColors[atr].background } : {}}
+                   id={`label-${atributo}-bonus`}
+                   disabled={userData.isLocked}
+            />
+        </div>
+    );
+}
+
+Attributes.propTypes = {
+    atributo: PropTypes.string.isRequired,
+    atr: PropTypes.string.isRequired,
+    handleInputChange: PropTypes.func.isRequired,
+    rollDice: PropTypes.func.isRequired,
 };
 
 export function PericiasSection({ rollDice, handleInputChange, perArray }) {
@@ -102,7 +173,7 @@ function Pericia({pericia, atr, handleInputChange, rollDice}) {
                 onClick={rollDice}
                 style={userData.isLocked ? { borderColor: `${atrColors[atr].background}` } : {}}>
                 {pericia}</span>
-            <input type="number"
+            <StatusTextField type="number"
                 step={1}
                 min={0}
                 className="form-control input-status border-right-none"
@@ -114,7 +185,7 @@ function Pericia({pericia, atr, handleInputChange, rollDice}) {
                 disabled={userData.isLocked}
                 style={userData.isLocked ? { borderColor: `${atrColors[atr].background}` } : {}}
             />
-            <input type="number"
+            <BonusStatusTextField type="number"
                 step={1}
                 min={0}
                 className="form-control input-status input-bonus"
@@ -132,63 +203,6 @@ function Pericia({pericia, atr, handleInputChange, rollDice}) {
 
 Pericia.propTypes = {
     pericia: PropTypes.string.isRequired,
-    atr: PropTypes.string.isRequired,
-    handleInputChange: PropTypes.func.isRequired,
-    rollDice: PropTypes.func.isRequired,
-};
-
-const getTruAttrName = {
-    'DES': 'Destreza',
-    'FOR': 'Força',
-    'INT': 'Inteligência',
-    'PRE': 'Presença',
-    'VIG': 'Vigor',
-}
-
-export function Attributes({ atributo, atr, handleInputChange, rollDice }) {
-    const { userData } = useContext(UserContext);
-
-    return (
-        <div className="input-group mb-3">
-            <div className="text-div">
-                <span className={`input-group-text-left defined attribute ${userData.isLocked ? "locked" : ""}`}
-                    id={`button-${atributo}`}
-                    onClick={rollDice}
-                    style={{
-                        backgroundColor: atrColors[atr].background,
-                        color: atrColors[atr].color, border: `${atrColors[atr].background} 2px solid`
-                    }}>{getTruAttrName[atributo]}</span>
-            </div>
-            <input type="number"
-                step={1}
-                min={0}
-                className="form-control input-status border-right-none"
-                placeholder="0"
-                value={userData[`atributo-${atr}`] || ''}
-                onChange={handleInputChange(`atributo-${atr}`)}
-                onKeyDownCapture={handleKeyPress}
-                style={userData.isLocked ? { borderColor: atrColors[atr].background } : {}}
-                id={`label-${atributo}`}
-                disabled={userData.isLocked}
-            />
-            <input type="number"
-                step={1}
-                min={0}
-                className="form-control input-status input-bonus"
-                placeholder="0"
-                value={userData[`atributo-${atr}-bonus`] || ''}
-                onChange={handleInputChange(`atributo-${atr}-bonus`)}
-                onKeyDownCapture={handleKeyPress}
-                style={userData.isLocked ? { borderColor: atrColors[atr].background } : {}}
-                id={`label-${atributo}-bonus`}
-                disabled={userData.isLocked}
-            />
-        </div>
-    );
-}
-
-Attributes.propTypes = {
-    atributo: PropTypes.string.isRequired,
     atr: PropTypes.string.isRequired,
     handleInputChange: PropTypes.func.isRequired,
     rollDice: PropTypes.func.isRequired,
@@ -237,7 +251,7 @@ export function ArcaneArts({art, handleInputChange}) {
                         color: arcColors[art].color, border: `${arcColors[art].background} 2px solid`
                     }}>{getTruArcName[art]}</span>
             </div>
-            <input type="number"
+            <StatusTextField type="number"
                 step={1}
                 min={0}
                 className="form-control input-status"
@@ -289,7 +303,7 @@ export function SubArcaneArts({ subArt, art, handleInputChange }) {
             <span className="input-group-text-center"
                 style={userData.isLocked ? { borderColor: `${arcColors[art].background}` } : {}}>
                 {subArt}</span>
-            <input type="number"
+            <StatusTextField type="number"
                 step={1}
                 min={0}
                 className="form-control input-status"

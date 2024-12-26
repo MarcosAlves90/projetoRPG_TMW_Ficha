@@ -4,6 +4,34 @@ import Collapsible from "react-collapsible";
 import { v4 as uuidv4 } from 'uuid';
 import { saveUserData } from "../firebaseUtils.js";
 import { UserContext } from "../UserContext.jsx";
+import {StyledButton, StyledTextField} from "../assets/systems/CommonComponents.jsx";
+import styled from "styled-components";
+import {Box, InputAdornment} from "@mui/material";
+import {AddCircle, Delete, Search} from "@mui/icons-material";
+
+const StyledInputsBox = styled(Box)`
+    display: flex;
+    gap: 1rem;
+    margin: 1rem 0;
+
+    .buttonsBox {
+        display: flex;
+        gap: 1rem;
+    }
+
+    @media (max-width: 991px) {
+        flex-direction: column;
+        gap: 2vw;
+        margin: 2vw 0;
+        .buttonsBox {
+            gap: 2vw;
+
+            button {
+                width: 100%;
+            }
+        }
+    }
+`;
 
 const CreateAnnotations = ({ array, handleContentChange, handleDelete }) => {
     return array.length > 0 && array.map((annotation) => (
@@ -17,19 +45,27 @@ const CreateAnnotations = ({ array, handleContentChange, handleDelete }) => {
             key={annotation.id}
         >
             <div className="container-textarea-annotation">
-                <TextareaAutosize
-                    className="form-control textarea-sheet"
+                <StyledTextField
+                    multiline
+                    variant={"outlined"}
+                    className={"textarea"}
                     id={`textarea-${annotation.id}`}
                     value={annotation.content}
                     onChange={(event) => handleContentChange(event, annotation.id)}
-                    minRows="4"
+                    minRows={5}
+                    fullWidth
                     placeholder="Escreva suas anotações."
                 />
-                <div className={"delete-button"}>
-                    <button className={"button-header active clear"} onClick={() => handleDelete(annotation.id)}>
-                        {"Excluir "}
-                        <i className="bi bi-trash3-fill" />
-                    </button>
+                <div className={"box"}>
+                    <StyledButton
+                        className={"delete"}
+                        variant="contained" color="primary"
+                        fullWidth
+                        onClick={() => handleDelete(annotation.id)}
+                        endIcon={<Delete/>}
+                    >
+                        Excluir
+                    </StyledButton>
                 </div>
             </div>
         </Collapsible>
@@ -86,20 +122,23 @@ export default function Page5() {
         annotation.content.toLowerCase().includes(searchTerm.toLowerCase())
     );
 
+    const clearInput = () => setCreateTitle("");
+
     return (
         <main className="mainCommon page-5">
-            <div className="create-annotation">
-                <div className="create-annotation input">
-                    <input
-                        className="create-annotation-title"
-                        type="text"
-                        onChange={(event) => setCreateTitle(event.target.value)}
-                        placeholder="Título da anotação."
-                    />
-                </div>
-                <div className="create-annotation button">
-                    <button
-                        className="button-header active create"
+            <StyledInputsBox>
+                <StyledTextField
+                    type="text"
+                    variant="outlined"
+                    fullWidth
+                    value={createTitle}
+                    onChange={(event) => setCreateTitle(event.target.value)}
+                    placeholder="título da anotação..."
+                />
+                <Box className="buttonsBox">
+                    <StyledButton
+                        className={"big-width"}
+                        variant="contained" color="primary"
                         onClick={() => {
                             if (createTitle.trim()) {
                                 const annotationsArray = userData.annotationsArray || [];
@@ -111,22 +150,32 @@ export default function Page5() {
                                         content: ''
                                     }
                                 ]);
+                                clearInput();
                             }
                         }}
+                        endIcon={<AddCircle/>}
                     >
                         Criar Anotação
-                    </button>
-                </div>
-                <div className={"search"}>
-                    <input
-                        className={"search skill"}
-                        type="text"
-                        placeholder="pesquisar anotações..."
-                        value={searchTerm}
-                        onChange={(event) => setSearchTerm(event.target.value)}
-                    />
-                </div>
-            </div>
+                    </StyledButton>
+                </Box>
+                <StyledTextField
+                    type="text"
+                    variant="outlined"
+                    placeholder="pesquisar anotações..."
+                    value={searchTerm}
+                    onChange={(event) => setSearchTerm(event.target.value)}
+                    fullWidth
+                    slotProps={{
+                        input: {
+                            startAdornment: (
+                                <InputAdornment position="start">
+                                    <Search/>
+                                </InputAdornment>
+                            ),
+                        },
+                    }}
+                />
+            </StyledInputsBox>
             <section className={"container-annotations"}>
                 <CreateAnnotations
                     array={filteredAnnotations}

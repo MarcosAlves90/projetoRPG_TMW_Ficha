@@ -5,6 +5,34 @@ import {v4 as uuidv4} from 'uuid';
 import {UserContext} from "../UserContext.jsx";
 import {useNavigate} from "react-router-dom";
 import { decompressData } from '../assets/systems/SaveLoad.jsx';
+import styled from "styled-components";
+import {Box} from "@mui/material";
+import {StyledButton, StyledTextField} from "../assets/systems/CommonComponents.jsx";
+import {AddCircle, ArrowBackIos} from "@mui/icons-material";
+
+const StyledInputsBox = styled(Box)`
+    display: flex;
+    gap: 1rem;
+    margin: 1rem 0;
+
+    .buttonsBox {
+        display: flex;
+        gap: 1rem;
+    }
+
+    @media (max-width: 991px) {
+        flex-direction: column;
+        gap: 2vw;
+        margin: 2vw 0;
+        .buttonsBox {
+            gap: 2vw;
+
+            button {
+                width: 100%;
+            }
+        }
+    }
+`;
 
 export default function SheetSelectionPage() {
     const [sheets, setSheets] = useState([]);
@@ -92,20 +120,32 @@ export default function SheetSelectionPage() {
                     <p>Carregando fichas...</p>
                 ) : (
                     <>
-                        <div className={"container-buttons display-flex-center"}>
-                            <button className={"button-header active light back"} onClick={goToSettings}>Voltar&nbsp; 
-                                <i className="bi bi-arrow-up-circle"></i>
-                            </button>
-                            <input
+                        <StyledInputsBox>
+                            <Box className={"buttonsBox"}>
+                                <StyledButton variant="contained" color="primary"
+                                              onClick={goToSettings}
+                                              startIcon={<ArrowBackIos/>}
+                                >
+                                    Voltar
+                                </StyledButton>
+                            </Box>
+                            <StyledTextField
                                 type="text"
-                                className={"input-name"}
+                                variant="outlined"
+                                fullWidth
                                 value={newSheetName}
                                 onChange={(e) => setNewSheetName(e.target.value)}
-                                placeholder="Nome da nova ficha"
+                                placeholder="nome da nova ficha..."
                             />
-                            <button className={"button-header active light create"} onClick={addSheet}>Adicionar Ficha
-                            </button>
-                        </div>
+                            <Box className={"buttonsBox"}>
+                                <StyledButton className={"big-width more"} variant="contained" color="primary"
+                                              onClick={addSheet}
+                                              endIcon={<AddCircle/>}
+                                >
+                                    Adicionar Ficha
+                                </StyledButton>
+                            </Box>
+                        </StyledInputsBox>
                         <div className={"sheet-list"}>
                             {sheets.map(sheet => (
                                 <div

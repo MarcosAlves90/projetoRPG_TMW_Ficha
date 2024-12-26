@@ -5,17 +5,6 @@
  */
 
 /**
- * Generates a style object for locked input fields.
- *
- * @returns {Object} The style object with background color, text color, and border properties.
- */
-export const lockedInputStyle = () => ({
-    backgroundColor: "var(--gray-border-color)",
-    color: "var(--gray-placeholder)",
-    border: "var(--gray-border)"
-})
-
-/**
  * Object containing the color schemes for different attributes (DES, FOR, INT, PRE, VIG).
  * Each attribute has a specified background and text color.
  *
