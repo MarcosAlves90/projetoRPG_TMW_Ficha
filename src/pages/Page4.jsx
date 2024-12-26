@@ -298,7 +298,7 @@ export default function Page4() {
         handleElementChange("skillsArray")(newSkills);
     };
 
-    function handleContentChange(e, id, fieldName) {
+    const handleContentChange = useCallback((e, id, fieldName) => {
         const updatedSkills = userData.skillsArray.map((skill) => {
             if (skill.id === id) {
                 const value = e.target.value;
@@ -308,12 +308,14 @@ export default function Page4() {
         });
 
         saveSkills(updatedSkills);
-    }
+    }, [userData.skillsArray, saveSkills]);
 
-    const handleDelete = (id) => {
+    const handleDelete = useCallback((id) => {
         const updatedSkills = userData.skillsArray.filter((skill) => skill.id !== id);
         saveSkills(updatedSkills);
-    };
+    }, [userData.skillsArray, saveSkills]);
+
+    const pasteRef = useRef(null);
 
     useEffect(() => {
         const handlePasteEvent = async (event) => {
@@ -336,19 +338,20 @@ export default function Page4() {
             }
         };
 
-        const element = document.querySelector('.mainCommon.page-4');
+        const element = pasteRef.current;
         element.addEventListener('paste', handlePasteEvent);
         return () => {
             element.removeEventListener('paste', handlePasteEvent);
         };
     }, []);
-    const handleCopy = async (skill) => {
+    
+    const handleCopy = useCallback(async (skill) => {
         try {
             await navigator.clipboard.writeText(JSON.stringify(skill));
         } catch (err) {
             console.error("Falha ao copiar a skill: ", err);
         }
-    };
+    }, []);
 
     const handlePaste = async () => {
         try {
@@ -375,15 +378,15 @@ export default function Page4() {
         return matchesSearchTerm && matchesDomain;
     }), [userData.skillsArray, searchTerm, activeDomains]);
 
-    function searchByDomain(domain) {
+    const searchByDomain = useCallback((domain) => {
         const updatedDomains = activeDomains.includes(domain) ? activeDomains.filter(d => d !== domain) : [...activeDomains, domain];
 
         setActiveDomains(updatedDomains);
-    }
+    }, [activeDomains]);
 
-    const linkedDomains = ["Fass", "Ris", "Xata", "Lohk", "Khra", "Netra", "Vome", "Jahu"];
+    const linkedDomains = useMemo(() => ["Fass", "Ris", "Xata", "Lohk", "Khra", "Netra", "Vome", "Jahu"], []);
 
-    return (<main className="mainCommon page-4">
+    return (<main className="mainCommon page-4" ref={pasteRef}>
             <StyledInputsBox>
                 <StyledTextField
                     type="text"
@@ -449,7 +452,7 @@ export default function Page4() {
             <section className="tag-cloud display-flex-center">
                 <span className={"tag qty"}>
                     <i className="bi bi-archive-fill"></i>
-                    {`${userData.skillsArray.length}/10 Skills`}
+                    {`${userData.skillsArray ? userData.skillsArray.length : 0}/10 Skills`}
                 </span>
                 {uniqueDomains.map((domain) => {
                     const isLinked = linkedDomains.includes(domain);
