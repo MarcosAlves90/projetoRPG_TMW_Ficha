@@ -386,6 +386,28 @@ export default function Page4() {
 
     const linkedDomains = useMemo(() => ["Fass", "Ris", "Xata", "Lohk", "Khra", "Netra", "Vome", "Jahu"], []);
 
+    const handleCreateSkill = () => {
+        if (createSkill.trim()) {
+            saveSkills([...(userData.skillsArray || []), {
+                title: createSkill,
+                domain: '',
+                content: '',
+                circle: 1,
+                type: 1,
+                art: '',
+                execution: 1,
+                range: 1,
+                target: '',
+                duration: '',
+                resistance: '',
+                area: '',
+                spent: '',
+                id: uuidv4()
+            }]);
+            clearInput();
+        }
+    };
+
     return (<main className="mainCommon page-4" ref={pasteRef}>
             <StyledInputsBox>
                 <StyledTextField
@@ -399,27 +421,7 @@ export default function Page4() {
                 <Box className={"buttonsBox"}>
                     <StyledButton
                         variant="contained" color="primary"
-                        onClick={() => {
-                            if (createSkill.trim()) {
-                                saveSkills([...(userData.skillsArray || []), {
-                                    title: createSkill,
-                                    domain: '',
-                                    content: '',
-                                    circle: 1,
-                                    type: 1,
-                                    art: '',
-                                    execution: 1,
-                                    range: 1,
-                                    target: '',
-                                    duration: '',
-                                    resistance: '',
-                                    area: '',
-                                    spent: '',
-                                    id: uuidv4()
-                                }]);
-                                clearInput();
-                            }
-                        }}
+                        onClick={handleCreateSkill}
                         endIcon={<AddCircle/>}
                     >
                         Criar Skill
