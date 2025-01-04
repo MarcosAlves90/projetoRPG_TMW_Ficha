@@ -32,239 +32,6 @@ const StyledInputsBox = styled(Box)`
     }
 `;
 
-function CreateSkills({array, handleContentChange, handleDelete, handleCopy}) {
-
-    return array.length > 0 && array.map((skill) => (<Collapsible
-            className={"skill"}
-            openedClassName={"skill"}
-            trigger={skill.title || `Skill: ${skill.id}`}
-            triggerStyle={{fontSize: "1.5em", color: "rgb(43, 43, 43)"}}
-            transitionTime={100}
-            transitionCloseTime={100}
-            key={skill.id}
-        >
-            <div className={"container-skill-selectors color-gray-placeholder"}>
-                <article className={"container-textarea-skill-left"}>
-                    <section className={"section-skill-selectors"}>
-                        <div className={"container-skill-select"}>
-                            <p>Círculo: </p>
-                            <StyledFormControl variant={"outlined"} fullWidth size={"small"}>
-                                <Select
-                                    onChange={(e) => handleContentChange(e, skill.id, 'circle')}
-                                    value={skill.circle}>
-                                    <MenuItem value={1}>
-                                        1° Círculo
-                                    </MenuItem>
-                                    <MenuItem value={2}>
-                                        2° Círculo
-                                    </MenuItem>
-                                    <MenuItem value={3}>
-                                        3° Círculo
-                                    </MenuItem>
-                                </Select>
-                            </StyledFormControl>
-                        </div>
-                        <div className={"container-skill-select"}>
-                            <p>Categoria: </p>
-                            <StyledFormControl variant={"outlined"} fullWidth size={"small"}>
-                                <Select
-                                    onChange={(e) => handleContentChange(e, skill.id, 'type')}
-                                    value={skill.type}>
-                                    <MenuItem value={1}>
-                                        Ativa
-                                    </MenuItem>
-                                    <MenuItem value={2}>
-                                        Passiva
-                                    </MenuItem>
-                                </Select>
-                            </StyledFormControl>
-                        </div>
-                        <div className={"container-skill-select"}>
-                            <p>Gasto: </p>
-                            <StyledTextField
-                                type={"text"}
-                                variant="outlined"
-                                size={"small"}
-                                fullWidth
-                                onChange={(e) => handleContentChange(e, skill.id, 'spent')}
-                                value={skill.spent}
-                                placeholder={"gasto..."}
-                            />
-                        </div>
-                        <div className={"container-skill-select"}>
-                            <p>Arte: </p>
-                            <StyledTextField
-                                type={"text"}
-                                variant="outlined"
-                                size={"small"}
-                                fullWidth
-                                onChange={(e) => handleContentChange(e, skill.id, 'art')}
-                                value={skill.art}
-                                placeholder={"arte utilizada..."}
-                            />
-                        </div>
-                        <div className={"container-skill-select last-select"}>
-                            <p>Execução: </p>
-                            <StyledFormControl variant={"outlined"} fullWidth size={"small"}>
-                                <Select
-                                    onChange={(e) => handleContentChange(e, skill.id, 'execution')}
-                                    value={skill.execution}>
-                                    <MenuItem value={1}>
-                                        Padrão
-                                    </MenuItem>
-                                    <MenuItem value={2}>
-                                        Livre
-                                    </MenuItem>
-                                    <MenuItem value={3}>
-                                        Completa
-                                    </MenuItem>
-                                    <MenuItem value={4}>
-                                        Reação
-                                    </MenuItem>
-                                    <MenuItem value={5}>
-                                        Movimento
-                                    </MenuItem>
-                                    <MenuItem value={6}>
-                                        Outros
-                                    </MenuItem>
-                                </Select>
-                            </StyledFormControl>
-                        </div>
-                    </section>
-                    <section className={"section-skill-selectors right"}>
-                        <div className={"container-skill-select"}>
-                            <p>Alcance: </p>
-                            <StyledFormControl variant={"outlined"} fullWidth size={"small"}>
-                                <Select
-                                    onChange={(e) => handleContentChange(e, skill.id, 'range')}
-                                    value={skill.range}>
-                                    <MenuItem value={1}>
-                                        Pessoal
-                                    </MenuItem>
-                                    <MenuItem value={2}>
-                                        Toque
-                                    </MenuItem>
-                                    <MenuItem value={3}>
-                                        Curto
-                                    </MenuItem>
-                                    <MenuItem value={4}>
-                                        Médio
-                                    </MenuItem>
-                                    <MenuItem value={5}>
-                                        Longo
-                                    </MenuItem>
-                                    <MenuItem value={6}>
-                                        Extremo
-                                    </MenuItem>
-                                    <MenuItem value={7}>
-                                        Ilimitado
-                                    </MenuItem>
-                                </Select>
-                            </StyledFormControl>
-                        </div>
-                        <div className={"container-skill-select"}>
-                            <p>Área: </p>
-                            <StyledTextField
-                                type={"text"}
-                                variant={"outlined"}
-                                size={"small"}
-                                fullWidth
-                                onChange={(e) => handleContentChange(e, skill.id, 'area')}
-                                value={skill.area}
-                                placeholder={"área da skill..."}
-                            />
-                        </div>
-                        <div className={"container-skill-select"}>
-                            <p>Alvo: </p>
-                            <StyledTextField
-                                type={"text"}
-                                variant={"outlined"}
-                                size={"small"}
-                                fullWidth
-                                onChange={(e) => handleContentChange(e, skill.id, 'target')}
-                                value={skill.target}
-                                placeholder={"alvos da skill..."}
-                            />
-                        </div>
-                        <div className={"container-skill-select"}>
-                            <p>Duração: </p>
-                            <StyledTextField
-                                type={"text"}
-                                variant={"outlined"}
-                                size={"small"}
-                                fullWidth
-                                onChange={(e) => handleContentChange(e, skill.id, 'duration')}
-                                value={skill.duration}
-                                placeholder={"duração da skill..."}
-                            />
-                        </div>
-                        <div className={"container-skill-select last-select"}>
-                            <p>Resistência: </p>
-                            <StyledTextField
-                                type={"text"}
-                                variant={"outlined"}
-                                size={"small"}
-                                fullWidth
-                                onChange={(e) => handleContentChange(e, skill.id, 'resistance')}
-                                value={skill.resistance}
-                                placeholder={"resistência da skill..."}
-                            />
-                        </div>
-                    </section>
-                </article>
-                <article className={"container-textarea-skill-right"}>
-                    <div className={"container-skill-select"}>
-                        <p>Nome: </p>
-                        <StyledTextField
-                            type={"text"}
-                            variant={"outlined"}
-                            size={"small"}
-                            fullWidth
-                            placeholder={"nome da skill..."}
-                            value={skill.title}
-                            onChange={(e) => handleContentChange(e, skill.id, 'title')}
-                        />
-                    </div>
-                    <div className={"container-skill-select"}>
-                        <p>Domínio: </p>
-                        <StyledTextField
-                            variant={"outlined"}
-                            size={"small"}
-                            fullWidth
-                            placeholder={"domínios da skill..."}
-                            value={skill.domain}
-                            onChange={(e) => handleContentChange(e, skill.id, 'domain')}
-                        />
-                    </div>
-                </article>
-            </div>
-            <div className="container-textarea-annotation">
-                <StyledTextField
-                    multiline
-                    variant={"outlined"}
-                    className={"textarea"}
-                    value={skill.content}
-                    onChange={(e) => handleContentChange(e, skill.id, 'content')}
-                    minRows={5}
-                    fullWidth
-                    placeholder="descrição da Skill..."
-                />
-                <div className={"box"}>
-                    <StyledButton className={"delete"}
-                                  variant="contained" color="primary"
-                                  fullWidth
-                                  onClick={() => handleDelete(skill.id)}
-                                  endIcon={<Delete/>}>Excluir</StyledButton>
-                    <StyledButton
-                        variant="contained" color="primary"
-                        fullWidth
-                        onClick={() => handleCopy(skill)}
-                        endIcon={<FileCopy/>}>Copiar</StyledButton>
-                </div>
-            </div>
-        </Collapsible>));
-}
-
 export default function Page4() {
     const [createSkill, setCreateSkill] = useState("");
     const [searchTerm, setSearchTerm] = useState("");
@@ -288,15 +55,15 @@ export default function Page4() {
         saveDataDebounced(userData);
     }, [userData, saveDataDebounced]);
 
-    const handleElementChange = (key) => (value) => {
+    const handleElementChange = useCallback((key) => (value) => {
         setUserData((prevUserData) => ({
             ...prevUserData, [key]: value,
         }));
-    };
+    }, [setUserData]);
 
-    const saveSkills = (newSkills) => {
+    const saveSkills = useCallback((newSkills) => {
         handleElementChange("skillsArray")(newSkills);
-    };
+    }, [handleElementChange]);
 
     const handleContentChange = useCallback((e, id, fieldName) => {
         const updatedSkills = userData.skillsArray.map((skill) => {
@@ -343,8 +110,8 @@ export default function Page4() {
         return () => {
             element.removeEventListener('paste', handlePasteEvent);
         };
-    }, []);
-    
+    }, [saveSkills]);
+
     const handleCopy = useCallback(async (skill) => {
         try {
             await navigator.clipboard.writeText(JSON.stringify(skill));
@@ -353,7 +120,7 @@ export default function Page4() {
         }
     }, []);
 
-    const handlePaste = async () => {
+    const handlePaste = useCallback(async () => {
         try {
             const text = await navigator.clipboard.readText();
             const skill = JSON.parse(text);
@@ -362,11 +129,11 @@ export default function Page4() {
         } catch (err) {
             console.error("Falha ao colar a skill: ", err);
         }
-    };
+    }, [saveSkills, userData.skillsArray]);
 
-    const clearInput = () => {
+    const clearInput = useCallback(() => {
         setCreateSkill("");
-    };
+    }, []);
 
     const uniqueDomains = useMemo(() => Array.from(new Set((userData.skillsArray || [])
         .filter(skill => skill.domain && skill.domain.trim() !== "")
@@ -386,7 +153,7 @@ export default function Page4() {
 
     const linkedDomains = useMemo(() => ["Fass", "Ris", "Xata", "Lohk", "Khra", "Netra", "Vome", "Jahu"], []);
 
-    const handleCreateSkill = () => {
+    const handleCreateSkill = useCallback(() => {
         if (createSkill.trim()) {
             saveSkills([...(userData.skillsArray || []), {
                 title: createSkill,
@@ -406,9 +173,244 @@ export default function Page4() {
             }]);
             clearInput();
         }
-    };
+    }, [createSkill, saveSkills, userData.skillsArray, clearInput]);
 
-    return (<main className="mainCommon page-4" ref={pasteRef}>
+    const createSkills = useCallback(({array, handleContentChange, handleDelete, handleCopy}) => {
+        return array.length > 0 && array.map((skill) => (
+            <Collapsible
+                className={"skill"}
+                openedClassName={"skill"}
+                trigger={skill.title || `Skill: ${skill.id}`}
+                triggerStyle={{fontSize: "1.5em", color: "rgb(43, 43, 43)"}}
+                transitionTime={100}
+                transitionCloseTime={100}
+                key={skill.id}
+            >
+                <div className={"container-skill-selectors color-gray-placeholder"}>
+                    <article className={"container-textarea-skill-left"}>
+                        <section className={"section-skill-selectors"}>
+                            <div className={"container-skill-select"}>
+                                <p>Círculo: </p>
+                                <StyledFormControl variant={"outlined"} fullWidth size={"small"}>
+                                    <Select
+                                        onChange={(e) => handleContentChange(e, skill.id, 'circle')}
+                                        value={skill.circle}>
+                                        <MenuItem value={1}>
+                                            1° Círculo
+                                        </MenuItem>
+                                        <MenuItem value={2}>
+                                            2° Círculo
+                                        </MenuItem>
+                                        <MenuItem value={3}>
+                                            3° Círculo
+                                        </MenuItem>
+                                    </Select>
+                                </StyledFormControl>
+                            </div>
+                            <div className={"container-skill-select"}>
+                                <p>Categoria: </p>
+                                <StyledFormControl variant={"outlined"} fullWidth size={"small"}>
+                                    <Select
+                                        onChange={(e) => handleContentChange(e, skill.id, 'type')}
+                                        value={skill.type}>
+                                        <MenuItem value={1}>
+                                            Ativa
+                                        </MenuItem>
+                                        <MenuItem value={2}>
+                                            Passiva
+                                        </MenuItem>
+                                    </Select>
+                                </StyledFormControl>
+                            </div>
+                            <div className={"container-skill-select"}>
+                                <p>Gasto: </p>
+                                <StyledTextField
+                                    type={"text"}
+                                    variant="outlined"
+                                    size={"small"}
+                                    fullWidth
+                                    onChange={(e) => handleContentChange(e, skill.id, 'spent')}
+                                    value={skill.spent}
+                                    placeholder={"gasto..."}
+                                />
+                            </div>
+                            <div className={"container-skill-select"}>
+                                <p>Arte: </p>
+                                <StyledTextField
+                                    type={"text"}
+                                    variant="outlined"
+                                    size={"small"}
+                                    fullWidth
+                                    onChange={(e) => handleContentChange(e, skill.id, 'art')}
+                                    value={skill.art}
+                                    placeholder={"arte utilizada..."}
+                                />
+                            </div>
+                            <div className={"container-skill-select last-select"}>
+                                <p>Execução: </p>
+                                <StyledFormControl variant={"outlined"} fullWidth size={"small"}>
+                                    <Select
+                                        onChange={(e) => handleContentChange(e, skill.id, 'execution')}
+                                        value={skill.execution}>
+                                        <MenuItem value={1}>
+                                            Padrão
+                                        </MenuItem>
+                                        <MenuItem value={2}>
+                                            Livre
+                                        </MenuItem>
+                                        <MenuItem value={3}>
+                                            Completa
+                                        </MenuItem>
+                                        <MenuItem value={4}>
+                                            Reação
+                                        </MenuItem>
+                                        <MenuItem value={5}>
+                                            Movimento
+                                        </MenuItem>
+                                        <MenuItem value={6}>
+                                            Outros
+                                        </MenuItem>
+                                    </Select>
+                                </StyledFormControl>
+                            </div>
+                        </section>
+                        <section className={"section-skill-selectors right"}>
+                            <div className={"container-skill-select"}>
+                                <p>Alcance: </p>
+                                <StyledFormControl variant={"outlined"} fullWidth size={"small"}>
+                                    <Select
+                                        onChange={(e) => handleContentChange(e, skill.id, 'range')}
+                                        value={skill.range}>
+                                        <MenuItem value={1}>
+                                            Pessoal
+                                        </MenuItem>
+                                        <MenuItem value={2}>
+                                            Toque
+                                        </MenuItem>
+                                        <MenuItem value={3}>
+                                            Curto
+                                        </MenuItem>
+                                        <MenuItem value={4}>
+                                            Médio
+                                        </MenuItem>
+                                        <MenuItem value={5}>
+                                            Longo
+                                        </MenuItem>
+                                        <MenuItem value={6}>
+                                            Extremo
+                                        </MenuItem>
+                                        <MenuItem value={7}>
+                                            Ilimitado
+                                        </MenuItem>
+                                    </Select>
+                                </StyledFormControl>
+                            </div>
+                            <div className={"container-skill-select"}>
+                                <p>Área: </p>
+                                <StyledTextField
+                                    type={"text"}
+                                    variant={"outlined"}
+                                    size={"small"}
+                                    fullWidth
+                                    onChange={(e) => handleContentChange(e, skill.id, 'area')}
+                                    value={skill.area}
+                                    placeholder={"área da skill..."}
+                                />
+                            </div>
+                            <div className={"container-skill-select"}>
+                                <p>Alvo: </p>
+                                <StyledTextField
+                                    type={"text"}
+                                    variant={"outlined"}
+                                    size={"small"}
+                                    fullWidth
+                                    onChange={(e) => handleContentChange(e, skill.id, 'target')}
+                                    value={skill.target}
+                                    placeholder={"alvos da skill..."}
+                                />
+                            </div>
+                            <div className={"container-skill-select"}>
+                                <p>Duração: </p>
+                                <StyledTextField
+                                    type={"text"}
+                                    variant={"outlined"}
+                                    size={"small"}
+                                    fullWidth
+                                    onChange={(e) => handleContentChange(e, skill.id, 'duration')}
+                                    value={skill.duration}
+                                    placeholder={"duração da skill..."}
+                                />
+                            </div>
+                            <div className={"container-skill-select last-select"}>
+                                <p>Resistência: </p>
+                                <StyledTextField
+                                    type={"text"}
+                                    variant={"outlined"}
+                                    size={"small"}
+                                    fullWidth
+                                    onChange={(e) => handleContentChange(e, skill.id, 'resistance')}
+                                    value={skill.resistance}
+                                    placeholder={"resistência da skill..."}
+                                />
+                            </div>
+                        </section>
+                    </article>
+                    <article className={"container-textarea-skill-right"}>
+                        <div className={"container-skill-select"}>
+                            <p>Nome: </p>
+                            <StyledTextField
+                                type={"text"}
+                                variant={"outlined"}
+                                size={"small"}
+                                fullWidth
+                                placeholder={"nome da skill..."}
+                                value={skill.title}
+                                onChange={(e) => handleContentChange(e, skill.id, 'title')}
+                            />
+                        </div>
+                        <div className={"container-skill-select"}>
+                            <p>Domínio: </p>
+                            <StyledTextField
+                                variant={"outlined"}
+                                size={"small"}
+                                fullWidth
+                                placeholder={"domínios da skill..."}
+                                value={skill.domain}
+                                onChange={(e) => handleContentChange(e, skill.id, 'domain')}
+                            />
+                        </div>
+                    </article>
+                </div>
+                <div className="container-textarea-annotation">
+                    <StyledTextField
+                        multiline
+                        variant={"outlined"}
+                        className={"textarea"}
+                        value={skill.content}
+                        onChange={(e) => handleContentChange(e, skill.id, 'content')}
+                        minRows={5}
+                        fullWidth
+                        placeholder="descrição da Skill..."
+                    />
+                    <div className={"box"}>
+                        <StyledButton className={"delete"}
+                                      variant="contained" color="primary"
+                                      fullWidth
+                                      onClick={() => handleDelete(skill.id)}
+                                      endIcon={<Delete/>}>Excluir</StyledButton>
+                        <StyledButton
+                            variant="contained" color="primary"
+                            fullWidth
+                            onClick={() => handleCopy(skill)}
+                            endIcon={<FileCopy/>}>Copiar</StyledButton>
+                    </div>
+                </div>
+            </Collapsible>
+        ));
+    }, []);
+
+    return (
+        <main className="mainCommon page-4" ref={pasteRef}>
             <StyledInputsBox>
                 <StyledTextField
                     type="text"
@@ -443,9 +445,11 @@ export default function Page4() {
                     fullWidth
                     slotProps={{
                         input: {
-                            startAdornment: (<InputAdornment position="start">
+                            startAdornment: (
+                                <InputAdornment position="start">
                                     <Search/>
-                                </InputAdornment>),
+                                </InputAdornment>
+                            ),
                         },
                     }}
                 />
@@ -459,22 +463,25 @@ export default function Page4() {
                 {uniqueDomains.map((domain) => {
                     const isLinked = linkedDomains.includes(domain);
                     const isReflex = domain.toLowerCase() === "reflexo";
-                    return (<span key={domain}
-                                  className={`tag 
+                    return (
+                        <span key={domain}
+                            className={`tag 
                             ${activeDomains.includes(domain) ? "active" : ""} ${isLinked ? "linked" : ""} 
                             ${isReflex ? "reflex" : ""}`}
-                                  onClick={() => searchByDomain(domain)}>
+                            onClick={() => searchByDomain(domain)}>
                             <i className="bi bi-stars"></i>
                             {domain}
-                        </span>);
+                        </span>
+                    );
                 })}
             </section>
 
-            <CreateSkills
-                array={filteredSkills}
-                handleContentChange={handleContentChange}
-                handleDelete={handleDelete}
-                handleCopy={handleCopy}
-            />
-        </main>);
+            {createSkills({
+                array: filteredSkills,
+                handleContentChange,
+                handleDelete,
+                handleCopy
+            })}
+        </main>
+    );
 }
