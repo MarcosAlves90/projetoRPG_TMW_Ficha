@@ -134,7 +134,7 @@ export default function Page6() {
 
     const memoizedItems = useMemo(() => (userData.itemsArray || []).map((item) => (
         <div key={item.id} className="item inventory" onClick={() => openModal(item)}>
-            <img className={`image ${!item.image ? "image-placeholder" : ""}`} src={item.image || placeHolderImage} alt="Item image" />
+            <img className={`image ${!item.image ? "image-placeholder" : ""}`} src={item.image || placeHolderImage} alt="Item" />
             <p className="title">{item.title.toUpperCase()}</p>
             {/^\s*(consumível|consumíveis)\s*$/i.test(item.type) && <p className="title qty">{(item.quantity || '').toUpperCase()}</p>}
         </div>
@@ -147,7 +147,7 @@ export default function Page6() {
                     <>
                         <i className="bi bi-x-lg closeButton" onClick={closeModal}></i>
                         <div className="leftBox">
-                            <img className={`image ${!localItem.image ? "image-placeholder" : ""}`} src={localItem.image || placeHolderImage} alt="Item image" />
+                            <img className={`image ${!localItem.image ? "image-placeholder" : ""}`} src={localItem.image || placeHolderImage} alt="Item" />
                         </div>
                         <div className="rightBox">
                             <input ref={inputRef} value={localItem.title} name="title" className="input title" onChange={handleInputChange} placeholder="Título do seu item." />
