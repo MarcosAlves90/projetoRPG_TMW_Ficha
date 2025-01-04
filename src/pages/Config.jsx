@@ -172,7 +172,7 @@ export default function Config() {
                                   className={"full"}
                             onClick={() => handleSheetsButtonClick()}>
                         {"Trocar ficha"}
-                        <i className="bi bi-file-spreadsheet-fill"></i>
+                        <i className="bi bi-file-spreadsheet-fill" />
                     </StyledButton>
                 )}
             </section>

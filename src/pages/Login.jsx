@@ -208,7 +208,7 @@ export default function Login() {
 
     return (
         <>
-            <div id={"grain-background"}></div>
+            <div id={"grain-background"} />
             <Background background={background} />
             <main className="mainCommon page-login">
                 <LoginCard>

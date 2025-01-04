@@ -457,7 +457,7 @@ export default function Page4() {
 
             <section className="tag-cloud display-flex-center">
                 <span className={"tag qty"}>
-                    <i className="bi bi-archive-fill"></i>
+                    <i className="bi bi-archive-fill" />
                     {`${userData.skillsArray ? userData.skillsArray.length : 0}/10 Skills`}
                 </span>
                 {uniqueDomains.map((domain) => {
@@ -469,7 +469,7 @@ export default function Page4() {
                             ${activeDomains.includes(domain) ? "active" : ""} ${isLinked ? "linked" : ""} 
                             ${isReflex ? "reflex" : ""}`}
                             onClick={() => searchByDomain(domain)}>
-                            <i className="bi bi-stars"></i>
+                            <i className="bi bi-stars" />
                             {domain}
                         </span>
                     );

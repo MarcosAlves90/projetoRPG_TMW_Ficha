@@ -151,7 +151,7 @@ export default function SheetSelectionPage() {
                                 <div
                                     className={`sheet display-flex-center`} key={sheet.sheetCode}>
                                     <p className={"p-name"} onClick={() => switchSheet(sheet.sheetCode)}>{sheet.nome || sheet.sheetCode}</p>
-                                    <i className="bi bi-trash3" onClick={() => deleteSheet(sheet.sheetCode)}></i>
+                                    <i className="bi bi-trash3" onClick={() => deleteSheet(sheet.sheetCode)} />
                                 </div>
                             ))}
                         </div>

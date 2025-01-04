@@ -145,7 +145,7 @@ export default function Page6() {
             <ReactModal isOpen={modalIsOpen} onRequestClose={closeModal} className="popup" overlayClassName="popupOverlay" bodyOpenClassName="no-scroll">
                 {localItem && (
                     <>
-                        <i className="bi bi-x-lg closeButton" onClick={closeModal}></i>
+                        <i className="bi bi-x-lg closeButton" onClick={closeModal} />
                         <div className="leftBox">
                             <img className={`image ${!localItem.image ? "image-placeholder" : ""}`} src={localItem.image || placeHolderImage} alt="Item" />
                         </div>
@@ -158,8 +158,8 @@ export default function Page6() {
                             </div>
                             <input value={localItem.image} name="image" className="popup-image input" onChange={handleInputChange} placeholder="Link para a imagem do item." />
                             <div className="boxButtons display-flex-center w-100">
-                                <button className="button delete" onClick={deleteItem}>Deletar <i className="bi bi-trash3"></i></button>
-                                <button className="button copy" onClick={copyItemCode}>Copiar <i className="bi bi-clipboard"></i></button>
+                                <button className="button delete" onClick={deleteItem}>Deletar <i className="bi bi-trash3" /></button>
+                                <button className="button copy" onClick={copyItemCode}>Copiar <i className="bi bi-clipboard" /></button>
                             </div>
                         </div>
                     </>
@@ -168,10 +168,10 @@ export default function Page6() {
             <main className="mainCommon page-6">
                 <article className="boxInventory">
                     <div className="item regular" onClick={addItem}>
-                        <i className="bi add bi-patch-plus-fill"></i>
+                        <i className="bi add bi-patch-plus-fill" />
                     </div>
                     <div className="item regular" onClick={pasteItemCode}>
-                        <i className="bi bi-clipboard2-fill"></i>
+                        <i className="bi bi-clipboard2-fill" />
                     </div>
                     {memoizedItems}
                 </article>

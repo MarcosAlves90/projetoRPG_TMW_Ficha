@@ -93,7 +93,7 @@ export default function Page0() {
 
     return (
         <>
-            <div id={"grain-background"}></div>
+            <div id={"grain-background"} />
             <Background/>
             <main className={"mainCommon page-0 root-style"}>
                 <section className={"mainCommon-page-0-section-0"}>
