@@ -1,4 +1,4 @@
-import {useEffect, useState, useContext} from "react";
+import {useEffect, useState, useContext, useCallback} from "react";
 import {Link, useLocation, useNavigate} from "react-router-dom";
 import {useSignOut} from "../systems/SaveLoad.jsx";
 import {onAuthStateChanged} from "firebase/auth";
@@ -22,23 +22,23 @@ export default function NavBar() {
 
     const signOut = useSignOut();
 
-    function handleMenuToggle() {
-        setCollapsed(!collapsed);
-    }
+    const handleMenuToggle = useCallback(() => {
+        setCollapsed(prevCollapsed => !prevCollapsed);
+    }, []);
 
-    function handleLogoutClick() {
+    const handleLogoutClick = useCallback(() => {
         saveUserData(userData);
         signOut();
         setUserData({ nivel: 0 });
-    }
+    }, [userData, signOut, setUserData]);
 
-    function handleLoginClick() {
+    const handleLoginClick = useCallback(() => {
         currentUser ? handleLogoutClick() : navigate("/login");
-    }
+    }, [currentUser, handleLogoutClick, navigate]);
 
-    function handleNavItemClick() {
+    const handleNavItemClick = useCallback(() => {
         if (!collapsed) setCollapsed(true);
-    }
+    }, [collapsed]);
 
     useEffect(() => {
         const handleScroll = () => {
