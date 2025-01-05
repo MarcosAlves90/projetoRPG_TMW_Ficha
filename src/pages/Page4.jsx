@@ -56,9 +56,10 @@ export default function Page4() {
     }, [userData, saveDataDebounced]);
 
     const handleElementChange = useCallback((key) => (value) => {
-        setUserData((prevUserData) => ({
-            ...prevUserData, [key]: value,
-        }));
+        setUserData((prevUserData) => {
+            if (prevUserData[key] === value) return prevUserData;
+            return { ...prevUserData, [key]: value };
+        });
     }, [setUserData]);
 
     const saveSkills = useCallback((newSkills) => {
@@ -69,7 +70,8 @@ export default function Page4() {
         const updatedSkills = userData.skillsArray.map((skill) => {
             if (skill.id === id) {
                 const value = e.target.value;
-                return {...skill, [fieldName]: value};
+                if (skill[fieldName] === value) return skill;
+                return { ...skill, [fieldName]: value };
             }
             return skill;
         });
@@ -394,10 +396,10 @@ export default function Page4() {
                     />
                     <div className={"box"}>
                         <StyledButton className={"delete"}
-                                      variant="contained" color="primary"
-                                      fullWidth
-                                      onClick={() => handleDelete(skill.id)}
-                                      endIcon={<Delete/>}>Excluir</StyledButton>
+                                    variant="contained" color="primary"
+                                    fullWidth
+                                    onClick={() => handleDelete(skill.id)}
+                                    endIcon={<Delete/>}>Excluir</StyledButton>
                         <StyledButton
                             variant="contained" color="primary"
                             fullWidth
