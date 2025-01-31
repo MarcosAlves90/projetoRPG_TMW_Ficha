@@ -2,7 +2,7 @@ import {useEffect, useCallback, useContext, useState} from "react";
 import {UserContext} from "../UserContext.jsx";
 import {auth} from '../firebase.js';
 import {signInWithEmailAndPassword} from 'firebase/auth';
-import {getUserData, saveUserData} from '../firebaseUtils.js';
+import {getUserData, createUserData} from '../firebaseUtils.js';
 import {useNavigate} from 'react-router-dom';
 import validator from 'validator';
 import {decompressData} from "../assets/systems/SaveLoad.jsx";
@@ -157,7 +157,7 @@ export default function Login() {
                 setUserData(userData);
             } else {
                 console.info('Nenhum dado encontrado. Salvando dados...');
-                await saveUserData('');
+                await createUserData('');
             }
 
             navigate('/individual');

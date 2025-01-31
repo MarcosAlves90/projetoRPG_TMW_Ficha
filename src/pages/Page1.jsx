@@ -417,7 +417,7 @@ export default function Page1() {
                                 label="Defesa"
                                 fullWidth
                                 type="number"
-                                value={10 + (userData['atributo-DES'] || 0) + (userData['atributo-DES-bonus'] || 0) + userData.nivel}
+                                value={15 + (userData['atributo-DES'] || 0) + (userData['atributo-DES-bonus'] || 0)}
                                 min={0}
                                 disabled
                                 slotProps={{

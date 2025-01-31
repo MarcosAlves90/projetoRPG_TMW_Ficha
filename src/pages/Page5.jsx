@@ -1,13 +1,16 @@
-import { useState, useEffect, useCallback, useRef, useContext } from "react";
-import TextareaAutosize from "react-textarea-autosize";
-import Collapsible from "react-collapsible";
+import { useCallback, useEffect, useMemo, useRef, useState, useContext } from "react";
 import { v4 as uuidv4 } from 'uuid';
 import { saveUserData } from "../firebaseUtils.js";
-import { UserContext } from "../UserContext.jsx";
-import {StyledButton, StyledTextField} from "../assets/systems/CommonComponents.jsx";
+import { UserContext } from "../UserContext";
+import { StyledButton, StyledTextField } from "../assets/systems/CommonComponents.jsx";
+import Box from "@mui/material/Box";
+import InputAdornment from "@mui/material/InputAdornment";
+import Search from "@mui/icons-material/Search";
+import AddCircle from "@mui/icons-material/AddCircle";
 import styled from "styled-components";
-import {Box, InputAdornment} from "@mui/material";
-import {AddCircle, Delete, Search} from "@mui/icons-material";
+import ReactModal from 'react-modal';
+
+ReactModal.setAppElement('#root');
 
 const StyledInputsBox = styled(Box)`
     display: flex;
@@ -33,48 +36,14 @@ const StyledInputsBox = styled(Box)`
     }
 `;
 
-const CreateAnnotations = ({ array, handleContentChange, handleDelete }) => {
-    return array.length > 0 && array.map((annotation) => (
-        <Collapsible
-            className={"note"}
-            openedClassName={"note"}
-            trigger={annotation.title}
-            triggerStyle={{ fontSize: "1.5em", color: "rgb(43, 43, 43)" }}
-            transitionTime={100}
-            transitionCloseTime={100}
-            key={annotation.id}
-        >
-            <div className="container-textarea-annotation">
-                <StyledTextField
-                    multiline
-                    variant={"outlined"}
-                    className={"textarea"}
-                    id={`textarea-${annotation.id}`}
-                    value={annotation.content}
-                    onChange={(event) => handleContentChange(event, annotation.id)}
-                    minRows={5}
-                    fullWidth
-                    placeholder="Escreva suas anotações."
-                />
-                <div className={"box"}>
-                    <StyledButton
-                        className={"delete"}
-                        variant="contained" color="primary"
-                        fullWidth
-                        onClick={() => handleDelete(annotation.id)}
-                        endIcon={<Delete/>}
-                    >
-                        Excluir
-                    </StyledButton>
-                </div>
-            </div>
-        </Collapsible>
-    ));
-};
-
 export default function Page5() {
     const [createTitle, setCreateTitle] = useState("");
     const [searchTerm, setSearchTerm] = useState("");
+
+    const [modalIsOpen, setIsOpen] = useState(false);
+    const [selectedItem, setSelectedItem] = useState(null);
+    const [localItem, setLocalItem] = useState(null);
+    const inputRef = useRef(null);
 
     const { userData, setUserData, user } = useContext(UserContext);
     const debounceTimeout = useRef(null);
@@ -94,38 +63,104 @@ export default function Page5() {
         saveDataDebounced(userData);
     }, [userData, saveDataDebounced]);
 
-    const handleElementChange = (key) => (value) => {
-        setUserData((prevUserData) => ({
+    const closeModal = useCallback(() => {
+        setIsOpen(false);
+        setSelectedItem(null);
+    }, []);
+
+    const openModal = useCallback((annotation) => {
+        setSelectedItem(annotation);
+        setLocalItem(annotation);
+        setIsOpen(true);
+    }, []);
+
+    const handleDelete = useCallback(() => {
+        if (!selectedItem) {
+            return console.error("Nenhuma anotação selecionada para deletar!");
+        }
+
+        setUserData(prevUserData => ({
             ...prevUserData,
-            [key]: value,
+            annotationsArray: prevUserData.annotationsArray.filter(annotation => annotation.id !== selectedItem.id)
         }));
-    };
+        closeModal();
+    }, [setUserData, closeModal, selectedItem]);
 
-    const saveAnnotations = (newAnnotations) => {
-        handleElementChange('annotationsArray')(newAnnotations);
-    };
+    const pasteRef = useRef(null);
 
-    const handleContentChange = (event, id) => {
-        const updatedAnnotations = userData.annotationsArray.map((annotation) =>
-            annotation.id === id ? { ...annotation, content: event.target.value } : annotation
-        );
-        saveAnnotations(updatedAnnotations);
-    };
+    const handleCopy = useCallback(async () => {
+        if (localItem) {
+            await navigator.clipboard.writeText(localItem.content);
+            console.log('Conteúdo da anotação copiado para a área de transferência!');
+        }
+    }, [localItem]);
 
-    const handleDelete = (id) => {
-        const updatedAnnotations = userData.annotationsArray.filter(annotation => annotation.id !== id);
-        saveAnnotations(updatedAnnotations);
-    };
+    const clearInput = useCallback(() => {
+        setCreateTitle("");
+    }, []);
 
-    const filteredAnnotations = (userData.annotationsArray || []).filter(annotation =>
-        annotation.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        annotation.content.toLowerCase().includes(searchTerm.toLowerCase())
-    );
+    const filteredAnnotations = useMemo(() => (userData.annotationsArray || []).filter(annotation => {
+        const matchesSearchTerm = searchTerm === "" || Object.values(annotation).some(value => value.toString().toLowerCase().includes(searchTerm.toLowerCase()));
+        return matchesSearchTerm;
+    }), [userData.annotationsArray, searchTerm]);
 
-    const clearInput = () => setCreateTitle("");
+    const handleCreateAnnotation = useCallback(() => {
+        const trimmedTitle = createTitle.trim();
+        if (!trimmedTitle) return;
+
+        const newAnnotation = {
+            title: trimmedTitle,
+            content: '',
+            id: uuidv4()
+        };
+
+        setUserData(prevUserData => ({
+            ...prevUserData,
+            annotationsArray: [...(prevUserData.annotationsArray || []), newAnnotation]
+        }));
+        clearInput();
+    }, [createTitle, clearInput, setUserData]);
+
+    const handleInputChange = useCallback((e) => {
+        const { name, value } = e.target;
+        setLocalItem((prevItem) => {
+            const updatedItem = { ...prevItem, [name]: value };
+            return updatedItem;
+        });
+
+        setUserData((prevUserData) => {
+            const updatedItems = prevUserData.annotationsArray.map((item) => item.id === localItem.id ? { ...localItem, [name]: value } : item);
+            return { ...prevUserData, annotationsArray: updatedItems };
+        });
+    }, [localItem, setUserData]);
+
+    const placeHolderImage = useMemo(() => "https://images.unsplash.com/photo-1532153975070-2e9ab71f1b14?fm=jpg&q=60&w=3000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8Ym9vayUyMHBhZ2VzfGVufDB8fDB8fHww", []);
+
+    const memoizedItems = useMemo(() => (filteredAnnotations || []).map((annotation) => (
+        <div key={annotation.id} className="skill skill-list" onClick={() => openModal(annotation)}>
+            <img className={`image image-placeholder`} src={placeHolderImage} alt="Anotação" />
+            <p className="title">{annotation.title.toUpperCase()}</p>
+        </div>
+    )), [openModal, filteredAnnotations]);
 
     return (
-        <main className="mainCommon page-5">
+        <>
+            <ReactModal isOpen={modalIsOpen} onRequestClose={closeModal} className="popup annotation" overlayClassName="popupOverlay" bodyOpenClassName="no-scroll">
+                {localItem && (
+                    <>
+                        <i className="bi bi-x-lg closeButton" onClick={closeModal} />
+                        <div className="rightBox">
+                            <input ref={inputRef} value={localItem.title} name="title" className="input title" onChange={handleInputChange} placeholder="Título da sua anotação." />
+                            <textarea className="popup-content textarea" value={localItem.content} name="content" onChange={handleInputChange} placeholder="Conteúdo da anotação" />
+                            <div className="boxButtons display-flex-center w-100">
+                                <button className="button delete" onClick={handleDelete}>Deletar <i className="bi bi-trash3" /></button>
+                                <button className="button copy" onClick={handleCopy}>Copiar <i className="bi bi-clipboard" /></button>
+                            </div>
+                        </div>
+                    </>
+                )}
+            </ReactModal>
+            <main className="mainCommon page-5" ref={pasteRef}>
             <StyledInputsBox>
                 <StyledTextField
                     type="text"
@@ -139,20 +174,7 @@ export default function Page5() {
                     <StyledButton
                         className={"big-width"}
                         variant="contained" color="primary"
-                        onClick={() => {
-                            if (createTitle.trim()) {
-                                const annotationsArray = userData.annotationsArray || [];
-                                saveAnnotations([
-                                    ...annotationsArray,
-                                    {
-                                        id: uuidv4(),
-                                        title: createTitle,
-                                        content: ''
-                                    }
-                                ]);
-                                clearInput();
-                            }
-                        }}
+                        onClick={handleCreateAnnotation}
                         endIcon={<AddCircle/>}
                     >
                         Criar Anotação
@@ -176,13 +198,11 @@ export default function Page5() {
                     }}
                 />
             </StyledInputsBox>
-            <section className={"container-annotations"}>
-                <CreateAnnotations
-                    array={filteredAnnotations}
-                    handleContentChange={handleContentChange}
-                    handleDelete={handleDelete}
-                />
-            </section>
-        </main>
+
+                <article className="boxSkills annotations">
+                    {memoizedItems}
+                </article>
+            </main>
+        </>
     );
 }

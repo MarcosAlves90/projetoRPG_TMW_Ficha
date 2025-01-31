@@ -1,4 +1,4 @@
-import { doc, getDoc, updateDoc } from "firebase/firestore";
+import { doc, getDoc, updateDoc, setDoc } from "firebase/firestore";
 import { auth, db } from './firebase';
 
 const getAuthenticatedUserId = () => {
@@ -57,6 +57,17 @@ export const saveUserData = async (data) => {
         await updateDoc(userDoc, { data });
         console.log('Dados salvos com sucesso!');
     }, 'Erro ao salvar dados:');
+};
+
+export const createUserData = async () => {
+    const userId = getAuthenticatedUserId();
+    if (!userId) return;
+
+    executeWithHandling(async () => {
+        const userDoc = doc(db, 'userData', userId);
+        await setDoc(userDoc, { data: {} });
+        console.log('Dados do usuário criados com sucesso!');
+    }, 'Erro ao criar dados do usuário:');
 };
 
 export const saveUserSheets = async (sheets) => {

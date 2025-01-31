@@ -19,6 +19,7 @@ const darkTheme = createTheme({
             paper: '#101524',
         },
     },
+    disableInjectingGlobalStyles: true,
 });
 
 // Lazy load components
