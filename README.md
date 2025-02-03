@@ -1,4 +1,4 @@
-# The Mental World Character Sheet Editor
+# MidNight - Character Sheet Editor
 
 ![GitHub repo size](https://img.shields.io/github/repo-size/MarcosAlves90/projetoRPG_TMW_Ficha?style=for-the-badge)
 ![GitHub language count](https://img.shields.io/github/languages/count/MarcosAlves90/projetoRPG_TMW_Ficha?style=for-the-badge)
@@ -10,7 +10,7 @@
 
 > A platform for creating, importing and exporting RPG tokens in JSON format.
 > 
-> Site: [The Mental World Character Sheet Editor](https://tmwcse.vercel.app)
+> Site: [MidNight](https://tmwcse.vercel.app)
 
 ### Adjustments and improvements
 
