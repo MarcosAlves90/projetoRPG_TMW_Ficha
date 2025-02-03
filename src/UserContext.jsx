@@ -1,23 +1,14 @@
-import { createContext, useState, useEffect } from "react";
 import PropTypes from "prop-types";
-import { v4 as uuidv4 } from 'uuid';
+import { createContext, useMemo, useState } from "react";
 
 export const UserContext = createContext();
 
 export function UserProvider({ children }) {
-    const [sheetCode, setSheetCode] = useState(localStorage.getItem('sheetCode') || "");
-
-    useEffect(() => {
-        console.log("Verificando ficha...");
-        if (!sheetCode) {
-            console.log("Criando nova ficha...");
-            const newSheetCode = uuidv4();
-            localStorage.setItem('sheetCode', newSheetCode);
-        }
-    }, [sheetCode]);
+    const [userData, setUserData] = useState({ nivel: 0 });
+    const [user, setUser] = useState(null);
 
     return (
-        <UserContext.Provider value={{ sheetCode, setSheetCode }}>
+        <UserContext.Provider value={useMemo(() => ({ userData, setUserData, user, setUser }), [userData, user])}>
             {children}
         </UserContext.Provider>
     );

@@ -1,30 +1,44 @@
-import {useEffect, useState} from "react";
+import {useEffect, useState, useContext, useCallback} from "react";
 import {Link, useLocation, useNavigate} from "react-router-dom";
 import {useSignOut} from "../systems/SaveLoad.jsx";
 import {onAuthStateChanged} from "firebase/auth";
 import { auth } from "../../firebase";
+import { UserContext } from "../../UserContext.jsx";
+import { saveUserData } from "../../firebaseUtils.js";
+import styled from 'styled-components';
+
+const Title = styled(Link)`
+    font-family: 'Brevis', sans-serif;
+`;
 
 export default function NavBar() {
     const [headerBackground, setHeaderBackground] = useState(false);
     const [collapsed, setCollapsed] = useState(true);
     const [currentUser, setCurrentUser] = useState(null);
+    const { userData, setUserData } = useContext(UserContext);
 
     const location = useLocation();
     const navigate = useNavigate();
 
     const signOut = useSignOut();
 
-    function handleMenuToggle() {
-        setCollapsed(!collapsed);
-    }
+    const handleMenuToggle = useCallback(() => {
+        setCollapsed(prevCollapsed => !prevCollapsed);
+    }, []);
 
-    function handleLoginClick() {
-        currentUser ? signOut() : navigate("/login");
-    }
+    const handleLogoutClick = useCallback(() => {
+        saveUserData(userData);
+        signOut();
+        setUserData({ nivel: 0 });
+    }, [userData, signOut, setUserData]);
 
-    function handleNavItemClick() {
+    const handleLoginClick = useCallback(() => {
+        currentUser ? handleLogoutClick() : navigate("/login");
+    }, [currentUser, handleLogoutClick, navigate]);
+
+    const handleNavItemClick = useCallback(() => {
         if (!collapsed) setCollapsed(true);
-    }
+    }, [collapsed]);
 
     useEffect(() => {
         const handleScroll = () => {
@@ -54,7 +68,7 @@ export default function NavBar() {
 
     return (
         <nav className={`navbar ${collapsed ? "" : "show"} navbar-expand-lg navbar-light ${headerBackground || !collapsed ? "custom-theme" : "default-theme"} `}>
-            <Link className={"navbar-brand"} to={"/"}>{collapsed ? "TMWCSE" : "The Mental World CSE"}</Link>
+            <Title className={"navbar-brand"} to={"/"}>MidNight</Title>
             <button className={`navbar-toggler ${!collapsed ? "active" : ""} ${location.pathname === "/login" ? "login-themed" : ""}`}
                     onClick={handleMenuToggle} type="button" data-toggle="collapse" data-target="#navbarText"
                     aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">

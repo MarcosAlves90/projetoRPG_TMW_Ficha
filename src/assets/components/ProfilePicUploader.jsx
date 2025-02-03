@@ -1,13 +1,55 @@
-import { useEffect, useState } from "react";
-import { deleteItem, getItem, saveItem } from "../systems/SaveLoad.jsx";
+import {useEffect, useContext} from "react";
 import imageCompression from 'browser-image-compression';
+import {UserContext} from "../../UserContext.jsx";
+import {FileUpload} from '@mui/icons-material';
+import styled from 'styled-components';
+import {Box} from "@mui/material";
+
+const StyledLabel = styled.label`
+    position: relative;
+
+    .filter {
+        transition: all 0.2s ease-in-out;
+        border-radius: 10px 0 0 10px;
+        border: 4px solid transparent;
+        opacity: 0;
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        background-color: rgba(23, 29, 46, 0.29);
+    }
+
+    .uploadIcon {
+        transition: all 0.2s ease-in-out;
+        opacity: 0;
+        width: 6rem;
+        height: 6rem;
+        position: absolute;
+        pointer-events: none;
+        fill: white;
+        z-index: 5;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+    }
+
+    &:hover {
+        .uploadIcon, .filter {
+            opacity: 1;
+        }
+    }
+`;
 
 export default function ProfilePicUploader() {
-    const [profilePic, setProfilePic] = useState(getItem('profilePic', ''));
+    const {userData, setUserData} = useContext(UserContext);
 
-    useEffect(() => {
-        profilePic ? saveItem('profilePic', profilePic) : deleteItem('profilePic');
-    }, [profilePic]);
+    const handleElementChange = (key) => (value) => {
+        setUserData((prevUserData) => ({
+            ...prevUserData,
+            [key]: value,
+        }));
+    };
 
     useEffect(() => {
         const handlePaste = async (event) => {
@@ -28,8 +70,7 @@ export default function ProfilePicUploader() {
                         if (compressedFile) {
                             const reader = new FileReader();
                             reader.onload = (e) => {
-                                setProfilePic(e.target.result);
-                                saveItem('profilePic', e.target.result);
+                                handleElementChange('profilePic')(e.target.result);
                             };
                             reader.readAsDataURL(compressedFile);
                         } else {
@@ -64,8 +105,7 @@ export default function ProfilePicUploader() {
                 if (compressedFile) {
                     const reader = new FileReader();
                     reader.onload = (e) => {
-                        setProfilePic(e.target.result);
-                        saveItem('profilePic', e.target.result);
+                        handleElementChange('profilePic')(e.target.result);
                     };
                     reader.readAsDataURL(compressedFile);
                 } else {
@@ -79,19 +119,21 @@ export default function ProfilePicUploader() {
 
     return (
         <div className="profile-pic-image">
-            <label htmlFor="file-upload" className="custom-file-upload">
+            <StyledLabel htmlFor="file-upload" className="custom-file-upload">
+                <FileUpload className={"uploadIcon"}/>
+                <Box className={"filter"}/>
                 <img
-                    src={profilePic || './images/rgPlaceholder.jpg'}
+                    src={userData.profilePic || './images/rgPlaceholder.jpg'}
                     alt="Profile"
-                    className={`image-profile ${profilePic ? 'active' : ''}`}
-                    style={{ cursor: 'pointer' }}
+                    className={`image-profile ${userData.profilePic ? 'active' : ''}`}
+                    style={{cursor: 'pointer'}}
                 />
-            </label>
+            </StyledLabel>
             <input
                 id="file-upload"
                 type="file"
                 className="file-upload"
-                style={{ display: 'none' }}
+                style={{display: 'none'}}
                 onChange={handleFileChange}
                 accept="image/*"
             />

@@ -45,11 +45,17 @@ body {
   --login-themed-background: var(--gray-placeholder);
 
   --gray-placeholder: #646b88;
-  --gray-background: #0f131f;
+  --background: #0f131f;
   --dark-gray-background: #101524;
-  --gray-border-color : #2a3554;
+  --gray-border-color: #2a3554;
   --gray-border: #2a3554 3px solid;
   --focus-gray-border: var(--gray-placeholder) 3px solid;
+  --card-background: #171d2e;
+
+  --warn: #ffb700;
+  --warn-hover: #b28000;
+  --danger: #ff3333;
+  --danger-hover: #cc2828;
 
   --green-background: #001300;
   --green-border: #339c33 3px solid;
@@ -68,7 +74,7 @@ body {
   --purple-text: #8537ba;
 
   --identity-inside-background: #e3e0d2;
-  --identity-outside-background: #467d70;
+  --identity-outside-background: #646b88;
 
   --red-background: #1c0000;
   --red-border: #800000 3px solid;
@@ -76,17 +82,14 @@ body {
 
   --nav-link-background: rgba(255, 255, 255, 0.15);
 
-  --gray-card-background: #171d2e;
-
-  --common-transition: all 0.3s ease-in-out;
-  --common-font-family: "Cascadia Mono";
+  --common-transition: all 0.2s ease-in-out;
+  --common-font-family: "Montserrat";
   --common-input-padding: 0.5vw;
   --common-button-font-size: 0.833vw;
   --common-textarea-font-size: 0.9vw;
   --common-header-font-size: 0.833vw;
   --common-status-input-padding: 1.5vw;
 
-  background-color: #101524;
   margin: 0;
   display: flex;
   place-items: center;

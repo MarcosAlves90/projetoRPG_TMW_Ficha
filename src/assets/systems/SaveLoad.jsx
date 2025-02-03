@@ -2,75 +2,80 @@ import LZString from "lz-string";
 import { auth } from "../../firebase.js";
 import { useCallback } from "react";
 import { useNavigate } from "react-router-dom";
-import { saveUserData } from "../../firebaseUtils.js";
 
-export const compressValue = LZString.compressToUTF16;
-export const decompressValue = LZString.decompressFromUTF16;
+export function decompressData(obj) {
+    const COMPRESSION_SIGNATURE = "[LZ]";
+    const EXCLUDED_KEYS = ["skillsArray", "annotationsArray", "itemsArray", "sheetCode"];
 
-const isNumber = (value) => /^[0-9]+(\.[0-9]+)?$/.test(value);
+    function isCompressed(value) {
+        if (typeof value !== 'string') return false;
 
-export const saveItem = (key, value) => {
-    localStorage.setItem(key, compressValue(value.toString()));
-};
-
-export const deleteItem = (key) => {
-    localStorage.removeItem(key);
-};
-
-export const getItem = (key, defaultValue) => {
-    const compressed = localStorage.getItem(key);
-    if (compressed) {
-        const decompressed = decompressValue(compressed);
-        return decompressed === null ? null : isNumber(decompressed) ? Number(decompressed) : decompressed;
-    }
-    return defaultValue;
-};
-
-export const handleChange = (setter) => (event) => {
-    const { value, type } = event.target;
-    setter(type === 'number' ? (value === '' ? '' : parseFloat(value)) : value);
-};
-
-const createBlobURL = (data) => {
-    const blob = new Blob([JSON.stringify(data)], { type: 'application/json' });
-    return URL.createObjectURL(blob);
-};
-
-const downloadFile = (url, filename) => {
-    const link = document.createElement('a');
-    link.href = url;
-    link.download = filename;
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-};
-
-export const saveLocalStorageFile = () => {
-    const data = Object.fromEntries([...Array(localStorage.length).keys()].map(i => [localStorage.key(i), localStorage.getItem(localStorage.key(i))]));
-    const url = createBlobURL(data);
-    const filename = `TMW - ${getItem('nome', '') || 'Ficha'}.json`;
-    downloadFile(url, filename);
-};
-
-export const loadLocalStorageFile = (event) => {
-    const { files } = event.target;
-    if (!files.length) return;
-
-    const reader = new FileReader();
-    reader.onload = ({ target }) => {
-        try {
-            const data = JSON.parse(target.result);
-            if (!data) throw new Error('Missing data');
-            localStorage.clear();
-            Object.entries(data).forEach(([key, value]) => localStorage.setItem(key, value));
-            location.reload();
-        } catch (error) {
-            console.error('Error processing the file:', error);
+        // Verifique a assinatura explícita de compressão
+        if (value.startsWith(COMPRESSION_SIGNATURE)) {
+            return true;
         }
-    };
-    reader.onerror = (error) => console.error('Error reading the file:', error);
-    reader.readAsText(files[0]);
-};
+
+        // Heurísticas para strings potencialmente comprimidas sem assinatura
+        try {
+            const decompressed = LZString.decompressFromUTF16(value);
+            if (!decompressed) return false;
+
+            // Valide se a descompressão parece plausível
+            const reCompressed = LZString.compressToUTF16(decompressed);
+            return reCompressed === value; // A string original deve ser igual ao recompresso
+        } catch {
+            return false; // Não é uma string comprimida válida
+        }
+    }
+
+    function determineType(value) {
+        try {
+            const parsed = JSON.parse(value);
+            if (Array.isArray(parsed)) return 'array';
+            if (parsed && typeof parsed === 'object') return 'object';
+            return typeof parsed;
+        } catch {
+            return 'string'; // Se não puder ser parseado, é apenas uma string
+        }
+    }
+
+    function recursivelyProcess(input) {
+        if (typeof input === 'object' && input !== null) {
+            const result = Array.isArray(input) ? [] : {};
+            for (const key in input) {
+                if (Object.prototype.hasOwnProperty.call(input, key)) {
+                    const value = input[key];
+                    if (isCompressed(value) && !EXCLUDED_KEYS.includes(key)) {
+                        const withoutSignature = value.startsWith(COMPRESSION_SIGNATURE)
+                            ? value.slice(COMPRESSION_SIGNATURE.length)
+                            : value;
+                        const decompressedValue = LZString.decompressFromUTF16(withoutSignature);
+                        const valueType = determineType(decompressedValue);
+                        if (valueType === 'object' || valueType === 'array') {
+                            result[key] = recursivelyProcess(JSON.parse(decompressedValue));
+                        } else {
+                            result[key] = valueType === 'string' ? decompressedValue : JSON.parse(decompressedValue);
+                        }
+                    } else if (EXCLUDED_KEYS.includes(key)) {
+                        if (typeof value === 'string' && value.startsWith('[') && value.endsWith(']')) {
+                            result[key] = JSON.parse(value);
+                        } else {
+                            result[key] = value;
+                        }
+                    } else if (typeof value === 'object' && value !== null) {
+                        result[key] = recursivelyProcess(value);
+                    } else {
+                        result[key] = value;
+                    }
+                }
+            }
+            return result;
+        }
+        return input;
+    }
+
+    return recursivelyProcess(obj);
+}
 
 export const clearLocalStorage = () => {
     localStorage.clear();
@@ -84,18 +89,13 @@ export const useSignOut = () => {
     const navigate = useNavigate();
     return useCallback(async () => {
         try {
-            await saveUserData(returnLocalStorageData());
             await auth.signOut();
             clearLocalStorage();
-            navigate('/login');
             console.log('Sign-out successful.');
         } catch (error) {
             console.error('Error during sign-out:', error);
+        } finally {
+            navigate('/login');
         }
     }, [navigate]);
-};
-
-export const importDatabaseData = (data) => {
-    localStorage.clear();
-    Object.entries(data).forEach(([key, value]) => localStorage.setItem(key, value));
 };
