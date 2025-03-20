@@ -147,6 +147,10 @@ export default function SheetSelectionPage() {
                             </Box>
                         </StyledInputsBox>
                         <div className={"sheet-list"}>
+                            <div
+                                className={`sheet active display-flex-center`}>
+                                <p className={"p-name"}>{userData.nome || userData.sheetCode}</p>
+                            </div>
                             {sheets.map(sheet => (
                                 <div
                                     className={`sheet display-flex-center`} key={sheet.sheetCode}>

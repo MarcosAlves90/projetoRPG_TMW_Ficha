@@ -14,7 +14,7 @@ import {map} from "jquery";
 import {UserContext} from "../UserContext.jsx";
 import styled from "styled-components";
 import {Box, Button, InputAdornment, TextField} from "@mui/material";
-import {Search, ReportGmailerrorred, Report, Lock, LockOpen} from "@mui/icons-material";
+import {Search, ReportGmailerrorred, Report, Lock, LockOpen, Casino} from "@mui/icons-material";
 
 const StyledTextField = styled(TextField)`
     margin-top: 0;
@@ -50,7 +50,7 @@ const StyledTextField = styled(TextField)`
 const StyledInputsBox = styled(Box)`
     display: flex;
     gap: 1rem;
-    margin: 1rem 0;
+    width: 100%;
 
     .buttonsBox {
         display: flex;
@@ -60,7 +60,6 @@ const StyledInputsBox = styled(Box)`
     @media (max-width: 991px) {
         flex-direction: column;
         gap: 2vw;
-        margin: 2vw 0;
         .buttonsBox {
             gap: 2vw;
 
@@ -89,6 +88,7 @@ const StyledButton = styled(Button)`
     }
 
     @media (max-width: 991px) {
+        width: 100%;
         font-size: 3vw;
     }
 `;
@@ -105,10 +105,11 @@ export default function Page3() {
     const [recommendations, setRecommendations] = useState(false);
     const [tempRoll, setTempRoll] = useState({
         Pericia: '',
-        Dice: [],
+        Dice: '',
         Result: 0
     });
 
+    const [noStatusDice, setNoStatusDice] = useState([[]]);
     const [searchTerm, setSearchTerm] = useState('');
     const {userData, setUserData, user} = useContext(UserContext);
     const debounceTimeout = useRef(null);
@@ -321,7 +322,7 @@ export default function Page3() {
             rollAttributeDice(attribute, attributeBonus);
             chooseMinOrMax(noAttribute);
             notifyRoll(attributeName, dice, diceResult);
-            setTempRoll({Pericia: attributeName, Dice: dice, Result: diceResult});
+            setTempRoll({Pericia: attributeName, Dice: dice.join(', '), Result: diceResult});
 
         } else if (perArray.map(per => per.pericia).includes((e.target.id).slice(7))) {
             const periciaName = (e.target.id).slice(7);
@@ -351,18 +352,130 @@ export default function Page3() {
             const result = diceResult + pericia;
 
             notifyRoll(periciaName, dice, result);
-            setTempRoll({Pericia: periciaName, Dice: dice, Result: result});
+            setTempRoll({Pericia: periciaName, Dice: dice.join(', '), Result: result});
         } else {
             rollSimpleDice(simpleDice.qty, simpleDice.sides);
             chooseSimpleDiceResult();
             notifyRoll("N/A", dice, diceResult);
-            setTempRoll({Pericia: "N/A", Dice: dice, Result: diceResult});
+            setTempRoll({Pericia: "N/A", Dice: dice.join(', '), Result: diceResult});
         }
     }
 
     const handleSearchChange = useCallback((event) => {
         setSearchTerm(event.target.value.toLowerCase());
     }, []);
+
+    const handleNoStatusDiceChange = useCallback((event) => {
+        setNoStatusDice(event.target.value.toLowerCase());
+    }, []);
+
+    const noStatusDiceRoll = useCallback(() => {
+        const regex = /(\d+)d(\d+)(kh\d+|kh)?/g;
+        const symbolRegex = /[+\-*/]/g;
+        const numberRegex = /(?<!\d)d?\b\d+\b(?!d)/g;
+        const matches = noStatusDice.match(regex);
+        const symbols = noStatusDice.match(symbolRegex) || [];
+        const isolatedNumbers = noStatusDice.match(numberRegex)?.map(Number) || [];
+
+        const notify = (message) => toast(message, {
+            theme: "dark",
+            position: "bottom-right",
+            icon: () => <Casino />,
+        });
+
+        if (!matches) {
+            console.error('No valid dice notation found');
+            return;
+        }
+
+        const rollDice = (num, sides) => Array.from({ length: num }, () => Math.floor(Math.random() * sides) + 1);
+        const calculateResult = (diceArray) => diceArray.reduce((acc, val) => acc + val, 0);
+
+        const newNoStatusDice = matches.map(match => {
+            const [, num1, num2, kh] = match.match(/(\d+)d(\d+)(kh\d+|kh)?/);
+            return [parseInt(num1, 10), parseInt(num2, 10), kh ? (kh === 'kh' ? 'kh1' : kh) : 'c'];
+        });
+
+        const results = newNoStatusDice.map(([num, sides, type]) => {
+            const diceResults = rollDice(num, sides);
+            if (type.startsWith('kh')) {
+                diceResults.sort((a, b) => b - a);
+                return { results: diceResults, result: calculateResult(diceResults.slice(0, parseInt(type.slice(2), 10))) };
+            }
+            return { results: diceResults, result: calculateResult(diceResults) };
+        });
+
+        let finalResult = results[0].result;
+        let symbolIndex = 0;
+        let isolatedNumberIndex = 0;
+
+        const formattedDice = noStatusDice.replace(regex, (match, p1, p2, p3, offset, string) => {
+            const index = matches.indexOf(match);
+            const diceResults = results[index].results;
+            if (p3 && p3.startsWith('kh')) {
+                const keepHighest = parseInt(p3.slice(2), 10);
+                const keptResults = diceResults.slice(0, keepHighest).map(result => `(${result})`);
+                const otherResults = diceResults.slice(keepHighest);
+                return `[${[...otherResults, ...keptResults].join(', ')}]`;
+            }
+            return `[${diceResults.join(', ')}]`;
+        });
+
+        for (let i = 0; i < symbols.length; i++) {
+            if (symbolIndex < results.length - 1) {
+                switch (symbols[i]) {
+                    case '+':
+                        finalResult += results[symbolIndex + 1].result;
+                        break;
+                    case '-':
+                        finalResult -= results[symbolIndex + 1].result;
+                        break;
+                    case '*':
+                        finalResult *= results[symbolIndex + 1].result;
+                        break;
+                    case '/':
+                        finalResult /= results[symbolIndex + 1].result;
+                        break;
+                    default:
+                        break;
+                }
+                symbolIndex++;
+            } else if (isolatedNumberIndex < isolatedNumbers.length) {
+                switch (symbols[i]) {
+                    case '+':
+                        finalResult += isolatedNumbers[isolatedNumberIndex];
+                        break;
+                    case '-':
+                        finalResult -= isolatedNumbers[isolatedNumberIndex];
+                        break;
+                    case '*':
+                        finalResult *= isolatedNumbers[isolatedNumberIndex];
+                        break;
+                    case '/':
+                        finalResult /= isolatedNumbers[isolatedNumberIndex];
+                        break;
+                    default:
+                        break;
+                }
+                isolatedNumberIndex++;
+            }
+        }
+
+        while (isolatedNumberIndex < isolatedNumbers.length) {
+            finalResult += isolatedNumbers[isolatedNumberIndex];
+            isolatedNumberIndex++;
+        }
+
+        setTempRoll({
+            Pericia: "comum",
+            Dice: formattedDice,
+            Result: finalResult
+        });
+
+        const truncatedFormattedDice = formattedDice.length > 60 ? `${formattedDice.slice(0, 60)}...` : formattedDice;
+        notify(`${truncatedFormattedDice} = ${finalResult}`);
+
+    }, [noStatusDice]);
 
     const filteredBioMap = useMemo(() => bioMap.filter((item) =>
         item.toLowerCase().includes(searchTerm)
@@ -385,8 +498,9 @@ export default function Page3() {
     ), [searchTerm]);
 
     useEffect(() => {
-        document.documentElement.style.setProperty('--text-length', `${(tempRoll.Dice.length < 31 ? tempRoll.Dice.length : 30)}`);
-    }, [tempRoll.Dice.length]);
+        const diceLength = Math.min(tempRoll.Dice.length, 15);
+        document.documentElement.style.setProperty('--text-length', `${diceLength}`);
+    }, [tempRoll.Dice]);
 
     return (
         <main className={"mainCommon page-3"}>
@@ -399,7 +513,9 @@ export default function Page3() {
                         <div
                             className={"dice-background dice-font left"}>{tempRoll.Pericia ? tempRoll.Pericia : "Nenhum"}</div>
                         <div className={"dice-background dice-font center display-flex-center"}>
-                            <p>{tempRoll.Dice.length < 31 ? `[${tempRoll.Dice}]` : tempRoll.Dice.length >= 31 ? `[${tempRoll.Dice.slice(0, 30)}...]` : "0"}</p>
+                        <p>
+                            {`${tempRoll.Dice.slice(0, 60)}${tempRoll.Dice.length > 90 ? '...' : ''}`}
+                        </p>
                         </div>
                         <div className={"dice-background dice-font right"}>{tempRoll.Result ? tempRoll.Result : 0}</div>
                     </article>
@@ -443,19 +559,43 @@ export default function Page3() {
                         }}
                     />
                 </StyledInputsBox>
-                <div className={"display-flex-center"}>
-                    <div className={"alert-box-collapsible"} style={recommendations ? null : {display: "none"}}>
-                        <div className={"alert-box"}>
-                            <div className={"alert-box-message"}>
-                                <p>Máximo de pontos em cada categoria:</p>
-                                <p>biotipo: máximo: [3]</p>
-                                <p>atributos: máximo: [{CalculateAttributesCap()}]</p>
-                                <p>perícias: máximo: [{CalculatePericiasCap()}]</p>
-                                <p className={"last-p"}>artes e subartes: máximo [{15}]</p>
-                            </div>
+                <div className={"alert-box-collapsible"} style={recommendations ? null : {display: "none"}}>
+                    <div className={"alert-box"}>
+                        <div className={"alert-box-message"}>
+                            <p>Máximo de pontos em cada categoria:</p>
+                            <p>biotipo: máximo: [3]</p>
+                            <p>atributos: máximo: [{CalculateAttributesCap()}]</p>
+                            <p>perícias: máximo: [{CalculatePericiasCap()}]</p>
+                            <p className={"last-p"}>artes e subartes: máximo [{15}]</p>
                         </div>
                     </div>
                 </div>
+                <StyledInputsBox>
+                    <StyledTextField
+                        type="text"
+                        variant="outlined"
+                        placeholder="Escreva seu dado..."
+                        value={noStatusDice}
+                        onChange={handleNoStatusDiceChange}
+                        fullWidth
+                        slotProps={{
+                            input: {
+                                startAdornment: (
+                                    <InputAdornment position="start">
+                                        <Casino/>
+                                    </InputAdornment>
+                                ),
+                            },
+                        }}
+                    />
+                    <StyledButton type={"button"}
+                                  variant="contained" color="primary"
+                                  onClick={noStatusDiceRoll}
+                                  endIcon={<Casino/>}
+                    >
+                        {"Rolar"}
+                    </StyledButton>
+                </StyledInputsBox>
             </section>
 
             <section className={`section-biotipo section-status ${filteredBioMap.length < 1 ? "display-none" : ""}`}>
