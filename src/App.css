@@ -1265,6 +1265,8 @@ input[type=number] {
         justify-content: center;
         align-items: center;
         flex-direction: column;
+        width: 100%;
+        max-width: 80rem;
     }
 
     &.page-0 {
