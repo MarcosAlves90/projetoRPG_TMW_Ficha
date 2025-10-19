@@ -60,7 +60,15 @@ const SectionCommon = styled.section`
         margin: 0;
         color: white;
         background-color: var(--gray-border-color);
-        padding: 0.1rem;
+        padding: 0.5rem;
+        font-size: 1.2rem;
+    }
+    
+    @media (max-width: 991px) {
+        .title-2 {
+            font-size: 4.5vw;
+            padding: 0.8rem 0.5rem;
+        }
     }
 `;
 
