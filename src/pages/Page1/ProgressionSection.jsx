@@ -1,88 +1,16 @@
 import PropTypes from 'prop-types';
-import styled from 'styled-components';
 import {Box, InputAdornment, TextField} from "@mui/material";
 import {DirectionsRun, Casino, Shield} from '@mui/icons-material';
-
-const StyledTextField = styled(TextField)`
-    margin-top: 0;
-
-    .MuiInputLabel-root, .MuiInputBase-input {
-        font-family: var(--common-font-family), sans-serif !important;
-    }
-
-    & .MuiFilledInput-root {
-        background-color: var(--background);
-    }
-
-    .Mui-disabled {
-        background-color: var(--gray-border-color);
-    }
-
-    .MuiSvgIcon-root {
-        opacity: 0.3;
-    }
-
-    @media (max-width: 991px) {
-        & .MuiInputBase-input, .MuiInputLabel-root {
-            font-size: 3.5vw;
-        }
-    }
-`;
-
-const InputsFieldset = styled.fieldset`
-    margin: 1.5rem;
-    display: flex;
-    gap: 2rem;
-
-    .MuiBox-root {
-        display: flex;
-        width: 100%;
-        gap: 0;
-    }
-
-    @media (max-width: 991px) {
-        flex-direction: column;
-        margin: 1rem;
-        gap: 1rem;
-    }
-`;
-
-const SectionCommon = styled.section`
-    width: 100%;
-    margin-bottom: 1rem;
-
-    .title-2 {
-        width: 100%;
-        margin: 0;
-        color: white;
-        background-color: var(--gray-border-color);
-        padding: 0.5rem;
-        font-size: 1.2rem;
-    }
-    
-    .flexBox {
-        display: flex;
-        gap: 2rem;
-    }
-
-    @media (max-width: 991px) {
-        .title-2 {
-            font-size: 4.5vw;
-            padding: 0.8rem 0.5rem;
-        }
-        .flexBox {
-            gap: 1rem;
-        }
-    }
-`;
+import styles from './ProgressionSection.module.css';
 
 export default function ProgressionSection({userData, onInputChange}) {
     return (
-        <SectionCommon>
-            <h2 className="mainCommon title-2">Progressão e Potencial</h2>
-            <InputsFieldset>
-                <Box className="flexBox">
-                    <StyledTextField
+        <section className={styles.sectionCommon}>
+            <h2 className={`mainCommon ${styles.title2}`}>Progressão e Potencial</h2>
+            <fieldset className={styles.inputsFieldset}>
+                <Box className={styles.flexBox}>
+                    <TextField
+                        className={styles.styledTextField}
                         variant="filled"
                         label="Defesa"
                         fullWidth
@@ -100,7 +28,8 @@ export default function ProgressionSection({userData, onInputChange}) {
                             },
                         }}
                     />
-                    <StyledTextField
+                    <TextField
+                        className={styles.styledTextField}
                         variant="filled"
                         label="DT"
                         fullWidth
@@ -118,7 +47,8 @@ export default function ProgressionSection({userData, onInputChange}) {
                         }}
                         disabled
                     />
-                    <StyledTextField
+                    <TextField
+                        className={styles.styledTextField}
                         variant="filled"
                         label="Deslocamento"
                         fullWidth
@@ -137,9 +67,10 @@ export default function ProgressionSection({userData, onInputChange}) {
                         disabled
                     />
                 </Box>
-            </InputsFieldset>
-            <InputsFieldset>
-                <StyledTextField
+            </fieldset>
+            <fieldset className={styles.inputsFieldset}>
+                <TextField
+                    className={styles.styledTextField}
                     variant="filled"
                     label="Nível"
                     fullWidth
@@ -148,8 +79,8 @@ export default function ProgressionSection({userData, onInputChange}) {
                     onChange={onInputChange('nivel')}
                     min={0}
                 />
-            </InputsFieldset>
-        </SectionCommon>
+            </fieldset>
+        </section>
     );
 }
 
