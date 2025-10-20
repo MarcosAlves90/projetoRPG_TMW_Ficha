@@ -1,23 +1,13 @@
 import {useEffect, useRef, useCallback, useContext} from "react";
 import {saveUserData} from "../firebaseUtils.js";
 import {UserContext} from "../UserContext.jsx";
-import styled from 'styled-components';
 import {Box} from "@mui/material";
 import IdentitySection from './Page1/IdentitySection.jsx';
 import PersonalSection from './Page1/PersonalSection.jsx';
 import MentalWorldSection from './Page1/MentalWorldSection.jsx';
 import VitalResourcesSection from './Page1/VitalResourcesSection.jsx';
 import ProgressionSection from './Page1/ProgressionSection.jsx';
-
-const StyledBoxField = styled(Box)`
-    background-color: rgba(23, 29, 46, 0.49);
-    border: var(--gray-border);
-    border-radius: 10px;
-    width: 100%;
-    @media (max-width: 991px) {
-        margin-bottom: 3rem;
-    }
-`;
+import styles from './Page1.module.css';
 
 export default function Page1() {
     const {userData, setUserData, user} = useContext(UserContext);
@@ -84,7 +74,7 @@ export default function Page1() {
         <main className="mainCommon page-1">
             <IdentitySection userData={userData} />
 
-            <StyledBoxField>
+            <Box className={styles.styledBoxField}>
                 <PersonalSection userData={userData} onInputChange={handleInputChange} />
                 
                 <MentalWorldSection userData={userData} onInputChange={handleInputChange} />
@@ -98,7 +88,7 @@ export default function Page1() {
                 />
 
                 <ProgressionSection userData={userData} onInputChange={handleInputChange} />
-            </StyledBoxField>
+            </Box>
         </main>
     );
 }
