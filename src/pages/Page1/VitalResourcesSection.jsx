@@ -1,63 +1,7 @@
 import PropTypes from 'prop-types';
-import styled from 'styled-components';
 import {Cyclone, Favorite, FlashOn, Psychology} from '@mui/icons-material';
 import VitalResource from './VitalResource';
-
-const VitalResourcesGrid = styled.div`
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 1rem;
-    width: 100%;
-    
-    @media (min-width: 768px) {
-        grid-template-columns: repeat(2, 1fr);
-    }
-    
-    @media (max-width: 991px) {
-        grid-template-columns: 1fr;
-    }
-`;
-
-const InputsFieldset = styled.fieldset`
-    margin: 1.5rem;
-    display: flex;
-    gap: 2rem;
-
-    &.fullWidth {
-        gap: 0;
-        
-        > * {
-            width: 100%;
-        }
-    }
-
-    @media (max-width: 991px) {
-        flex-direction: column;
-        margin: 1rem;
-        gap: 1rem;
-    }
-`;
-
-const SectionCommon = styled.section`
-    width: 100%;
-    margin-bottom: 1rem;
-
-    .title-2 {
-        width: 100%;
-        margin: 0;
-        color: white;
-        background-color: var(--gray-border-color);
-        padding: 0.5rem;
-        font-size: 1.2rem;
-    }
-    
-    @media (max-width: 991px) {
-        .title-2 {
-            font-size: 4.5vw;
-            padding: 0.8rem 0.5rem;
-        }
-    }
-`;
+import styles from './VitalResourcesSection.module.css';
 
 export default function VitalResourcesSection({
     userData,
@@ -102,10 +46,10 @@ export default function VitalResourcesSection({
     ];
 
     return (
-        <SectionCommon>
-            <h2 className="mainCommon title-2">Recursos Vitais</h2>
-            <InputsFieldset className="fullWidth">
-                <VitalResourcesGrid>
+        <section className={styles.sectionCommon}>
+            <h2 className={`mainCommon ${styles.title2}`}>Recursos Vitais</h2>
+            <fieldset className={`${styles.inputsFieldset} ${styles.fullWidth}`}>
+                <div className={styles.vitalResourcesGrid}>
                     {vitalResources.map((resource) => (
                         <VitalResource
                             key={resource.currentKey}
@@ -120,9 +64,9 @@ export default function VitalResourcesSection({
                             onInputChange={onInputChange}
                         />
                     ))}
-                </VitalResourcesGrid>
-            </InputsFieldset>
-        </SectionCommon>
+                </div>
+            </fieldset>
+        </section>
     );
 }
 
