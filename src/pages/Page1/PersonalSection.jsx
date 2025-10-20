@@ -1,87 +1,14 @@
 import PropTypes from 'prop-types';
-import styled from 'styled-components';
 import {Box, InputAdornment, TextField} from "@mui/material";
-
-const StyledTextField = styled(TextField)`
-    margin-top: 0;
-
-    .MuiInputLabel-root, .MuiInputBase-input {
-        font-family: var(--common-font-family), sans-serif !important;
-    }
-
-    & .MuiFilledInput-root {
-        background-color: var(--background);
-    }
-
-    .Mui-disabled {
-        background-color: var(--gray-border-color);
-    }
-
-    .MuiSvgIcon-root {
-        opacity: 0.3;
-    }
-
-    @media (max-width: 991px) {
-        & .MuiInputBase-input, .MuiInputLabel-root {
-            font-size: 3.5vw;
-        }
-    }
-`;
-
-const InputsFieldset = styled.fieldset`
-    margin: 1.5rem;
-    display: flex;
-    gap: 2rem;
-
-    .MuiBox-root {
-        display: flex;
-        width: 100%;
-        gap: 0;
-    }
-    
-    .flexBox {
-        display: flex;
-        gap: 2rem;
-    }
-
-    @media (max-width: 991px) {
-        flex-direction: column;
-        margin: 1rem;
-        gap: 1rem;
-        
-        .flexBox {
-            gap: 1rem;
-        }
-    }
-`;
-
-const SectionCommon = styled.section`
-    width: 100%;
-    margin-bottom: 1rem;
-
-    .title-2 {
-        width: 100%;
-        margin: 0;
-        color: white;
-        background-color: var(--gray-border-color);
-        padding: 0.5rem;
-        font-size: 1.2rem;
-    }
-    
-    @media (max-width: 991px) {
-        .title-2 {
-            font-size: 4.5vw;
-            padding: 0.8rem 0.5rem;
-        }
-    }
-`;
+import styles from './PersonalSection.module.css';
 
 export default function PersonalSection({userData, onInputChange}) {
     return (
-        <SectionCommon>
-            <h2 className="mainCommon title-2">Pessoal</h2>
-            <InputsFieldset>
-                <StyledTextField
+        <section className={styles.sectionCommon}>
+            <h2 className={`mainCommon ${styles.title2}`}>Pessoal</h2>
+            <fieldset className={styles.inputsFieldset}>
+                <TextField
+                    className={styles.styledTextField}
                     variant="filled"
                     label="Nome"
                     fullWidth
@@ -89,27 +16,28 @@ export default function PersonalSection({userData, onInputChange}) {
                     value={userData.nome || ''}
                     onChange={onInputChange('nome')}
                 />
-                <StyledTextField
+                <TextField
+                    className={styles.styledTextField}
                     variant="filled"
                     label="Data de Nascimento"
                     fullWidth
                     type="text"
                     value={userData.idade || ''}
                     onChange={onInputChange('idade')}
-                    className="input-small"
                 />
-                <StyledTextField
+                <TextField
+                    className={styles.styledTextField}
                     variant="filled"
                     label="Profissão"
                     fullWidth
                     type="text"
-                    className="input-small"
                     value={userData.profissao || ''}
                     onChange={onInputChange('profissao')}
                 />
-            </InputsFieldset>
-            <InputsFieldset>
-                <StyledTextField
+            </fieldset>
+            <fieldset className={styles.inputsFieldset}>
+                <TextField
+                    className={styles.styledTextField}
                     variant="filled"
                     label="Título"
                     fullWidth
@@ -117,8 +45,9 @@ export default function PersonalSection({userData, onInputChange}) {
                     value={userData.titulo || ''}
                     onChange={onInputChange('titulo')}
                 />
-                <Box className="flexBox">
-                    <StyledTextField
+                <Box className={styles.flexBox}>
+                    <TextField
+                        className={styles.styledTextField}
                         variant="filled"
                         label="Altura"
                         fullWidth
@@ -132,9 +61,9 @@ export default function PersonalSection({userData, onInputChange}) {
                         onChange={onInputChange('altura')}
                         min={0}
                         step={0.01}
-                        className="input-small"
                     />
-                    <StyledTextField
+                    <TextField
+                        className={styles.styledTextField}
                         variant="filled"
                         label="Peso"
                         fullWidth
@@ -148,11 +77,10 @@ export default function PersonalSection({userData, onInputChange}) {
                         onChange={onInputChange('peso')}
                         min={0}
                         step={0.1}
-                        className="input-small"
                     />
                 </Box>
-            </InputsFieldset>
-        </SectionCommon>
+            </fieldset>
+        </section>
     );
 }
 
