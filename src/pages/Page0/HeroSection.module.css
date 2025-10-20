@@ -1,0 +1,25 @@
+.title {
+    font-family: 'Brevis', sans-serif;
+    font-size: 5vw;
+}
+
+.subtitle {
+    font-size: 0.85vw;
+}
+
+.category {
+    font-size: 1.2vw;
+}
+
+@media (max-width: 991px) {
+    .title {
+        font-size: 12vw;
+    }
+
+    .subtitle {
+        font-size: 3vw;
+    }
+    .category {
+        font-size: 4vw;
+    }
+}
