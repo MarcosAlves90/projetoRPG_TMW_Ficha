@@ -12,11 +12,19 @@
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+
+  --background: #0b0f1a;
+}
+
+#root {
+  background-color: var(--background);
 }
 
 @theme {
   --font-futura: 'Futura', sans-serif;
   --font-brevis: 'Brevis', sans-serif;
+
+  --color-background: var(--background);
 }
 
 body {
@@ -43,7 +51,6 @@ body {
   --login-themed-background: var(--gray-placeholder);
 
   --gray-placeholder: #646b88;
-  --background: #0f131f;
   --dark-gray-background: #101524;
   --gray-border-color: #2a3554;
   --gray-border: #2a3554 3px solid;
@@ -139,19 +146,6 @@ body {
 }
 
 /*// - Fim da animação do Loader -*/
-
-@media (prefers-color-scheme: light) {
-  :root {
-    color: #213547;
-    background-color: #ffffff;
-  }
-  a:hover {
-    color: #747bff;
-  }
-  button {
-    background-color: #f9f9f9;
-  }
-}
 
 @keyframes gridPulse {
   0%, 100% {
