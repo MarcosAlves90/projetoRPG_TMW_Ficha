@@ -20,10 +20,6 @@ import './App.css';
 const DARK_THEME = createTheme({
     palette: {
         mode: 'dark',
-        background: {
-            default: '#101524',
-            paper: '#101524',
-        },
     },
     disableInjectingGlobalStyles: true,
 });
