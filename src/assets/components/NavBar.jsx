@@ -100,7 +100,7 @@ export default function NavBar() {
 
             {/* Sidebar */}
             <aside
-                className={`fixed top-0 left-0 h-full bg-linear-to-b from-[#0f131f] via-[#171d2e] to-[#0f131f] border-r border-white/10 shadow-2xl z-40 ${
+                className={`fixed top-0 left-0 h-full bg-background border-r border-white/10 z-40 ${
                     isSidebarOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'
                 } ${isCollapsed ? 'lg:w-20' : 'lg:w-64'} w-64 transition-transform duration-300 ease-in-out lg:transition-none`}
             >
