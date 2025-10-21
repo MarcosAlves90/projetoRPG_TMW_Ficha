@@ -5,7 +5,7 @@ export default function Page0() {
     return (
         <>
             <Background />
-            <main className="mainCommon page-0 root-style">
+            <main className="min-h-screen flex items-center justify-center">
                 <HeroSection 
                     category="THE MENTAL WORLD: ANO 1"
                     title="MidNight"

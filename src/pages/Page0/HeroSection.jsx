@@ -1,20 +1,15 @@
 import PropTypes from 'prop-types';
-import styles from './HeroSection.module.css';
 import EnterButton from '../../assets/components/EnterButton';
 
 export default function HeroSection({ title, category, subtitle }) {
     return (
-        <section className="mainCommon-page-0-section-0">
-            <article className="mainCommon-page-0-section-0-article">
-                <div>
-                    <h2 className={styles.category}>{category}</h2>
-                    <h1 className={styles.title}>{title}</h1>
-                    <p className={styles.subtitle}>
-                        {subtitle}
-                    </p>
-                    <EnterButton/>
-                </div>
-            </article>
+        <section className='flex flex-col items-center'>
+            <h2 className="text-2xl font-bold mb-4 font-futura">{category}</h2>
+            <h1 className="text-6xl sm:text-8xl font-brevis mb-1">{title}</h1>
+            <p className="text-sm sm:text-base mb-10 max-sm:max-w-89">
+                {subtitle}
+            </p>
+            <EnterButton/>
         </section>
     );
 }
