@@ -5,7 +5,7 @@ export default function Page0() {
     return (
         <>
             <Background />
-            <main className="min-h-screen flex items-center justify-center">
+            <main className="min-h-screen flex items-center justify-center z-2 relative">
                 <HeroSection 
                     category="THE MENTAL WORLD: ANO 1"
                     title="MidNight"

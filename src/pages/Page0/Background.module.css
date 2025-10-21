@@ -7,7 +7,7 @@
     background-image: url('https://res.cloudinary.com/dflvo098t/image/upload/v1748413573/landing-page_vgw7yx.gif');
     background-size: cover;
     background-position: center;
-    z-index: -2;
+    z-index: 1;
     image-rendering: pixelated;
     filter: blur(5px);
     opacity: 0.5;
