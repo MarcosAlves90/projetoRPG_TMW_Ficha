@@ -1,17 +1,23 @@
-import { Suspense, lazy, useContext, useEffect, useState } from 'react';
+import { Suspense, lazy, useContext, useEffect, useState, useCallback } from 'react';
 import { Route, Routes, useLocation } from "react-router-dom";
-import NavBar from './assets/components/NavBar.jsx';
-import './App.css';
-import { getUserData } from './firebaseUtils';
-import { onAuthStateChanged } from "firebase/auth";
-import { auth } from "./firebase.js";
-import { UserContext } from "./UserContext.jsx";
-import { v4 as uuidv4 } from 'uuid';
-import { decompressData } from './assets/systems/SaveLoad.jsx';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
+import { onAuthStateChanged } from "firebase/auth";
+import { v4 as uuidv4 } from 'uuid';
 
-const darkTheme = createTheme({
+import NavBar from './assets/components/NavBar.jsx';
+import { getUserData } from './firebaseUtils';
+import { auth } from "./firebase.js";
+import { UserContext } from "./UserContext.jsx";
+import { decompressData } from './assets/systems/SaveLoad.jsx';
+
+import './App.css';
+
+/**
+ * Configuração do tema escuro da aplicação
+ * @constant
+ */
+const DARK_THEME = createTheme({
     palette: {
         mode: 'dark',
         background: {
@@ -22,96 +28,40 @@ const darkTheme = createTheme({
     disableInjectingGlobalStyles: true,
 });
 
-// Lazy load components
+/**
+ * Rotas que não devem exibir a NavBar
+ * @constant
+ */
+const ROUTES_WITHOUT_NAVBAR = ['/fichas', '/'];
+
+/**
+ * Componente de carregamento reutilizável
+ * @constant
+ */
+const LoadingFallback = () => (
+    <div id="loader">
+        <div className="loader" />
+    </div>
+);
+
+// Lazy loading de páginas para otimização de performance
 const Page0 = lazy(() => import('./pages/Page0.jsx'));
 const Page1 = lazy(() => import('./pages/Page1.jsx'));
 const Page2 = lazy(() => import('./pages/Page2.jsx'));
 const Page3 = lazy(() => import('./pages/Page3.jsx'));
 const Page4 = lazy(() => import('./pages/Page4.jsx'));
 const Page5 = lazy(() => import('./pages/Page5.jsx'));
+const Page6 = lazy(() => import('./pages/Page6.jsx'));
 const Login = lazy(() => import('./pages/Login.jsx'));
 const Config = lazy(() => import('./pages/Config.jsx'));
 const SheetSelectionPage = lazy(() => import('./pages/SheetSelectionPage.jsx'));
-const Page6 = lazy(() => import('./pages/Page6.jsx'));
 
-function App() {
-    const location = useLocation();
-    const { userData, setUserData, setUser } = useContext(UserContext);
-    const [isDataLoaded, setIsDataLoaded] = useState(false);
-
-    const handleElementChange = (key) => (value) => {
-        setUserData((prevUserData) => ({
-            ...prevUserData,
-            [key]: value,
-        }));
-    };
-
-    const fetchUserData = async (isMounted) => {
-        try {
-            let data = await getUserData('data');
-            if (data && isMounted) {
-                data = decompressData(data);
-                if (!data.sheetCode) {
-                    data.sheetCode = uuidv4();
-                }
-                setUserData(data);
-                setIsDataLoaded(true);
-            }
-        } catch (error) {
-            console.error("Error fetching user data:", error);
-        }
-    };
-
-    useEffect(() => {
-        let isMounted = true;
-        const unsubscribeAuth = onAuthStateChanged(auth, async (user) => {
-            if (user) {
-                setUser(user);
-                await fetchUserData(isMounted);
-            } else {
-                setUser(null);
-                if (!userData.sheetCode) {
-                    handleElementChange('sheetCode')(uuidv4());
-                }
-                setIsDataLoaded(true);
-            }
-        });
-
-        return () => {
-            isMounted = false;
-            unsubscribeAuth();
-        };
-    }, []);
-
-    if (!isDataLoaded) {
-        return (
-            <div id="loader">
-                <div className="loader" />
-            </div>
-        );
-    }
-
-    return (
-        <ThemeProvider theme={darkTheme}>
-            <CssBaseline />
-            <main className="appMain display-flex">
-                {location.pathname !== "/fichas" && <NavBar />}
-                <Suspense fallback={
-                    <div id="loader">
-                        <div className="loader" />
-                    </div>}>
-                    <Routes>
-                        {routes.map((route, index) => (
-                            <Route key={index} path={route.path} element={route.element} />
-                        ))}
-                    </Routes>
-                </Suspense>
-            </main>
-        </ThemeProvider>
-    );
-}
-
-const routes = [
+/**
+ * Configuração de rotas da aplicação
+ * Centraliza todas as definições de roteamento
+ * @constant
+ */
+const ROUTES_CONFIG = [
     { path: "/login", element: <Login /> },
     { path: "/", element: <Page0 /> },
     { path: "/individual", element: <Page1 /> },
@@ -123,5 +73,108 @@ const routes = [
     { path: "/configuracoes", element: <Config /> },
     { path: "/inventario", element: <Page6 /> }
 ];
+
+/**
+ * Componente principal da aplicação
+ * Gerencia autenticação, carregamento de dados do usuário e roteamento
+ * @returns {JSX.Element} Componente App
+ */
+function App() {
+    const location = useLocation();
+    const { userData, setUserData, setUser } = useContext(UserContext);
+    const [isDataLoaded, setIsDataLoaded] = useState(false);
+    
+    const shouldShowNavBar = !ROUTES_WITHOUT_NAVBAR.includes(location.pathname);
+
+    /**
+     * Atualiza um campo específico dos dados do usuário
+     * @param {string} key - Chave do campo a ser atualizado
+     * @returns {Function} Função que recebe o novo valor
+     */
+    const handleElementChange = useCallback((key) => (value) => {
+        setUserData((prevUserData) => ({
+            ...prevUserData,
+            [key]: value,
+        }));
+    }, [setUserData]);
+
+    /**
+     * Busca e descomprime os dados do usuário do Firebase
+     * @param {boolean} isMounted - Flag para verificar se o componente está montado
+     */
+    const fetchUserData = useCallback(async (isMounted) => {
+        try {
+            let data = await getUserData('data');
+            
+            if (!data || !isMounted) return;
+
+            const decompressedData = decompressData(data);
+            
+            // Garante que cada ficha tenha um código único
+            if (!decompressedData.sheetCode) {
+                decompressedData.sheetCode = uuidv4();
+            }
+            
+            setUserData(decompressedData);
+            setIsDataLoaded(true);
+        } catch (error) {
+            console.error("Erro ao buscar dados do usuário:", error);
+            setIsDataLoaded(true); // Permite continuar mesmo com erro
+        }
+    }, [setUserData]);
+
+    /**
+     * Gerencia o ciclo de vida da autenticação do usuário
+     */
+    useEffect(() => {
+        let isMounted = true;
+
+        const unsubscribeAuth = onAuthStateChanged(auth, async (user) => {
+            if (user) {
+                setUser(user);
+                await fetchUserData(isMounted);
+            } else {
+                setUser(null);
+                
+                // Gera código único para sessões não autenticadas
+                if (!userData.sheetCode) {
+                    handleElementChange('sheetCode')(uuidv4());
+                }
+                
+                setIsDataLoaded(true);
+            }
+        });
+
+        return () => {
+            isMounted = false;
+            unsubscribeAuth();
+        };
+    }, [setUser, fetchUserData, userData.sheetCode, handleElementChange]);
+
+    // Exibe loader enquanto carrega dados iniciais
+    if (!isDataLoaded) {
+        return <LoadingFallback />;
+    }
+
+    return (
+        <ThemeProvider theme={DARK_THEME}>
+            <CssBaseline />
+            <main className="appMain display-flex">
+                {shouldShowNavBar && <NavBar />}
+                <Suspense fallback={<LoadingFallback />}>
+                    <Routes>
+                        {ROUTES_CONFIG.map((route) => (
+                            <Route 
+                                key={route.path} 
+                                path={route.path} 
+                                element={route.element} 
+                            />
+                        ))}
+                    </Routes>
+                </Suspense>
+            </main>
+        </ThemeProvider>
+    );
+}
 
 export default App;

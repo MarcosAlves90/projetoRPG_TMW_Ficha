@@ -7,6 +7,13 @@
     font-style: normal;
 }
 
+@font-face {
+    font-family: 'Futura';
+    src: url('./assets/fonts/Futura.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
 
 /* Para o Chrome, Safari, Edge, Opera */
 input::-webkit-outer-spin-button,

@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types';
 import styles from './HeroSection.module.css';
+import EnterButton from '../../assets/components/EnterButton';
 
 export default function HeroSection({ title, category, subtitle }) {
     return (
@@ -11,6 +12,7 @@ export default function HeroSection({ title, category, subtitle }) {
                     <p className={styles.subtitle}>
                         {subtitle}
                     </p>
+                    <EnterButton/>
                 </div>
             </article>
         </section>
