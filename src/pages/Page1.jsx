@@ -1,7 +1,7 @@
 import {useEffect, useRef, useCallback, useContext} from "react";
 import {saveUserData} from "../firebaseUtils.js";
 import {UserContext} from "../UserContext.jsx";
-import {Box} from "@mui/material";
+// MUI removed — using native elements and CSS modules
 import IdentitySection from './Page1/IdentitySection.jsx';
 import PersonalSection from './Page1/PersonalSection.jsx';
 import MentalWorldSection from './Page1/MentalWorldSection.jsx';
@@ -71,10 +71,10 @@ export default function Page1() {
     };
 
     return (
-        <main className="mainCommon page-1">
+        <main className="">
             <IdentitySection userData={userData} />
 
-            <Box className={styles.styledBoxField}>
+            <div className={styles.styledBoxField}>
                 <PersonalSection userData={userData} onInputChange={handleInputChange} />
                 
                 <MentalWorldSection userData={userData} onInputChange={handleInputChange} />
@@ -88,7 +88,7 @@ export default function Page1() {
                 />
 
                 <ProgressionSection userData={userData} onInputChange={handleInputChange} />
-            </Box>
+            </div>
         </main>
     );
 }

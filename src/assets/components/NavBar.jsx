@@ -4,21 +4,26 @@ import { useSignOut } from "../systems/SaveLoad.jsx";
 import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "../../firebase";
 import { UserContext } from "../../UserContext.jsx";
+import { useLayout } from "./LayoutContext.jsx";
 import { saveUserData } from "../../firebaseUtils.js";
+import { User, Star, BarChart2, Target, FileText, Backpack, Settings, LogIn, LogOut } from 'lucide-react';
 
 const navItems = [
-    { path: "/", label: "Início", icon: "🏠" },
-    { path: "/individual", label: "Individual", icon: "👤" },
-    { path: "/caracteristicas", label: "Características", icon: "⭐" },
-    { path: "/status", label: "Status", icon: "📊" },
-    { path: "/skills", label: "Skills", icon: "🎯" },
-    { path: "/anotacoes", label: "Anotações", icon: "📝" },
-    { path: "/inventario", label: "Inventário", icon: "🎒" },
+    { path: "/individual", label: "Individual", icon: <User size={18} /> },
+    { path: "/caracteristicas", label: "Características", icon: <Star size={18} /> },
+    { path: "/status", label: "Status", icon: <BarChart2 size={18} /> },
+    { path: "/skills", label: "Skills", icon: <Target size={18} /> },
+    { path: "/anotacoes", label: "Anotações", icon: <FileText size={18} /> },
+    { path: "/inventario", label: "Inventário", icon: <Backpack size={18} /> },
 ];
 
 export default function NavBar() {
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-    const [isCollapsed, setIsCollapsed] = useState(false);
+    // Support LayoutContext — if a provider is present, use it — otherwise fallback to local state
+    const layout = useLayout();
+    const [localIsCollapsed, setLocalIsCollapsed] = useState(false);
+    const isCollapsed = layout ? layout.isCollapsed : localIsCollapsed;
+    const setIsCollapsed = layout ? layout.setIsCollapsed : setLocalIsCollapsed;
     const [currentUser, setCurrentUser] = useState(null);
     const { userData, setUserData } = useContext(UserContext);
 
@@ -32,7 +37,7 @@ export default function NavBar() {
 
     const handleCollapse = useCallback(() => {
         setIsCollapsed(prev => !prev);
-    }, []);
+    }, [setIsCollapsed]);
 
     const handleLogout = useCallback(() => {
         saveUserData(userData);
@@ -195,7 +200,7 @@ export default function NavBar() {
                             }`}
                             title={isCollapsed ? 'Configurações' : ''}
                         >
-                            <span className="text-xl shrink-0">⚙️</span>
+                            <span className="text-xl shrink-0"><Settings size={18} /></span>
                             <span className={`font-medium transition-all duration-300 ${isCollapsed ? 'lg:hidden' : ''}`}>
                                 Configurações
                             </span>
@@ -220,7 +225,7 @@ export default function NavBar() {
                                     : 'bg-blue-600/80 hover:bg-blue-600 text-white'
                             }`}
                         >
-                            <span className="text-xl">{currentUser ? '🚪' : '🔐'}</span>
+                            <span className="text-xl">{currentUser ? <LogOut size={18} /> : <LogIn size={18} />}</span>
                             <span className={`transition-all duration-300 ${isCollapsed ? 'lg:hidden' : ''}`}>
                                 {currentUser ? 'Sair' : 'Login'}
                             </span>

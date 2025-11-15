@@ -22,27 +22,50 @@
     margin-top: 0;
 }
 
-.styledTextField :global(.MuiInputLabel-root),
-.styledTextField :global(.MuiInputBase-input) {
-    font-family: var(--common-font-family), sans-serif !important;
+.styledTextField label {
+    display: block;
+    font-family: var(--common-font-family), sans-serif;
+    color: var(--label-color, #ccc);
+    margin-bottom: 0.3rem;
 }
 
-.styledTextField :global(.MuiFilledInput-root) {
+.styledTextField input {
+    width: 100%;
+    padding: 0.5rem;
+    border-radius: 6px;
+    border: none;
     background-color: var(--background);
+    color: white;
+}
+
+/* Styling for native inputs */
+.styledTextField input,
+.styledTextField label {
+    font-family: var(--common-font-family), sans-serif;
 }
 
 .styledFormControl {
     margin-top: 0;
 }
 
-.styledFormControl :global(.MuiInputLabel-root),
-.styledFormControl :global(.MuiInputBase-input) {
-    font-family: var(--common-font-family), sans-serif !important;
-    text-align: left;
+.styledFormControl label {
+    display: block;
+    margin-bottom: 0.3rem;
 }
 
-.styledFormControl :global(.MuiFilledInput-root) {
+.styledFormControl select {
+    width: 100%;
+    padding: 0.5rem;
+    border-radius: 6px;
+    border: none;
     background-color: var(--background);
+    color: white;
+}
+
+.styledFormControl label,
+.styledFormControl select {
+    font-family: var(--common-font-family), sans-serif !important;
+    text-align: left;
 }
 
 @media (max-width: 991px) {
@@ -57,10 +80,10 @@
         gap: 1rem;
     }
 
-    .styledTextField :global(.MuiInputBase-input),
-    .styledTextField :global(.MuiInputLabel-root),
-    .styledFormControl :global(.MuiInputBase-input),
-    .styledFormControl :global(.MuiInputLabel-root) {
+    .styledTextField input,
+    .styledTextField label,
+    .styledFormControl select,
+    .styledFormControl label {
         font-size: 3.5vw;
     }
 }

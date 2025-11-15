@@ -28,21 +28,36 @@
     margin-top: 0;
 }
 
-.styledTextField :global(.MuiInputLabel-root),
-.styledTextField :global(.MuiInputBase-input) {
-    font-family: var(--common-font-family), sans-serif !important;
+.styledTextField label {
+    display: block;
+    font-family: var(--common-font-family), sans-serif;
+    color: var(--label-color, #ccc);
+    margin-bottom: 0.3rem;
 }
 
-.styledTextField :global(.MuiFilledInput-root) {
+.styledTextField input {
+    width: 100%;
+    padding: 0.5rem;
+    border-radius: 6px;
+    border: none;
     background-color: var(--background);
+    color: white;
 }
 
-.styledTextField :global(.Mui-disabled) {
-    background-color: var(--gray-border-color);
+.inputAdornment {
+    margin-left: 0.5rem;
+    opacity: 0.8;
 }
 
-.styledTextField :global(.MuiSvgIcon-root) {
-    opacity: 0.3;
+.inputWithAdornment {
+    display: flex;
+    align-items: center;
+}
+
+/* native input & label rules */
+.styledTextField input,
+.styledTextField label {
+    font-family: var(--common-font-family), sans-serif;
 }
 
 @media (max-width: 991px) {
@@ -61,8 +76,8 @@
         gap: 1rem;
     }
 
-    .styledTextField :global(.MuiInputBase-input),
-    .styledTextField :global(.MuiInputLabel-root) {
+    .styledTextField input,
+    .styledTextField label {
         font-size: 3.5vw;
     }
 }

@@ -1,11 +1,10 @@
 import PropTypes from 'prop-types';
-import {IconButton} from "@mui/material";
-import {Add, Remove} from '@mui/icons-material';
+// MUI removed — using native buttons and simple icons
 import styles from './VitalResource.module.css';
 
 export default function VitalResource({
     label,
-    icon: Icon,
+    icon,
     currentKey,
     currentValue,
     maxValue,
@@ -20,7 +19,7 @@ export default function VitalResource({
         <div className={styles.vitalResourceContainer}>
             <div className={styles.vitalResourceHeader}>
                 <div className={styles.resourceLabel}>
-                    {Icon && <Icon/>}
+                    {icon && <span className={styles.resourceIcon}>{icon}</span>}
                     <span>{label}</span>
                 </div>
                 <span className={styles.resourceValue}>{currentValue} / {maxValue}</span>
@@ -39,20 +38,20 @@ export default function VitalResource({
                 <div className={styles.barText}>{Math.round(percentage)}%</div>
             </div>
             <div className={styles.vitalResourceControls}>
-                <IconButton
+                <button
                     size="small"
                     onClick={() => onResourceChange(currentKey, maxValue, -10)}
                     disabled={currentValue === 0}
                 >
-                    <Remove fontSize="small"/>
-                </IconButton>
-                <IconButton
-                    size="small"
+                    −
+                </button>
+                <button
+                    className={styles.iconButton}
                     onClick={() => onResourceChange(currentKey, maxValue, -1)}
                     disabled={currentValue === 0}
                 >
-                    <Remove fontSize="inherit"/>
-                </IconButton>
+                    −
+                </button>
                 <input
                     className={styles.resourceInput}
                     type="number"
@@ -62,20 +61,20 @@ export default function VitalResource({
                     max={maxValue}
                     style={{borderColor: `${color}50`}}
                 />
-                <IconButton
-                    size="small"
+                <button
+                    className={styles.iconButton}
                     onClick={() => onResourceChange(currentKey, maxValue, 1)}
                     disabled={currentValue >= maxValue}
                 >
-                    <Add fontSize="inherit"/>
-                </IconButton>
-                <IconButton
-                    size="small"
+                    +
+                </button>
+                <button
+                    className={styles.iconButton}
                     onClick={() => onResourceChange(currentKey, maxValue, 10)}
                     disabled={currentValue >= maxValue}
                 >
-                    <Add fontSize="small"/>
-                </IconButton>
+                    ++
+                </button>
             </div>
         </div>
     );
@@ -83,7 +82,7 @@ export default function VitalResource({
 
 VitalResource.propTypes = {
     label: PropTypes.string.isRequired,
-    icon: PropTypes.elementType,
+    icon: PropTypes.node,
     currentKey: PropTypes.string.isRequired,
     currentValue: PropTypes.number.isRequired,
     maxValue: PropTypes.number.isRequired,

@@ -1,9 +1,8 @@
 import {useEffect, useContext} from "react";
 import imageCompression from 'browser-image-compression';
 import {UserContext} from "../../UserContext.jsx";
-import {FileUpload} from '@mui/icons-material';
+// MUI removed — using inline icon and native container
 import styled from 'styled-components';
-import {Box} from "@mui/material";
 
 const StyledLabel = styled.label`
     position: relative;
@@ -120,8 +119,8 @@ export default function ProfilePicUploader() {
     return (
         <div className="profile-pic-image">
             <StyledLabel htmlFor="file-upload" className="custom-file-upload">
-                <FileUpload className={"uploadIcon"}/>
-                <Box className={"filter"}/>
+                <span className={"uploadIcon"}>📤</span>
+                <div className={"filter"}/>
                 <img
                     src={userData.profilePic || './images/rgPlaceholder.jpg'}
                     alt="Profile"

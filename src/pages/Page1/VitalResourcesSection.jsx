@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import {Cyclone, Favorite, FlashOn, Psychology} from '@mui/icons-material';
+// MUI icons removed — using emoji / inline markers instead
 import VitalResource from './VitalResource';
 import styles from './VitalResourcesSection.module.css';
 
@@ -13,7 +13,7 @@ export default function VitalResourcesSection({
     const vitalResources = [
         {
             label: "Vida",
-            icon: Favorite,
+            icon: '❤️',
             currentKey: "vidaGasta",
             maxValue: localLife,
             color: "#e74c3c",
@@ -21,7 +21,7 @@ export default function VitalResourcesSection({
         },
         {
             label: "Estresse",
-            icon: Psychology,
+            icon: '🧠',
             currentKey: "estresseGasto",
             maxValue: (((userData['pericia-Foco'] || 0) / 2) * 10),
             color: "#9b59b6",
@@ -29,7 +29,7 @@ export default function VitalResourcesSection({
         },
         {
             label: "Energia (NRG)",
-            icon: FlashOn,
+            icon: '⚡',
             currentKey: "energiaGasta",
             maxValue: localEnergy,
             color: "#f39c12",
@@ -37,7 +37,7 @@ export default function VitalResourcesSection({
         },
         {
             label: "Sanidade",
-            icon: Cyclone,
+            icon: '🌀',
             currentKey: "sanidadeGasta",
             maxValue: (((userData['pericia-Foco'] || 0) / 2) * 10),
             color: "#3498db",

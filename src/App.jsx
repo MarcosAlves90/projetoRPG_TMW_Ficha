@@ -1,28 +1,15 @@
 import { Suspense, lazy, useContext, useEffect, useState, useCallback } from 'react';
 import { Route, Routes, useLocation } from "react-router-dom";
-import { ThemeProvider, createTheme } from '@mui/material/styles';
-import CssBaseline from '@mui/material/CssBaseline';
 import { onAuthStateChanged } from "firebase/auth";
 import { v4 as uuidv4 } from 'uuid';
 
-import NavBar from './assets/components/NavBar.jsx';
+import PageTemplate from './assets/components/PageTemplate.jsx';
 import { getUserData } from './firebaseUtils';
 import { auth } from "./firebase.js";
 import { UserContext } from "./UserContext.jsx";
 import { decompressData } from './assets/systems/SaveLoad.jsx';
 
 import './App.css';
-
-/**
- * Configuração do tema escuro da aplicação
- * @constant
- */
-const DARK_THEME = createTheme({
-    palette: {
-        mode: 'dark',
-    },
-    disableInjectingGlobalStyles: true,
-});
 
 /**
  * Rotas que não devem exibir a NavBar
@@ -153,23 +140,21 @@ function App() {
     }
 
     return (
-        <ThemeProvider theme={DARK_THEME}>
-            <CssBaseline />
-            <main className="appMain display-flex">
-                {shouldShowNavBar && <NavBar />}
-                <Suspense fallback={<LoadingFallback />}>
-                    <Routes>
-                        {ROUTES_CONFIG.map((route) => (
-                            <Route 
-                                key={route.path} 
-                                path={route.path} 
-                                element={route.element} 
-                            />
-                        ))}
-                    </Routes>
-                </Suspense>
-            </main>
-        </ThemeProvider>
+        <main className="appMain display-flex">
+            <Suspense fallback={<LoadingFallback />}>
+                <PageTemplate showNav={shouldShowNavBar}>
+                <Routes>
+                    {ROUTES_CONFIG.map((route) => (
+                        <Route 
+                            key={route.path} 
+                            path={route.path} 
+                            element={route.element} 
+                        />
+                    ))}
+                </Routes>
+                </PageTemplate>
+            </Suspense>
+        </main>
     );
 }
 
