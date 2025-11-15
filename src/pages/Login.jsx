@@ -6,113 +6,6 @@ import {getUserData, createUserData} from '../firebaseUtils.js';
 import {useNavigate} from 'react-router-dom';
 import validator from 'validator';
 import {decompressData} from "../assets/systems/SaveLoad.jsx";
-import styled from 'styled-components';
-import {TextField, Button} from '@mui/material';
-
-const LoginTitle = styled.h1`
-    color: white;
-    font-family: 'Brevis', sans-serif;
-    margin-bottom: 3rem;
-    font-size: 4vw;
-    @media (max-width: 991px) {
-        font-size: 11vw;
-    }
-`;
-
-const SubTitle = styled.h2`
-    font-size: 1.3vw;
-    margin-bottom: 1.5rem;
-
-    @media (max-width: 991px) {
-        font-size: 4vw;
-    }
-`;
-
-const LoginCard = styled.article`
-    background-color: var(--card-background);
-    padding: 5rem 4rem;
-    width: 60%;
-    border-radius: 10px;
-    border: var(--gray-border);
-
-    & * {
-        color: white;
-    }
-
-    @media (max-width: 991px) {
-        width: 100%;
-        padding: 3rem 2rem;
-    }
-`;
-
-const StyledTextField = styled(TextField)`
-    margin-bottom: 2rem;
-    margin-top: 0;
-    
-    .MuiInputLabel-root, .MuiInputBase-input {
-        font-family: var(--common-font-family), sans-serif !important;
-    }
-
-    & .MuiFilledInput-root {
-        background-color: var(--background);
-    }
-
-    @media (max-width: 991px) {
-        & .MuiInputBase-input, .MuiInputLabel-root {
-            font-size: 3.5vw;
-        }
-    }
-`;
-
-const StyledButton = styled(Button)`
-    width: 100%;
-    padding: 0.4rem;
-    border-radius: 3px;
-    font-weight: bold;
-    font-size: 1rem;
-    color: var(--background);
-    font-family: var(--common-font-family), sans-serif !important;
-
-    @media (max-width: 991px) {
-        font-size: 4vw;
-    }
-`;
-
-const Background = styled.div`
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-image: url('${props => props.background}');
-    background-size: cover;
-    background-position: center;
-    z-index: -2;
-    image-rendering: pixelated;
-    filter: blur(5px);
-
-    /* Overlay de ruído leve para substituir a antiga lib grained */
-    &::after {
-        content: '';
-        position: absolute;
-        inset: 0;
-        pointer-events: none;
-        background-image:
-            radial-gradient(circle at 10% 10%, rgba(255,255,255,0.03) 0 2px, transparent 2px),
-            radial-gradient(circle at 30% 70%, rgba(255,255,255,0.02) 0 2px, transparent 2px),
-            radial-gradient(circle at 80% 20%, rgba(255,255,255,0.03) 0 2px, transparent 2px),
-            radial-gradient(circle at 50% 50%, rgba(0,0,0,0.04) 0 3px, transparent 3px);
-        background-size: 200px 200px;
-        mix-blend-mode: overlay;
-        animation: grainMove 8s steps(2) infinite;
-        opacity: 0.35;
-    }
-
-    @keyframes grainMove {
-        0% { transform: translate(0, 0); }
-        100% { transform: translate(-12px, 12px); }
-    }
-`;
 
 const validateEmail = (email) => {
     return validator.isEmail(email);
@@ -189,8 +82,6 @@ export default function Login() {
         }
     }, [email, password]);
 
-
-
     useEffect(() => {
         const backgroundList = [
             "login_backgrounds/castle.gif",
@@ -214,36 +105,38 @@ export default function Login() {
 
     return (
         <>
-            <Background background={background} />
+            <div className="fixed inset-0 -z-10" style={{backgroundImage: `url('${background}')`, backgroundSize: 'cover', backgroundPosition: 'center', filter: 'blur(5px)'}} />
             <main className="mainCommon page-login">
-                <LoginCard>
-                    <LoginTitle>MidNight</LoginTitle>
-                    <SubTitle>Faça o seu login</SubTitle>
-                    <form id={"login-form"} onSubmit={handleLogin}>
-                        <StyledTextField
-                            variant="filled"
-                            label="Usuário"
-                            value={email}
-                            onChange={(e) => setEmail(e.target.value)}
-                            fullWidth
-                            error={emailError}
-                            className={emailError ? "error" : ""}
-                        />
-                        <StyledTextField
-                            variant="filled"
-                            label="Senha"
-                            type="password"
-                            value={password}
-                            onChange={(e) => setPassword(e.target.value)}
-                            fullWidth
-                            error={passwordError}
-                            className={passwordError ? "error" : ""}
-                        />
-                        <StyledButton type="submit" variant="contained" color="primary">
+                <div className="bg-[#171d2e] rounded-[10px] border-[3px] border-[#2a3554] p-[5rem] w-[60%] md:w-full md:p-[3rem]">
+                    <h1 className="text-white font-[Brevis] mb-12 text-[4vw] md:text-[11vw]">MidNight</h1>
+                    <h2 className="text-[1.3vw] mb-6 md:text-[4vw]">Faça o seu login</h2>
+                    <form id="login-form" onSubmit={handleLogin} className="flex flex-col gap-8">
+                        <div>
+                            <label className="block text-white text-[1vw] mb-2 md:text-[4vw]">Usuário</label>
+                            <input
+                                type="text"
+                                value={email}
+                                onChange={(e) => setEmail(e.target.value)}
+                                className={`w-full px-4 py-2 bg-[#0f131f] text-white border-2 rounded-lg focus:outline-none font-[Montserrat] md:text-[4vw] md:h-[10vw] ${emailError ? 'border-red-500' : 'border-[#2a3554]'}`}
+                            />
+                        </div>
+                        <div>
+                            <label className="block text-white text-[1vw] mb-2 md:text-[4vw]">Senha</label>
+                            <input
+                                type="password"
+                                value={password}
+                                onChange={(e) => setPassword(e.target.value)}
+                                className={`w-full px-4 py-2 bg-[#0f131f] text-white border-2 rounded-lg focus:outline-none font-[Montserrat] md:text-[4vw] md:h-[10vw] ${passwordError ? 'border-red-500' : 'border-[#2a3554]'}`}
+                            />
+                        </div>
+                        <button
+                            type="submit"
+                            className="w-full py-2 px-4 bg-[#2a3554] text-[#f3e6ff] rounded-[3px] font-bold text-[1rem] hover:bg-[#646b88] transition-all md:text-[4vw] md:h-[10vw]"
+                        >
                             Login
-                        </StyledButton>
+                        </button>
                     </form>
-                </LoginCard>
+                </div>
             </main>
         </>
     );
