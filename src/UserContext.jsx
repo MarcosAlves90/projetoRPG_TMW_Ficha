@@ -53,6 +53,7 @@ export function UserProvider({ children }) {
   const [isLoadingUserData, setIsLoadingUserData] = useState(true);
   const syncManagerRef = useRef(getDataSyncManager());
   const saveTimeoutRef = useRef(null);
+  const userDataRef = useRef(DEFAULT_USER_DATA);
 
   /**
    * Carrega dados iniciais ao montar o provider
@@ -62,6 +63,7 @@ export function UserProvider({ children }) {
       try {
         const initialData = await getInitialUserData();
         setUserDataState(initialData);
+        userDataRef.current = initialData;
       } catch (error) {
         console.error("[UserContext] Erro ao inicializar dados:", error);
       } finally {
@@ -73,19 +75,41 @@ export function UserProvider({ children }) {
   }, []);
 
   /**
-   * Setter wrapper que salva dados automaticamente
+   * Synchronizes updated data to storage immediately (without debounce)
+   * Garantiza que dados sejam salvos antes de navegar
+   */
+  const flushPendingSave = useCallback(async () => {
+    if (saveTimeoutRef.current) {
+      clearTimeout(saveTimeoutRef.current);
+      // Força salvamento imediato
+      try {
+        const compressedData = CompressionManager.compressRecursive(
+          userDataRef.current,
+        );
+        await syncManagerRef.current.saveData(STORAGE_KEY, compressedData);
+      } catch (error) {
+        console.error("[UserContext] Erro ao fazer flush de dados:", error);
+      }
+    }
+  }, []);
+
+  /**
+   * Setter wrapper que salva dados automaticamente com debounce
    */
   const setUserData = useCallback((newValue) => {
     setUserDataState((prevData) => {
       const updatedData =
         typeof newValue === "function" ? newValue(prevData) : newValue;
 
+      // Atualiza a referência com o estado mais recente
+      userDataRef.current = updatedData;
+
       // Limpa timeout anterior se existir
       if (saveTimeoutRef.current) {
         clearTimeout(saveTimeoutRef.current);
       }
 
-      // Debounced: salva após 500ms
+      // Debounced: salva após 300ms (reduzido para melhor responsiveness)
       saveTimeoutRef.current = setTimeout(async () => {
         try {
           const compressedData =
@@ -94,7 +118,7 @@ export function UserProvider({ children }) {
         } catch (error) {
           console.error("[UserContext] Erro ao salvar dados:", error);
         }
-      }, 500);
+      }, 300);
 
       return updatedData;
     });
@@ -106,8 +130,17 @@ export function UserProvider({ children }) {
   const setUserDataImmediate = useCallback(
     async (newValue) => {
       const updatedData =
-        typeof newValue === "function" ? newValue(userData) : newValue;
+        typeof newValue === "function"
+          ? newValue(userDataRef.current)
+          : newValue;
+
       setUserDataState(updatedData);
+      userDataRef.current = updatedData;
+
+      // Cancela any pending debounced saves
+      if (saveTimeoutRef.current) {
+        clearTimeout(saveTimeoutRef.current);
+      }
 
       try {
         const compressedData =
@@ -122,9 +155,10 @@ export function UserProvider({ children }) {
           "[UserContext] Erro ao salvar dados imediatamente:",
           error,
         );
+        throw error;
       }
     },
-    [userData],
+    [],
   );
 
   /**
@@ -132,12 +166,14 @@ export function UserProvider({ children }) {
    */
   const forceSync = useCallback(async () => {
     try {
+      // Primeiro, garante que dados pendentes sejam salvos
+      await flushPendingSave();
       return await syncManagerRef.current.syncRemote();
     } catch (error) {
       console.error("[UserContext] Erro ao sincronizar:", error);
       return false;
     }
-  }, []);
+  }, [flushPendingSave]);
 
   /**
    * Limpa todos os dados do usuário
@@ -145,6 +181,10 @@ export function UserProvider({ children }) {
   const clearUserData = useCallback(async () => {
     try {
       setUserDataState(DEFAULT_USER_DATA);
+      userDataRef.current = DEFAULT_USER_DATA;
+      if (saveTimeoutRef.current) {
+        clearTimeout(saveTimeoutRef.current);
+      }
       await syncManagerRef.current.removeData(STORAGE_KEY);
     } catch (error) {
       console.error("[UserContext] Erro ao limpar dados:", error);
@@ -152,12 +192,21 @@ export function UserProvider({ children }) {
   }, []);
 
   /**
-   * Cleanup ao desmontar
+   * Cleanup ao desmontar - garante que dados pendentes sejam salvos
    */
   useEffect(() => {
     return () => {
       if (saveTimeoutRef.current) {
         clearTimeout(saveTimeoutRef.current);
+      }
+      // Força salvamento imediato ao desmontar
+      if (Object.keys(userDataRef.current).length > 0) {
+        const compressedData = CompressionManager.compressRecursive(
+          userDataRef.current,
+        );
+        syncManagerRef.current.saveData(STORAGE_KEY, compressedData).catch((err) => {
+          console.error("[UserContext] Erro ao salvar dados no cleanup:", err);
+        });
       }
     };
   }, []);
@@ -172,6 +221,7 @@ export function UserProvider({ children }) {
       isLoadingUserData,
       setIsLoadingUserData,
       forceSync,
+      flushPendingSave,
       clearUserData,
       getSyncStatus: () => syncManagerRef.current.getSyncStatus(),
     }),
@@ -182,6 +232,7 @@ export function UserProvider({ children }) {
       setUserData,
       setUserDataImmediate,
       forceSync,
+      flushPendingSave,
       clearUserData,
     ],
   );

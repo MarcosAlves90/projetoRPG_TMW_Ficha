@@ -54,10 +54,21 @@ const ROUTES_CONFIG = [
  */
 function App() {
   const location = useLocation();
-  const { userData, setUserData, setUser, setIsLoadingUserData, forceSync } =
+  const { userData, setUserData, setUser, setIsLoadingUserData, forceSync, flushPendingSave } =
     useContext(UserContext);
 
   const shouldShowNavBar = !ROUTES_WITHOUT_NAVBAR.includes(location.pathname);
+
+  /**
+   * Sincroniza dados pendentes ao navegar entre rotas
+   */
+  useEffect(() => {
+    if (flushPendingSave) {
+      flushPendingSave().catch((err) => {
+        console.warn("[App] Erro ao sincronizar durante navegação:", err);
+      });
+    }
+  }, [location.pathname, flushPendingSave]);
 
   /**
    * Sincroniza dados do Firebase ao autenticar
