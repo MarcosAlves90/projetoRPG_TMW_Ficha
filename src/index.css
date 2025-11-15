@@ -126,15 +126,6 @@
       transform: rotate(360deg);
     }
   }
-
-  @keyframes skeleton-loading {
-    0% {
-      background-position: -1000px 0;
-    }
-    100% {
-      background-position: 1000px 0;
-    }
-  }
 }
 
 body {
@@ -253,19 +244,6 @@ body {
 
 .nav-item-active {
   @apply flex items-center gap-3 px-3 py-3 rounded-lg transition-all duration-200 relative text-white bg-blue-600/20;
-}
-
-/* Skeleton Loading */
-.skeleton {
-  @apply bg-linear-to-r from-gray-600 via-gray-500 to-gray-600 bg-size-[1000px_100%] rounded-lg animate-pulse;
-}
-
-.skeleton-text {
-  @apply bg-linear-to-r from-gray-600 via-gray-500 to-gray-600 bg-size-[1000px_100%] rounded-lg animate-pulse h-4 w-3/4;
-}
-
-.skeleton-avatar {
-  @apply bg-linear-to-r from-gray-600 via-gray-500 to-gray-600 bg-size-[1000px_100%] rounded-lg animate-pulse h-12 w-12 rounded-full;
 }
 
 /* Divider */
