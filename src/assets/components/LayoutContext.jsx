@@ -1,3 +1,5 @@
+/* eslint-disable react-refresh/only-export-components */
+import PropTypes from "prop-types";
 import { createContext, useContext, useState } from "react";
 
 const LayoutContext = createContext(null);
@@ -13,5 +15,9 @@ export function LayoutProvider({ children }) {
     </LayoutContext.Provider>
   );
 }
+
+LayoutProvider.propTypes = {
+  children: PropTypes.node.isRequired,
+};
 
 export default LayoutContext;
