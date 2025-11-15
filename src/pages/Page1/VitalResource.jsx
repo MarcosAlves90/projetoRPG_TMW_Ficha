@@ -14,7 +14,8 @@ export default function VitalResource({
     onResourceChange,
     onInputChange
 }) {
-    const percentage = (currentValue / maxValue) * 100;
+    const percentage = maxValue > 0 ? Math.min(100, (currentValue / maxValue) * 100) : 0;
+    const isOverLimit = currentValue > maxValue;
 
     return (
         <div className={styles.vitalResourceContainer}>
@@ -33,10 +34,14 @@ export default function VitalResource({
                     className={styles.barFill} 
                     style={{
                         width: `${percentage}%`,
-                        background: `linear-gradient(90deg, ${color} 0%, ${lightColor} 100%)`
+                        background: isOverLimit 
+                            ? `linear-gradient(90deg, ${color} 0%, #ff4757 50%, #ff3838 100%)`
+                            : `linear-gradient(90deg, ${color} 0%, ${lightColor} 100%)`
                     }}
                 />
-                <div className={styles.barText}>{Math.round(percentage)}%</div>
+                <div className={styles.barText}>
+                    {isOverLimit ? `${currentValue - maxValue}+` : `${Math.round(percentage)}%`}
+                </div>
             </div>
             <div className={styles.vitalResourceControls}>
                 <IconButton
@@ -59,20 +64,17 @@ export default function VitalResource({
                     value={currentValue}
                     onChange={(e) => onInputChange(currentKey, maxValue, e)}
                     min={0}
-                    max={maxValue}
                     style={{borderColor: `${color}50`}}
                 />
                 <IconButton
                     size="small"
                     onClick={() => onResourceChange(currentKey, maxValue, 1)}
-                    disabled={currentValue >= maxValue}
                 >
                     <Add fontSize="inherit"/>
                 </IconButton>
                 <IconButton
                     size="small"
                     onClick={() => onResourceChange(currentKey, maxValue, 10)}
-                    disabled={currentValue >= maxValue}
                 >
                     <Add fontSize="small"/>
                 </IconButton>

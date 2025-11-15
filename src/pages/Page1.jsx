@@ -53,7 +53,7 @@ export default function Page1() {
     const handleResourceChange = (resourceKey, maxValue, increment) => {
         setUserData((prevUserData) => {
             const currentValue = prevUserData[resourceKey] || 0;
-            const newValue = Math.max(0, Math.min(maxValue, currentValue + increment));
+            const newValue = Math.max(0, currentValue + increment);
             return {
                 ...prevUserData,
                 [resourceKey]: newValue,
@@ -63,7 +63,7 @@ export default function Page1() {
 
     const handleResourceInputChange = (resourceKey, maxValue, event) => {
         const value = parseFloat(event.target.value) || 0;
-        const clampedValue = Math.max(0, Math.min(maxValue, value));
+        const clampedValue = Math.max(0, value);
         setUserData((prevUserData) => ({
             ...prevUserData,
             [resourceKey]: clampedValue,
