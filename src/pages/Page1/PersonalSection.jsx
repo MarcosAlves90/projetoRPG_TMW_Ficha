@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types';
-import {Box, InputAdornment, TextField} from "@mui/material";
+import {Box} from "@mui/material";
+import CustomInput from '../../assets/components/CustomInput.jsx';
 import styles from './PersonalSection.module.css';
 
 export default function PersonalSection({userData, onInputChange}) {
@@ -7,76 +8,56 @@ export default function PersonalSection({userData, onInputChange}) {
         <section className={styles.sectionCommon}>
             <h2 className={`mainCommon ${styles.title2}`}>Pessoal</h2>
             <fieldset className={styles.inputsFieldset}>
-                <TextField
-                    className={styles.styledTextField}
-                    variant="filled"
+                <CustomInput
                     label="Nome"
-                    fullWidth
                     type="text"
                     value={userData.nome || ''}
                     onChange={onInputChange('nome')}
+                    placeholder="Digite seu nome completo"
                 />
-                <TextField
-                    className={styles.styledTextField}
-                    variant="filled"
+                <CustomInput
                     label="Data de Nascimento"
-                    fullWidth
                     type="text"
                     value={userData.idade || ''}
                     onChange={onInputChange('idade')}
+                    placeholder="Ex: 01/01/2000"
                 />
-                <TextField
-                    className={styles.styledTextField}
-                    variant="filled"
+                <CustomInput
                     label="Profissão"
-                    fullWidth
                     type="text"
                     value={userData.profissao || ''}
                     onChange={onInputChange('profissao')}
+                    placeholder="Ex: Detetive, Médico"
                 />
             </fieldset>
             <fieldset className={styles.inputsFieldset}>
-                <TextField
-                    className={styles.styledTextField}
-                    variant="filled"
+                <CustomInput
                     label="Título"
-                    fullWidth
                     type="text"
                     value={userData.titulo || ''}
                     onChange={onInputChange('titulo')}
+                    placeholder="Ex: Investigador Sênior"
                 />
                 <Box className={styles.flexBox}>
-                    <TextField
-                        className={styles.styledTextField}
-                        variant="filled"
+                    <CustomInput
                         label="Altura"
-                        fullWidth
-                        slotProps={{
-                            input: {
-                                endAdornment: <InputAdornment position="end">m</InputAdornment>,
-                            },
-                        }}
                         type="number"
                         value={userData.altura || ''}
                         onChange={onInputChange('altura')}
                         min={0}
                         step={0.01}
+                        endAdornment="m"
+                        placeholder="Ex: 1.75"
                     />
-                    <TextField
-                        className={styles.styledTextField}
-                        variant="filled"
+                    <CustomInput
                         label="Peso"
-                        fullWidth
-                        slotProps={{
-                            input: {
-                                endAdornment: <InputAdornment position="end">kg</InputAdornment>,
-                            },
-                        }}
                         type="number"
                         value={userData.peso || ''}
                         onChange={onInputChange('peso')}
                         min={0}
                         step={0.1}
+                        endAdornment="kg"
+                        placeholder="Ex: 70.5"
                     />
                 </Box>
             </fieldset>

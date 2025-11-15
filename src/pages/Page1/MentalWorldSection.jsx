@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types';
-import {TextField, Select, MenuItem, FormControl, InputLabel} from "@mui/material";
+import CustomInput from '../../assets/components/CustomInput.jsx';
+import CustomSelect from '../../assets/components/CustomSelect.jsx';
 import styles from './MentalWorldSection.module.css';
 
 export default function MentalWorldSection({userData, onInputChange}) {
@@ -7,35 +8,30 @@ export default function MentalWorldSection({userData, onInputChange}) {
         <section className={styles.sectionCommon}>
             <h2 className={`mainCommon ${styles.title2}`}>Mundo Mental</h2>
             <fieldset className={styles.inputsFieldset}>
-                <TextField
-                    className={styles.styledTextField}
-                    variant="filled"
+                <CustomInput
                     label="Nome da Forma"
-                    fullWidth
                     type="text"
                     value={userData.nomeF || ''}
                     onChange={onInputChange('nomeF')}
+                    placeholder="Ex: Aracnofobia"
                 />
-                <FormControl className={styles.styledFormControl} variant="filled" fullWidth>
-                    <InputLabel>Categoria da Forma</InputLabel>
-                    <Select
-                        value={userData.forma || ''}
-                        onChange={onInputChange('forma')}
-                    >
-                        <MenuItem value="">Nenhum</MenuItem>
-                        <MenuItem value={1}>Medo</MenuItem>
-                        <MenuItem value={2}>Fobia</MenuItem>
-                        <MenuItem value={3}>Trauma</MenuItem>
-                    </Select>
-                </FormControl>
-                <TextField
-                    className={styles.styledTextField}
-                    variant="filled"
+                <CustomSelect
+                    label="Categoria da Forma"
+                    value={userData.forma || ''}
+                    onChange={onInputChange('forma')}
+                    options={[
+                        { value: '', label: 'Nenhum' },
+                        { value: 1, label: 'Medo' },
+                        { value: 2, label: 'Fobia' },
+                        { value: 3, label: 'Trauma' },
+                    ]}
+                />
+                <CustomInput
                     label="Tipo da Forma"
-                    fullWidth
                     type="text"
                     value={userData.tipoF || ''}
                     onChange={onInputChange('tipoF')}
+                    placeholder="Ex: Medo de aranhas"
                 />
             </fieldset>
         </section>
