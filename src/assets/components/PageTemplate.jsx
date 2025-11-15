@@ -1,3 +1,4 @@
+import { Suspense } from "react";
 import PropTypes from "prop-types";
 import NavBar from "./NavBar.jsx";
 import { LayoutProvider } from "./LayoutContext.jsx";
@@ -19,9 +20,13 @@ export default function PageTemplate({
 
         {/* Main area — children components should not need to know about the NavBar width because NavBar provides a spacer */}
         <div className="flex-1 p-2 md:p-6 lg:p-8 bg-background transition-all duration-300">
-          {" "}
-          {/* substitute background if needed */}
-          {children}
+          <Suspense
+            fallback={
+              <div className="w-full h-96 bg-skeleton rounded-lg animate-pulse" />
+            }
+          >
+            {children}
+          </Suspense>
         </div>
       </div>
     </LayoutProvider>
