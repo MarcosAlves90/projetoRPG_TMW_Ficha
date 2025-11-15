@@ -32,7 +32,10 @@ export default function IdentitySection({ userData, isLoading = false }) {
         <div className="lg:col-span-1 flex-center">
           <div className="relative group w-fit">
             {/* Glow effect background */}
-            <div className="absolute -inset-2 bg-linear-to-br from-blue-600/40 via-purple-600/40 to-cyan-600/40 rounded-lg blur-xl opacity-60 group-hover:opacity-100 transition-opacity duration-500" style={{ aspectRatio: "1" }} />
+            <div
+              className="absolute -inset-2 bg-linear-to-br from-blue-600/40 via-purple-600/40 to-cyan-600/40 rounded-lg blur-xl opacity-60 group-hover:opacity-100 transition-opacity duration-500"
+              style={{ aspectRatio: "1" }}
+            />
 
             {/* Profile frame */}
             <div className="relative w-48 h-48 rounded-lg overflow-hidden border-2 border-blue-500/50 bg-[#171d2e] shadow-2xl hover-lift">
