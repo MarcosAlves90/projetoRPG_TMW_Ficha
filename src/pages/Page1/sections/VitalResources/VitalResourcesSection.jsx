@@ -64,7 +64,7 @@ export default function VitalResourcesSection({
       subtitle="Gestão de vida, energia e sanidade mental"
       className="animate-fade-in"
     >
-      <div className="space-y-6">
+      <div className="md:space-y-6">
         {/* Critical Alert */}
         {criticalResources.length > 0 && (
           <div className="bg-red-600/10 border-l-4 border-red-500 rounded-lg p-4 animate-pulse shadow-lg">
@@ -102,10 +102,10 @@ export default function VitalResourcesSection({
           ))}
         </div>
 
-        <div className="divider" />
+        <div className="divider max-md:hidden" />
 
         {/* Resource Info */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 max-md:hidden">
           <div className="glass rounded-lg p-4">
             <div className="flex items-center gap-2 mb-2">
               <Heart size={14} className="text-red-400" />
