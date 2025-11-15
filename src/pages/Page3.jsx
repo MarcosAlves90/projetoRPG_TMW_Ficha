@@ -7,6 +7,7 @@ import {
   useRef,
 } from "react";
 import { usePageUnmount } from "@/hooks/usePageUnmount.js";
+import { useToast } from "@/hooks/useToast.js";
 import {
   ArtsSection,
   Attributes,
@@ -22,8 +23,6 @@ import {
   subArcArray,
 } from "../assets/systems/FichaPage3/FichaPage3Arrays.jsx";
 import { saveUserData } from "../firebaseUtils.js";
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
 import { map } from "jquery";
 import { UserContext } from "../UserContext.jsx";
 import styled from "styled-components";
@@ -138,6 +137,7 @@ export default function Page3() {
   const [noStatusDice, setNoStatusDice] = useState([[]]);
   const [searchTerm, setSearchTerm] = useState("");
   const { userData, setUserData, user } = useContext(UserContext);
+  const { toast } = useToast();
   const debounceTimeout = useRef(null);
 
   const saveDataDebounced = useCallback(
@@ -309,12 +309,8 @@ export default function Page3() {
 
     const selectEmoji = (result) => emojiMap[result] || null;
 
-    const notify = (message, emoji) =>
-      toast(message, {
-        theme: "dark",
-        position: "bottom-right",
-        icon: () => `${emoji}`,
-      });
+    const notify = (message) =>
+      toast.info(`${message}`);
 
     function rollSimpleDice(qty, sides) {
       for (let i = 0; i < qty; i++) {
@@ -337,11 +333,6 @@ export default function Page3() {
     function notifyRoll(periciaNameProp, diceProp, resultProp) {
       notify(
         `${periciaNameProp}: [${diceProp}] = ${resultProp}`,
-        emojis[
-          selectEmoji(
-            noAttribute ? Math.min(...diceProp) : Math.max(...diceProp),
-          )
-        ],
       );
     }
 
@@ -453,11 +444,7 @@ export default function Page3() {
     const isolatedNumbers = noStatusDice.match(numberRegex)?.map(Number) || [];
 
     const notify = (message) =>
-      toast(message, {
-        theme: "dark",
-        position: "bottom-right",
-        icon: () => <Casino />,
-      });
+      toast.info(`${message}`);
 
     if (!matches) {
       console.error("No valid dice notation found");
@@ -610,7 +597,6 @@ export default function Page3() {
 
   return (
     <main className={"mainCommon page-3"}>
-      <ToastContainer limit={5} closeOnClick />
       <section className={"section-dice"}>
         <div className={"display-flex-center"}>
           <h2 className={"title-2"}>Rolagem:</h2>
