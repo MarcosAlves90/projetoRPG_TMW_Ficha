@@ -1,23 +1,23 @@
-@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
 
 @font-face {
-    font-family: 'Brevis';
-    src: url('./fonts/Brevis-Regular.otf') format('opentype');
-    font-weight: normal;
-    font-style: normal;
+  font-family: "Brevis";
+  src: url("./fonts/Brevis-Regular.otf") format("opentype");
+  font-weight: normal;
+  font-style: normal;
 }
 @font-face {
-    font-family: 'Futura';
-    src: url('./assets/fonts/Futura.ttf') format('truetype');
-    font-weight: normal;
-    font-style: normal;
+  font-family: "Futura";
+  src: url("./assets/fonts/Futura.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
 }
-
 
 @import "tailwindcss";
 
 :root {
-  font-family: 'Poppins', Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+  font-family:
+    "Poppins", Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
   font-weight: 400;
 
@@ -34,21 +34,20 @@
 }
 
 @theme {
-  --font-futura: 'Futura', sans-serif;
-  --font-brevis: 'Brevis', sans-serif;
+  --font-futura: "Futura", sans-serif;
+  --font-brevis: "Brevis", sans-serif;
 
   --color-background: var(--background);
 }
 
 body {
-
   --yellow-des: #ffff00;
   --red-for: #c00000;
   --blue-int: #0070c0;
   --purple-pre: #502ba8;
   --green-vig: #00b050;
-  --color-life: #F39F5A;
-  --color-energy: #AE445A;
+  --color-life: #f39f5a;
+  --color-energy: #ae445a;
   --color-per: #662549;
   --color-cromo: #451952;
   --color-destruction: #505050;
@@ -115,7 +114,8 @@ body {
 }
 
 @keyframes gridPulse {
-  0%, 100% {
+  0%,
+  100% {
     opacity: 1;
   }
   50% {

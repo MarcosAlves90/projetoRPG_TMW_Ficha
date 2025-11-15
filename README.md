@@ -9,7 +9,7 @@
 <img src="readme_details/tmw_ficha_image_1.png" alt="Página inicial da plataforma">
 
 > A platform for creating, importing and exporting RPG tokens in JSON format.
-> 
+>
 > Site: [MidNight](https://tmwcse.vercel.app)
 
 ### Adjustments and improvements
