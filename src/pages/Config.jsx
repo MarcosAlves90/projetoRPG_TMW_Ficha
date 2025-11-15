@@ -90,7 +90,7 @@ export default function Config() {
     return () => {
       inputElement.removeEventListener("change", handleFileLoad);
     };
-  }, []);
+  }, [userData.sheetCode, setUserData, user]);
 
   function verifyDeleteUnlock() {
     if (!unlockedStates.Delete) {

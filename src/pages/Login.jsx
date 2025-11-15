@@ -171,7 +171,7 @@ export default function Login() {
         console.error("Erro de login:", error);
       }
     },
-    [email, password],
+    [email, password, emailError, passwordError, navigate, setUserData],
   );
 
   useEffect(() => {
