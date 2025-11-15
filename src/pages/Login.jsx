@@ -90,6 +90,28 @@ const Background = styled.div`
     z-index: -2;
     image-rendering: pixelated;
     filter: blur(5px);
+
+    /* Overlay de ruído leve para substituir a antiga lib grained */
+    &::after {
+        content: '';
+        position: absolute;
+        inset: 0;
+        pointer-events: none;
+        background-image:
+            radial-gradient(circle at 10% 10%, rgba(255,255,255,0.03) 0 2px, transparent 2px),
+            radial-gradient(circle at 30% 70%, rgba(255,255,255,0.02) 0 2px, transparent 2px),
+            radial-gradient(circle at 80% 20%, rgba(255,255,255,0.03) 0 2px, transparent 2px),
+            radial-gradient(circle at 50% 50%, rgba(0,0,0,0.04) 0 3px, transparent 3px);
+        background-size: 200px 200px;
+        mix-blend-mode: overlay;
+        animation: grainMove 8s steps(2) infinite;
+        opacity: 0.35;
+    }
+
+    @keyframes grainMove {
+        0% { transform: translate(0, 0); }
+        100% { transform: translate(-12px, 12px); }
+    }
 `;
 
 const validateEmail = (email) => {
@@ -167,22 +189,6 @@ export default function Login() {
         }
     }, [email, password]);
 
-    useEffect(() => {
-        const options = {
-            animate: true,
-            patternWidth: 100,
-            patternHeight: 100,
-            grainOpacity: 0.07,
-            grainDensity: 0.8,
-            grainWidth: 1,
-            grainHeight: 1,
-            grainChaos: 0.5,
-            grainSpeed: 2
-        };
-
-        // eslint-disable-next-line no-undef
-        grained('#grain-background', options);
-    }, []);
 
 
     useEffect(() => {
@@ -208,7 +214,6 @@ export default function Login() {
 
     return (
         <>
-            <div id={"grain-background"} />
             <Background background={background} />
             <main className="mainCommon page-login">
                 <LoginCard>
