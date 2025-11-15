@@ -6,13 +6,16 @@ import App from "./App.jsx";
 import "./index.css";
 import { BrowserRouter } from "react-router-dom";
 import { UserProvider } from "./UserContext.jsx";
+import { ToastProvider } from "@/assets/components/design-system/ToastProvider.jsx";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <StrictMode>
     <BrowserRouter>
-      <UserProvider>
-        <App />
-      </UserProvider>
+      <ToastProvider>
+        <UserProvider>
+          <App />
+        </UserProvider>
+      </ToastProvider>
     </BrowserRouter>
   </StrictMode>,
 );
