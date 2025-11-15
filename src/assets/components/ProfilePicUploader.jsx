@@ -1,4 +1,4 @@
-import { useEffect, useContext } from "react";
+import { useEffect, useContext, useCallback } from "react";
 import imageCompression from "browser-image-compression";
 import { UserContext } from "../../UserContext.jsx";
 // MUI removed — using inline icon and native container
@@ -44,12 +44,15 @@ const StyledLabel = styled.label`
 export default function ProfilePicUploader() {
   const { userData, setUserData } = useContext(UserContext);
 
-  const handleElementChange = (key) => (value) => {
-    setUserData((prevUserData) => ({
-      ...prevUserData,
-      [key]: value,
-    }));
-  };
+  const handleElementChange = useCallback(
+    (key) => (value) => {
+      setUserData((prevUserData) => ({
+        ...prevUserData,
+        [key]: value,
+      }));
+    },
+    [setUserData],
+  );
 
   useEffect(() => {
     const handlePaste = async (event) => {
@@ -87,7 +90,7 @@ export default function ProfilePicUploader() {
     return () => {
       window.removeEventListener("paste", handlePaste);
     };
-  }, []);
+  }, [handleElementChange]);
 
   async function handleFileChange(event) {
     const file = event.target.files[0];
