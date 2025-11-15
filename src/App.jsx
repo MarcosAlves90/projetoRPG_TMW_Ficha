@@ -4,10 +4,10 @@ import { onAuthStateChanged } from "firebase/auth";
 import { v4 as uuidv4 } from "uuid";
 
 import PageTemplate from "./assets/components/PageTemplate.jsx";
-import { getUserData } from "./firebaseUtils";
-import { auth } from "./firebase.js";
+import { auth, db } from "./firebase.js";
 import { UserContext } from "./UserContext.jsx";
-import { decompressData } from "./assets/systems/SaveLoad.jsx";
+import { FirebaseStorageAdapter } from "@/services/storage/FirebaseStorageAdapter.js";
+import { CompressionManager } from "@/services/storage/DataSyncManager.js";
 
 import "./App.css";
 
@@ -54,39 +54,30 @@ const ROUTES_CONFIG = [
  */
 function App() {
   const location = useLocation();
-  const { userData, setUserData, setUser, setIsLoadingUserData } =
-    useContext(UserContext);
+  const {
+    userData,
+    setUserData,
+    setUser,
+    setIsLoadingUserData,
+    forceSync,
+  } = useContext(UserContext);
 
   const shouldShowNavBar = !ROUTES_WITHOUT_NAVBAR.includes(location.pathname);
 
   /**
-   * Atualiza um campo específico dos dados do usuário
-   * @param {string} key - Chave do campo a ser atualizado
-   * @returns {Function} Função que recebe o novo valor
+   * Sincroniza dados do Firebase ao autenticar
+   * @param {string} userId - ID do usuário autenticado
    */
-  const handleElementChange = useCallback(
-    (key) => (value) => {
-      setUserData((prevUserData) => ({
-        ...prevUserData,
-        [key]: value,
-      }));
-    },
-    [setUserData],
-  );
-
-  /**
-   * Busca e descomprime os dados do usuário do Firebase
-   * @param {boolean} isMounted - Flag para verificar se o componente está montado
-   */
-  const fetchUserData = useCallback(
-    async (isMounted) => {
+  const syncFromFirebase = useCallback(
+    async (userId) => {
       try {
-        let data = await getUserData("data");
+        const firebaseAdapter = new FirebaseStorageAdapter(db, userId);
+        const remoteData = await firebaseAdapter.getItem("data");
 
-        if (!isMounted) return;
-
-        if (data) {
-          const decompressedData = decompressData(data);
+        if (remoteData) {
+          const decompressedData = CompressionManager.decompressRecursive(
+            remoteData,
+          );
 
           // Garante que cada ficha tenha um código único
           if (!decompressedData.sheetCode) {
@@ -94,16 +85,19 @@ function App() {
           }
 
           setUserData(decompressedData);
+          console.info("[App] Dados sincronizados do Firebase");
+        } else {
+          // Se não há dados no Firebase, gera novo código para nova ficha
+          setUserData((prevData) => ({
+            ...prevData,
+            sheetCode: prevData.sheetCode || uuidv4(),
+          }));
         }
       } catch (error) {
-        console.error("Erro ao buscar dados do usuário:", error);
-      } finally {
-        if (isMounted) {
-          setIsLoadingUserData(false);
-        }
+        console.error("[App] Erro ao sincronizar dados do Firebase:", error);
       }
     },
-    [setUserData, setIsLoadingUserData],
+    [setUserData],
   );
 
   /**
@@ -113,18 +107,29 @@ function App() {
     let isMounted = true;
 
     const unsubscribeAuth = onAuthStateChanged(auth, async (user) => {
-      if (user) {
-        setUser(user);
-        await fetchUserData(isMounted);
-      } else {
-        setUser(null);
+      try {
+        if (user) {
+          setUser(user);
 
-        // Gera código único para sessões não autenticadas
-        if (!userData.sheetCode) {
-          handleElementChange("sheetCode")(uuidv4());
+          // Sincroniza dados do Firebase se necessário
+          if (isMounted) {
+            await syncFromFirebase(user.uid);
+          }
+        } else {
+          setUser(null);
+
+          // Para usuários não autenticados, gera código único
+          if (!userData.sheetCode && isMounted) {
+            setUserData((prevData) => ({
+              ...prevData,
+              sheetCode: uuidv4(),
+            }));
+          }
         }
-
-        setIsLoadingUserData(false);
+      } finally {
+        if (isMounted) {
+          setIsLoadingUserData(false);
+        }
       }
     });
 
@@ -132,13 +137,21 @@ function App() {
       isMounted = false;
       unsubscribeAuth();
     };
-  }, [
-    setUser,
-    fetchUserData,
-    userData.sheetCode,
-    handleElementChange,
-    setIsLoadingUserData,
-  ]);
+  }, [setUser, syncFromFirebase, userData.sheetCode, setUserData, setIsLoadingUserData]);
+
+  /**
+   * Sincroniza com Firebase periodicamente (a cada 30 segundos)
+   */
+  useEffect(() => {
+    const syncInterval = setInterval(async () => {
+      const user = auth.currentUser;
+      if (user) {
+        await forceSync();
+      }
+    }, 30000);
+
+    return () => clearInterval(syncInterval);
+  }, [forceSync]);
 
   return (
     <main className="appMain display-flex">
