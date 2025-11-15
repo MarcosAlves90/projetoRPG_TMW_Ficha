@@ -52,7 +52,7 @@ const ROUTES_CONFIG = [
  */
 function App() {
   const location = useLocation();
-  const { setUser, setIsLoadingUserData, setUserData, forceSave } =
+  const { setUser, setUserData, forceSave, userData, isLoadingUserData } =
     useContext(UserContext);
 
   const shouldShowNavBar = !ROUTES_WITHOUT_NAVBAR.includes(location.pathname);
@@ -76,25 +76,11 @@ function App() {
       try {
         if (user) {
           setUser(user);
-          // Gera código único para nova ficha se não tiver
-          setUserData((prevData) => ({
-            ...prevData,
-            sheetCode: prevData.sheetCode || uuidv4(),
-          }));
         } else {
           setUser(null);
-          // Para usuários não autenticados, gera código único
-          if (isMounted) {
-            setUserData((prevData) => ({
-              ...prevData,
-              sheetCode: prevData.sheetCode || uuidv4(),
-            }));
-          }
         }
-      } finally {
-        if (isMounted) {
-          setIsLoadingUserData(false);
-        }
+      } catch (error) {
+        console.error("[App] Erro ao processar autenticação:", error);
       }
     });
 
@@ -102,7 +88,20 @@ function App() {
       isMounted = false;
       unsubscribeAuth();
     };
-  }, [setUser, setUserData, setIsLoadingUserData]);
+  }, [setUser]);
+
+  /**
+   * Gera sheetCode após carregar dados
+   */
+  useEffect(() => {
+    if (!isLoadingUserData && !userData.sheetCode) {
+      setUserData((prevData) => ({
+        ...prevData,
+        sheetCode: uuidv4(),
+      }));
+      console.info("[App] SheetCode gerado");
+    }
+  }, [isLoadingUserData, userData.sheetCode, setUserData]);
 
   return (
     <main className="appMain display-flex">
