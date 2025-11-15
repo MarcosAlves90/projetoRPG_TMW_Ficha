@@ -2,7 +2,7 @@ import PropTypes from "prop-types";
 import { Section } from "@/assets/components/design-system";
 import VitalResource from "./VitalResource.jsx";
 import SkeletonVitalResourcesSection from "./SkeletonVitalResourcesSection.jsx";
-import { Heart, Brain, Zap, AlertTriangle } from "lucide-react";
+import { Heart, Zap, AlertTriangle } from "lucide-react";
 
 export default function VitalResourcesSection({
   userData,
@@ -52,11 +52,6 @@ export default function VitalResourcesSection({
   ];
 
   // Calculate alerts
-  const lifePercentage = (userData.vidaGasta / localLife) * 100 || 0;
-  const stressPercentage =
-    (userData.estresseGasto / (((userData["pericia-Foco"] || 0) / 2) * 10)) *
-      100 || 0;
-
   const criticalResources = vitalResources.filter((r) => {
     const current = userData[r.currentKey] || 0;
     const percentage = (current / r.maxValue) * 100;
@@ -72,18 +67,17 @@ export default function VitalResourcesSection({
       <div className="space-y-6">
         {/* Critical Alert */}
         {criticalResources.length > 0 && (
-          <div className="card bg-red-600/10 border-red-500/30 p-4 animate-pulse">
-            <div className="flex items-center gap-3">
-              <div className="p-2 rounded-lg bg-red-600/20 text-red-300">
-                <AlertTriangle size={18} />
+          <div className="bg-red-600/10 border-l-4 border-red-500 rounded-lg p-4 animate-pulse shadow-lg">
+            <div className="flex items-start gap-3">
+              <div className="shrink-0 p-2 rounded-lg bg-red-600/20 text-red-300 mt-0.5">
+                <AlertTriangle size={18} strokeWidth={2} />
               </div>
               <div>
-                <p className="text-xs font-semibold text-red-300 uppercase">
+                <p className="text-sm font-bold text-red-300 uppercase tracking-wide">
                   ⚠️ Recursos Críticos
                 </p>
-                <p className="text-xs text-red-200">
-                  {criticalResources.map((r) => r.label).join(", ")} em nível
-                  crítico!
+                <p className="text-sm text-red-200 mt-1">
+                  {criticalResources.map((r) => r.label).join(", ")} em nível crítico!
                 </p>
               </div>
             </div>
@@ -91,7 +85,7 @@ export default function VitalResourcesSection({
         )}
 
         {/* Resources Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6">
           {vitalResources.map((resource) => (
             <VitalResource
               key={resource.currentKey}
