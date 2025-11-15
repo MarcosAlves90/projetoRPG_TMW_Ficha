@@ -1,13 +1,11 @@
-import { lazy, useContext, useEffect, useCallback } from "react";
+import { lazy, useContext, useEffect } from "react";
 import { Route, Routes, useLocation } from "react-router-dom";
 import { onAuthStateChanged } from "firebase/auth";
 import { v4 as uuidv4 } from "uuid";
 
 import PageTemplate from "./assets/components/PageTemplate.jsx";
-import { auth, db } from "./firebase.js";
+import { auth } from "./firebase.js";
 import { UserContext } from "./UserContext.jsx";
-import { FirebaseStorageAdapter } from "@/services/storage/FirebaseStorageAdapter.js";
-import { CompressionManager } from "@/services/storage/DataSyncManager.js";
 
 import "./App.css";
 
@@ -49,61 +47,24 @@ const ROUTES_CONFIG = [
 
 /**
  * Componente principal da aplicação
- * Gerencia autenticação, carregamento de dados do usuário e roteamento
+ * Gerencia autenticação e roteamento
  * @returns {JSX.Element} Componente App
  */
 function App() {
   const location = useLocation();
-  const { userData, setUserData, setUser, setIsLoadingUserData, forceSync, flushPendingSave } =
+  const { setUser, setIsLoadingUserData, setUserData, forceSave } =
     useContext(UserContext);
 
   const shouldShowNavBar = !ROUTES_WITHOUT_NAVBAR.includes(location.pathname);
 
   /**
-   * Sincroniza dados pendentes ao navegar entre rotas
+   * Força salvamento ao desmontar a página
    */
   useEffect(() => {
-    if (flushPendingSave) {
-      flushPendingSave().catch((err) => {
-        console.warn("[App] Erro ao sincronizar durante navegação:", err);
-      });
-    }
-  }, [location.pathname, flushPendingSave]);
-
-  /**
-   * Sincroniza dados do Firebase ao autenticar
-   * @param {string} userId - ID do usuário autenticado
-   */
-  const syncFromFirebase = useCallback(
-    async (userId) => {
-      try {
-        const firebaseAdapter = new FirebaseStorageAdapter(db, userId);
-        const remoteData = await firebaseAdapter.getItem("data");
-
-        if (remoteData) {
-          const decompressedData =
-            CompressionManager.decompressRecursive(remoteData);
-
-          // Garante que cada ficha tenha um código único
-          if (!decompressedData.sheetCode) {
-            decompressedData.sheetCode = uuidv4();
-          }
-
-          setUserData(decompressedData);
-          console.info("[App] Dados sincronizados do Firebase");
-        } else {
-          // Se não há dados no Firebase, gera novo código para nova ficha
-          setUserData((prevData) => ({
-            ...prevData,
-            sheetCode: prevData.sheetCode || uuidv4(),
-          }));
-        }
-      } catch (error) {
-        console.error("[App] Erro ao sincronizar dados do Firebase:", error);
-      }
-    },
-    [setUserData],
-  );
+    return () => {
+      forceSave?.();
+    };
+  }, [forceSave]);
 
   /**
    * Gerencia o ciclo de vida da autenticação do usuário
@@ -111,23 +72,22 @@ function App() {
   useEffect(() => {
     let isMounted = true;
 
-    const unsubscribeAuth = onAuthStateChanged(auth, async (user) => {
+    const unsubscribeAuth = onAuthStateChanged(auth, (user) => {
       try {
         if (user) {
           setUser(user);
-
-          // Sincroniza dados do Firebase se necessário
-          if (isMounted) {
-            await syncFromFirebase(user.uid);
-          }
+          // Gera código único para nova ficha se não tiver
+          setUserData((prevData) => ({
+            ...prevData,
+            sheetCode: prevData.sheetCode || uuidv4(),
+          }));
         } else {
           setUser(null);
-
           // Para usuários não autenticados, gera código único
-          if (!userData.sheetCode && isMounted) {
+          if (isMounted) {
             setUserData((prevData) => ({
               ...prevData,
-              sheetCode: uuidv4(),
+              sheetCode: prevData.sheetCode || uuidv4(),
             }));
           }
         }
@@ -142,27 +102,7 @@ function App() {
       isMounted = false;
       unsubscribeAuth();
     };
-  }, [
-    setUser,
-    syncFromFirebase,
-    userData.sheetCode,
-    setUserData,
-    setIsLoadingUserData,
-  ]);
-
-  /**
-   * Sincroniza com Firebase periodicamente (a cada 30 segundos)
-   */
-  useEffect(() => {
-    const syncInterval = setInterval(async () => {
-      const user = auth.currentUser;
-      if (user) {
-        await forceSync();
-      }
-    }, 30000);
-
-    return () => clearInterval(syncInterval);
-  }, [forceSync]);
+  }, [setUser, setUserData, setIsLoadingUserData]);
 
   return (
     <main className="appMain display-flex">
