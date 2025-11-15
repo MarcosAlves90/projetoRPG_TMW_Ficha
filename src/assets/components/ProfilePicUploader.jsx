@@ -1,45 +1,7 @@
 import { useEffect, useContext, useCallback } from "react";
 import imageCompression from "browser-image-compression";
 import { UserContext } from "../../UserContext.jsx";
-// MUI removed — using inline icon and native container
-import styled from "styled-components";
-
-const StyledLabel = styled.label`
-  position: relative;
-
-  .filter {
-    transition: all 0.2s ease-in-out;
-    border-radius: 10px 0 0 10px;
-    border: 4px solid transparent;
-    opacity: 0;
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    pointer-events: none;
-    background-color: rgba(23, 29, 46, 0.29);
-  }
-
-  .uploadIcon {
-    transition: all 0.2s ease-in-out;
-    opacity: 0;
-    width: 6rem;
-    height: 6rem;
-    position: absolute;
-    pointer-events: none;
-    fill: white;
-    z-index: 5;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-  }
-
-  &:hover {
-    .uploadIcon,
-    .filter {
-      opacity: 1;
-    }
-  }
-`;
+import { CloudUpload } from "lucide-react";
 
 export default function ProfilePicUploader() {
   const { userData, setUserData } = useContext(UserContext);
@@ -121,24 +83,36 @@ export default function ProfilePicUploader() {
   }
 
   return (
-    <div className="profile-pic-image">
-      <StyledLabel htmlFor="file-upload" className="custom-file-upload">
-        <span className={"uploadIcon"}>📤</span>
-        <div className={"filter"} />
+    <div className="profile-pic-image w-full h-full block">
+      <label
+        htmlFor="file-upload"
+        className="group relative block w-full h-full cursor-pointer rounded-lg overflow-hidden"
+        aria-hidden={false}
+      >
         <img
           src={userData.profilePic || "./images/rgPlaceholder.jpg"}
-          alt="Profile"
-          className={`image-profile ${userData.profilePic ? "active" : ""}`}
-          style={{ cursor: "pointer" }}
+          alt="Foto do perfil"
+          className={`image-profile ${userData.profilePic ? "active" : ""} object-cover w-full h-full block`}
         />
-      </StyledLabel>
+
+        <div className="absolute inset-0 bg-zinc-900/30 rounded-lg opacity-0 transition-opacity duration-200 ease-in-out group-hover:opacity-100 pointer-events-none" />
+
+        <div className="absolute inset-0 flex items-center justify-center z-10 opacity-0 transition-opacity duration-200 ease-in-out group-hover:opacity-100 pointer-events-none">
+          <div className="p-2 rounded-md bg-blue-600/10 text-sky-400">
+            <CloudUpload size={48} color="#60a5fa" strokeWidth={1.5} />
+          </div>
+        </div>
+
+        <span className="sr-only">Carregar foto do perfil</span>
+      </label>
+
       <input
         id="file-upload"
         type="file"
-        className="file-upload"
-        style={{ display: "none" }}
+        className="sr-only"
         onChange={handleFileChange}
         accept="image/*"
+        aria-label="Carregar foto do perfil"
       />
     </div>
   );
