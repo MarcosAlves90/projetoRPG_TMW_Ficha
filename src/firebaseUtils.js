@@ -1,82 +1,159 @@
-import { doc, getDoc, updateDoc, setDoc } from "firebase/firestore";
+import { doc, getDoc, updateDoc, setDoc } from 'firebase/firestore';
 import { auth, db } from './firebase';
 
+// ============================================================================
+// Constants
+// ============================================================================
+
+const COLLECTION_NAME = 'userData';
+const DATA_TYPES = {
+    DATA: 'data',
+    SHEETS: 'sheets'
+};
+
+// ============================================================================
+// Private Helper Functions
+// ============================================================================
+
+/**
+ * Retrieves the authenticated user's ID.
+ * @returns {string | null} User ID if authenticated, null otherwise.
+ */
 const getAuthenticatedUserId = () => {
     const user = auth.currentUser;
     if (!user) {
-        console.warn('getUserData: Usuário não autenticado');
+        console.warn('[Auth] Usuário não autenticado');
         return null;
     }
     return user.uid;
 };
 
-const handleError = (message, error) => {
-    console.error('%s %O', message, error);
+/**
+ * Logs error messages with consistent formatting.
+ * @param {string} context - Context where the error occurred.
+ * @param {Error} error - The error object.
+ */
+const logError = (context, error) => {
+    console.error(`[Firebase Utils] ${context}`, error?.message || error);
 };
 
-const executeWithHandling = async (fn, errorMessage) => {
+/**
+ * Executes an async function with error handling.
+ * @param {Function} fn - Async function to execute.
+ * @param {string} errorContext - Context message for error logging.
+ * @returns {Promise<any | null>} Result of the function or null on error.
+ */
+const executeWithErrorHandling = async (fn, errorContext) => {
     try {
         return await fn();
     } catch (error) {
-        handleError(errorMessage, error);
+        logError(errorContext, error);
         return null;
     }
 };
 
+/**
+ * Creates a Firestore document reference for the current user.
+ * @param {string} userId - The user's ID.
+ * @returns {DocumentReference} Firestore document reference.
+ */
+const getUserDocRef = (userId) => doc(db, COLLECTION_NAME, userId);
+
+// ============================================================================
+// Public API Functions
+// ============================================================================
+
+/**
+ * Retrieves user data from Firestore.
+ * @param {'data' | 'sheets'} type - Type of data to retrieve.
+ * @returns {Promise<Object | null>} User data or null if not found/error.
+ */
 export const getUserData = async (type) => {
     const userId = getAuthenticatedUserId();
     if (!userId) return null;
 
-    if (type !== 'data' && type !== 'sheets') {
-        console.warn('getUserData: Tipo inválido fornecido');
+    if (type !== DATA_TYPES.DATA && type !== DATA_TYPES.SHEETS) {
+        console.warn(`[getUserData] Tipo inválido: "${type}". Use "data" ou "sheets".`);
         return null;
     }
 
-    return executeWithHandling(async () => {
-        const userDoc = doc(db, 'userData', userId);
-        const docSnap = await getDoc(userDoc);
+    return executeWithErrorHandling(async () => {
+        const userDocRef = getUserDocRef(userId);
+        const docSnap = await getDoc(userDocRef);
 
-        if (docSnap.exists()) {
-            console.info('getUserData: Dados recuperados!');
-
-            if (type === 'data') return docSnap.data().data;
-            if (type === 'sheets') return docSnap.data().sheets;
-        } else {
-            console.info('getUserData: Nenhum dado encontrado!');
+        if (!docSnap.exists()) {
+            console.info('[getUserData] Documento não encontrado');
             return null;
         }
-    }, 'getUserData: Erro ao recuperar dados:');
+
+        const userData = docSnap.data();
+        const result = userData?.[type] || null;
+
+        console.info(`[getUserData] Dados do tipo "${type}" recuperados com sucesso`);
+        return result;
+    }, 'Erro ao recuperar dados do usuário');
 };
 
+/**
+ * Saves user data to Firestore.
+ * @param {Object} data - Data to save.
+ * @returns {Promise<boolean>} True if successful, false otherwise.
+ */
 export const saveUserData = async (data) => {
     const userId = getAuthenticatedUserId();
-    if (!userId) return;
+    if (!userId) return false;
 
-    executeWithHandling(async () => {
-        const userDoc = doc(db, 'userData', userId);
-        await updateDoc(userDoc, { data });
-        console.log('Dados salvos com sucesso!');
-    }, 'Erro ao salvar dados:');
+    const result = await executeWithErrorHandling(async () => {
+        const userDocRef = getUserDocRef(userId);
+        await updateDoc(userDocRef, { [DATA_TYPES.DATA]: data });
+        console.info('[saveUserData] Dados salvos com sucesso');
+        return true;
+    }, 'Erro ao salvar dados do usuário');
+
+    return result ?? false;
 };
 
+/**
+ * Creates initial user data structure in Firestore.
+ * @returns {Promise<boolean>} True if successful, false otherwise.
+ */
 export const createUserData = async () => {
     const userId = getAuthenticatedUserId();
-    if (!userId) return;
+    if (!userId) return false;
 
-    executeWithHandling(async () => {
-        const userDoc = doc(db, 'userData', userId);
-        await setDoc(userDoc, { data: {} });
-        console.log('Dados do usuário criados com sucesso!');
-    }, 'Erro ao criar dados do usuário:');
+    const result = await executeWithErrorHandling(async () => {
+        const userDocRef = getUserDocRef(userId);
+        await setDoc(userDocRef, { 
+            [DATA_TYPES.DATA]: {},
+            [DATA_TYPES.SHEETS]: []
+        });
+        console.info('[createUserData] Documento do usuário criado com sucesso');
+        return true;
+    }, 'Erro ao criar dados do usuário');
+
+    return result ?? false;
 };
 
+/**
+ * Saves user sheets to Firestore.
+ * @param {Array} sheets - Array of sheets to save.
+ * @returns {Promise<boolean>} True if successful, false otherwise.
+ */
 export const saveUserSheets = async (sheets) => {
     const userId = getAuthenticatedUserId();
-    if (!userId) return;
+    if (!userId) return false;
 
-    executeWithHandling(async () => {
-        const userDoc = doc(db, 'userData', userId);
-        await updateDoc(userDoc, { sheets });
-        console.log('Fichas salvas com sucesso!');
-    }, 'Erro ao salvar fichas:');
+    if (!Array.isArray(sheets)) {
+        console.warn('[saveUserSheets] O parâmetro "sheets" deve ser um array');
+        return false;
+    }
+
+    const result = await executeWithErrorHandling(async () => {
+        const userDocRef = getUserDocRef(userId);
+        await updateDoc(userDocRef, { [DATA_TYPES.SHEETS]: sheets });
+        console.info('[saveUserSheets] Fichas salvas com sucesso');
+        return true;
+    }, 'Erro ao salvar fichas do usuário');
+
+    return result ?? false;
 };
