@@ -145,17 +145,6 @@ export default function PersonalSection({
             </div>
           </div>
         </div>
-
-        {/* Info Box */}
-        <div className="glass rounded-lg p-4 mt-4">
-          <p className="text-xs text-gray-400 leading-relaxed">
-            💡{" "}
-            <span className="text-gray-300">
-              As informações pessoais ajudam a definir a identidade única do seu
-              personagem no mundo de Agamemnon.
-            </span>
-          </p>
-        </div>
       </div>
     </Section>
   );

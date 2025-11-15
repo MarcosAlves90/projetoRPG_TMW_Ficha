@@ -123,11 +123,6 @@ export default function Page1() {
             isLoading={isLoadingUserData}
           />
         </div>
-
-        {/* Footer Info */}
-        <div className="glass rounded-lg p-4 mt-8 text-center text-xs text-gray-400 animate-fade-in">
-          <p>💾 Suas alterações são salvas automaticamente a cada ação</p>
-        </div>
       </div>
     </main>
   );
