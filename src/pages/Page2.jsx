@@ -1,210 +1,143 @@
-import { useEffect, useContext, useRef, useCallback } from "react";
-import Collapsible from "react-collapsible";
-import "bootstrap-icons/font/bootstrap-icons.css";
-import { saveUserData } from "../firebaseUtils.js";
+import { useContext } from "react";
 import { UserContext } from "../UserContext";
-import { TextField } from "@mui/material";
-import styled from "styled-components";
-
-const StyledTextField = styled(TextField)`
-  margin-bottom: 2rem;
-  margin-top: 0;
-  width: 100%;
-  background-color: var(--background);
-
-  .MuiInputLabel-root,
-  .MuiInputBase-input {
-    font-family: var(--common-font-family), sans-serif !important;
-  }
-
-  & .MuiOutlinedInput-root {
-    & fieldset {
-      border: var(--gray-border);
-      transition: var(--common-transition);
-    }
-    &:hover fieldset {
-      border: var(--focus-gray-border);
-    }
-    &.Mui-focused fieldset {
-      border: var(--focus-gray-border);
-    }
-  }
-
-  @media (max-width: 991px) {
-    & .MuiInputBase-input,
-    .MuiInputLabel-root {
-      font-size: 3vw;
-    }
-  }
-`;
+import { usePageUnmount } from "@/hooks/usePageUnmount.js";
+import { Section, TextArea } from "@/assets/components/design-system";
+import { BookOpen, Sparkles, Heart, AlertCircle, Zap } from "lucide-react";
 
 export default function Page2() {
-  const { userData, setUserData, user } = useContext(UserContext);
-  const debounceTimeout = useRef(null);
+  const { userData, setUserData } = useContext(UserContext);
 
-  const saveDataDebounced = useCallback(
-    (data) => {
-      if (debounceTimeout.current) {
-        clearTimeout(debounceTimeout.current);
-      }
-      debounceTimeout.current = setTimeout(() => {
-        if (user) {
-          saveUserData(data);
-        }
-      }, 500);
-    },
-    [user],
-  );
-
-  useEffect(() => {
-    saveDataDebounced(userData);
-  }, [userData, saveDataDebounced]);
+  // Garante sincronização ao sair da página
+  usePageUnmount();
 
   const handleInputChange = (key) => (event) => {
-    const { value, type } = event.target;
+    const { value } = event.target;
     setUserData((prevUserData) => ({
       ...prevUserData,
-      [key]:
-        type === "number" ? (value === "" ? "" : parseFloat(value)) : value,
+      [key]: value,
     }));
   };
 
   return (
-    <main className={"mainCommon page-2"}>
-      <section className={"section-origem"}>
-        <Collapsible
-          trigger={"Origem"}
-          triggerStyle={{ fontSize: "1.5em", color: "rgb(43, 43, 43)" }}
-          transitionTime={100}
-          transitionCloseTime={100}
-        >
-          <article className={"textarea-container"}>
-            <StyledTextField
-              id="outlined-multiline-static"
-              placeholder="Escreva a sua origem"
-              value={userData.origem}
-              onChange={handleInputChange("origem")}
-              multiline
-              variant={"outlined"}
-              minRows={6}
-            />
-          </article>
-        </Collapsible>
-      </section>
+    <main className="w-full min-h-screen bg-linear-to-b from-[#0b0f1a] via-[#0b0f1a] to-[#0f1424]">
+      {/* Decorative Background Elements */}
+      <div className="fixed inset-0 pointer-events-none overflow-hidden">
+        <div className="absolute top-0 right-1/4 w-96 h-96 bg-blue-600/5 rounded-full blur-3xl" />
+        <div className="absolute bottom-1/4 left-1/3 w-96 h-96 bg-purple-600/5 rounded-full blur-3xl" />
+      </div>
 
-      <section className={"section-fisico"}>
-        <Collapsible
-          trigger={"Aparência"}
-          triggerStyle={{ fontSize: "1.5em", color: "rgb(43, 43, 43)" }}
-          transitionTime={100}
-          transitionCloseTime={100}
+      {/* Content Container */}
+      <div className="relative z-10 w-full space-y-8 p-4 lg:p-8 max-w-7xl mx-auto">
+        {/* Origem Section */}
+        <Section
+          key="origem"
+          title="Origem"
+          subtitle="A história e contexto do seu personagem"
+          className="animate-fade-in"
         >
-          <div className={"textarea-container"}>
-            <StyledTextField
-              id="outlined-multiline-static"
-              placeholder="Descreva a sua aparência"
-              value={userData.fisico}
-              onChange={handleInputChange("fisico")}
-              multiline
-              variant={"outlined"}
-              minRows={4}
-            />
-          </div>
-        </Collapsible>
-      </section>
+          <TextArea
+            key="origem-field"
+            label="Sua Origem"
+            icon={BookOpen}
+            value={userData.origem || ""}
+            onChange={handleInputChange("origem")}
+            placeholder="Escreva a história e contexto do seu personagem. Como você chegou até aqui? Qual é sua motivação?"
+            rows={6}
+          />
+        </Section>
 
-      <section className={"section-ideais"}>
-        <Collapsible
-          trigger={"Ideais"}
-          triggerStyle={{ fontSize: "1.5em", color: "rgb(43, 43, 43)" }}
-          transitionTime={100}
-          transitionCloseTime={100}
+        {/* Aparência Section */}
+        <Section
+          key="aparencia"
+          title="Aparência"
+          subtitle="Descrição física e visual"
+          className="animate-fade-in"
         >
-          <div className={"textarea-container"}>
-            <StyledTextField
-              id="outlined-multiline-static"
-              placeholder={"Escreva um ou mais ideais"}
-              value={userData.ideais}
-              onChange={handleInputChange("ideais")}
-              multiline
-              variant={"outlined"}
-              minRows={4}
-            />
-          </div>
-        </Collapsible>
-      </section>
+          <TextArea
+            key="fisico-field"
+            label="Descrição Física"
+            icon={Sparkles}
+            value={userData.fisico || ""}
+            onChange={handleInputChange("fisico")}
+            placeholder="Como você se parece? Descreva sua aparência, roupas, características marcantes..."
+            rows={4}
+          />
+        </Section>
 
-      <section className={"section-tracos"}>
-        <div className={"textarea-center-container"}>
-          <div className={"textarea-meio"}>
-            <Collapsible
-              trigger={"Traços negativos"}
-              triggerStyle={{ fontSize: "1.5em", color: "rgb(43, 43, 43)" }}
-              transitionTime={100}
-              transitionCloseTime={100}
-            >
-              <div className={"textarea-container"}>
-                <StyledTextField
-                  id="outlined-multiline-static"
-                  value={userData.tracosNegativos}
-                  onChange={handleInputChange("tracosNegativos")}
-                  multiline
-                  variant={"outlined"}
-                  minRows={4}
-                  placeholder={
-                    "- Escreva um ou mais traços negativos.\n" +
-                    "- Os traços podem ser físicos ou mentais."
-                  }
-                />
-              </div>
-            </Collapsible>
-          </div>
-          <div className={"textarea-meio"}>
-            <Collapsible
-              trigger={"Traços positivos"}
-              triggerStyle={{ fontSize: "1.5em", color: "rgb(43, 43, 43)" }}
-              transitionTime={100}
-              transitionCloseTime={100}
-            >
-              <div className={"textarea-container"}>
-                <StyledTextField
-                  id="outlined-multiline-static"
-                  value={userData.tracosPositivos}
-                  onChange={handleInputChange("tracosPositivos")}
-                  multiline
-                  variant={"outlined"}
-                  minRows={4}
-                  placeholder={
-                    "- Escreva um ou mais traços positivos.\n" +
-                    "- Os traços podem ser físicos ou mentais."
-                  }
-                />
-              </div>
-            </Collapsible>
-          </div>
-        </div>
-      </section>
-
-      <section className={"section-origem-forma"}>
-        <Collapsible
-          trigger={"Origem da forma"}
-          triggerStyle={{ fontSize: "1.5em", color: "rgb(43, 43, 43)" }}
-          transitionTime={100}
-          transitionCloseTime={100}
+        {/* Ideais Section */}
+        <Section
+          key="ideais"
+          title="Ideais"
+          subtitle="Princípios e valores"
+          className="animate-fade-in"
         >
-          <div className={"textarea-container"}>
-            <StyledTextField
-              id="textarea-origemForma"
-              value={userData.origemForma}
-              onChange={handleInputChange("origemForma")}
-              multiline
-              variant={"outlined"}
-              minRows={7}
-              placeholder={"Escreva a origem da sua forma."}
-            />
+          <TextArea
+            key="ideais-field"
+            label="Seus Ideais"
+            icon={Zap}
+            value={userData.ideais || ""}
+            onChange={handleInputChange("ideais")}
+            placeholder="Quais são seus ideais? O que você acredita e valoriza? Qual é seu código de honra?"
+            rows={4}
+          />
+        </Section>
+
+        {/* Traços Section */}
+        <Section
+          key="tracos"
+          title="Traços Pessoais"
+          subtitle="Características positivas e negativas"
+          className="animate-fade-in"
+        >
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            {/* Traços Negativos */}
+            <div key="tracos-negativos">
+              <TextArea
+                key="tracos-negativos-field"
+                label="Traços Negativos"
+                icon={AlertCircle}
+                value={userData.tracosNegativos || ""}
+                onChange={handleInputChange("tracosNegativos")}
+                placeholder="Quais são suas fraquezas? Medos? Defeitos que você reconhece em si mesmo?"
+                rows={4}
+                variant="negative"
+              />
+            </div>
+
+            {/* Traços Positivos */}
+            <div key="tracos-positivos">
+              <TextArea
+                key="tracos-positivos-field"
+                label="Traços Positivos"
+                icon={Heart}
+                value={userData.tracosPositivos || ""}
+                onChange={handleInputChange("tracosPositivos")}
+                placeholder="Quais são suas forças? Virtudes? Qualidades que definem você?"
+                rows={4}
+                variant="positive"
+              />
+            </div>
           </div>
-        </Collapsible>
-      </section>
+        </Section>
+
+        {/* Origem da Forma Section */}
+        <Section
+          key="origem-forma"
+          title="Origem da Forma"
+          subtitle="A história de sua transformação ou poder"
+          className="animate-fade-in"
+        >
+          <TextArea
+            key="origem-forma-field"
+            label="História da Forma"
+            icon={BookOpen}
+            value={userData.origemForma || ""}
+            onChange={handleInputChange("origemForma")}
+            placeholder="Como você obteve seus poderes ou forma atual? O que desencadeou essa transformação? Há alguma maldição ou bênção envolvida?"
+            rows={7}
+          />
+        </Section>
+      </div>
     </main>
   );
 }
