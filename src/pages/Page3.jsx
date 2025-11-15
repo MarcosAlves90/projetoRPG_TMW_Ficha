@@ -150,7 +150,7 @@ export default function Page3() {
     [user],
   );
 
-  const calculateTotalPoints = () => {
+  const calculateTotalPoints = useCallback(() => {
     const newTotalPoints = {
       bioPoints: 0,
       atrPoints: 0,
@@ -179,12 +179,15 @@ export default function Page3() {
     });
 
     setTotalPoints(newTotalPoints);
-  };
+  }, [userData]);
 
   useEffect(() => {
     saveDataDebounced(userData);
-    calculateTotalPoints();
   }, [userData, saveDataDebounced]);
+
+  useEffect(() => {
+    calculateTotalPoints();
+  }, [calculateTotalPoints]);
 
   const handleInputChange = (key) => (event) => {
     const { value, type } = event.target;
@@ -491,7 +494,7 @@ export default function Page3() {
 
     const formattedDice = noStatusDice.replace(
       regex,
-      (match, p1, p2, p3, offset, string) => {
+      (match, p1, p2, p3) => {
         const index = matches.indexOf(match);
         const diceResults = results[index].results;
         if (p3 && p3.startsWith("kh")) {
