@@ -1,14 +1,9 @@
 import PropTypes from "prop-types";
 import { Section, Badge } from "@/assets/components/design-system";
 import ProfilePicUploader from "@/assets/components/ProfilePicUploader.jsx";
-import SkeletonIdentitySection from "./SkeletonIdentitySection.jsx";
 import { User, Calendar, Award, Shield, Sparkles } from "lucide-react";
 
-export default function IdentitySection({ userData, isLoading = false }) {
-  if (isLoading) {
-    return <SkeletonIdentitySection />;
-  }
-
+export default function IdentitySection({ userData }) {
   return (
     <Section
       title="Identificador Oficial"
@@ -134,5 +129,4 @@ export default function IdentitySection({ userData, isLoading = false }) {
 
 IdentitySection.propTypes = {
   userData: PropTypes.object.isRequired,
-  isLoading: PropTypes.bool,
 };

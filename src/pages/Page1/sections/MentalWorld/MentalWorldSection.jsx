@@ -1,17 +1,8 @@
 import PropTypes from "prop-types";
 import { Section, Input } from "@/assets/components/design-system";
-import SkeletonMentalWorldSection from "./SkeletonMentalWorldSection.jsx";
 import { Brain, AlertCircle, BookOpen } from "lucide-react";
 
-export default function MentalWorldSection({
-  userData,
-  onInputChange,
-  isLoading = false,
-}) {
-  if (isLoading) {
-    return <SkeletonMentalWorldSection />;
-  }
-
+export default function MentalWorldSection({ userData, onInputChange }) {
   const formaOptions = [
     { value: "", label: "Nenhum" },
     { value: 1, label: "🌀 Medo - Ansiedade irracional" },
@@ -163,5 +154,4 @@ export default function MentalWorldSection({
 MentalWorldSection.propTypes = {
   userData: PropTypes.object.isRequired,
   onInputChange: PropTypes.func.isRequired,
-  isLoading: PropTypes.bool,
 };

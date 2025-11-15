@@ -1,7 +1,6 @@
 import PropTypes from "prop-types";
 import { Section } from "@/assets/components/design-system";
 import VitalResource from "./VitalResource.jsx";
-import SkeletonVitalResourcesSection from "./SkeletonVitalResourcesSection.jsx";
 import { Heart, Zap, AlertTriangle } from "lucide-react";
 
 export default function VitalResourcesSection({
@@ -10,12 +9,7 @@ export default function VitalResourcesSection({
   localEnergy,
   onResourceChange,
   onInputChange,
-  isLoading = false,
 }) {
-  if (isLoading) {
-    return <SkeletonVitalResourcesSection />;
-  }
-
   const vitalResources = [
     {
       label: "Vida",
@@ -77,7 +71,8 @@ export default function VitalResourcesSection({
                   ⚠️ Recursos Críticos
                 </p>
                 <p className="text-sm text-red-200 mt-1">
-                  {criticalResources.map((r) => r.label).join(", ")} em nível crítico!
+                  {criticalResources.map((r) => r.label).join(", ")} em nível
+                  crítico!
                 </p>
               </div>
             </div>
@@ -155,5 +150,4 @@ VitalResourcesSection.propTypes = {
   localEnergy: PropTypes.number.isRequired,
   onResourceChange: PropTypes.func.isRequired,
   onInputChange: PropTypes.func.isRequired,
-  isLoading: PropTypes.bool,
 };

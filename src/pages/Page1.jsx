@@ -1,6 +1,6 @@
-import { useEffect, useRef, useCallback, useContext } from "react";
-import { saveUserData } from "../firebaseUtils.js";
+import { useCallback, useContext } from "react";
 import { UserContext } from "../UserContext.jsx";
+import { usePageUnmount } from "@/hooks/usePageUnmount.js";
 import {
   IdentitySection,
   PersonalSection,
@@ -10,27 +10,10 @@ import {
 } from "@/pages/Page1/sections/index.js";
 
 export default function Page1() {
-  const { userData, setUserData, user, isLoadingUserData } =
-    useContext(UserContext);
-  const debounceTimeout = useRef(null);
+  const { userData, setUserData } = useContext(UserContext);
 
-  const saveDataDebounced = useCallback(
-    (data) => {
-      if (debounceTimeout.current) {
-        clearTimeout(debounceTimeout.current);
-      }
-      debounceTimeout.current = setTimeout(() => {
-        if (user) {
-          saveUserData(data);
-        }
-      }, 500);
-    },
-    [user],
-  );
-
-  useEffect(() => {
-    saveDataDebounced(userData);
-  }, [userData, saveDataDebounced]);
+  // Garante sincronização ao sair da página
+  usePageUnmount();
 
   const handleInputChange = (key) => (event) => {
     const { value, type } = event.target;
@@ -94,18 +77,16 @@ export default function Page1() {
       <div className="relative z-10 w-full space-y-8 p-4 lg:p-8 max-w-7xl mx-auto">
         {/* Main Sections */}
         <div className="space-y-6">
-          <IdentitySection userData={userData} isLoading={isLoadingUserData} />
+          <IdentitySection userData={userData} />
 
           <PersonalSection
             userData={userData}
             onInputChange={handleInputChange}
-            isLoading={isLoadingUserData}
           />
 
           <MentalWorldSection
             userData={userData}
             onInputChange={handleInputChange}
-            isLoading={isLoadingUserData}
           />
 
           <VitalResourcesSection
@@ -114,13 +95,11 @@ export default function Page1() {
             localEnergy={localEnergy()}
             onResourceChange={handleResourceChange}
             onInputChange={handleResourceInputChange}
-            isLoading={isLoadingUserData}
           />
 
           <ProgressionSection
             userData={userData}
             onInputChange={handleInputChange}
-            isLoading={isLoadingUserData}
           />
         </div>
       </div>

@@ -5,18 +5,9 @@ import {
   Badge,
   StatCard,
 } from "@/assets/components/design-system";
-import SkeletonProgressionSection from "./SkeletonProgressionSection.jsx";
 import { Shield, Zap, TrendingUp, Dices } from "lucide-react";
 
-export default function ProgressionSection({
-  userData,
-  onInputChange,
-  isLoading = false,
-}) {
-  if (isLoading) {
-    return <SkeletonProgressionSection />;
-  }
-
+export default function ProgressionSection({ userData, onInputChange }) {
   const defesa =
     15 +
     (userData["atributo-DES"] || 0) +
@@ -138,5 +129,4 @@ export default function ProgressionSection({
 ProgressionSection.propTypes = {
   userData: PropTypes.object.isRequired,
   onInputChange: PropTypes.func.isRequired,
-  isLoading: PropTypes.bool,
 };

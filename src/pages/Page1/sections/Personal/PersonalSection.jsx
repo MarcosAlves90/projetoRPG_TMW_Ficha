@@ -1,17 +1,8 @@
 import PropTypes from "prop-types";
 import { Section, Input } from "@/assets/components/design-system";
-import SkeletonPersonalSection from "./SkeletonPersonalSection.jsx";
 import { User, Briefcase, Ruler, Weight, Calendar, Crown } from "lucide-react";
 
-export default function PersonalSection({
-  userData,
-  onInputChange,
-  isLoading = false,
-}) {
-  if (isLoading) {
-    return <SkeletonPersonalSection />;
-  }
-
+export default function PersonalSection({ userData, onInputChange }) {
   return (
     <Section
       title="Informações Pessoais"
@@ -175,5 +166,4 @@ export default function PersonalSection({
 PersonalSection.propTypes = {
   userData: PropTypes.object.isRequired,
   onInputChange: PropTypes.func.isRequired,
-  isLoading: PropTypes.bool,
 };
