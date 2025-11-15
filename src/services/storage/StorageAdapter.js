@@ -51,10 +51,36 @@ export class StorageAdapter {
   async hasKey(_key) {
     throw new Error("hasKey() deve ser implementado");
   }
+
+  /**
+   * Obtém múltiplas chaves em lote
+   * @param {string[]} _keys - Chaves a recuperar
+   * @returns {Promise<Object>} Mapa de chave -> valor
+   */
+  // eslint-disable-next-line no-unused-vars
+  async getMultiple(_keys) {
+    const result = {};
+    for (const key of _keys) {
+      result[key] = await this.getItem(key);
+    }
+    return result;
+  }
+
+  /**
+   * Armazena múltiplas chaves em lote
+   * @param {Object} _items - Mapa de chave -> valor
+   * @returns {Promise<void>}
+   */
+  // eslint-disable-next-line no-unused-vars
+  async setMultiple(_items) {
+    for (const [key, value] of Object.entries(_items)) {
+      await this.setItem(key, value);
+    }
+  }
 }
 
 /**
- * Implementação de storage usando localStorage
+ * Implementação de storage usando localStorage com tratamento de erros robusto
  */
 export class LocalStorageAdapter extends StorageAdapter {
   async getItem(key) {
@@ -75,6 +101,7 @@ export class LocalStorageAdapter extends StorageAdapter {
       if (error.name === "QuotaExceededError") {
         console.warn("[LocalStorage] Quota de armazenamento excedida");
       }
+      throw error;
     }
   }
 
@@ -83,6 +110,7 @@ export class LocalStorageAdapter extends StorageAdapter {
       localStorage.removeItem(key);
     } catch (error) {
       console.error(`[LocalStorage] Erro ao remover "${key}":`, error);
+      throw error;
     }
   }
 
@@ -91,11 +119,26 @@ export class LocalStorageAdapter extends StorageAdapter {
       localStorage.clear();
     } catch (error) {
       console.error("[LocalStorage] Erro ao limpar:", error);
+      throw error;
     }
   }
 
   async hasKey(key) {
     return localStorage.getItem(key) !== null;
+  }
+
+  async getMultiple(keys) {
+    const result = {};
+    for (const key of keys) {
+      result[key] = await this.getItem(key);
+    }
+    return result;
+  }
+
+  async setMultiple(items) {
+    for (const [key, value] of Object.entries(items)) {
+      await this.setItem(key, value);
+    }
   }
 }
 
@@ -126,5 +169,19 @@ export class MemoryStorageAdapter extends StorageAdapter {
 
   async hasKey(key) {
     return this.store.has(key);
+  }
+
+  async getMultiple(keys) {
+    const result = {};
+    for (const key of keys) {
+      result[key] = this.store.get(key) ?? null;
+    }
+    return result;
+  }
+
+  async setMultiple(items) {
+    for (const [key, value] of Object.entries(items)) {
+      this.store.set(key, value);
+    }
   }
 }
