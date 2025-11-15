@@ -4,10 +4,11 @@ import {
   useState,
   useMemo,
   useContext,
-  useRef,
 } from "react";
 import { usePageUnmount } from "@/hooks/usePageUnmount.js";
+import { useAutoSave } from "@/hooks/useAutoSave.js";
 import { useToast } from "@/hooks/useToast.js";
+import { AutoSaveIndicator } from "@/assets/components/AutoSaveIndicator.jsx";
 import {
   ArtsSection,
   Attributes,
@@ -22,7 +23,6 @@ import {
   perArray,
   subArcArray,
 } from "../assets/systems/FichaPage3/FichaPage3Arrays.jsx";
-import { saveUserData } from "../firebaseUtils.js";
 import { map } from "jquery";
 import { UserContext } from "../UserContext.jsx";
 import styled from "styled-components";
@@ -136,23 +136,11 @@ export default function Page3() {
 
   const [noStatusDice, setNoStatusDice] = useState([[]]);
   const [searchTerm, setSearchTerm] = useState("");
-  const { userData, setUserData, user } = useContext(UserContext);
+  const { userData, setUserData } = useContext(UserContext);
   const { toast } = useToast();
-  const debounceTimeout = useRef(null);
 
-  const saveDataDebounced = useCallback(
-    (data) => {
-      if (debounceTimeout.current) {
-        clearTimeout(debounceTimeout.current);
-      }
-      debounceTimeout.current = setTimeout(() => {
-        if (user) {
-          saveUserData(data);
-        }
-      }, 500);
-    },
-    [user],
-  );
+  // Salvamento automático com debounce de 2s (padrão unificado)
+  const autoSaveState = useAutoSave(userData, 2000);
 
   const calculateTotalPoints = useCallback(() => {
     const newTotalPoints = {
@@ -184,10 +172,6 @@ export default function Page3() {
 
     setTotalPoints(newTotalPoints);
   }, [userData]);
-
-  useEffect(() => {
-    saveDataDebounced(userData);
-  }, [userData, saveDataDebounced]);
 
   useEffect(() => {
     calculateTotalPoints();
@@ -593,6 +577,13 @@ export default function Page3() {
 
   return (
     <main className={"mainCommon page-3"}>
+      {/* Auto Save Indicator */}
+      <AutoSaveIndicator
+        isSaving={autoSaveState.isSaving}
+        error={autoSaveState.error}
+        lastSaved={autoSaveState.lastSaved}
+      />
+
       <section className={"section-dice"}>
         <div className={"display-flex-center"}>
           <h2 className={"title-2"}>Rolagem:</h2>

@@ -1,6 +1,5 @@
 import {
   useCallback,
-  useEffect,
   useMemo,
   useRef,
   useState,
@@ -8,7 +7,8 @@ import {
 } from "react";
 import { v4 as uuidv4 } from "uuid";
 import { usePageUnmount } from "@/hooks/usePageUnmount.js";
-import { saveUserData } from "../firebaseUtils.js";
+import { useAutoSave } from "@/hooks/useAutoSave.js";
+import { AutoSaveIndicator } from "@/assets/components/AutoSaveIndicator.jsx";
 import { UserContext } from "../UserContext";
 import {
   StyledButton,
@@ -59,26 +59,10 @@ export default function Page5() {
   const [localItem, setLocalItem] = useState(null);
   const inputRef = useRef(null);
 
-  const { userData, setUserData, user } = useContext(UserContext);
-  const debounceTimeout = useRef(null);
+  const { userData, setUserData } = useContext(UserContext);
 
-  const saveDataDebounced = useCallback(
-    (data) => {
-      if (debounceTimeout.current) {
-        clearTimeout(debounceTimeout.current);
-      }
-      debounceTimeout.current = setTimeout(() => {
-        if (user) {
-          saveUserData(data);
-        }
-      }, 500);
-    },
-    [user],
-  );
-
-  useEffect(() => {
-    saveDataDebounced(userData);
-  }, [userData, saveDataDebounced]);
+  // Salvamento automático com debounce de 2s (padrão unificado)
+  const autoSaveState = useAutoSave(userData, 2000);
 
   const closeModal = useCallback(() => {
     setIsOpen(false);
@@ -193,6 +177,13 @@ export default function Page5() {
 
   return (
     <>
+      {/* Auto Save Indicator */}
+      <AutoSaveIndicator
+        isSaving={autoSaveState.isSaving}
+        error={autoSaveState.error}
+        lastSaved={autoSaveState.lastSaved}
+      />
+
       <ReactModal
         isOpen={modalIsOpen}
         onRequestClose={closeModal}

@@ -67,11 +67,28 @@ function App() {
   }, [forceSave]);
 
   /**
+   * Garante salvamento antes de sair da aplicação
+   */
+  useEffect(() => {
+    const handleBeforeUnload = () => {
+      // Força salvamento síncrono
+      if (forceSave && !isLoadingUserData) {
+        forceSave();
+      }
+    };
+
+    // Adiciona listener para beforeunload
+    window.addEventListener("beforeunload", handleBeforeUnload);
+
+    return () => {
+      window.removeEventListener("beforeunload", handleBeforeUnload);
+    };
+  }, [forceSave, isLoadingUserData]);
+
+  /**
    * Gerencia o ciclo de vida da autenticação do usuário
    */
   useEffect(() => {
-    let isMounted = true;
-
     const unsubscribeAuth = onAuthStateChanged(auth, (user) => {
       try {
         if (user) {
@@ -85,7 +102,6 @@ function App() {
     });
 
     return () => {
-      isMounted = false;
       unsubscribeAuth();
     };
   }, [setUser]);

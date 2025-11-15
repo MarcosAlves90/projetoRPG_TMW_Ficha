@@ -7,7 +7,8 @@ import {
   useContext,
 } from "react";
 import { usePageUnmount } from "@/hooks/usePageUnmount.js";
-import { saveUserData } from "../firebaseUtils.js";
+import { useAutoSave } from "@/hooks/useAutoSave.js";
+import { AutoSaveIndicator } from "@/assets/components/AutoSaveIndicator.jsx";
 import { v4 as uuidv4 } from "uuid";
 import ReactModal from "react-modal";
 import { UserContext } from "../UserContext";
@@ -62,29 +63,13 @@ export default function Page6() {
   const [searchTerm, setSearchTerm] = useState("");
   const [activeCategories, setActiveCategories] = useState([]);
 
-  const { userData, setUserData, user } = useContext(UserContext);
-  const debounceTimeout = useRef(null);
+  const { userData, setUserData } = useContext(UserContext);
 
   const [ducados, setDucados] = useState(userData.ducados || "000");
   const [criptogenes, setCriptogenes] = useState(userData.criptogenes || "000");
 
-  const saveDataDebounced = useCallback(
-    (data) => {
-      if (debounceTimeout.current) {
-        clearTimeout(debounceTimeout.current);
-      }
-      debounceTimeout.current = setTimeout(() => {
-        if (user) {
-          saveUserData(data);
-        }
-      }, 500);
-    },
-    [user],
-  );
-
-  useEffect(() => {
-    saveDataDebounced(userData);
-  }, [userData, saveDataDebounced]);
+  // Salvamento automático com debounce de 2s (padrão unificado)
+  const autoSaveState = useAutoSave(userData, 2000);
 
   const handleElementChange = useCallback(
     (key, value) => {
@@ -295,6 +280,13 @@ export default function Page6() {
 
   return (
     <>
+      {/* Auto Save Indicator */}
+      <AutoSaveIndicator
+        isSaving={autoSaveState.isSaving}
+        error={autoSaveState.error}
+        lastSaved={autoSaveState.lastSaved}
+      />
+
       <ReactModal
         isOpen={modalIsOpen}
         onRequestClose={closeModal}

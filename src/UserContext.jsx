@@ -94,31 +94,20 @@ export function UserProvider({ children }) {
 
   /**
    * Salva automaticamente quando userData muda
+   * Nota: Debounce é gerenciado pelo useAutoSave hook nas páginas individuais
+   * Aqui apenas salvamos no localStorage como backup imediato
    */
   useEffect(() => {
-    if (!isLoading && user) {
-      // Salva no Firebase se autenticado
-      const saveTimer = setTimeout(async () => {
-        try {
-          await saveUserData(userData);
-          console.info("[UserContext] Dados salvos no Firebase");
-        } catch (error) {
-          console.error("[UserContext] Erro ao salvar no Firebase:", error);
-        }
-      }, 1000); // Debounce de 1 segundo
-
-      return () => clearTimeout(saveTimer);
-    }
-    
-    // Sempre salva no localStorage como backup
+    // Sempre salva no localStorage como backup (sem debounce para segurança)
     if (!isLoading) {
       try {
         localStorage.setItem(STORAGE_KEY_USER_DATA, JSON.stringify(userData));
+        console.debug("[UserContext] Dados salvos no localStorage");
       } catch (error) {
         console.error("[UserContext] Erro ao salvar localStorage:", error);
       }
     }
-  }, [userData, isLoading, user]);
+  }, [userData, isLoading]);
 
   /**
    * Limpa todos os dados do usuário
@@ -130,26 +119,50 @@ export function UserProvider({ children }) {
   }, []);
 
   /**
-   * Força sincronização imediata
+   * Força sincronização imediata com retry
    */
-  const forceSync = useCallback(async () => {
+  const forceSync = useCallback(async (retryCount = 0, maxRetries = 3) => {
     try {
       setIsSyncing(true);
       setSyncError(null);
       
-      // Salva no Firebase se autenticado
-      if (user) {
-        await saveUserData(userData);
-        console.info("[UserContext] Sincronização forçada no Firebase");
+      // Sempre salva no localStorage primeiro (síncrono e seguro)
+      try {
+        localStorage.setItem(STORAGE_KEY_USER_DATA, JSON.stringify(userData));
+        console.info("[UserContext] Dados salvos no localStorage");
+      } catch (localError) {
+        console.error("[UserContext] Erro crítico ao salvar localStorage:", localError);
       }
       
-      // Sempre salva no localStorage
-      localStorage.setItem(STORAGE_KEY_USER_DATA, JSON.stringify(userData));
+      // Salva no Firebase se autenticado
+      if (user) {
+        const success = await saveUserData(userData);
+        if (success) {
+          console.info("[UserContext] Sincronização forçada no Firebase");
+        } else {
+          throw new Error("Falha ao sincronizar com Firebase");
+        }
+      }
     } catch (error) {
-      setSyncError(error);
       console.error("[UserContext] Erro ao sincronizar:", error);
+      
+      // Retry com backoff exponencial se houver tentativas restantes
+      if (retryCount < maxRetries && user) {
+        const backoffDelay = Math.min(1000 * Math.pow(2, retryCount), 5000);
+        console.info(
+          `[UserContext] Tentando novamente em ${backoffDelay}ms (tentativa ${retryCount + 1}/${maxRetries})`,
+        );
+        
+        setTimeout(() => {
+          forceSync(retryCount + 1, maxRetries);
+        }, backoffDelay);
+      } else {
+        setSyncError(error);
+      }
     } finally {
-      setIsSyncing(false);
+      if (retryCount === 0) {
+        setIsSyncing(false);
+      }
     }
   }, [userData, user]);
 
