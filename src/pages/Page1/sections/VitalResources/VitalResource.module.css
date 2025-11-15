@@ -84,7 +84,11 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.1),
+    rgba(255, 255, 255, 0.05)
+  );
   color: rgba(255, 255, 255, 0.8);
   padding: 0.4rem 0.5rem;
   border-radius: 6px;
@@ -98,7 +102,11 @@
 }
 
 .controlButton:hover:not(:disabled) {
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0.1));
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.15),
+    rgba(255, 255, 255, 0.1)
+  );
   border-color: rgba(255, 255, 255, 0.25);
   color: rgba(255, 255, 255, 1);
   box-shadow: 0 0 8px rgba(59, 130, 246, 0.2);
@@ -135,7 +143,11 @@
 .resourceInput:focus {
   outline: none;
   border-color: rgba(59, 130, 246, 0.6);
-  background: linear-gradient(135deg, rgba(59, 130, 246, 0.1), rgba(59, 130, 246, 0.05));
+  background: linear-gradient(
+    135deg,
+    rgba(59, 130, 246, 0.1),
+    rgba(59, 130, 246, 0.05)
+  );
   box-shadow: 0 0 8px rgba(59, 130, 246, 0.3);
 }
 

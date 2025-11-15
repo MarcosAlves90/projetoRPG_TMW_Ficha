@@ -21,13 +21,16 @@ export default function VitalResource({
     "#3498db": "bg-blue-600/5 border-blue-500/30",
   };
 
-  const cardColorClass = colorVariants[color] || "bg-slate-600/5 border-slate-500/30";
+  const cardColorClass =
+    colorVariants[color] || "bg-slate-600/5 border-slate-500/30";
 
   const percentage = (currentValue / maxValue) * 100;
   const isCritical = percentage > 80;
 
   return (
-    <div className={`${cardColorClass} rounded-lg border-2 transition-all duration-300 ${styles.vitalResourceContainer} ${isCritical ? "animate-pulse" : ""}`}>
+    <div
+      className={`${cardColorClass} rounded-lg border-2 transition-all duration-300 ${styles.vitalResourceContainer} ${isCritical ? "animate-pulse" : ""}`}
+    >
       <div className={styles.vitalResourceHeader}>
         <div className={styles.resourceLabel}>
           {icon && <span className={styles.resourceIcon}>{icon}</span>}

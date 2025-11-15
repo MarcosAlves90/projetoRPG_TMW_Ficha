@@ -217,7 +217,7 @@ export default function NavBar() {
                   {label}
                 </span>
                 {isActive(path) && (
-                  <div className="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-8 bg-blue-500 rounded-r" />
+                  <div className="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-8 bg-blue-500 rounded-r-sm" />
                 )}
                 {isCollapsed && (
                   <div className="hidden lg:block absolute left-full ml-2 px-3 py-2 bg-[#171d2e] text-white text-sm rounded-lg shadow-xl opacity-0 group-hover:opacity-100 pointer-events-none transition-opacity whitespace-nowrap">
@@ -247,7 +247,7 @@ export default function NavBar() {
                 Configurações
               </span>
               {isActive("/configuracoes") && (
-                <div className="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-8 bg-blue-500 rounded-r" />
+                <div className="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-8 bg-blue-500 rounded-r-sm" />
               )}
               {isCollapsed && (
                 <div className="hidden lg:block absolute left-full ml-2 px-3 py-2 bg-[#171d2e] text-white text-sm rounded-lg shadow-xl opacity-0 group-hover:opacity-100 pointer-events-none transition-opacity whitespace-nowrap">
