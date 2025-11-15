@@ -6,7 +6,7 @@ import {
   StatCard,
 } from "@/assets/components/design-system";
 import SkeletonProgressionSection from "./SkeletonProgressionSection.jsx";
-import { Shield, Zap, TrendingUp } from "lucide-react";
+import { Shield, Zap, TrendingUp, Dices } from "lucide-react";
 
 export default function ProgressionSection({
   userData,
@@ -41,26 +41,29 @@ export default function ProgressionSection({
     >
       <div className="space-y-6">
         {/* Stats Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2">
           <StatCard
             label="Defesa"
             value={defesa}
-            icon={<Shield size={24} />}
+            icon={<Shield size={18} />}
             color="blue"
+            compact
           />
 
           <StatCard
             label="DT (Dificuldade)"
             value={dt}
-            icon="🎲"
+            icon={<Dices size={18} />}
             color="purple"
+            compact
           />
 
           <StatCard
             label="Deslocamento"
             value={`${deslocamento}m`}
-            icon={<Zap size={24} />}
+            icon={<Zap size={18} />}
             color="cyan"
+            compact
           />
         </div>
 
@@ -77,7 +80,7 @@ export default function ProgressionSection({
                 O nível afeta diretamente seus atributos, DT e recursos vitais.
               </p>
               <div className="flex items-center gap-3">
-                <div className="flex-center w-16 h-16 rounded-lg bg-blue-600/20 border border-blue-500/30">
+                <div className="flex-center w-16 h-16 rounded-lg bg-blue-600/20 border-2 border-blue-500/30">
                   <span className="text-2xl font-bold text-blue-300">
                     {userData.nivel || 0}
                   </span>
