@@ -165,11 +165,8 @@ export default function Page5() {
     [localItem, setUserData],
   );
 
-  const placeHolderImage = useMemo(
-    () =>
-      "https://images.unsplash.com/photo-1532153975070-2e9ab71f1b14?fm=jpg&q=60&w=3000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8Ym9vayUyMHBhZ2VzfGVufDB8fDB8fHww",
-    [],
-  );
+  const placeHolderImage =
+    "https://images.unsplash.com/photo-1532153975070-2e9ab71f1b14?fm=jpg&q=60&w=3000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8Ym9vayUyMHBhZ2VzfGVufDB8fDB8fHww";
 
   const memoizedItems = useMemo(
     () =>
@@ -187,7 +184,7 @@ export default function Page5() {
           <p className="title">{annotation.title.toUpperCase()}</p>
         </div>
       )),
-    [openModal, filteredAnnotations],
+    [openModal, filteredAnnotations, placeHolderImage],
   );
 
   return (
