@@ -20,6 +20,7 @@ export default defineConfig({
   },
   resolve: {
     alias: {
+      '@': '/src',
       '@mui/styled-engine': '@mui/styled-engine-sc'
     },
   },
