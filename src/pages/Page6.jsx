@@ -6,6 +6,7 @@ import {
   useState,
   useContext,
 } from "react";
+import { usePageUnmount } from "@/hooks/usePageUnmount.js";
 import { saveUserData } from "../firebaseUtils.js";
 import { v4 as uuidv4 } from "uuid";
 import ReactModal from "react-modal";
@@ -49,6 +50,9 @@ const StyledInputsBox = styled(Box)`
 ReactModal.setAppElement("#root");
 
 export default function Page6() {
+  // Garante sincronização ao sair da página
+  usePageUnmount();
+
   const [modalIsOpen, setIsOpen] = useState(false);
   const [selectedItem, setSelectedItem] = useState(null);
   const [localItem, setLocalItem] = useState(null);

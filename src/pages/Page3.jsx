@@ -6,6 +6,7 @@ import {
   useContext,
   useRef,
 } from "react";
+import { usePageUnmount } from "@/hooks/usePageUnmount.js";
 import {
   ArtsSection,
   Attributes,
@@ -116,6 +117,9 @@ const StyledButton = styled(Button)`
 `;
 
 export default function Page3() {
+  // Garante sincronização ao sair da página
+  usePageUnmount();
+
   const [totalPoints, setTotalPoints] = useState({
     bioPoints: 0,
     atrPoints: 0,

@@ -7,6 +7,7 @@ import {
   useContext,
 } from "react";
 import { v4 as uuidv4 } from "uuid";
+import { usePageUnmount } from "@/hooks/usePageUnmount.js";
 import { saveUserData } from "../firebaseUtils.js";
 import { UserContext } from "../UserContext";
 import {
@@ -47,6 +48,9 @@ const StyledInputsBox = styled(Box)`
 `;
 
 export default function Page5() {
+  // Garante sincronização ao sair da página
+  usePageUnmount();
+
   const [createTitle, setCreateTitle] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
 
