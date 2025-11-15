@@ -492,22 +492,19 @@ export default function Page3() {
     let symbolIndex = 0;
     let isolatedNumberIndex = 0;
 
-    const formattedDice = noStatusDice.replace(
-      regex,
-      (match, p1, p2, p3) => {
-        const index = matches.indexOf(match);
-        const diceResults = results[index].results;
-        if (p3 && p3.startsWith("kh")) {
-          const keepHighest = parseInt(p3.slice(2), 10);
-          const keptResults = diceResults
-            .slice(0, keepHighest)
-            .map((result) => `(${result})`);
-          const otherResults = diceResults.slice(keepHighest);
-          return `[${[...otherResults, ...keptResults].join(", ")}]`;
-        }
-        return `[${diceResults.join(", ")}]`;
-      },
-    );
+    const formattedDice = noStatusDice.replace(regex, (match, p1, p2, p3) => {
+      const index = matches.indexOf(match);
+      const diceResults = results[index].results;
+      if (p3 && p3.startsWith("kh")) {
+        const keepHighest = parseInt(p3.slice(2), 10);
+        const keptResults = diceResults
+          .slice(0, keepHighest)
+          .map((result) => `(${result})`);
+        const otherResults = diceResults.slice(keepHighest);
+        return `[${[...otherResults, ...keptResults].join(", ")}]`;
+      }
+      return `[${diceResults.join(", ")}]`;
+    });
 
     for (let i = 0; i < symbols.length; i++) {
       if (symbolIndex < results.length - 1) {

@@ -38,7 +38,9 @@ export class FirebaseStorageAdapter extends StorageAdapter {
     } catch (error) {
       // Ignora erros de bloqueador de cliente silenciosamente
       if (error.message?.includes("ERR_BLOCKED_BY_CLIENT")) {
-        console.debug(`[Firebase] Carregamento bloqueado por extensão (offline/adblocker)`);
+        console.debug(
+          `[Firebase] Carregamento bloqueado por extensão (offline/adblocker)`,
+        );
         return null;
       }
       console.error(`[Firebase] Erro ao recuperar "${key}":`, error);
@@ -67,7 +69,9 @@ export class FirebaseStorageAdapter extends StorageAdapter {
     } catch (error) {
       // Ignora erros de bloqueador de cliente silenciosamente
       if (error.message?.includes("ERR_BLOCKED_BY_CLIENT")) {
-        console.debug(`[Firebase] Sincronização bloqueada por extensão (offline/adblocker)`);
+        console.debug(
+          `[Firebase] Sincronização bloqueada por extensão (offline/adblocker)`,
+        );
         return;
       }
 
@@ -79,10 +83,7 @@ export class FirebaseStorageAdapter extends StorageAdapter {
           console.debug(`[Firebase] Documento criado com campo "${key}"`);
         } catch (createError) {
           if (!createError.message?.includes("ERR_BLOCKED_BY_CLIENT")) {
-            console.error(
-              `[Firebase] Erro ao criar documento:`,
-              createError,
-            );
+            console.error(`[Firebase] Erro ao criar documento:`, createError);
           }
           throw createError;
         }

@@ -1,6 +1,16 @@
 import PropTypes from "prop-types";
-import { createContext, useMemo, useState, useEffect, useRef, useCallback } from "react";
-import { DataSyncManager, CompressionManager } from "@/services/storage/DataSyncManager.js";
+import {
+  createContext,
+  useMemo,
+  useState,
+  useEffect,
+  useRef,
+  useCallback,
+} from "react";
+import {
+  DataSyncManager,
+  CompressionManager,
+} from "@/services/storage/DataSyncManager.js";
 import { LocalStorageAdapter } from "@/services/storage/StorageAdapter.js";
 
 export const UserContext = createContext();
@@ -28,7 +38,9 @@ const getInitialUserData = async () => {
   try {
     const syncManager = getDataSyncManager();
     const stored = await syncManager.loadData(STORAGE_KEY, DEFAULT_USER_DATA);
-    return stored ? CompressionManager.decompressRecursive(stored) : DEFAULT_USER_DATA;
+    return stored
+      ? CompressionManager.decompressRecursive(stored)
+      : DEFAULT_USER_DATA;
   } catch (error) {
     console.error("[UserContext] Erro ao carregar dados iniciais:", error);
     return DEFAULT_USER_DATA;
@@ -65,7 +77,8 @@ export function UserProvider({ children }) {
    */
   const setUserData = useCallback((newValue) => {
     setUserDataState((prevData) => {
-      const updatedData = typeof newValue === "function" ? newValue(prevData) : newValue;
+      const updatedData =
+        typeof newValue === "function" ? newValue(prevData) : newValue;
 
       // Limpa timeout anterior se existir
       if (saveTimeoutRef.current) {
@@ -75,7 +88,8 @@ export function UserProvider({ children }) {
       // Debounced: salva após 500ms
       saveTimeoutRef.current = setTimeout(async () => {
         try {
-          const compressedData = CompressionManager.compressRecursive(updatedData);
+          const compressedData =
+            CompressionManager.compressRecursive(updatedData);
           await syncManagerRef.current.saveData(STORAGE_KEY, compressedData);
         } catch (error) {
           console.error("[UserContext] Erro ao salvar dados:", error);
@@ -89,17 +103,29 @@ export function UserProvider({ children }) {
   /**
    * Setter síncrono para casos urgentes (sem debounce)
    */
-  const setUserDataImmediate = useCallback(async (newValue) => {
-    const updatedData = typeof newValue === "function" ? newValue(userData) : newValue;
-    setUserDataState(updatedData);
+  const setUserDataImmediate = useCallback(
+    async (newValue) => {
+      const updatedData =
+        typeof newValue === "function" ? newValue(userData) : newValue;
+      setUserDataState(updatedData);
 
-    try {
-      const compressedData = CompressionManager.compressRecursive(updatedData);
-      await syncManagerRef.current.saveData(STORAGE_KEY, compressedData, true);
-    } catch (error) {
-      console.error("[UserContext] Erro ao salvar dados imediatamente:", error);
-    }
-  }, [userData]);
+      try {
+        const compressedData =
+          CompressionManager.compressRecursive(updatedData);
+        await syncManagerRef.current.saveData(
+          STORAGE_KEY,
+          compressedData,
+          true,
+        );
+      } catch (error) {
+        console.error(
+          "[UserContext] Erro ao salvar dados imediatamente:",
+          error,
+        );
+      }
+    },
+    [userData],
+  );
 
   /**
    * Força sincronização com backend remoto
@@ -149,13 +175,19 @@ export function UserProvider({ children }) {
       clearUserData,
       getSyncStatus: () => syncManagerRef.current.getSyncStatus(),
     }),
-    [userData, user, isLoadingUserData, setUserData, setUserDataImmediate, forceSync, clearUserData],
+    [
+      userData,
+      user,
+      isLoadingUserData,
+      setUserData,
+      setUserDataImmediate,
+      forceSync,
+      clearUserData,
+    ],
   );
 
   return (
-    <UserContext.Provider value={contextValue}>
-      {children}
-    </UserContext.Provider>
+    <UserContext.Provider value={contextValue}>{children}</UserContext.Provider>
   );
 }
 

@@ -16,11 +16,7 @@ export function usePersistentData(
   initialValue,
   options = {},
 ) {
-  const {
-    debounceMs = 500,
-    syncImmediately = false,
-    onError = null,
-  } = options;
+  const { debounceMs = 500, syncImmediately = false, onError = null } = options;
 
   const [data, setData] = useState(initialValue);
   const [isLoading, setIsLoading] = useState(true);
@@ -77,16 +73,9 @@ export function usePersistentData(
 
         debounceTimeoutRef.current = setTimeout(async () => {
           try {
-            await syncManager.saveData(
-              storageKey,
-              valueToSet,
-              syncImmediately,
-            );
+            await syncManager.saveData(storageKey, valueToSet, syncImmediately);
           } catch (err) {
-            console.error(
-              `[usePersistentData] Erro ao salvar dados:`,
-              err,
-            );
+            console.error(`[usePersistentData] Erro ao salvar dados:`, err);
             setError(err);
             if (onError) onError(err);
           }

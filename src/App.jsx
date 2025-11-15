@@ -54,13 +54,8 @@ const ROUTES_CONFIG = [
  */
 function App() {
   const location = useLocation();
-  const {
-    userData,
-    setUserData,
-    setUser,
-    setIsLoadingUserData,
-    forceSync,
-  } = useContext(UserContext);
+  const { userData, setUserData, setUser, setIsLoadingUserData, forceSync } =
+    useContext(UserContext);
 
   const shouldShowNavBar = !ROUTES_WITHOUT_NAVBAR.includes(location.pathname);
 
@@ -75,9 +70,8 @@ function App() {
         const remoteData = await firebaseAdapter.getItem("data");
 
         if (remoteData) {
-          const decompressedData = CompressionManager.decompressRecursive(
-            remoteData,
-          );
+          const decompressedData =
+            CompressionManager.decompressRecursive(remoteData);
 
           // Garante que cada ficha tenha um código único
           if (!decompressedData.sheetCode) {
@@ -137,7 +131,13 @@ function App() {
       isMounted = false;
       unsubscribeAuth();
     };
-  }, [setUser, syncFromFirebase, userData.sheetCode, setUserData, setIsLoadingUserData]);
+  }, [
+    setUser,
+    syncFromFirebase,
+    userData.sheetCode,
+    setUserData,
+    setIsLoadingUserData,
+  ]);
 
   /**
    * Sincroniza com Firebase periodicamente (a cada 30 segundos)
