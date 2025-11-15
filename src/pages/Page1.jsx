@@ -1,6 +1,8 @@
 import { useCallback, useContext } from "react";
 import { UserContext } from "../UserContext.jsx";
 import { usePageUnmount } from "@/hooks/usePageUnmount.js";
+import { useAutoSave } from "@/hooks/useAutoSave.js";
+import { AutoSaveIndicator } from "@/assets/components/AutoSaveIndicator.jsx";
 import {
   IdentitySection,
   PersonalSection,
@@ -14,6 +16,9 @@ export default function Page1() {
 
   // Garante sincronização ao sair da página
   usePageUnmount();
+
+  // Salvamento automático com debounce de 2s
+  const autoSaveState = useAutoSave(userData, 2000);
 
   const handleInputChange = (key) => (event) => {
     const { value, type } = event.target;
@@ -72,6 +77,13 @@ export default function Page1() {
         <div className="absolute top-0 right-1/4 w-96 h-96 bg-blue-600/5 rounded-full blur-3xl" />
         <div className="absolute bottom-1/4 left-1/3 w-96 h-96 bg-purple-600/5 rounded-full blur-3xl" />
       </div>
+
+      {/* Auto Save Indicator */}
+      <AutoSaveIndicator
+        isSaving={autoSaveState.isSaving}
+        error={autoSaveState.error}
+        lastSaved={autoSaveState.lastSaved}
+      />
 
       {/* Content Container */}
       <div className="relative z-10 w-full space-y-8 p-4 lg:p-8 max-w-7xl mx-auto">

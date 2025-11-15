@@ -30,7 +30,10 @@ export function ToastProvider({ children }) {
     }) => {
       const id = toastIdRef.current++;
 
-      setToasts((prev) => [...prev, { id, message, variant, duration, action, actionLabel }]);
+      setToasts((prev) => [
+        ...prev,
+        { id, message, variant, duration, action, actionLabel },
+      ]);
 
       return id;
     },

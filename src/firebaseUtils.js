@@ -34,7 +34,11 @@ const getAuthenticatedUserId = () => {
  * @param {Error} error - The error object.
  */
 const logError = (context, error) => {
-  console.error(`[Firebase Utils] ${context}`, error?.message || error);
+  const errorCode = error?.code ? ` (${error.code})` : "";
+  console.error(
+    `[Firebase Utils] ${context}${errorCode}`,
+    error?.message || error,
+  );
 };
 
 /**
@@ -72,9 +76,10 @@ export const getUserData = async (type) => {
   const userId = getAuthenticatedUserId();
   if (!userId) return null;
 
-  if (type !== DATA_TYPES.DATA && type !== DATA_TYPES.SHEETS) {
+  if (!Object.values(DATA_TYPES).includes(type)) {
+    const validTypes = Object.values(DATA_TYPES).join('" ou "');
     console.warn(
-      `[getUserData] Tipo inválido: "${type}". Use "data" ou "sheets".`,
+      `[getUserData] Tipo inválido: "${type}". Use "${validTypes}".`,
     );
     return null;
   }
@@ -88,13 +93,7 @@ export const getUserData = async (type) => {
       return null;
     }
 
-    const userData = docSnap.data();
-    const result = userData?.[type] || null;
-
-    console.info(
-      `[getUserData] Dados do tipo "${type}" recuperados com sucesso`,
-    );
-    return result;
+    return docSnap.data()?.[type] ?? null;
   }, "Erro ao recuperar dados do usuário");
 };
 
@@ -107,14 +106,25 @@ export const saveUserData = async (data) => {
   const userId = getAuthenticatedUserId();
   if (!userId) return false;
 
-  const result = await executeWithErrorHandling(async () => {
-    const userDocRef = getUserDocRef(userId);
-    await updateDoc(userDocRef, { [DATA_TYPES.DATA]: data });
-    console.info("[saveUserData] Dados salvos com sucesso");
-    return true;
-  }, "Erro ao salvar dados do usuário");
-
-  return result ?? false;
+  return (
+    executeWithErrorHandling(async () => {
+      const userDocRef = getUserDocRef(userId);
+      try {
+        await updateDoc(userDocRef, { [DATA_TYPES.DATA]: data });
+      } catch (error) {
+        if (error.code === "not-found") {
+          await setDoc(userDocRef, {
+            [DATA_TYPES.DATA]: data,
+            [DATA_TYPES.SHEETS]: [],
+          });
+        } else {
+          throw error;
+        }
+      }
+      console.info("[saveUserData] Dados salvos com sucesso");
+      return true;
+    }, "Erro ao salvar dados do usuário") ?? false
+  );
 };
 
 /**
@@ -125,17 +135,17 @@ export const createUserData = async () => {
   const userId = getAuthenticatedUserId();
   if (!userId) return false;
 
-  const result = await executeWithErrorHandling(async () => {
-    const userDocRef = getUserDocRef(userId);
-    await setDoc(userDocRef, {
-      [DATA_TYPES.DATA]: {},
-      [DATA_TYPES.SHEETS]: [],
-    });
-    console.info("[createUserData] Documento do usuário criado com sucesso");
-    return true;
-  }, "Erro ao criar dados do usuário");
-
-  return result ?? false;
+  return (
+    executeWithErrorHandling(async () => {
+      const userDocRef = getUserDocRef(userId);
+      await setDoc(userDocRef, {
+        [DATA_TYPES.DATA]: {},
+        [DATA_TYPES.SHEETS]: [],
+      });
+      console.info("[createUserData] Documento do usuário criado com sucesso");
+      return true;
+    }, "Erro ao criar dados do usuário") ?? false
+  );
 };
 
 /**
@@ -152,12 +162,23 @@ export const saveUserSheets = async (sheets) => {
     return false;
   }
 
-  const result = await executeWithErrorHandling(async () => {
-    const userDocRef = getUserDocRef(userId);
-    await updateDoc(userDocRef, { [DATA_TYPES.SHEETS]: sheets });
-    console.info("[saveUserSheets] Fichas salvas com sucesso");
-    return true;
-  }, "Erro ao salvar fichas do usuário");
-
-  return result ?? false;
+  return (
+    executeWithErrorHandling(async () => {
+      const userDocRef = getUserDocRef(userId);
+      try {
+        await updateDoc(userDocRef, { [DATA_TYPES.SHEETS]: sheets });
+      } catch (error) {
+        if (error.code === "not-found") {
+          await setDoc(userDocRef, {
+            [DATA_TYPES.DATA]: {},
+            [DATA_TYPES.SHEETS]: sheets,
+          });
+        } else {
+          throw error;
+        }
+      }
+      console.info("[saveUserSheets] Fichas salvas com sucesso");
+      return true;
+    }, "Erro ao salvar fichas do usuário") ?? false
+  );
 };

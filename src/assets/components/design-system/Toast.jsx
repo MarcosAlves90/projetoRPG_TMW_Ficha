@@ -78,7 +78,9 @@ export default function Toast({
       `}
     >
       {/* Icon */}
-      <IconComponent className={`w-5 h-5 shrink-0 mt-0.5 ${config.iconColor}`} />
+      <IconComponent
+        className={`w-5 h-5 shrink-0 mt-0.5 ${config.iconColor}`}
+      />
 
       {/* Content */}
       <div className="flex-1 min-w-0">

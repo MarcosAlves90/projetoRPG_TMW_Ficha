@@ -4,183 +4,93 @@ import {
   useMemo,
   useState,
   useEffect,
-  useRef,
   useCallback,
 } from "react";
-import { useSaveNotification } from "@/hooks/useSaveNotification.jsx";
+import { useSyncData } from "@/hooks/useSync.js";
+import { syncService } from "@/services/storage/SyncService.js";
+import { auth } from "@/firebase.js";
 
 export const UserContext = createContext();
 
-const STORAGE_KEY = "rogue_userData";
+const STORAGE_KEY_USER_DATA = "rogue_userData";
 const DEFAULT_USER_DATA = { nivel: 0, sheetCode: null };
 
 /**
- * Carrega dados do localStorage
- * @returns {Object}
- */
-const getInitialUserData = () => {
-  try {
-    const stored = localStorage.getItem(STORAGE_KEY);
-    return stored ? JSON.parse(stored) : DEFAULT_USER_DATA;
-  } catch (error) {
-    console.error("[UserContext] Erro ao carregar dados iniciais:", error);
-    return DEFAULT_USER_DATA;
-  }
-};
-
-/**
- * Provider que gerencia estado global de usuário com salvamento manual
+ * Provider que gerencia estado global de usuário com sincronização automática
  * Features:
- * - Notificação toast quando há mudanças
- * - Usuário escolhe quando salvar
- * - Salvamento simples em localStorage
+ * - Sincronização automática com Firebase
+ * - Fallback automático para localStorage se Firebase falhar
+ * - Debounce de 500ms para evitar múltiplas requisições
+ * - Retry automático com backoff exponencial
  */
 export function UserProvider({ children }) {
-  const [userData, setUserDataState] = useState(DEFAULT_USER_DATA);
   const [user, setUser] = useState(null);
-  const [isLoadingUserData, setIsLoadingUserData] = useState(true);
 
-  // Ref para rastrear dados para salvamento
-  const userDataRef = useRef(DEFAULT_USER_DATA);
-  const isMountedRef = useRef(true);
-  const notifyChangeRef = useRef(null);
-
-  /**
-   * Callback para salvar dados no localStorage
-   */
-  const performSave = useCallback(async () => {
-    try {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(userDataRef.current));
-      console.info("[UserContext] Dados salvos com sucesso");
-      return true;
-    } catch (error) {
-      console.error("[UserContext] Erro ao salvar dados:", error);
-      throw error;
-    }
-  }, []);
+  // Sincroniza dados do usuário com Firebase
+  const [userData, setUserData, userDataStatus] = useSyncData(
+    STORAGE_KEY_USER_DATA,
+    DEFAULT_USER_DATA,
+    { debounceMs: 500 },
+  );
 
   /**
-   * Hook de notificação com salvamento
-   */
-  const { notifyChange, forceSave } = useSaveNotification(performSave, 1000);
-
-  // Armazena notifyChange em ref para evitar loop infinito
-  useEffect(() => {
-    notifyChangeRef.current = notifyChange;
-  }, [notifyChange]);
-
-  /**
-   * Inicializa dados ao montar o provider
+   * Monitora mudanças de autenticação
    */
   useEffect(() => {
-    let isMounted = true;
-
-    try {
-      const initialData = getInitialUserData();
-      if (isMounted) {
-        setUserDataState(initialData);
-        userDataRef.current = initialData;
-        setIsLoadingUserData(false);
+    const unsubscribe = auth.onAuthStateChanged((authUser) => {
+      if (authUser) {
+        console.info("[UserContext] Usuário autenticado:", authUser.uid);
+        syncService.setUserId(authUser.uid);
+        setUser(authUser);
+      } else {
+        console.info("[UserContext] Usuário desautenticado");
+        syncService.setUserId(null);
+        setUser(null);
       }
-    } catch (error) {
-      console.error("[UserContext] Erro ao inicializar dados:", error);
-      if (isMounted) {
-        setIsLoadingUserData(false);
-      }
-    }
-
-    return () => {
-      isMounted = false;
-    };
-  }, []);
-
-  /**
-   * Setter com notificação de mudanças
-   * Atualiza estado imediatamente e notifica usuário
-   * NOTA: Não tem notifyChange nas dependências para evitar loop infinito
-   */
-  const setUserData = useCallback((newValue) => {
-    setUserDataState((prevData) => {
-      const updatedData =
-        typeof newValue === "function" ? newValue(prevData) : newValue;
-
-      userDataRef.current = updatedData;
-      console.debug("[UserContext] Dados atualizados, notificando mudança");
-
-      // Notifica sobre mudanças (usando ref para evitar loop)
-      if (notifyChangeRef.current) {
-        notifyChangeRef.current();
-      }
-
-      return updatedData;
     });
+
+    return () => unsubscribe();
   }, []);
 
   /**
    * Limpa todos os dados do usuário
    */
-  const clearUserData = useCallback(() => {
+  const clearUserData = useCallback(async () => {
     try {
-      setUserDataState(DEFAULT_USER_DATA);
-      userDataRef.current = DEFAULT_USER_DATA;
-      localStorage.removeItem(STORAGE_KEY);
+      await syncService.clearAll();
+      setUserData(DEFAULT_USER_DATA);
       console.info("[UserContext] Dados do usuário limpos");
     } catch (error) {
       console.error("[UserContext] Erro ao limpar dados:", error);
-      throw error;
     }
-  }, []);
+  }, [setUserData]);
 
   /**
-   * Carrega dados salvos (para recarregar após atualizações)
+   * Força sincronização imediata
    */
-  const reloadUserData = useCallback(() => {
-    try {
-      const initialData = getInitialUserData();
-      setUserDataState(initialData);
-      userDataRef.current = initialData;
-    } catch (error) {
-      console.error("[UserContext] Erro ao recarregar dados:", error);
-    }
-  }, []);
-
-  /**
-   * Cleanup ao desmontar: força salvamento se houver mudanças
-   */
-  useEffect(() => {
-    return () => {
-      isMountedRef.current = false;
-      // Tenta salvar dados pendentes
-      forceSave();
-    };
-  }, [forceSave]);
+  const forceSync = useCallback(async () => {
+    return await userDataStatus.forceSync();
+  }, [userDataStatus]);
 
   const contextValue = useMemo(
     () => ({
       // Estado
       userData,
       user,
-      isLoadingUserData,
+      isLoadingUserData: userDataStatus.isLoading,
+      isSyncing: userDataStatus.isSyncing,
+      syncError: userDataStatus.error,
 
       // Setters
       setUserData,
       setUser,
-      setIsLoadingUserData,
 
-      // Controle
-      forceSave,
+      // Controle (forceSync é o novo padrão, forceSave mantido para compatibilidade)
+      forceSync,
+      forceSave: forceSync,
       clearUserData,
-      reloadUserData,
     }),
-    [
-      userData,
-      user,
-      isLoadingUserData,
-      setUserData,
-      forceSave,
-      clearUserData,
-      reloadUserData,
-    ],
+    [userData, user, userDataStatus, setUserData, forceSync, clearUserData],
   );
 
   return (

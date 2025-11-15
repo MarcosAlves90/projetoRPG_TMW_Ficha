@@ -309,8 +309,7 @@ export default function Page3() {
 
     const selectEmoji = (result) => emojiMap[result] || null;
 
-    const notify = (message) =>
-      toast.info(`${message}`);
+    const notify = (message) => toast.info(`${message}`);
 
     function rollSimpleDice(qty, sides) {
       for (let i = 0; i < qty; i++) {
@@ -331,9 +330,7 @@ export default function Page3() {
     }
 
     function notifyRoll(periciaNameProp, diceProp, resultProp) {
-      notify(
-        `${periciaNameProp}: [${diceProp}] = ${resultProp}`,
-      );
+      notify(`${periciaNameProp}: [${diceProp}] = ${resultProp}`);
     }
 
     function verifyAttribute(atr, bonus) {
@@ -443,8 +440,7 @@ export default function Page3() {
     const symbols = noStatusDice.match(symbolRegex) || [];
     const isolatedNumbers = noStatusDice.match(numberRegex)?.map(Number) || [];
 
-    const notify = (message) =>
-      toast.info(`${message}`);
+    const notify = (message) => toast.info(`${message}`);
 
     if (!matches) {
       console.error("No valid dice notation found");
