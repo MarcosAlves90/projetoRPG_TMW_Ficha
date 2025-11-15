@@ -156,7 +156,7 @@ export default function Page4() {
     return () => {
       element.removeEventListener("paste", handlePasteEvent);
     };
-  }, [saveSkills]);
+  }, [saveSkills, setUserData]);
 
   const handleCopy = useCallback(async () => {
     if (selectedItem) {
@@ -276,11 +276,8 @@ export default function Page4() {
     [localItem, setUserData],
   );
 
-  const placeHolderImage = useMemo(
-    () =>
-      "https://pt.quizur.com/_image?href=https%3A%2F%2Fimg.quizur.com%2Ff%2Fimg5c40afdab16e93.66721106.png%3FlastEdited%3D1547743200&w=400&h=400&f=webp",
-    [],
-  );
+  const placeHolderImage =
+    "https://pt.quizur.com/_image?href=https%3A%2F%2Fimg.quizur.com%2Ff%2Fimg5c40afdab16e93.66721106.png%3FlastEdited%3D1547743200&w=400&h=400&f=webp";
 
   const memoizedItems = useMemo(
     () =>
@@ -298,7 +295,7 @@ export default function Page4() {
           <p className="title">{skill.title.toUpperCase()}</p>
         </div>
       )),
-    [openModal, filteredSkills],
+    [openModal, filteredSkills, placeHolderImage],
   );
 
   return (
