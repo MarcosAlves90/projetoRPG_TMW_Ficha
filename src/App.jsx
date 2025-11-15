@@ -1,4 +1,4 @@
-import { Suspense, lazy, useContext, useEffect, useState, useCallback } from 'react';
+import { lazy, useContext, useEffect, useCallback } from 'react';
 import { Route, Routes, useLocation } from "react-router-dom";
 import { onAuthStateChanged } from "firebase/auth";
 import { v4 as uuidv4 } from 'uuid';
@@ -17,15 +17,7 @@ import './App.css';
  */
 const ROUTES_WITHOUT_NAVBAR = ['/fichas', '/'];
 
-/**
- * Componente de carregamento reutilizável
- * @constant
- */
-const LoadingFallback = () => (
-    <div id="loader">
-        <div className="loader" />
-    </div>
-);
+
 
 // Lazy loading de páginas para otimização de performance
 const Page0 = lazy(() => import('./pages/Page0.jsx'));
@@ -64,8 +56,7 @@ const ROUTES_CONFIG = [
  */
 function App() {
     const location = useLocation();
-    const { userData, setUserData, setUser } = useContext(UserContext);
-    const [isDataLoaded, setIsDataLoaded] = useState(false);
+    const { userData, setUserData, setUser, setIsLoadingUserData } = useContext(UserContext);
     
     const shouldShowNavBar = !ROUTES_WITHOUT_NAVBAR.includes(location.pathname);
 
@@ -89,22 +80,26 @@ function App() {
         try {
             let data = await getUserData('data');
             
-            if (!data || !isMounted) return;
+            if (!isMounted) return;
 
-            const decompressedData = decompressData(data);
-            
-            // Garante que cada ficha tenha um código único
-            if (!decompressedData.sheetCode) {
-                decompressedData.sheetCode = uuidv4();
+            if (data) {
+                const decompressedData = decompressData(data);
+                
+                // Garante que cada ficha tenha um código único
+                if (!decompressedData.sheetCode) {
+                    decompressedData.sheetCode = uuidv4();
+                }
+                
+                setUserData(decompressedData);
             }
-            
-            setUserData(decompressedData);
-            setIsDataLoaded(true);
         } catch (error) {
             console.error("Erro ao buscar dados do usuário:", error);
-            setIsDataLoaded(true); // Permite continuar mesmo com erro
+        } finally {
+            if (isMounted) {
+                setIsLoadingUserData(false);
+            }
         }
-    }, [setUserData]);
+    }, [setUserData, setIsLoadingUserData]);
 
     /**
      * Gerencia o ciclo de vida da autenticação do usuário
@@ -124,7 +119,7 @@ function App() {
                     handleElementChange('sheetCode')(uuidv4());
                 }
                 
-                setIsDataLoaded(true);
+                setIsLoadingUserData(false);
             }
         });
 
@@ -132,17 +127,13 @@ function App() {
             isMounted = false;
             unsubscribeAuth();
         };
-    }, [setUser, fetchUserData, userData.sheetCode, handleElementChange]);
+    }, [setUser, fetchUserData, userData.sheetCode, handleElementChange, setIsLoadingUserData]);
 
-    // Exibe loader enquanto carrega dados iniciais
-    if (!isDataLoaded) {
-        return <LoadingFallback />;
-    }
+
 
     return (
         <main className="appMain display-flex">
-            <Suspense fallback={<LoadingFallback />}>
-                <PageTemplate showNav={shouldShowNavBar}>
+            <PageTemplate showNav={shouldShowNavBar}>
                 <Routes>
                     {ROUTES_CONFIG.map((route) => (
                         <Route 
@@ -152,8 +143,7 @@ function App() {
                         />
                     ))}
                 </Routes>
-                </PageTemplate>
-            </Suspense>
+            </PageTemplate>
         </main>
     );
 }
