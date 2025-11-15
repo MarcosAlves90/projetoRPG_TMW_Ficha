@@ -1,5 +1,5 @@
+import { Section } from "@/assets/components/design-system";
 import Skeleton from "@/assets/components/Skeleton.jsx";
-import styles from "./PersonalSection.module.css";
 
 /**
  * Skeleton do componente PersonalSection para carregamento
@@ -7,38 +7,85 @@ import styles from "./PersonalSection.module.css";
  */
 export default function SkeletonPersonalSection() {
   return (
-    <section className={`${styles.sectionCommon}`}>
-      <h2 className={`mainCommon ${styles.title2}`}>Pessoal</h2>
-      <fieldset className={styles.inputsFieldset}>
-        <div className={styles.styledTextField}>
-          <label>Nome</label>
-          <Skeleton variant="rectangular" width="100%" height="36px" />
-        </div>
-        <div className={styles.styledTextField}>
-          <label>Data de Nascimento</label>
-          <Skeleton variant="rectangular" width="100%" height="36px" />
-        </div>
-        <div className={styles.styledTextField}>
-          <label>Profissão</label>
-          <Skeleton variant="rectangular" width="100%" height="36px" />
-        </div>
-      </fieldset>
-      <fieldset className={styles.inputsFieldset}>
-        <div className={styles.styledTextField}>
-          <label>Título</label>
-          <Skeleton variant="rectangular" width="100%" height="36px" />
-        </div>
-        <div className={styles.flexBox}>
-          <div className={styles.styledTextField}>
-            <label>Altura</label>
+    <Section
+      title="Informações Pessoais"
+      subtitle="Características físicas e profissionais"
+      className="animate-fade-in"
+    >
+      <div className="space-y-6">
+        {/* Primary Info */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="relative">
+            <div className="flex items-center gap-2 mb-3">
+              <div className="p-2 rounded-lg bg-blue-600/20">
+                <Skeleton variant="rectangular" width="16px" height="16px" />
+              </div>
+              <Skeleton variant="text" width="50px" height="12px" />
+            </div>
             <Skeleton variant="rectangular" width="100%" height="36px" />
           </div>
-          <div className={styles.styledTextField}>
-            <label>Peso</label>
+
+          <div className="relative">
+            <div className="flex items-center gap-2 mb-3">
+              <div className="p-2 rounded-lg bg-purple-600/20">
+                <Skeleton variant="rectangular" width="16px" height="16px" />
+              </div>
+              <Skeleton variant="text" width="60px" height="12px" />
+            </div>
             <Skeleton variant="rectangular" width="100%" height="36px" />
           </div>
         </div>
-      </fieldset>
-    </section>
+
+        <div className="divider" />
+
+        {/* Secondary Info */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="relative">
+            <div className="flex items-center gap-2 mb-3">
+              <div className="p-2 rounded-lg bg-orange-600/20">
+                <Skeleton variant="rectangular" width="16px" height="16px" />
+              </div>
+              <Skeleton variant="text" width="100px" height="12px" />
+            </div>
+            <Skeleton variant="rectangular" width="100%" height="36px" />
+          </div>
+
+          <div className="relative">
+            <div className="flex items-center gap-2 mb-3">
+              <div className="p-2 rounded-lg bg-rose-600/20">
+                <Skeleton variant="rectangular" width="16px" height="16px" />
+              </div>
+              <Skeleton variant="text" width="60px" height="12px" />
+            </div>
+            <Skeleton variant="rectangular" width="100%" height="36px" />
+          </div>
+        </div>
+
+        <div className="divider" />
+
+        {/* Physical Attributes */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="relative">
+            <div className="flex items-center gap-2 mb-3">
+              <div className="p-2 rounded-lg bg-cyan-600/20">
+                <Skeleton variant="rectangular" width="16px" height="16px" />
+              </div>
+              <Skeleton variant="text" width="50px" height="12px" />
+            </div>
+            <Skeleton variant="rectangular" width="100%" height="36px" />
+          </div>
+
+          <div className="relative">
+            <div className="flex items-center gap-2 mb-3">
+              <div className="p-2 rounded-lg bg-green-600/20">
+                <Skeleton variant="rectangular" width="16px" height="16px" />
+              </div>
+              <Skeleton variant="text" width="40px" height="12px" />
+            </div>
+            <Skeleton variant="rectangular" width="100%" height="36px" />
+          </div>
+        </div>
+      </div>
+    </Section>
   );
 }
