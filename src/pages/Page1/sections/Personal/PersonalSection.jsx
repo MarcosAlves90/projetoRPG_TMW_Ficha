@@ -1,7 +1,7 @@
 import PropTypes from "prop-types";
 import { Section, Input } from "@/assets/components/design-system";
 import SkeletonPersonalSection from "./SkeletonPersonalSection.jsx";
-import { User, Briefcase, Ruler, Weight } from "lucide-react";
+import { User, Briefcase, Ruler, Weight, Calendar, Crown } from "lucide-react";
 
 export default function PersonalSection({
   userData,
@@ -67,43 +67,62 @@ export default function PersonalSection({
         <div className="divider" />
 
         {/* Secondary Info */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          <Input
-            label="Data de Nascimento"
-            type="text"
-            value={userData.idade || ""}
-            onChange={onInputChange("idade")}
-            placeholder="01/01/1990"
-            className="input-focus"
-          />
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="relative">
+            <div className="absolute -inset-0.5 bg-linear-to-r from-orange-600/20 to-amber-600/20 rounded-lg blur opacity-20 group-hover:opacity-40 transition-opacity" />
+            <div className="relative">
+              <div className="flex items-center gap-2 mb-3">
+                <div className="p-2 rounded-lg bg-orange-600/20 text-orange-300">
+                  <Calendar size={16} />
+                </div>
+                <label className="text-xs font-semibold text-gray-400 uppercase tracking-wide">
+                  Data de Nascimento
+                </label>
+              </div>
+              <Input
+                type="text"
+                value={userData.idade || ""}
+                onChange={onInputChange("idade")}
+                placeholder="01/01/1990"
+                className="input-focus"
+              />
+            </div>
+          </div>
 
-          <Input
-            label="Título/Alcunha"
-            type="text"
-            value={userData.titulo || ""}
-            onChange={onInputChange("titulo")}
-            placeholder="Ex: O Destemido"
-            className="input-focus"
-          />
+          <div className="relative">
+            <div className="absolute -inset-0.5 bg-linear-to-r from-rose-600/20 to-red-600/20 rounded-lg blur opacity-20 group-hover:opacity-40 transition-opacity" />
+            <div className="relative">
+              <div className="flex items-center gap-2 mb-3">
+                <div className="p-2 rounded-lg bg-rose-600/20 text-rose-300">
+                  <Crown size={16} />
+                </div>
+                <label className="text-xs font-semibold text-gray-400 uppercase tracking-wide">
+                  Título/Alcunha
+                </label>
+              </div>
+              <Input
+                type="text"
+                value={userData.titulo || ""}
+                onChange={onInputChange("titulo")}
+                placeholder="Ex: O Destemido"
+                className="input-focus"
+              />
+            </div>
+          </div>
         </div>
 
         <div className="divider" />
 
         {/* Physical Attributes */}
-        <div>
-          <h3 className="text-sm font-semibold text-gray-300 mb-4 flex items-center gap-2">
-            <span className="p-1 rounded bg-cyan-600/20 text-cyan-300">
-              <span className="text-xs">📏</span>
-            </span>
-            Características Físicas
-          </h3>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <div className="card bg-white/5 border-white/10 p-4">
-              <div className="flex items-center gap-3 mb-3">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="relative">
+            <div className="absolute -inset-0.5 bg-linear-to-r from-cyan-600/20 to-blue-600/20 rounded-lg blur opacity-20 group-hover:opacity-40 transition-opacity" />
+            <div className="relative">
+              <div className="flex items-center gap-2 mb-3">
                 <div className="p-2 rounded-lg bg-cyan-600/20 text-cyan-300">
                   <Ruler size={16} />
                 </div>
-                <label className="text-xs font-semibold text-gray-400 uppercase">
+                <label className="text-xs font-semibold text-gray-400 uppercase tracking-wide">
                   Altura
                 </label>
               </div>
@@ -120,13 +139,16 @@ export default function PersonalSection({
                 <span className="text-gray-400 font-medium">m</span>
               </div>
             </div>
+          </div>
 
-            <div className="card bg-white/5 border-white/10 p-4">
-              <div className="flex items-center gap-3 mb-3">
+          <div className="relative">
+            <div className="absolute -inset-0.5 bg-linear-to-r from-green-600/20 to-emerald-600/20 rounded-lg blur opacity-20 group-hover:opacity-40 transition-opacity" />
+            <div className="relative">
+              <div className="flex items-center gap-2 mb-3">
                 <div className="p-2 rounded-lg bg-green-600/20 text-green-300">
                   <Weight size={16} />
                 </div>
-                <label className="text-xs font-semibold text-gray-400 uppercase">
+                <label className="text-xs font-semibold text-gray-400 uppercase tracking-wide">
                   Peso
                 </label>
               </div>
