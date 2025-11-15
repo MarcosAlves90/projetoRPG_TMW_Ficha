@@ -18,7 +18,7 @@ export default function PageTemplate({
         {showNav && <NavBar />}
 
         {/* Main area — children components should not need to know about the NavBar width because NavBar provides a spacer */}
-        <div className="flex-1 p-6 lg:p-8 bg-background transition-all duration-300">
+        <div className="flex-1 p-2 md:p-6 lg:p-8 bg-background transition-all duration-300">
           {" "}
           {/* substitute background if needed */}
           {children}

@@ -16,7 +16,7 @@ export default function IdentitySection({ userData, isLoading = false }) {
       className="max-w-5xl mx-auto mb-6 animate-fade-in"
     >
       {/* Official Header */}
-      <div className="glass rounded-lg p-4 mb-6">
+      <div className="glass rounded-lg p-4 mb-6 max-md:hidden">
         <div className="flex items-center justify-center gap-3 text-gray-400 text-xs font-bold tracking-widest">
           <Shield size={14} className="text-blue-400" />
           <span>REGIÃO DE AGAMEMNON</span>

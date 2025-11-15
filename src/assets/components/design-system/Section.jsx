@@ -13,12 +13,12 @@ export default function Section({
         <div className="section-header mb-6 pb-4 border-b border-white/10">
           <div className="flex-1">
             {title && (
-              <h2 className="section-title text-2xl lg:text-3xl font-bold text-white mb-2">
+              <h2 className="section-title text-2xl lg:text-3xl font-bold text-white md:mb-2">
                 {title}
               </h2>
             )}
             {subtitle && (
-              <p className="section-subtitle text-sm text-gray-400 font-medium">
+              <p className="section-subtitle text-sm text-gray-400 font-medium max-md:hidden">
                 {subtitle}
               </p>
             )}
