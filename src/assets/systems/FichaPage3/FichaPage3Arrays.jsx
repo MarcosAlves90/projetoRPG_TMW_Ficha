@@ -49,7 +49,6 @@ export const perArray = [
  *
  * @type {Array.<string>}
  */
-// eslint-disable-next-line react-hooks/exhaustive-deps
 export const bioMap = ["Vida", "Energia", "Pericias", "Cromos"];
 
 /**
@@ -59,7 +58,6 @@ export const bioMap = ["Vida", "Energia", "Pericias", "Cromos"];
  *
  * @type {Array.<string>}
  */
-// eslint-disable-next-line react-hooks/exhaustive-deps
 export const atrMap = ["DES", "FOR", "INT", "PRE", "VIG"];
 
 export const arcArray = [
