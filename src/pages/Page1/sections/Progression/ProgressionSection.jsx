@@ -1,8 +1,12 @@
 import PropTypes from 'prop-types';
-// MUI removed — used native inputs and emoji icons here
+import SkeletonProgressionSection from './SkeletonProgressionSection.jsx';
 import styles from './ProgressionSection.module.css';
 
-export default function ProgressionSection({userData, onInputChange}) {
+export default function ProgressionSection({userData, onInputChange, isLoading = false}) {
+    if (isLoading) {
+        return <SkeletonProgressionSection />;
+    }
+    
     return (
         <section className={styles.sectionCommon}>
             <h2 className={`mainCommon ${styles.title2}`}>Progressão e Potencial</h2>
@@ -64,4 +68,5 @@ export default function ProgressionSection({userData, onInputChange}) {
 ProgressionSection.propTypes = {
     userData: PropTypes.object.isRequired,
     onInputChange: PropTypes.func.isRequired,
+    isLoading: PropTypes.bool,
 };

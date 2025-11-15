@@ -1,10 +1,15 @@
 import PropTypes from 'prop-types';
-import { useLayout } from '../../assets/components/LayoutContext.jsx';
-// MUI removed — using native elements
+import { useLayout } from '@/assets/components/LayoutContext.jsx';
+import SkeletonPersonalSection from './SkeletonPersonalSection.jsx';
 import styles from './PersonalSection.module.css';
 
-export default function PersonalSection({userData, onInputChange}) {
+export default function PersonalSection({userData, onInputChange, isLoading = false}) {
     const { isCollapsed } = useLayout() || { isCollapsed: false };
+    
+    if (isLoading) {
+        return <SkeletonPersonalSection />;
+    }
+    
     return (
         <section className={`${styles.sectionCommon} ${isCollapsed ? styles.compact : ''}`}>
             <h2 className={`mainCommon ${styles.title2}`}>Pessoal</h2>
@@ -63,4 +68,5 @@ export default function PersonalSection({userData, onInputChange}) {
 PersonalSection.propTypes = {
     userData: PropTypes.object.isRequired,
     onInputChange: PropTypes.func.isRequired,
+    isLoading: PropTypes.bool,
 };

@@ -1,8 +1,12 @@
 import PropTypes from 'prop-types';
-// MUI removed — using native inputs and select
+import SkeletonMentalWorldSection from './SkeletonMentalWorldSection.jsx';
 import styles from './MentalWorldSection.module.css';
 
-export default function MentalWorldSection({userData, onInputChange}) {
+export default function MentalWorldSection({userData, onInputChange, isLoading = false}) {
+    if (isLoading) {
+        return <SkeletonMentalWorldSection />;
+    }
+    
     return (
         <section className={styles.sectionCommon}>
             <h2 className={`mainCommon ${styles.title2}`}>Mundo Mental</h2>
@@ -32,4 +36,5 @@ export default function MentalWorldSection({userData, onInputChange}) {
 MentalWorldSection.propTypes = {
     userData: PropTypes.object.isRequired,
     onInputChange: PropTypes.func.isRequired,
+    isLoading: PropTypes.bool,
 };

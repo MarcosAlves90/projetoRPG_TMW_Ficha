@@ -1,9 +1,13 @@
 import PropTypes from 'prop-types';
-// MUI removed — prefer native elements
-import ProfilePicUploader from "../../assets/components/ProfilePicUploader.jsx";
+import ProfilePicUploader from '@/assets/components/ProfilePicUploader.jsx';
+import SkeletonIdentitySection from './SkeletonIdentitySection.jsx';
 import styles from './IdentitySection.module.css';
 
-export default function IdentitySection({userData}) {
+export default function IdentitySection({userData, isLoading = false}) {
+    if (isLoading) {
+        return <SkeletonIdentitySection />;
+    }
+
     return (
         <section className={styles.sectionIdentity}>
             <h3>IDENTIFICADOR</h3>
@@ -29,4 +33,5 @@ export default function IdentitySection({userData}) {
 
 IdentitySection.propTypes = {
     userData: PropTypes.object.isRequired,
+    isLoading: PropTypes.bool,
 };

@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
-// MUI icons removed — using emoji / inline markers instead
-import VitalResource from './VitalResource';
+import VitalResource from './VitalResource.jsx';
+import SkeletonVitalResourcesSection from './SkeletonVitalResourcesSection.jsx';
 import styles from './VitalResourcesSection.module.css';
 
 export default function VitalResourcesSection({
@@ -8,8 +8,12 @@ export default function VitalResourcesSection({
     localLife,
     localEnergy,
     onResourceChange,
-    onInputChange
+    onInputChange,
+    isLoading = false
 }) {
+    if (isLoading) {
+        return <SkeletonVitalResourcesSection />;
+    }
     const vitalResources = [
         {
             label: "Vida",
@@ -76,4 +80,5 @@ VitalResourcesSection.propTypes = {
     localEnergy: PropTypes.number.isRequired,
     onResourceChange: PropTypes.func.isRequired,
     onInputChange: PropTypes.func.isRequired,
+    isLoading: PropTypes.bool,
 };

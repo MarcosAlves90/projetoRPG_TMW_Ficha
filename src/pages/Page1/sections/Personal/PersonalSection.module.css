@@ -61,6 +61,11 @@
     font-family: var(--common-font-family), sans-serif;
 }
 
+.compact {
+    /* When Nav is compact, optionally reduce horizontal padding */
+    padding-left: 0.4rem;
+}
+
 @media (max-width: 991px) {
     .title2 {
         font-size: 4.5vw;

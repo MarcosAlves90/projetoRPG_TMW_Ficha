@@ -1,5 +1,4 @@
 import PropTypes from 'prop-types';
-// MUI removed — using native buttons and simple icons
 import styles from './VitalResource.module.css';
 
 export default function VitalResource({
