@@ -41,10 +41,14 @@ input[type=number] {
     font-family: var(--common-font-family), sans-serif;
 }
 
-.appMain {
+.appMain.with-sidebar {
     display: flex;
     margin-left: var(--sidebar-width);
     transition: margin-left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.appMain.without-sidebar {
+    display: flex;
 }
 
 .no-scroll {
@@ -1601,7 +1605,7 @@ input[type=number] {
 }
 
 @media (max-width: 991px) {
-    .appMain {
+    .appMain.with-sidebar {
         margin-left: 0;
         padding-top: 60px;
     }

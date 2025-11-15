@@ -161,7 +161,7 @@ function App() {
         <ThemeProvider theme={DARK_THEME}>
             <CssBaseline />
             <SidebarProvider>
-                <main className="appMain display-flex">
+                <main className={`appMain display-flex ${shouldShowNavBar ? 'with-sidebar' : 'without-sidebar'}`}>
                     {shouldShowNavBar && <NavBar />}
                     <Suspense fallback={<LoadingFallback />}>
                         <Routes>
