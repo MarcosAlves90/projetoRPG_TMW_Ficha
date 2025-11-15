@@ -25,95 +25,17 @@ import {
 import { saveUserData } from "../firebaseUtils.js";
 import { map } from "jquery";
 import { UserContext } from "../UserContext.jsx";
-import styled from "styled-components";
-import { Box, Button, InputAdornment, TextField } from "@mui/material";
+import { Button, Section, Badge } from "@/assets/components/design-system";
 import {
   Search,
-  ReportGmailerrorred,
-  Report,
+  AlertCircle,
+  ShieldAlert,
   Lock,
   LockOpen,
-  Casino,
-} from "@mui/icons-material";
+  Dices,
+} from "lucide-react";
 
-const StyledTextField = styled(TextField)`
-  margin-top: 0;
-  background-color: var(--background);
-  height: fit-content;
 
-  .MuiInputLabel-root,
-  .MuiInputBase-input {
-    font-family: var(--common-font-family), sans-serif !important;
-  }
-
-  & .MuiOutlinedInput-root {
-    & fieldset {
-      border: var(--gray-border);
-      transition: var(--common-transition);
-    }
-
-    &:hover fieldset {
-      border: var(--focus-gray-border);
-    }
-
-    &.Mui-focused fieldset {
-      border: var(--focus-gray-border);
-    }
-  }
-
-  @media (max-width: 991px) {
-    & .MuiInputBase-input,
-    .MuiInputLabel-root {
-      font-size: 3vw;
-    }
-  }
-`;
-
-const StyledInputsBox = styled(Box)`
-  display: flex;
-  gap: 1rem;
-  width: 100%;
-
-  .buttonsBox {
-    display: flex;
-    gap: 1rem;
-  }
-
-  @media (max-width: 991px) {
-    flex-direction: column;
-    gap: 2vw;
-    .buttonsBox {
-      gap: 2vw;
-
-      button {
-        width: 100%;
-      }
-    }
-  }
-`;
-
-const StyledButton = styled(Button)`
-  width: 13rem;
-  padding: 0.4rem;
-  border-radius: 3px;
-  font-weight: bold;
-  font-size: 1rem;
-  color: var(--background);
-  font-family: var(--common-font-family), sans-serif !important;
-
-  &.locked {
-    background-color: var(--common-font-color);
-
-    &:hover {
-      background-color: var(--gray-placeholder);
-    }
-  }
-
-  @media (max-width: 991px) {
-    width: 100%;
-    font-size: 3vw;
-  }
-`;
 
 export default function Page3() {
   // Garante sincronização ao sair da página
@@ -268,46 +190,46 @@ export default function Page3() {
     const dice = [];
     let noAttribute = false;
 
-    const emojis = {
-      1: "💀",
-      2: "🤡",
-      3: "😔",
-      4: "😟",
-      5: "🙁",
-      6: "😐",
-      7: "🙂",
-      8: "😀",
-      9: "😃",
-      10: "😄",
-      11: "😁",
-      12: "😎",
-      13: "🥶",
-    };
+    // const emojis = {
+    //   1: "💀",
+    //   2: "🤡",
+    //   3: "😔",
+    //   4: "😟",
+    //   5: "🙁",
+    //   6: "😐",
+    //   7: "🙂",
+    //   8: "😀",
+    //   9: "😃",
+    //   10: "😄",
+    //   11: "😁",
+    //   12: "😎",
+    //   13: "🥶",
+    // };
 
-    const emojiMap = {
-      1: 1,
-      2: 2,
-      3: 2,
-      4: 2,
-      5: 2,
-      6: 3,
-      7: 4,
-      8: 5,
-      9: 5,
-      10: 6,
-      11: 6,
-      12: 6,
-      13: 6,
-      14: 7,
-      15: 8,
-      16: 9,
-      17: 10,
-      18: 11,
-      19: 12,
-      20: 13,
-    };
+    // const emojiMap = {
+    //   1: 1,
+    //   2: 2,
+    //   3: 2,
+    //   4: 2,
+    //   5: 2,
+    //   6: 3,
+    //   7: 4,
+    //   8: 5,
+    //   9: 5,
+    //   10: 6,
+    //   11: 6,
+    //   12: 6,
+    //   13: 6,
+    //   14: 7,
+    //   15: 8,
+    //   16: 9,
+    //   17: 10,
+    //   18: 11,
+    //   19: 12,
+    //   20: 13,
+    // };
 
-    const selectEmoji = (result) => emojiMap[result] || null;
+    // const selectEmoji = (result) => emojiMap[result] || null;
 
     const notify = (message) => toast.info(`${message}`);
 
@@ -549,7 +471,7 @@ export default function Page3() {
         ? `${formattedDice.slice(0, 60)}...`
         : formattedDice;
     notify(`${truncatedFormattedDice} = ${finalResult}`);
-  }, [noStatusDice]);
+  }, [noStatusDice, toast]);
 
   const filteredBioMap = useMemo(
     () => bioMap.filter((item) => item.toLowerCase().includes(searchTerm)),
@@ -592,224 +514,209 @@ export default function Page3() {
   }, [tempRoll.Dice]);
 
   return (
-    <main className={"mainCommon page-3"}>
-      <section className={"section-dice"}>
-        <div className={"display-flex-center"}>
-          <h2 className={"title-2"}>Rolagem:</h2>
-          <article className={"display-flex-center dice"}>
-            <div className={"dice-background dice-font left"}>
-              {tempRoll.Pericia ? tempRoll.Pericia : "Nenhum"}
-            </div>
-            <div
-              className={"dice-background dice-font center display-flex-center"}
-            >
-              <p>
-                {`${tempRoll.Dice.slice(0, 60)}${tempRoll.Dice.length > 90 ? "..." : ""}`}
-              </p>
-            </div>
-            <div className={"dice-background dice-font right"}>
-              {tempRoll.Result ? tempRoll.Result : 0}
-            </div>
-          </article>
-        </div>
-      </section>
-      <section className={"section-options"}>
-        <StyledInputsBox>
-          <Box className={"buttonsBox"}>
-            <StyledButton
-              type="button"
-              variant="contained"
-              color="primary"
-              className={`${userData.isLocked ? "locked" : ""}`}
-              onClick={handleLockChange}
-              endIcon={userData.isLocked ? <Lock /> : <LockOpen />}
-            >
-              {userData.isLocked ? "Bloqueado" : "Desbloqueado"}
-            </StyledButton>
-            <StyledButton
-              type={"button"}
-              variant="contained"
-              color="primary"
-              className={`${recommendations ? "locked" : ""}`}
-              onClick={() => setRecommendations(!recommendations)}
-              endIcon={recommendations ? <Report /> : <ReportGmailerrorred />}
-            >
-              {"Regras"}
-            </StyledButton>
-          </Box>
-          <StyledTextField
-            type="text"
-            variant="outlined"
-            placeholder="Pesquisar status..."
-            value={searchTerm}
-            onChange={handleSearchChange}
-            fullWidth
-            slotProps={{
-              input: {
-                startAdornment: (
-                  <InputAdornment position="start">
-                    <Search />
-                  </InputAdornment>
-                ),
-              },
-            }}
-          />
-        </StyledInputsBox>
-        <div
-          className={"alert-box-collapsible"}
-          style={recommendations ? null : { display: "none" }}
-        >
-          <div className={"alert-box"}>
-            <div className={"alert-box-message"}>
-              <p>Máximo de pontos em cada categoria:</p>
-              <p>biotipo: máximo: [3]</p>
-              <p>atributos: máximo: [{CalculateAttributesCap()}]</p>
-              <p>perícias: máximo: [{CalculatePericiasCap()}]</p>
-              <p className={"last-p"}>artes e subartes: máximo [{15}]</p>
+    <main className="w-full min-h-screen bg-linear-to-b from-[#0b0f1a] via-[#0b0f1a] to-[#0f1424]">
+      {/* Decorative Background Elements */}
+      <div className="fixed inset-0 pointer-events-none overflow-hidden">
+        <div className="absolute top-0 right-1/4 w-96 h-96 bg-blue-600/5 rounded-full blur-3xl" />
+        <div className="absolute bottom-1/4 left-1/3 w-96 h-96 bg-purple-600/5 rounded-full blur-3xl" />
+      </div>
+
+      {/* Content Container */}
+      <div className="relative z-10 w-full space-y-8 p-4 lg:p-8 max-w-7xl mx-auto">
+        {/* Dice Roll Display Section */}
+        <Section title="Resultado da Rolagem" className="animate-fade-in">
+          <div className="flex flex-col gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div className="card p-4 text-center">
+                <div className="text-sm text-gray-400 mb-2">Perícia/Atributo</div>
+                <div className="text-xl font-bold text-white">
+                  {tempRoll.Pericia ? tempRoll.Pericia : "Nenhum"}
+                </div>
+              </div>
+              <div className="card p-4 text-center">
+                <div className="text-sm text-gray-400 mb-2">Dados</div>
+                <div className="text-lg font-mono text-blue-300 break-all">
+                  {`${tempRoll.Dice.slice(0, 60)}${tempRoll.Dice.length > 60 ? "..." : ""}`}
+                </div>
+              </div>
+              <div className="card p-4 text-center">
+                <div className="text-sm text-gray-400 mb-2">Resultado</div>
+                <div className="text-3xl font-bold text-green-400">
+                  {tempRoll.Result ? tempRoll.Result : 0}
+                </div>
+              </div>
             </div>
           </div>
-        </div>
-        <StyledInputsBox>
-          <StyledTextField
-            type="text"
-            variant="outlined"
-            placeholder="Escreva seu dado..."
-            value={noStatusDice}
-            onChange={handleNoStatusDiceChange}
-            fullWidth
-            slotProps={{
-              input: {
-                startAdornment: (
-                  <InputAdornment position="start">
-                    <Casino />
-                  </InputAdornment>
-                ),
-              },
-            }}
-          />
-          <StyledButton
-            type={"button"}
-            variant="contained"
-            color="primary"
-            onClick={noStatusDiceRoll}
-            endIcon={<Casino />}
+        </Section>
+
+        {/* Options Section */}
+        <Section title="Opções e Ferramentas" className="animate-fade-in">
+          <div className="space-y-6">
+            {/* Action Buttons and Search */}
+            <div className="flex flex-col lg:flex-row gap-4">
+              <div className="flex gap-4 flex-wrap lg:flex-nowrap">
+                <Button
+                  variant={userData.isLocked ? "secondary" : "primary"}
+                  onClick={handleLockChange}
+                  className="w-full lg:w-auto min-w-[180px] gap-2"
+                >
+                  {userData.isLocked ? <Lock size={18} /> : <LockOpen size={18} />}
+                  {userData.isLocked ? "Bloqueado" : "Desbloqueado"}
+                </Button>
+                <Button
+                  variant={recommendations ? "secondary" : "ghost"}
+                  onClick={() => setRecommendations(!recommendations)}
+                  className="w-full lg:w-auto min-w-[180px] gap-2"
+                >
+                  {recommendations ? <ShieldAlert size={18} /> : <AlertCircle size={18} />}
+                  Regras
+                </Button>
+              </div>
+              <div className="flex-1 relative">
+                <div className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">
+                  <Search size={20} />
+                </div>
+                <input
+                  type="text"
+                  placeholder="Pesquisar status..."
+                  value={searchTerm}
+                  onChange={handleSearchChange}
+                  className="input-focus w-full pl-10"
+                />
+              </div>
+            </div>
+
+            {/* Rules/Recommendations Display */}
+            {recommendations && (
+              <div className="card bg-blue-600/10 border-blue-500/30 animate-scale-in">
+                <div className="space-y-2 text-sm">
+                  <p className="font-semibold text-blue-300 mb-3">Máximo de pontos em cada categoria:</p>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
+                    <p className="text-gray-300">• Biotipo: máximo <Badge variant="primary">3</Badge></p>
+                    <p className="text-gray-300">• Atributos: máximo <Badge variant="primary">{CalculateAttributesCap()}</Badge></p>
+                    <p className="text-gray-300">• Perícias: máximo <Badge variant="primary">{CalculatePericiasCap()}</Badge></p>
+                    <p className="text-gray-300">• Artes e Subartes: máximo <Badge variant="primary">15</Badge></p>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* Custom Dice Roll */}
+            <div className="flex flex-col lg:flex-row gap-4">
+              <div className="flex-1 relative">
+                <div className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">
+                  <Dices size={20} />
+                </div>
+                <input
+                  type="text"
+                  placeholder="Escreva seu dado (ex: 2d20, 1d6+3)..."
+                  value={noStatusDice}
+                  onChange={handleNoStatusDiceChange}
+                  className="input-focus w-full pl-10"
+                />
+              </div>
+              <Button
+                variant="success"
+                onClick={noStatusDiceRoll}
+                className="w-full lg:w-auto min-w-[140px] gap-2"
+              >
+                <Dices size={18} />
+                Rolar
+              </Button>
+            </div>
+          </div>
+        </Section>
+
+        {/* Biotipo Section */}
+        {filteredBioMap.length > 0 && (
+          <Section
+            title={`Biotipo: [${totalPoints.bioPoints}]/[9]`}
+            subtitle="O biotipo representa a essência do personagem, seu estado natural sem treinos, modificações ou conhecimentos."
+            className="animate-fade-in"
           >
-            {"Rolar"}
-          </StyledButton>
-        </StyledInputsBox>
-      </section>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+              {filteredBioMap.map((biotipo) => (
+                <Biotipos
+                  key={biotipo}
+                  biotipo={biotipo}
+                  handleInputChange={handleInputChange}
+                />
+              ))}
+            </div>
+          </Section>
+        )}
 
-      <section
-        className={`section-biotipo section-status ${filteredBioMap.length < 1 ? "display-none" : ""}`}
-      >
-        <div className={"display-flex-center column"}>
-          <h2 className={"mainCommon title-2"}>
-            Biotipo: [{totalPoints.bioPoints}]/[9]
-          </h2>
-          <p className={"statusDescription"}>
-            O biotipo representa a essência do personagem, seu estado natural
-            sem treinos, modificações ou conhecimentos.
-          </p>
-        </div>
-        <div className={"input-center justify-center min"}>
-          {filteredBioMap.map((biotipo) => (
-            <Biotipos
-              key={biotipo}
-              biotipo={biotipo}
-              handleInputChange={handleInputChange}
-            />
-          ))}
-        </div>
-      </section>
-
-      <section
-        className={`section-atributos section-status ${filteredAtrMap.length < 1 ? "display-none" : ""}`}
-      >
-        <div className={"display-flex-center column"}>
-          <h2 className={"mainCommon title-2"}>
-            Atributos: [{totalPoints.atrPoints}]/[{CalculateAttributesPoints()}]
-          </h2>
-          <p className={"statusDescription"}>
-            Os atributos são os status principais do personagem. Eles guiam as
-            perícias e as (sub)artes arcanas.
-          </p>
-        </div>
-        <div className={"input-center justify-center min"}>
-          {filteredAtrMap.map((atr) => (
-            <Attributes
-              key={atr}
-              atributo={atr}
-              atr={atr}
-              handleInputChange={handleInputChange}
+        {/* Atributos Section */}
+        {filteredAtrMap.length > 0 && (
+          <Section
+            title={`Atributos: [${totalPoints.atrPoints}]/[${CalculateAttributesPoints()}]`}
+            subtitle="Os atributos são os status principais do personagem. Eles guiam as perícias e as (sub)artes arcanas."
+            className="animate-fade-in"
+          >
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+              {filteredAtrMap.map((atr) => (
+                <Attributes
+                  key={atr}
+                  atributo={atr}
+                  atr={atr}
+                  handleInputChange={handleInputChange}
+                  rollDice={rollDice}
+                />
+              ))}
+            </div>
+          </Section>
+        )}
+        {/* Perícias Section */}
+        {filteredPerArray.length > 0 && (
+          <Section
+            title={`Perícias: [${totalPoints.perPoints}]/[${
+              !userData.nivel || userData.nivel === "" || isNaN(userData.nivel)
+                ? "Verifique seu nível"
+                : CalculatePericiasPoints() > 0
+                  ? CalculatePericiasPoints()
+                  : CalculatePericiasPoints() === 0
+                    ? "Preencha o Biotipo e Atributos"
+                    : "Biotipo maior do que o esperado"
+            }]`}
+            subtitle="As perícias são os conhecimentos e habilidades naturais do personagem, elas determinam aquilo que ele sabe ou não fazer."
+            className="animate-fade-in"
+          >
+            <PericiasSection
               rollDice={rollDice}
+              handleInputChange={handleInputChange}
+              perArray={filteredPerArray}
             />
-          ))}
-        </div>
-      </section>
-      <section
-        className={`section-perArray section-status ${filteredPerArray.length < 1 ? "display-none" : ""}`}
-      >
-        <div className={"display-flex-center column"}>
-          <h2 className={"mainCommon title-2"}>
-            Perícias: [{totalPoints.perPoints}]/[
-            {!userData.nivel || userData.nivel === "" || isNaN(userData.nivel)
-              ? "Verifique seu nível"
-              : CalculatePericiasPoints() > 0
-                ? CalculatePericiasPoints()
-                : CalculatePericiasPoints() === 0
-                  ? "Preencha o Biotipo e Atributos"
-                  : "Biotipo maior do que o esperado"}
-            ]
-          </h2>
-          <p className={"statusDescription"}>
-            As perícias são os conhecimentos e habilidades naturais do
-            personagem, elas determinam aquilo que ele sabe ou não fazer.
-          </p>
-        </div>
-        <PericiasSection
-          rollDice={rollDice}
-          handleInputChange={handleInputChange}
-          perArray={filteredPerArray}
-        />
-      </section>
+          </Section>
+        )}
 
-      <section
-        className={`section-arts section-status ${filteredArcArray.length < 1 ? "display-none" : ""}`}
-      >
-        <div className={"display-flex-center column"}>
-          <h2 className={"mainCommon title-2"}>
-            Artes: [{totalPoints.arcPoints}]/[
-            {(userData["pericia-Magia Arcana"] || 0) * 5}]
-          </h2>
-          <p className={"statusDescription"}>
-            As artes arcanas são os focos de conhecimento em magia arcana do
-            personagem, definindo em quais ações ele é melhor.
-          </p>
-        </div>
-        <ArtsSection
-          handleInputChange={handleInputChange}
-          arcArray={filteredArcArray}
-        />
-      </section>
+        {/* Artes Section */}
+        {filteredArcArray.length > 0 && (
+          <Section
+            title={`Artes: [${totalPoints.arcPoints}]/[${(userData["pericia-Magia Arcana"] || 0) * 5}]`}
+            subtitle="As artes arcanas são os focos de conhecimento em magia arcana do personagem, definindo em quais ações ele é melhor."
+            className="animate-fade-in"
+          >
+            <ArtsSection
+              handleInputChange={handleInputChange}
+              arcArray={filteredArcArray}
+            />
+          </Section>
+        )}
 
-      <section
-        className={`section-subArts section-status ${filteredSubArcArray.length < 1 ? "display-none" : ""}`}
-      >
-        <div className={"display-flex-center column"}>
-          <h2 className={"mainCommon title-2"}>
-            Subartes: [{totalPoints.subArcPoints}]/[
-            {(userData["pericia-Magia Arcana"] || 0) * 5}]
-          </h2>
-          <p className={"statusDescription"}>
-            As subartes arcanas são as especializações das artes arcanas do
-            personagem, aumentando as possibilidades de skills.
-          </p>
-        </div>
-        <SubArtsSection
-          handleInputChange={handleInputChange}
-          subArcArray={filteredSubArcArray}
-        />
-      </section>
+        {/* Subartes Section */}
+        {filteredSubArcArray.length > 0 && (
+          <Section
+            title={`Subartes: [${totalPoints.subArcPoints}]/[${(userData["pericia-Magia Arcana"] || 0) * 5}]`}
+            subtitle="As subartes arcanas são as especializações das artes arcanas do personagem, aumentando as possibilidades de skills."
+            className="animate-fade-in"
+          >
+            <SubArtsSection
+              handleInputChange={handleInputChange}
+              subArcArray={filteredSubArcArray}
+            />
+          </Section>
+        )}
+      </div>
     </main>
   );
 }
