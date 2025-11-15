@@ -8,7 +8,6 @@ import {
   VitalResourcesSection,
   ProgressionSection,
 } from "@/pages/Page1/sections/index.js";
-import styles from "./Page1.module.css";
 
 export default function Page1() {
   const { userData, setUserData, user, isLoadingUserData } =
@@ -84,36 +83,51 @@ export default function Page1() {
   };
 
   return (
-    <main className="">
-      <IdentitySection userData={userData} isLoading={isLoadingUserData} />
+    <main className="w-full min-h-screen bg-linear-to-b from-[#0b0f1a] via-[#0b0f1a] to-[#0f1424]">
+      {/* Decorative Background Elements */}
+      <div className="fixed inset-0 pointer-events-none overflow-hidden">
+        <div className="absolute top-0 right-1/4 w-96 h-96 bg-blue-600/5 rounded-full blur-3xl" />
+        <div className="absolute bottom-1/4 left-1/3 w-96 h-96 bg-purple-600/5 rounded-full blur-3xl" />
+      </div>
 
-      <div className={styles.styledBoxField}>
-        <PersonalSection
-          userData={userData}
-          onInputChange={handleInputChange}
-          isLoading={isLoadingUserData}
-        />
+      {/* Content Container */}
+      <div className="relative z-10 w-full space-y-8 p-4 lg:p-8 max-w-7xl mx-auto">
+        {/* Main Sections */}
+        <div className="space-y-6">
+          <IdentitySection userData={userData} isLoading={isLoadingUserData} />
 
-        <MentalWorldSection
-          userData={userData}
-          onInputChange={handleInputChange}
-          isLoading={isLoadingUserData}
-        />
+          <PersonalSection
+            userData={userData}
+            onInputChange={handleInputChange}
+            isLoading={isLoadingUserData}
+          />
 
-        <VitalResourcesSection
-          userData={userData}
-          localLife={localLife()}
-          localEnergy={localEnergy()}
-          onResourceChange={handleResourceChange}
-          onInputChange={handleResourceInputChange}
-          isLoading={isLoadingUserData}
-        />
+          <MentalWorldSection
+            userData={userData}
+            onInputChange={handleInputChange}
+            isLoading={isLoadingUserData}
+          />
 
-        <ProgressionSection
-          userData={userData}
-          onInputChange={handleInputChange}
-          isLoading={isLoadingUserData}
-        />
+          <VitalResourcesSection
+            userData={userData}
+            localLife={localLife()}
+            localEnergy={localEnergy()}
+            onResourceChange={handleResourceChange}
+            onInputChange={handleResourceInputChange}
+            isLoading={isLoadingUserData}
+          />
+
+          <ProgressionSection
+            userData={userData}
+            onInputChange={handleInputChange}
+            isLoading={isLoadingUserData}
+          />
+        </div>
+
+        {/* Footer Info */}
+        <div className="glass rounded-lg p-4 mt-8 text-center text-xs text-gray-400 animate-fade-in">
+          <p>💾 Suas alterações são salvas automaticamente a cada ação</p>
+        </div>
       </div>
     </main>
   );

@@ -1,7 +1,8 @@
 import PropTypes from "prop-types";
+import { Section } from "@/assets/components/design-system";
 import VitalResource from "./VitalResource.jsx";
 import SkeletonVitalResourcesSection from "./SkeletonVitalResourcesSection.jsx";
-import styles from "./VitalResourcesSection.module.css";
+import { Heart, Brain, Zap, AlertTriangle } from "lucide-react";
 
 export default function VitalResourcesSection({
   userData,
@@ -14,6 +15,7 @@ export default function VitalResourcesSection({
   if (isLoading) {
     return <SkeletonVitalResourcesSection />;
   }
+
   const vitalResources = [
     {
       label: "Vida",
@@ -49,11 +51,47 @@ export default function VitalResourcesSection({
     },
   ];
 
+  // Calculate alerts
+  const lifePercentage = (userData.vidaGasta / localLife) * 100 || 0;
+  const stressPercentage =
+    (userData.estresseGasto / (((userData["pericia-Foco"] || 0) / 2) * 10)) *
+      100 || 0;
+
+  const criticalResources = vitalResources.filter((r) => {
+    const current = userData[r.currentKey] || 0;
+    const percentage = (current / r.maxValue) * 100;
+    return percentage > 80;
+  });
+
   return (
-    <section className={styles.sectionCommon}>
-      <h2 className={`mainCommon ${styles.title2}`}>Recursos Vitais</h2>
-      <fieldset className={`${styles.inputsFieldset} ${styles.fullWidth}`}>
-        <div className={styles.vitalResourcesGrid}>
+    <Section
+      title="Recursos Vitais"
+      subtitle="Gestão de vida, energia e sanidade mental"
+      className="animate-fade-in"
+    >
+      <div className="space-y-6">
+        {/* Critical Alert */}
+        {criticalResources.length > 0 && (
+          <div className="card bg-red-600/10 border-red-500/30 p-4 animate-pulse">
+            <div className="flex items-center gap-3">
+              <div className="p-2 rounded-lg bg-red-600/20 text-red-300">
+                <AlertTriangle size={18} />
+              </div>
+              <div>
+                <p className="text-xs font-semibold text-red-300 uppercase">
+                  ⚠️ Recursos Críticos
+                </p>
+                <p className="text-xs text-red-200">
+                  {criticalResources.map((r) => r.label).join(", ")} em nível
+                  crítico!
+                </p>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Resources Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
           {vitalResources.map((resource) => (
             <VitalResource
               key={resource.currentKey}
@@ -69,8 +107,51 @@ export default function VitalResourcesSection({
             />
           ))}
         </div>
-      </fieldset>
-    </section>
+
+        <div className="divider" />
+
+        {/* Resource Info */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="glass rounded-lg p-4">
+            <div className="flex items-center gap-2 mb-2">
+              <Heart size={14} className="text-red-400" />
+              <p className="text-xs font-semibold text-gray-400 uppercase">
+                Vida e Vitalidade
+              </p>
+            </div>
+            <ul className="text-xs text-gray-400 space-y-1">
+              <li>
+                • <span className="text-red-300">Vida</span>: Saúde física
+              </li>
+              <li>
+                • <span className="text-purple-300">Estresse</span>: Fadiga
+                mental
+              </li>
+              <li>• Recuperar em repouso</li>
+            </ul>
+          </div>
+
+          <div className="glass rounded-lg p-4">
+            <div className="flex items-center gap-2 mb-2">
+              <Zap size={14} className="text-yellow-400" />
+              <p className="text-xs font-semibold text-gray-400 uppercase">
+                Energia e Mente
+              </p>
+            </div>
+            <ul className="text-xs text-gray-400 space-y-1">
+              <li>
+                • <span className="text-yellow-300">Energia</span>: Força vital
+              </li>
+              <li>
+                • <span className="text-blue-300">Sanidade</span>: Equilíbrio
+                mental
+              </li>
+              <li>• Limite máximo determinado por atributos</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </Section>
   );
 }
 
