@@ -1,63 +1,52 @@
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useCallback } from "react";
 import { UserContext } from "@/UserContext.jsx";
 
 /**
- * Hook para garantir sincronização de dados ao sair da página
- * Previne perda de dados ao navegar entre rotas
- *
- * @returns {void}
+ * Hook para forçar salvamento de dados antes de desmontar a página
+ * Garante que mudanças pendentes sejam salvas ao navegar/sair
  */
 export function usePageUnmount() {
-  const { flushPendingSave } = useContext(UserContext);
+  const { forceSave } = useContext(UserContext);
 
   useEffect(() => {
-    // Sincroniza dados quando a página está prestes a desmontar
-    const handleBeforeUnload = () => {
-      // Flush síncrono de dados em processamento
-      if (flushPendingSave) {
-        flushPendingSave().catch((err) => {
-          console.warn("[usePageUnmount] Erro ao sincronizar ao sair:", err);
-        });
-      }
-    };
-
-    window.addEventListener("beforeunload", handleBeforeUnload);
-
     return () => {
-      // Limpa dados pendentes ao desmontar
-      if (flushPendingSave) {
-        flushPendingSave().catch((err) => {
-          console.warn(
-            "[usePageUnmount] Erro ao sincronizar no cleanup:",
-            err,
-          );
-        });
-      }
-      window.removeEventListener("beforeunload", handleBeforeUnload);
+      // Força salvamento ao desmontar
+      forceSave?.();
     };
-  }, [flushPendingSave]);
+  }, [forceSave]);
 }
 
 /**
- * Hook para sincronização imediata com fallback
- * Use quando precisa garantir salvamento antes de ação crítica
+ * Hook para sincronização antes de executar ação crítica
+ * Use quando precisa garantir salvamento de dados antes de uma operação
  *
- * @param {Function} callback - Função a executar após sincronizar
- * @returns {Function} Wrapper que sincroniza antes de executar callback
+ * @param {Function} callback - Função a executar após salvar
+ * @returns {Function} Wrapper que salva antes de chamar callback
+ *
+ * @example
+ * const handleLogout = useSyncedAction(async () => {
+ *   await logout();
+ * });
  */
 export function useSyncedAction(callback) {
-  const { flushPendingSave } = useContext(UserContext);
+  const { forceSave } = useContext(UserContext);
 
-  const wrappedCallback = async (...args) => {
-    if (flushPendingSave) {
-      try {
-        await flushPendingSave();
-      } catch (err) {
-        console.warn("[useSyncedAction] Erro ao sincronizar:", err);
+  const wrappedCallback = useCallback(
+    async (...args) => {
+      // Força salvamento pendente primeiro
+      if (forceSave) {
+        try {
+          await forceSave();
+        } catch (err) {
+          console.warn("[useSyncedAction] Erro ao salvar:", err.message);
+        }
       }
-    }
-    return callback(...args);
-  };
+
+      // Executa callback
+      return callback(...args);
+    },
+    [forceSave, callback],
+  );
 
   return wrappedCallback;
 }

@@ -1,13 +1,16 @@
 import { useEffect, useRef, useCallback, useState } from "react";
 
 /**
- * Hook para persistência de dados com sincronização
- * Gerencia estado local com salvamento automático
+ * Hook para persistência de dados com sincronização automática
+ * Gerencia estado local com salvamento debounced
  *
  * @param {DataSyncManager} syncManager - Gerenciador de sincronização
  * @param {string} storageKey - Chave para armazenar dados
  * @param {any} initialValue - Valor inicial padrão
  * @param {Object} options - Opções de configuração
+ * @param {number} options.debounceMs - Delay em ms para debounce (padrão: 500)
+ * @param {boolean} options.syncImmediately - Sincronizar imediatamente com remoto
+ * @param {Function} options.onError - Callback para erros
  * @returns {[any, Function, Object]} [valor, setter, status]
  */
 export function usePersistentData(
@@ -22,25 +25,30 @@ export function usePersistentData(
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
   const debounceTimeoutRef = useRef(null);
-  const isInitializedRef = useRef(false);
 
   /**
    * Carrega dados do storage na montagem
    */
   useEffect(() => {
+    let isMounted = true;
+
     const loadData = async () => {
       try {
         setIsLoading(true);
         const loadedData = await syncManager.loadData(storageKey, initialValue);
-        setData(loadedData);
-        isInitializedRef.current = true;
+        if (isMounted) {
+          setData(loadedData);
+        }
       } catch (err) {
-        const errorMsg = `Erro ao carregar dados: ${err.message}`;
-        console.error(`[usePersistentData] ${errorMsg}`);
-        setError(err);
-        if (onError) onError(err);
+        console.error(`[usePersistentData] Erro ao carregar "${storageKey}":`, err);
+        if (isMounted) {
+          setError(err);
+          if (onError) onError(err);
+        }
       } finally {
-        setIsLoading(false);
+        if (isMounted) {
+          setIsLoading(false);
+        }
       }
     };
 
@@ -48,6 +56,7 @@ export function usePersistentData(
 
     // Cleanup
     return () => {
+      isMounted = false;
       if (debounceTimeoutRef.current) {
         clearTimeout(debounceTimeoutRef.current);
       }
@@ -65,6 +74,7 @@ export function usePersistentData(
 
         // Atualiza estado imediatamente
         setData(valueToSet);
+        setError(null);
 
         // Debounced: salva após delay
         if (debounceTimeoutRef.current) {
@@ -75,13 +85,13 @@ export function usePersistentData(
           try {
             await syncManager.saveData(storageKey, valueToSet, syncImmediately);
           } catch (err) {
-            console.error(`[usePersistentData] Erro ao salvar dados:`, err);
+            console.error(`[usePersistentData] Erro ao salvar "${storageKey}":`, err);
             setError(err);
             if (onError) onError(err);
           }
         }, debounceMs);
       } catch (err) {
-        console.error(`[usePersistentData] Erro ao atualizar dados:`, err);
+        console.error(`[usePersistentData] Erro ao atualizar "${storageKey}":`, err);
         setError(err);
         if (onError) onError(err);
       }
@@ -101,6 +111,7 @@ export function usePersistentData(
 
 /**
  * Hook para sincronização manual com controle explícito
+ *
  * @param {DataSyncManager} syncManager - Gerenciador de sincronização
  * @returns {Object} { sync, status, clearError }
  */
@@ -108,8 +119,10 @@ export function useSyncManager(syncManager) {
   const [syncStatus, setSyncStatus] = useState(() =>
     syncManager.getSyncStatus(),
   );
+  const [isSyncing, setIsSyncing] = useState(false);
 
   const sync = useCallback(async () => {
+    setIsSyncing(true);
     try {
       const result = await syncManager.syncRemote();
       setSyncStatus(syncManager.getSyncStatus());
@@ -117,6 +130,8 @@ export function useSyncManager(syncManager) {
     } catch (error) {
       console.error("[useSyncManager] Erro durante sincronização:", error);
       throw error;
+    } finally {
+      setIsSyncing(false);
     }
   }, [syncManager]);
 
@@ -126,33 +141,32 @@ export function useSyncManager(syncManager) {
 
   return {
     sync,
-    status: syncStatus,
+    status: { ...syncStatus, isSyncing },
     clearError,
   };
 }
 
 /**
- * Hook para múltiplas chaves de dados
- * @param {DataSyncManager} syncManager
+ * Hook para múltiplas chaves de dados com gerenciamento otimizado
+ *
+ * @param {DataSyncManager} syncManager - Gerenciador de sincronização
  * @param {Object} dataKeys - Objeto com chaves e valores iniciais
+ * @param {Object} options - Opções (debounceMs, etc)
  * @returns {Object} Objeto com dados, setters e status unificado
  */
-export function usePersistentDataMultiple(syncManager, dataKeys) {
-  const [dataMap, setDataMap] = useState(() => {
-    const initial = {};
-    for (const [key, value] of Object.entries(dataKeys)) {
-      initial[key] = value;
-    }
-    return initial;
-  });
-
+export function usePersistentDataMultiple(syncManager, dataKeys, options = {}) {
+  const { debounceMs = 500 } = options;
+  const [dataMap, setDataMap] = useState(() => ({ ...dataKeys }));
   const [loading, setLoading] = useState(true);
   const [errors, setErrors] = useState({});
+  const debounceTimeoutsRef = useRef(new Map());
 
   /**
    * Carrega múltiplas chaves ao inicializar
    */
   useEffect(() => {
+    let isMounted = true;
+
     const loadAll = async () => {
       try {
         setLoading(true);
@@ -162,23 +176,33 @@ export function usePersistentDataMultiple(syncManager, dataKeys) {
           try {
             loaded[key] = await syncManager.loadData(key, initialValue);
           } catch (err) {
-            console.error(`Erro ao carregar "${key}":`, err);
-            setErrors((prev) => ({ ...prev, [key]: err }));
+            console.error(`[usePersistentDataMultiple] Erro ao carregar "${key}":`, err);
+            if (isMounted) {
+              setErrors((prev) => ({ ...prev, [key]: err }));
+            }
             loaded[key] = initialValue;
           }
         }
 
-        setDataMap(loaded);
+        if (isMounted) {
+          setDataMap(loaded);
+        }
       } finally {
-        setLoading(false);
+        if (isMounted) {
+          setLoading(false);
+        }
       }
     };
 
     loadAll();
+
+    return () => {
+      isMounted = false;
+    };
   }, [syncManager, dataKeys]);
 
   /**
-   * Setter para uma chave específica
+   * Setter para uma chave específica com debounce
    */
   const setDataByKey = useCallback(
     (key) => async (newValue) => {
@@ -186,26 +210,62 @@ export function usePersistentDataMultiple(syncManager, dataKeys) {
         typeof newValue === "function" ? newValue(dataMap[key]) : newValue;
 
       setDataMap((prev) => ({ ...prev, [key]: valueToSet }));
+      setErrors((prev) => {
+        const updated = { ...prev };
+        delete updated[key];
+        return updated;
+      });
 
-      try {
-        await syncManager.saveData(key, valueToSet, false);
-        setErrors((prev) => {
-          const updated = { ...prev };
-          delete updated[key];
-          return updated;
-        });
-      } catch (err) {
-        console.error(`Erro ao salvar "${key}":`, err);
-        setErrors((prev) => ({ ...prev, [key]: err }));
+      // Limpa timeout anterior se existir
+      if (debounceTimeoutsRef.current.has(key)) {
+        clearTimeout(debounceTimeoutsRef.current.get(key));
       }
+
+      // Debounced save
+      const timeout = setTimeout(async () => {
+        try {
+          await syncManager.saveData(key, valueToSet, false);
+          debounceTimeoutsRef.current.delete(key);
+        } catch (err) {
+          console.error(`[usePersistentDataMultiple] Erro ao salvar "${key}":`, err);
+          setErrors((prev) => ({ ...prev, [key]: err }));
+        }
+      }, debounceMs);
+
+      debounceTimeoutsRef.current.set(key, timeout);
     },
-    [dataMap, syncManager],
+    [dataMap, syncManager, debounceMs],
   );
+
+  /**
+   * Força sincronização de todas as chaves pendentes
+   */
+  const flushAll = useCallback(async () => {
+    // Limpa todos os timeouts pendentes
+    for (const [, timeout] of debounceTimeoutsRef.current) {
+      clearTimeout(timeout);
+    }
+    debounceTimeoutsRef.current.clear();
+
+    // Sincroniza com remoto
+    return await syncManager.syncRemote();
+  }, [syncManager]);
+
+  // Cleanup
+  useEffect(() => {
+    return () => {
+      for (const [, timeout] of debounceTimeoutsRef.current) {
+        clearTimeout(timeout);
+      }
+      debounceTimeoutsRef.current.clear();
+    };
+  }, []);
 
   return {
     data: dataMap,
     setDataByKey,
     loading,
     errors,
+    flushAll,
   };
 }
