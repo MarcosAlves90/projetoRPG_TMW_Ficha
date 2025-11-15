@@ -6,6 +6,7 @@ import { onAuthStateChanged } from "firebase/auth";
 import { v4 as uuidv4 } from 'uuid';
 
 import NavBar from './assets/components/NavBar.jsx';
+import { SidebarProvider } from './SidebarContext.jsx';
 import { getUserData } from './firebaseUtils';
 import { auth } from "./firebase.js";
 import { UserContext } from "./UserContext.jsx";
@@ -159,20 +160,22 @@ function App() {
     return (
         <ThemeProvider theme={DARK_THEME}>
             <CssBaseline />
-            <main className="appMain display-flex">
-                {shouldShowNavBar && <NavBar />}
-                <Suspense fallback={<LoadingFallback />}>
-                    <Routes>
-                        {ROUTES_CONFIG.map((route) => (
-                            <Route 
-                                key={route.path} 
-                                path={route.path} 
-                                element={route.element} 
-                            />
-                        ))}
-                    </Routes>
-                </Suspense>
-            </main>
+            <SidebarProvider>
+                <main className="appMain display-flex">
+                    {shouldShowNavBar && <NavBar />}
+                    <Suspense fallback={<LoadingFallback />}>
+                        <Routes>
+                            {ROUTES_CONFIG.map((route) => (
+                                <Route 
+                                    key={route.path} 
+                                    path={route.path} 
+                                    element={route.element} 
+                                />
+                            ))}
+                        </Routes>
+                    </Suspense>
+                </main>
+            </SidebarProvider>
         </ThemeProvider>
     );
 }

@@ -14,6 +14,10 @@
     font-style: normal;
 }
 
+:root {
+    --sidebar-width: 280px;
+    --sidebar-compact: 0;
+}
 
 /* Para o Chrome, Safari, Edge, Opera */
 input::-webkit-outer-spin-button,
@@ -35,6 +39,12 @@ input[type=number] {
     margin: 0 auto;
     text-align: center;
     font-family: var(--common-font-family), sans-serif;
+}
+
+.appMain {
+    display: flex;
+    margin-left: var(--sidebar-width);
+    transition: margin-left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .no-scroll {
@@ -673,6 +683,7 @@ input[type=number] {
     margin: auto;
     width: 70%;
     max-width: 100%;
+    transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 
     .tag-cloud {
         margin: 1vw;
@@ -1590,6 +1601,11 @@ input[type=number] {
 }
 
 @media (max-width: 991px) {
+    .appMain {
+        margin-left: 0;
+        padding-top: 60px;
+    }
+
     .popupOverlay {
         z-index: 11;
         background-color: rgba(15, 19, 31, 0.84);
